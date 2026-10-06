@@ -1,0 +1,435 @@
+\chapter{预备知识与依赖边界}\label{chap:I-01}
+\FAChapterOpening
+{建立后续全书唯一的集合、拓扑、紧性、网与 Lebesgue 积分前置接口；完整建立度量、完备与紧性、Tychonoff定理、紧性的网刻画，并按需使用拓扑基础工具；明确后置结果不得前向调用.}
+{本科微积分、线性代数；基础实分析中的实数完备性与 Lebesgue 积分结果按本章第\ref{sec:i01-measure}节的接口显式调用.}
+{\centering
+\begin{tikzpicture}[node distance=8mm and 12mm]
+\node[fa/node] (top) {基础集合论与拓扑};
+\node[fa/node,right=of top] (metric) {度量/完备/紧性};
+\node[fa/node,right=of metric] (net) {紧性的网刻画};
+\node[fa/node,below=of top] (subbase) {子基与有限交性质};
+\node[fa/node,right=of subbase] (tych) {Tychonoff定理};
+\draw[fa/arrow] (top) -- (metric);
+\draw[fa/arrow] (metric) -- (net);
+\draw[fa/arrow] (subbase) -- (tych);
+\end{tikzpicture}}
+
+本章在通常的 ZFC 集合论背景中工作. 选择公理本身不在本书证明；凡证明实际使用其等价形式 Zorn 引理或进行跨指标族的选择时，均在相应位置明示.
+
+\section{集合、映射、商结构}\label{sec:i01-sets}
+\index{set@集合}\index{mapping@映射}\index{quotient set@商集}
+
+\subsection{集合与映射的最小语言}
+
+\begin{FADefinition}[C][集合与映射]{i01:set-map}
+设 \(\displaystyle A,B\) 为集合. 记 \(\displaystyle A\subseteq B\) 表示包含，\(\displaystyle A\cup B\)、\(\displaystyle A\cap B\)、\(\displaystyle A\setminus B\) 分别表示并、交、差. 映射 \(\displaystyle f:X\to Y\) 的像与原像定义为 \(\displaystyle f(E)=\{f(x):x\in E\},\; f^{-1}(F)=\{x\in X:f(x)\in F\}\).
+若 \(\displaystyle f(x_1)=f(x_2)\Rightarrow x_1=x_2\)，称 \(\displaystyle f\) 为单射；若 \(\displaystyle f(X)=Y\)，称为满射；兼具二者称为双射. 对 \(\displaystyle f:X\to Y\) 与 \(\displaystyle g:Y\to Z\)，复合为 \(\displaystyle g\circ f:X\to Z\)，\(\displaystyle (g\circ f)(x)=g(f(x))\).
+\end{FADefinition}
+
+以后反复使用
+\[
+f^{-1}\!\left(\bigcup_{j\in J}E_j\right)=\bigcup_{j\in J}f^{-1}(E_j),\quad
+f^{-1}\!\left(\bigcap_{j\in J}E_j\right)=\bigcap_{j\in J}f^{-1}(E_j),
+\]
+以及 \(\displaystyle f^{-1}(Y\setminus E)=X\setminus f^{-1}(E)\). 这些恒等式直接由元素逐点核验.
+
+\begin{FAExample}[连续函数集的集合论接口]
+令 \(\displaystyle C[a,b]\) 表示所有连续映射 \(\displaystyle f:[a,b]\to\mathbb K\) 的集合，其中 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). 对固定 \(\displaystyle t\in[a,b]\)，取值映射 \(\displaystyle E_t:C[a,b]\to\mathbb K\)，\(\displaystyle E_t(f)=f(t)\)，此处只作为映射使用；其范数与完备性留到 I-03.
+\end{FAExample}
+
+\subsection{等价关系、商集与积集}
+
+\begin{FADefinition}[C][商集与积集]{i01:quotient-product}
+集合 \(\displaystyle X\) 上的关系 \(\displaystyle \sim\) 若满足自反、对称、传递，则称等价关系. 对 \(\displaystyle x\in X\)，等价类为 \(\displaystyle [x]=\{y\in X:y\sim x\}\)，商集为 \(\displaystyle X/{\sim}=\{[x]:x\in X\}\). 商映射记为 \(\displaystyle q:X\to X/{\sim}\)，\(\displaystyle q(x)=[x]\).
+
+给定集合族 \(\displaystyle \{X_i\}_{i\in I}\)，所有满足 \(\displaystyle x:I\to\bigcup_{i\in I}X_i\) 与 \(\displaystyle \forall\,i\in I,\ x(i)\in X_i\) 的映射组成笛卡尔积，记为 \(\displaystyle \prod_{i\in I}X_i\). 并记 \(\displaystyle x_i=x(i)\)、坐标投影 \(\displaystyle \pi_i(x)=x_i\).
+\end{FADefinition}
+
+在 ZFC 中，若 \(\displaystyle X_i\neq\varnothing\) 对所有 \(\displaystyle i\in I\) 成立，则选择公理保证 \(\displaystyle \prod_{i\in I}X_i\neq\varnothing\). 本章只在 Tychonoff 定理证明的明确位置调用这一选择步骤.
+
+\subsection{向量空间商结构接口}
+
+设 \(\displaystyle V\) 为 \(\displaystyle \mathbb K\)-向量空间，\(\displaystyle W\leqslant V\) 为线性子空间. 定义 \(\displaystyle v\sim u\iff v-u\in W\)，则 \(\displaystyle V/W\) 的元素写作 \(\displaystyle v+W\)，且 \(\displaystyle (v+W)+(u+W)=(v+u)+W, \; \lambda(v+W)=(\lambda v)+W\).
+若更换代表元，右端所得陪集不变，因此上述运算良定义. 本章不定义商范数；其正式建立位置为 I-03.
+
+\section{拓扑、紧性、网与子网}\label{sec:i01-topology}
+\index{topological space@拓扑空间}\index{compactness@紧性}\index{net@网}\index{subnet@子网}
+
+\subsection{拓扑、邻域、基与积拓扑}
+
+\begin{FADefinition}[C][拓扑最小接口]{i01:topology-interface}
+设 \(\displaystyle X\) 为集合. 若 \(\displaystyle \tau\subseteq\mathcal P(X)\) 满足 \(\displaystyle \varnothing,X\in\tau\)、任意并仍属于 \(\displaystyle \tau\)、有限交仍属于 \(\displaystyle \tau\)，则 \(\displaystyle (X,\tau)\) 为拓扑空间，\(\displaystyle \tau\) 的元素称开集，补集为开集的集合称闭集.
+
+集合 \(\displaystyle N\subseteq X\) 是 \(\displaystyle x\in X\) 的邻域，若存在 \(\displaystyle U\in\tau\) 使 \(\displaystyle x\in U\subseteq N\). 记邻域族为 \(\displaystyle \mathcal N(x)\). 对 \(\displaystyle A\subseteq X\)，定义
+\[
+\begin{gathered}
+\overline A=\{x:\forall\,N\in\mathcal N(x),\ N\cap A\neq\varnothing\},\\
+A^\circ=\bigcup\{U\in\tau:U\subseteq A\},\quad \partial A=\overline A\cap\overline{X\setminus A}.
+\end{gathered}
+\]
+映射 \(\displaystyle f:X\to Y\) 连续，若 \(\displaystyle V\subseteq Y\) 开时 \(\displaystyle f^{-1}(V)\subseteq X\) 开. 空间 \(\displaystyle X\) 为 Hausdorff，若 \(\displaystyle x\neq y\) 时存在不交开邻域分别含 \(\displaystyle x,y\).
+\end{FADefinition}
+
+\begin{FADefinition}[C][基、子基与积拓扑]{i01:basis-product}
+若 \(\displaystyle \mathcal B\subseteq\tau\) 且对每个开集 \(\displaystyle U\) 与 \(\displaystyle x\in U\)，存在 \(\displaystyle B\in\mathcal B\) 满足 \(\displaystyle x\in B\subseteq U\)，则 \(\displaystyle \mathcal B\) 为拓扑基. 若 \(\displaystyle \mathcal S\subseteq\tau\) 的有限交族（空交约定为 \(\displaystyle X\)）构成拓扑基，则 \(\displaystyle \mathcal S\) 为子基.
+
+对拓扑空间族 \(\displaystyle \{X_i\}_{i\in I}\)，积拓扑是使全部投影 \(\displaystyle \pi_i:\prod_{i\in I}X_i\to X_i\) 连续的最弱拓扑；其标准开子基为 \(\displaystyle \mathcal S_{\Pi}=\{\pi_i^{-1}(U):i\in I,\ U\subseteq X_i\text{ 开}\}\).
+因此基本开集只限制有限多个坐标.
+\end{FADefinition}
+
+\subsection{度量、完备与紧性的基本定义}
+\index{metric space@度量空间}\index{Cauchy sequence@Cauchy列}\index{complete metric space@完备度量空间}
+
+\begin{FADefinition}[A][度量、完备与紧性]{fa:FND-A01}
+设 \(\displaystyle X\) 为集合. 映射 \(\displaystyle d:X\times X\to[0,\infty)\) 称为度量，若对任意 \(\displaystyle x,y,z\in X\) 有 \(\displaystyle d(x,y)=0\iff x=y, \; d(x,y)=d(y,x), \; d(x,z)\leqslant d(x,y)+d(y,z)\).
+开球为 \(\displaystyle B_X(x,r)=\{y\in X:d(x,y)<r\}\)，\(\displaystyle r>0\)；由全部开球生成的拓扑称度量拓扑. 序列 \(\displaystyle (x_n)_{n\in\mathbb N}\) 收敛到 \(\displaystyle x\)，若 \(\displaystyle \forall\,\varepsilon>0\ \exists\,N\in\mathbb N\ \forall\,n\geqslant N,\ d(x_n,x)<\varepsilon\).
+
+序列 \(\displaystyle (x_n)_{n\in\mathbb N}\) 为 Cauchy 列，若
+\[
+\forall\,\varepsilon>0\ \exists\,N\in\mathbb N\ \forall\,m,n\geqslant N,
+\quad d(x_m,x_n)<\varepsilon.
+\]
+若每个 Cauchy 列均在 \(\displaystyle X\) 中收敛，则 \(\displaystyle (X,d)\) 完备.
+
+拓扑空间 \(\displaystyle X\) 称紧，若任意开覆盖 \(\displaystyle \{U_j\}_{j\in J}\) 均有有限子覆盖，即存在有限集 \(\displaystyle J_0\subseteq J\) 使 \(\displaystyle X=\bigcup_{j\in J_0}U_j\).
+紧度量空间是其度量拓扑意义下的紧空间.
+\end{FADefinition}
+
+直观上，完备性控制 Cauchy 过程的极限不逃出空间；紧性把任意开覆盖压缩为有限信息. 二者定义相互独立，本章不使用度量空间中更深的等价刻画.
+
+\begin{FAExample}[有限离散空间]
+若 \(\displaystyle X\) 有限，定义 \(\displaystyle d(x,y)=0\) 当且仅当 \(\displaystyle x=y\)，否则 \(\displaystyle d(x,y)=1\). 则任意 Cauchy 列最终常值，所以 \(\displaystyle X\) 完备；任意开覆盖只需为每个点选取一个覆盖它的开集，有限个点给出有限子覆盖，所以 \(\displaystyle X\) 紧.
+\end{FAExample}
+
+\begin{FACounterexample}[删除完备性]
+\(\displaystyle (0,1)\) 取通常距离时不完备：\(\displaystyle x_n=\frac{1}{n+1}\) 为 Cauchy 列，但其在 \(\displaystyle \mathbb R\) 中的极限 \(\displaystyle 0\notin(0,1)\).
+\end{FACounterexample}
+
+\begin{FADefinition}[C][列紧与总有界]{i01:sequential-total-bounded}
+拓扑空间 \(\displaystyle X\) 称列紧，若每个序列均有收敛子序列. 度量空间 \(\displaystyle (X,d)\) 称总有界，若对任意 \(\displaystyle \varepsilon>0\)，存在有限集 \(\displaystyle F\subseteq X\) 使 \(\displaystyle X\subseteq\bigcup_{x\in F}B_X(x,\varepsilon)\).
+\end{FADefinition}
+
+\begin{FAWarning}[紧、列紧、总有界不可混用]
+本章中“紧”始终指开覆盖定义. “列紧”只涉及序列，“总有界”只定义于度量空间. 一般拓扑空间中不得把三者视为等价；紧度量空间的相关等价定理属于 I-02，不能在本章证明中前向调用.
+\end{FAWarning}
+
+\subsection{本章实际使用的紧性工具}
+\index{finite intersection property@有限交性质}
+
+若集合族 \(\displaystyle \mathcal F\) 的每个有限子族都有非空交，则称 \(\displaystyle \mathcal F\) 具有有限交性质.
+
+\begin{FAProposition}[C][拓扑基础工具集]{fa:FND-C01}
+设 \(\displaystyle X,Y\) 为拓扑空间.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(\displaystyle X\) 紧，当且仅当任意具有有限交性质的闭集族 \(\displaystyle \mathcal F\) 满足 \(\displaystyle \bigcap_{F\in\mathcal F}F\neq\varnothing\).
+\item 若 \(\displaystyle K\subseteq X\) 紧且 \(\displaystyle F\subseteq K\) 在 \(\displaystyle K\) 中闭，则 \(\displaystyle F\) 紧.
+\item 若 \(\displaystyle f:X\to Y\) 连续且 \(\displaystyle K\subseteq X\) 紧，则 \(\displaystyle f(K)\) 紧.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+对（i），若闭集族 \(\displaystyle \mathcal F\) 的总交为空，则 \(\displaystyle \{X\setminus F:F\in\mathcal F\}\) 是开覆盖. 紧性给出有限子覆盖，故对应有限闭集交为空，与有限交性质矛盾. 反之，若开覆盖 \(\displaystyle \{U_j\}_{j\in J}\) 无有限子覆盖，则闭集族 \(\displaystyle \{X\setminus U_j\}_{j\in J}\) 具有有限交性质，而其总交为空，故闭集有限交性质条件失败.
+
+对（ii），设 \(\displaystyle \{V_j\}_{j\in J}\) 为 \(\displaystyle F\) 的相对开覆盖，写 \(\displaystyle V_j=F\cap U_j\)，其中 \(\displaystyle U_j\subseteq K\) 相对开. 则 \(\displaystyle \{U_j\}_{j\in J}\cup\{K\setminus F\}\) 覆盖 \(\displaystyle K\). 由 \(\displaystyle K\) 紧，取有限子覆盖，删去可能出现的 \(\displaystyle K\setminus F\) 后即得 \(\displaystyle F\) 的有限子覆盖.
+
+对（iii），若 \(\displaystyle \{V_j\}_{j\in J}\) 是 \(\displaystyle f(K)\) 的相对开覆盖，则写 \(\displaystyle V_j=f(K)\cap O_j\)，其中 \(\displaystyle O_j\subseteq Y\) 开. 于是 \(\displaystyle (f|_K)^{-1}(V_j)=K\cap f^{-1}(O_j)\) 在 \(\displaystyle K\) 中开，故它们构成 \(\displaystyle K\) 的相对开覆盖. 取有限子覆盖后，对应有限个 \(\displaystyle V_j\) 覆盖 \(\displaystyle f(K)\). 三项均得证.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{有向集、网、子网与聚点}
+
+\begin{FADefinition}[C][有向集与网]{i01:directed-net}
+非空集合 \(\displaystyle A\) 上的关系 \(\displaystyle \preceq\) 若自反、传递，且 \(\displaystyle \forall\,a_1,a_2\in A\ \exists\,a_3\in A, \; a_1\preceq a_3, \; a_2\preceq a_3\)，
+则 \(\displaystyle (A,\preceq)\) 为有向集. 网是映射 \(\displaystyle x:A\to X\)，写作 \(\displaystyle (x_\alpha)_{\alpha\in A}\). 对 \(\displaystyle a\in A\)，尾部为 \(\displaystyle T_a=\{x_\alpha:\alpha\succeq a\}\).
+网收敛到 \(\displaystyle x\in X\)，记 \(\displaystyle x_\alpha\to x\)，若
+\[
+\forall\,U\in\mathcal N(x)\ \exists\,a_0\in A\ \forall\,\alpha\succeq a_0,
+\quad x_\alpha\in U.
+\]
+点 \(\displaystyle x\) 是该网的聚点，若 \(\displaystyle \forall\,U\in\mathcal N(x)\ \forall\,a\in A\ \exists\,\alpha\succeq a, \; x_\alpha\in U\).
+\end{FADefinition}
+
+\begin{FADefinition}[C][子网：单调且最终共尾版本]{i01:subnet-definition}
+设 \(\displaystyle x:A\to X\) 为网. 若 \(\displaystyle B\) 为有向集，\(\displaystyle \varphi:B\to A\) 满足
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 保序：\(\displaystyle b_1\preceq b_2\Rightarrow\varphi(b_1)\preceq\varphi(b_2)\)；
+\item 最终共尾： \(\displaystyle \forall\,a\in A\ \exists\,b_0\in B\ \forall\,b\succeq b_0, \; \varphi(b)\succeq a\),
+\end{enumerate}
+则 \(\displaystyle y_b=x_{\varphi(b)}\) 称为 \(\displaystyle x\) 的子网. 本书全文采用这一版本，不与仅要求像集共尾但不控制尾部的其他约定混用.
+\end{FADefinition}
+
+\begin{FAProposition}[C][子网的尾部继承]{i01:subnet-tail}
+设 \(\displaystyle y_b=x_{\varphi(b)}\) 是 \(\displaystyle x_\alpha\) 的子网.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 若 \(\displaystyle x_\alpha\) 最终落在 \(\displaystyle E\subseteq X\)，则 \(\displaystyle y_b\) 最终落在 \(\displaystyle E\).
+\item 若 \(\displaystyle x_\alpha\to x\)，且 \(\displaystyle x_\alpha\) 最终落在闭集 \(\displaystyle F\)，则 \(\displaystyle x\in F\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+对（i），取 \(\displaystyle a_0\) 使 \(\displaystyle \alpha\succeq a_0\Rightarrow x_\alpha\in E\). 由最终共尾性，存在 \(\displaystyle b_0\) 使 \(\displaystyle b\succeq b_0\Rightarrow\varphi(b)\succeq a_0\)，故 \(\displaystyle y_b\in E\). 对（ii），若 \(\displaystyle x\notin F\)，则开集 \(\displaystyle X\setminus F\) 是 \(\displaystyle x\) 的邻域，收敛性使网最终落在 \(\displaystyle X\setminus F\)，与其最终落在 \(\displaystyle F\) 矛盾.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][聚点与收敛子网]{i01:cluster-subnet}
+对任意拓扑空间 \(\displaystyle X\) 与网 \(\displaystyle (x_\alpha)_{\alpha\in A}\)，点 \(\displaystyle x\in X\) 是该网的聚点，当且仅当存在收敛到 \(\displaystyle x\) 的子网.
+\end{FALemma}
+
+\begin{FAProof}
+先设 \(\displaystyle x\) 为聚点. 定义 \(\displaystyle B=\{(a,U,\alpha)\in A\times\mathcal N(x)\times A:\alpha\succeq a,\ x_\alpha\in U\}\).
+令
+\[
+(a,U,\alpha)\preceq_B(a',U',\alpha')
+\iff
+a\preceq a',\quad U'\subseteq U,\quad \alpha\preceq\alpha'.
+\]
+取 \(\displaystyle b_j=(a_j,U_j,\alpha_j)\in B\)，\(\displaystyle j=1,2\). 由 \(\displaystyle A\) 有向，可取 \(\displaystyle c\in A\) 同时满足 \(\displaystyle c\succeq a_1,a_2,\alpha_1,\alpha_2\). 令 \(\displaystyle W=U_1\cap U_2\)，它仍是 \(\displaystyle x\) 的邻域. 聚点条件给出 \(\displaystyle \beta\succeq c\) 且 \(\displaystyle x_\beta\in W\)，故 \(\displaystyle (c,W,\beta)\in B\) 是 \(\displaystyle b_1,b_2\) 的上界，因而 \(\displaystyle B\) 有向.
+
+定义 \(\displaystyle \varphi:B\to A\)，\(\displaystyle \varphi(a,U,\alpha)=\alpha\). 它保序. 给定 \(\displaystyle a_*\in A\)，用邻域 \(\displaystyle X\in\mathcal N(x)\) 与聚点条件取 \(\displaystyle \alpha_*\succeq a_*\)，则 \(\displaystyle b_*=(a_*,X,\alpha_*)\in B\)；若 \(\displaystyle b\succeq_B b_*\)，则 \(\displaystyle \varphi(b)\succeq\alpha_*\succeq a_*\). 故 \(\displaystyle \varphi\) 最终共尾，\(\displaystyle y_b=x_{\varphi(b)}\) 是子网.
+
+再证收敛. 给定 \(\displaystyle U\in\mathcal N(x)\)，任取 \(\displaystyle a_0\in A\)，由聚点条件取 \(\displaystyle \alpha_0\succeq a_0\) 且 \(\displaystyle x_{\alpha_0}\in U\). 令 \(\displaystyle b_0=(a_0,U,\alpha_0)\). 若 \(\displaystyle b=(a,V,\alpha)\succeq_B b_0\)，则 \(\displaystyle V\subseteq U\) 且 \(\displaystyle y_b=x_\alpha\in V\subseteq U\)，故 \(\displaystyle y_b\to x\).
+
+反之，设子网 \(\displaystyle y_b=x_{\varphi(b)}\to x\). 给定 \(\displaystyle U\in\mathcal N(x)\) 与 \(\displaystyle a\in A\). 由收敛性存在 \(\displaystyle b_1\) 使 \(\displaystyle b\succeq b_1\Rightarrow y_b\in U\)；由最终共尾性存在 \(\displaystyle b_2\) 使 \(\displaystyle b\succeq b_2\Rightarrow\varphi(b)\succeq a\). 取 \(\displaystyle b\) 为 \(\displaystyle b_1,b_2\) 的共同上界，则 \(\displaystyle x_{\varphi(b)}\in U\) 且 \(\displaystyle \varphi(b)\succeq a\). 因而 \(\displaystyle x\) 是原网的聚点.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{紧性的网刻画}
+
+\begin{FATheorem}[B][紧性与收敛子网]{fa:FND-B02}
+对任意拓扑空间 \(\displaystyle X\)，以下条件等价：
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(\displaystyle X\) 紧；
+\item \(\displaystyle X\) 中每个网都有收敛子网.
+\end{enumerate}
+此等价不需要 Hausdorff 假设.
+\end{FATheorem}
+
+其意义在于：一般拓扑紧性由“任意网可抽取收敛子网”精确刻画，序列不足以承担一般拓扑中的全部紧性信息.
+
+\begin{FAProof}
+先设 \(\displaystyle X\) 紧，取任意网 \(\displaystyle (x_\alpha)_{\alpha\in A}\). 对每个 \(\displaystyle a\in A\)，记尾部 \(\displaystyle T_a=\{x_\alpha:\alpha\succeq a\}\). 闭集族 \(\displaystyle \{\overline{T_a}:a\in A\}\) 具有有限交性质：给定 \(\displaystyle a_1,\dots,a_n\)，由有向性取共同上界 \(\displaystyle a_0\)，则 \(\displaystyle T_{a_0}\subseteq\bigcap_{k=1}^{n}T_{a_k} \subseteq\bigcap_{k=1}^{n}\overline{T_{a_k}}\)，
+故有限交非空. 由\autoref{fa:FND-C01}（i），存在
+\(\displaystyle x\in\bigcap_{a\in A}\overline{T_a}\).
+于是对任意 \(\displaystyle U\in\mathcal N(x)\) 与 \(\displaystyle a\in A\)，由 \(\displaystyle x\in\overline{T_a}\) 得 \(\displaystyle U\cap T_a\neq\varnothing\)，即存在 \(\displaystyle \alpha\succeq a\) 使 \(\displaystyle x_\alpha\in U\). 因而 \(\displaystyle x\) 是聚点. 由引理\ref{i01:cluster-subnet}，原网有收敛到 \(\displaystyle x\) 的子网.
+
+反之，假设每个网都有收敛子网而 \(\displaystyle X\) 不紧. 由\autoref{fa:FND-C01}（i），存在闭集族 \(\displaystyle \mathcal F\) 具有有限交性质且
+\(\displaystyle \bigcap_{F\in\mathcal F}F=\varnothing\).
+令 \(\displaystyle D\) 由所有二元组 \(\displaystyle (\mathcal G,x)\) 组成，其中 \(\displaystyle \mathcal G\subseteq\mathcal F\) 有限且 \(\displaystyle x\in\bigcap_{F\in\mathcal G}F\). 规定 \(\displaystyle (\mathcal G,x)\preceq_D(\mathcal H,y) \iff \mathcal G\subseteq\mathcal H\).
+有限交性质保证每个有限 \(\displaystyle \mathcal G\) 的交非空；给定两个指标，取 \(\displaystyle \mathcal G\cup\mathcal H\) 并从其非空交中取一个点，即得到共同上界，故 \(\displaystyle D\) 有向. 定义网 \(\displaystyle z_{(\mathcal G,x)}=x\).
+
+固定 \(\displaystyle F_0\in\mathcal F\). 因 \(\displaystyle F_0\neq\varnothing\)，取 \(\displaystyle x_0\in F_0\) 并令 \(\displaystyle d_0=(\{F_0\},x_0)\). 若 \(\displaystyle d=(\mathcal G,x)\succeq_D d_0\)，则 \(\displaystyle F_0\in\mathcal G\)，故 \(\displaystyle z_d=x\in F_0\). 因此该网最终落在每个 \(\displaystyle F\in\mathcal F\).
+
+由假设，该网有收敛子网 \(\displaystyle w_b\to z\). 对每个 \(\displaystyle F\in\mathcal F\)，\autoref{i01:subnet-tail}（i）说明 \(\displaystyle w_b\) 最终落在 \(\displaystyle F\)；再由\autoref{i01:subnet-tail}（ii）与 \(\displaystyle F\) 闭，得 \(\displaystyle z\in F\). 故 \(\displaystyle z\in\bigcap_{F\in\mathcal F}F\)，矛盾. 所以 \(\displaystyle X\) 紧.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[序列只是网的特例]
+每个序列 \(\displaystyle (x_n)_{n\in\mathbb N}\) 都是以 \(\displaystyle (\mathbb N,\leqslant)\) 为指标的网. 若 \(\displaystyle X\) 紧，则该网存在收敛子网. 本章不把该子网自动改写为子序列；“紧度量空间的列紧性”等价属于 I-02.
+\end{FAExample}
+
+\subsection{Alexander 子基工具与 Tychonoff 定理}
+\index{Alexander subbase theorem@Alexander子基定理}\index{Tychonoff theorem@Tychonoff定理}
+
+给定开子基 \(\displaystyle \mathcal S\)，其补集族 \(\displaystyle \mathcal C=\{X\setminus S:S\in\mathcal S\}\)
+称为闭子基.
+
+\begin{FALemma}[B][Alexander 子基定理：闭子基形式]{i01:alexander}
+设 \(\displaystyle \mathcal S\) 是 \(\displaystyle X\) 的开子基，\(\displaystyle \mathcal C=\{X\setminus S:S\in\mathcal S\}\). 若 \(\displaystyle \mathcal C\) 的每个具有有限交性质的子族都有非空总交，则 \(\displaystyle X\) 紧.
+\end{FALemma}
+
+\begin{FAProof}
+由\autoref{fa:FND-C01}（i），只需证明任意闭集有限交性质族 \(\displaystyle \mathcal F\) 总交非空. 考虑所有包含 \(\displaystyle \mathcal F\) 且具有有限交性质的 \(\displaystyle X\) 的子集族，按包含关系排序. 任意链的并仍具有有限交性质，因为链并中的任意有限子族都包含于链中的某一个成员. 因此由 Zorn 引理存在极大有限交性质族 \(\displaystyle \mathcal M\supseteq\mathcal F\). 这里是本证明显式使用选择公理等价形式的位置.
+
+先记录 \(\displaystyle \mathcal M\) 的三个性质. 若 \(\displaystyle A\in\mathcal M\) 且 \(\displaystyle A\subseteq B\subseteq X\)，则把 \(\displaystyle B\) 加入 \(\displaystyle \mathcal M\) 不破坏有限交性质，故极大性给出 \(\displaystyle B\in\mathcal M\). 若 \(\displaystyle A,B\in\mathcal M\)，则加入 \(\displaystyle A\cap B\) 仍不破坏有限交性质，故 \(\displaystyle A\cap B\in\mathcal M\). 最后，若 \(\displaystyle A\cup B\in\mathcal M\)，则至少有一个 \(\displaystyle A,B\) 属于 \(\displaystyle \mathcal M\). 否则，由极大性，\(\displaystyle \mathcal M\cup\{A\}\) 与 \(\displaystyle \mathcal M\cup\{B\}\) 都不具有有限交性质；于是分别存在有限个 \(\displaystyle M_1,\dots,M_r\in\mathcal M\) 与 \(\displaystyle N_1,\dots,N_s\in\mathcal M\) 使 \(\displaystyle A\cap\bigcap_{j=1}^{r}M_j=\varnothing, \; B\cap\bigcap_{k=1}^{s}N_k=\varnothing\).
+从而 \(\displaystyle (A\cup B)\cap\bigcap_{j=1}^{r}M_j\cap\bigcap_{k=1}^{s}N_k=\varnothing\)，
+与 \(\displaystyle \mathcal M\) 的有限交性质矛盾. 由归纳，同样得到：若有限并 \(\displaystyle C_1\cup\dots\cup C_n\in\mathcal M\)，则某个 \(\displaystyle C_j\in\mathcal M\).
+
+现在证明 \(\displaystyle \bigcap_{C\in\mathcal M\cap\mathcal C}C \subseteq \bigcap_{F\in\mathcal F}F\).
+固定 \(\displaystyle F\in\mathcal F\) 与 \(\displaystyle x\notin F\). 因 \(\displaystyle X\setminus F\) 开且 \(\displaystyle \mathcal S\) 为子基，存在 \(\displaystyle S_1,\dots,S_n\in\mathcal S\) 使 \(\displaystyle x\in\bigcap_{j=1}^{n}S_j\subseteq X\setminus F\).
+令 \(\displaystyle C_j=X\setminus S_j\in\mathcal C\). 则 \(\displaystyle F\subseteq C_1\cup\dots\cup C_n\). 因 \(\displaystyle F\in\mathcal M\) 且 \(\displaystyle \mathcal M\) 对超集封闭，有限并 \(\displaystyle C_1\cup\dots\cup C_n\in\mathcal M\). 由上面的有限并性质，存在 \(\displaystyle j\) 使 \(\displaystyle C_j\in\mathcal M\cap\mathcal C\). 又因 \(\displaystyle x\in S_j\)，有 \(\displaystyle x\notin C_j\). 因此任何属于 \(\displaystyle \bigcap(\mathcal M\cap\mathcal C)\) 的点都必须属于每个 \(\displaystyle F\in\mathcal F\).
+
+族 \(\displaystyle \mathcal M\cap\mathcal C\) 继承有限交性质，故由假设
+\(\displaystyle \bigcap_{C\in\mathcal M\cap\mathcal C}C\neq\varnothing\).
+上面的包含关系于是给出 \(\displaystyle \bigcap_{F\in\mathcal F}F\neq\varnothing\). 再由\autoref{fa:FND-C01}（i），\(\displaystyle X\) 紧.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][Tychonoff 定理]{fa:FND-B01}
+设 \(\displaystyle \{X_i\}_{i\in I}\) 为任意指标集上的紧拓扑空间族. 则积空间 \(\displaystyle X=\prod_{i\in I}X_i\)
+在积拓扑下紧. 不要求各 \(\displaystyle X_i\) Hausdorff.
+\end{FATheorem}
+
+该定理把任意多个坐标的紧性提升为积拓扑紧性，是以后弱星紧性证明所需的拓扑支撑.
+
+\begin{FAProof}
+若 \(\displaystyle I=\varnothing\)，则空积是单点空间，结论成立. 若某个 \(\displaystyle X_i=\varnothing\)，则 \(\displaystyle X=\varnothing\)，仍为紧空间. 以下设 \(\displaystyle I\neq\varnothing\) 且每个 \(\displaystyle X_i\neq\varnothing\).
+
+由积拓扑定义，开子基为 \(\displaystyle \mathcal S_{\Pi}=\{\pi_i^{-1}(U):U\subseteq X_i\text{ 开}\}\)，相应闭子基为 \(\displaystyle \mathcal C_{\Pi}=\{\pi_i^{-1}(F):i\in I,\ F\subseteq X_i\text{ 闭}\}\).
+由引理\ref{i01:alexander}，只需证明 \(\displaystyle \mathcal C_{\Pi}\) 的每个有限交性质子族总交非空. 取这样的 \(\displaystyle \mathcal A\subseteq\mathcal C_{\Pi}\). 对每个 \(\displaystyle i\in I\)，定义 \(\displaystyle \mathcal F_i=\{F\subseteq X_i:F\text{ 闭且 }\pi_i^{-1}(F)\in\mathcal A\}\).
+若 \(\displaystyle F_1,\dots,F_n\in\mathcal F_i\)，则由 \(\displaystyle \mathcal A\) 的有限交性质，
+\[
+\varnothing\neq\bigcap_{k=1}^{n}\pi_i^{-1}(F_k)
+=\pi_i^{-1}\!\left(\bigcap_{k=1}^{n}F_k\right),
+\]
+故 \(\displaystyle \bigcap_{k=1}^{n}F_k\neq\varnothing\). 因而 \(\displaystyle \mathcal F_i\) 具有有限交性质. 由 \(\displaystyle X_i\) 紧和\autoref{fa:FND-C01}（i），若 \(\displaystyle \mathcal F_i\neq\varnothing\)，则 \(\displaystyle \bigcap_{F\in\mathcal F_i}F\neq\varnothing\)；若 \(\displaystyle \mathcal F_i=\varnothing\)，则按空交约定该交为 \(\displaystyle X_i\neq\varnothing\).
+
+因此对每个 \(\displaystyle i\in I\)，集合 \(\displaystyle K_i=\bigcap_{F\in\mathcal F_i}F\)
+非空. 现在使用 ZFC 中的选择公理，从每个 \(\displaystyle K_i\) 选取 \(\displaystyle x_i\in K_i\)，得到 \(\displaystyle x=(x_i)_{i\in I}\in X\). 这是本证明除 Alexander 子基定理内部 Zorn 引理之外的显式选择步骤.
+
+若 \(\displaystyle \pi_j^{-1}(F)\in\mathcal A\)，则 \(\displaystyle F\in\mathcal F_j\)，故 \(\displaystyle x_j\in K_j\subseteq F\)，从而 \(\displaystyle x\in\pi_j^{-1}(F)\). 因此
+\(\displaystyle x\in\bigcap_{C\in\mathcal A}C\).
+所以每个闭子基有限交性质子族都有非空总交，Alexander 子基定理给出 \(\displaystyle X\) 紧.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[任意立方体]
+由本科实分析中的 Heine--Borel 定理，\(\displaystyle [0,1]\) 紧. 因而对任意指标集 \(\displaystyle I\)，Tychonoff 定理给出 \(\displaystyle [0,1]^I\) 在积拓扑下紧. 当 \(\displaystyle I\) 很大时，本章不据此推断可度量性或列紧性.
+\end{FAExample}
+
+\section{测度与 Lebesgue 积分接口}\label{sec:i01-measure}
+\index{measure space@测度空间}\index{almost everywhere@几乎处处}\index{Radon-Nikodym theorem@Radon--Nikodym定理}
+
+\subsection{对象与积分记号}
+
+\begin{FALightBox}{本科实分析前置接口（已假定）}
+本节只冻结后文可调用的条件与记号，不在本书重新证明 Lebesgue 积分基本定理，也不给这些外部前置结果分配新的内部编号.
+\end{FALightBox}
+
+\begin{FADefinition}[C][测度空间与几乎处处]{i01:measure-space}
+若 \(\displaystyle \Sigma\) 是 \(\displaystyle \Omega\) 上的 \(\displaystyle \sigma\)-代数，\(\displaystyle \mu:\Sigma\to[0,\infty]\) 满足 \(\displaystyle \mu(\varnothing)=0\) 且对两两不交的 \(\displaystyle E_n\in\Sigma\) 有
+\[
+\mu\!\left(\bigcup_{n=1}^{\infty}E_n\right)=\sum_{n=1}^{\infty}\mu(E_n),
+\]
+则 \(\displaystyle (\Omega,\Sigma,\mu)\) 为测度空间. 若性质在某个 \(\displaystyle N\in\Sigma\)、\(\displaystyle \mu(N)=0\) 之外成立，则称其 \(\displaystyle \mu\)-几乎处处成立.
+
+实值扩展函数按 Borel 可测性定义可测；复值函数 \(\displaystyle f\) 可测，若 \(\displaystyle \operatorname{Re}f\) 与 \(\displaystyle \operatorname{Im}f\) 均可测. 非负可测函数的 Lebesgue 积分记为 \(\displaystyle \int_\Omega f\,\mathrm{d}\mu\). 标量可测函数若 \(\displaystyle \int_\Omega |f|\,\mathrm{d}\mu<\infty\)，称为可积.
+\end{FADefinition}
+
+为陈述 Hölder 与 Minkowski，只在本节引入积分量记号
+\[
+\|f\|_{p,\mu}=\left(\int_\Omega |f|^p\,\mathrm{d}\mu\right)^{\frac{1}{p}},\quad 1\leqslant p<\infty,
+\]
+以及 \(\displaystyle \|f\|_{\infty,\mu}=\inf\{M\geqslant0:|f|\leqslant M\text{几乎处处}\}\).
+这只是接口记号；\(\displaystyle L^p(\Omega)\) 的等价类、线性空间、范数与 Banach 性质的正式建立位置为 I-03.
+
+\begin{FAExample}[几乎处处等价关系的预告]
+后续 \(\displaystyle L^p(\Omega)\) 将把几乎处处相等的可测函数识别为同一元素. 本章只建立“几乎处处”与积分量记号，不提前建立 \(\displaystyle L^p\) 的赋范或完备结构.
+\end{FAExample}
+
+\subsection{可调用的积分定理}
+
+\begin{FALightBox}{本科实分析前置接口（已假定）}[Fatou、单调收敛、支配收敛]
+设 \(\displaystyle (\Omega,\Sigma,\mu)\) 为任意测度空间；以下三项均不要求 \(\displaystyle \mu\) 为 \(\displaystyle \sigma\)-有限.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Fatou：若 \(\displaystyle f_n:\Omega\to[0,\infty]\) 可测，则
+\[
+\int_\Omega \liminf_{n\to\infty}f_n\,\mathrm{d}\mu
+\leqslant
+\liminf_{n\to\infty}\int_\Omega f_n\,\mathrm{d}\mu.
+\]
+\item 单调收敛：若各 \(\displaystyle f_n\) 可测，且逐点满足 \(\displaystyle 0\leqslant f_n\uparrow f\)，则 \(\displaystyle \int_\Omega f_n\,\mathrm{d}\mu\uparrow\int_\Omega f\,\mathrm{d}\mu\).
+\item 支配收敛：若 \(\displaystyle f_n,f\) 均可测，\(\displaystyle f_n\to f\) 几乎处处，且存在可积 \(\displaystyle g\geqslant0\) 使对所有 \(\displaystyle n\)，\(\displaystyle |f_n|\leqslant g\) 均几乎处处成立，则 \(\displaystyle f\) 可积，并且
+\[
+\int_\Omega |f_n-f|\,\mathrm{d}\mu\to0,
+\quad
+\int_\Omega f_n\,\mathrm{d}\mu\to\int_\Omega f\,\mathrm{d}\mu.
+\]
+\end{enumerate}
+\end{FALightBox}
+
+\begin{FALightBox}{本科实分析前置接口（已假定）}[Hölder 与 Minkowski]
+设 \(\displaystyle (\Omega,\Sigma,\mu)\) 为任意测度空间.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Hölder：若 \(\displaystyle 1\leqslant p,q\leqslant\infty\) 且 \(\displaystyle \frac{1}{p}+\frac{1}{q}=1\)，约定 \(\displaystyle \frac{1}{\infty}=0\)，则对可测 \(\displaystyle f,g\) 有 \(\displaystyle \int_\Omega |fg|\,\mathrm{d}\mu \leqslant \|f\|_{p,\mu}\,\|g\|_{q,\mu}\)，
+只要右端有限；端点 \(\displaystyle p=1,q=\infty\) 与 \(\displaystyle p=\infty,q=1\) 按上述本质上确界记号解释.
+\item Minkowski：若 \(\displaystyle 1\leqslant p\leqslant\infty\)，\(\displaystyle f,g\) 可测，且 \(\displaystyle \|f\|_{p,\mu},\|g\|_{p,\mu}<\infty\)，则 \(\displaystyle \|f+g\|_{p,\mu}\leqslant\|f\|_{p,\mu}+\|g\|_{p,\mu}\).
+\end{enumerate}
+两者均不要求 \(\displaystyle \sigma\)-有限性.
+\end{FALightBox}
+
+\begin{FALightBox}{本科实分析前置接口（已假定）}[Radon--Nikodym：本书采用版本]
+设 \(\displaystyle (\Omega,\Sigma,\mu)\) 为 \(\displaystyle \sigma\)-有限测度空间，\(\displaystyle \nu\) 为 \(\displaystyle (\Omega,\Sigma)\) 上有限实符号测度或有限复测度，且 \(\displaystyle \nu\ll\mu\)，即 \(\displaystyle \forall\,E\in\Sigma,\; \mu(E)=0\Longrightarrow\nu(E)=0\).
+则存在可积函数 \(\displaystyle h\)，在 \(\displaystyle \mu\)-几乎处处意义下唯一，使 \(\displaystyle \nu(E)=\int_E h\,\mathrm{d}\mu, \; \forall\,E\in\Sigma\).
+本章冻结的是这一足以支撑后续调用的标准版本；不把更一般的非 \(\displaystyle \sigma\)-有限推广作为隐藏前置.
+\end{FALightBox}
+
+\section{延后结果规则}\label{sec:i01-deferred}
+
+\subsection{阅读与证明边界}
+
+后置定理可以预告用途，但在其正式建立位置给出之前不得进入任何证明链. 本章的“可用”仅有已证明的本章结果与明确标为本科前置接口的外部事实.
+
+\begin{FAExample}[合法预告]
+可以写：“I-02 将建立完备化定理，并进一步研究紧度量空间的列紧性刻画.” 这句话只提供阅读方向，不承担本章任何逻辑步骤.
+\end{FAExample}
+
+\begin{FAWarning}[非法前向调用]
+不能在本章证明中使用“I-02 的紧度量空间列紧性等价”来替代\autoref{fa:FND-B02}的一般网论证，也不能调用 Banach 压缩原理、Arzelà--Ascoli 或 I-03 以后结果.
+\end{FAWarning}
+
+\subsection{本章习题}\label{sec:i01-exercises}
+
+\begin{FAExercise}[像与原像的量词核验]{ex:i01-01}
+设 \(\displaystyle f:X\to Y\)，\(\displaystyle \{E_j\}_{j\in J}\subseteq\mathcal P(X)\). 证明
+\[
+f\!\left(\bigcup_{j\in J}E_j\right)=\bigcup_{j\in J}f(E_j),
+\quad
+f\!\left(\bigcap_{j\in J}E_j\right)\subseteq\bigcap_{j\in J}f(E_j),
+\]
+并构造一个严格包含的例子.
+\end{FAExercise}
+
+\begin{FAExercise}[商向量空间的良定义]{ex:i01-02}
+设 \(\displaystyle W\leqslant V\). 直接从代表元证明 \(\displaystyle V/W\) 上的加法与数乘良定义，并验证向量空间公理中与代表元选择相关的部分.
+\end{FAExercise}
+
+\begin{FAExercise}[闭包的邻域刻画]{ex:i01-03}
+由\autoref{i01:topology-interface}的定义证明：\(\displaystyle x\notin\overline A\) 当且仅当存在 \(\displaystyle x\) 的开邻域 \(\displaystyle U\) 满足 \(\displaystyle U\cap A=\varnothing\). 据此证明 \(\displaystyle \overline A\) 闭.
+\end{FAExercise}
+
+\begin{FAExercise}[完备性的反例]{ex:i01-04}
+在 \(\displaystyle \mathbb Q\) 上取通常距离. 构造一个以无理数为实数极限的有理 Cauchy 列，并由定义说明 \(\displaystyle \mathbb Q\) 不完备.
+\end{FAExercise}
+
+\begin{FAExercise}[闭子集紧性]{ex:i01-05}
+不用序列，只用开覆盖定义重新证明\autoref{fa:FND-C01}（ii）. 再说明其中“闭”假设在非紧结论中不能随意删除：给出紧空间中的非紧子集例子.
+\end{FAExercise}
+
+\begin{FAExercise}[连续像与复合]{ex:i01-06}
+设 \(\displaystyle K\) 紧，\(\displaystyle f:K\to Y\)、\(\displaystyle g:Y\to Z\) 连续. 仅用\autoref{fa:FND-C01}（iii）证明 \(\displaystyle (g\circ f)(K)\) 紧.
+\end{FAExercise}
+
+\begin{FAExercise}[有向集不必线性有序]{ex:i01-07}
+设 \(\displaystyle \mathcal P_{\mathrm{fin}}(I)\) 为 \(\displaystyle I\) 的有限子集族，按包含关系有序. 证明它是有向集；当 \(\displaystyle I\) 无限时，说明该偏序通常不是线性序.
+\end{FAExercise}
+
+\begin{FAExercise}[验证一个子网]{ex:i01-08}
+设 \(\displaystyle x_n\) 为序列，定义 \(\displaystyle \varphi(k)=2k\). 验证 \(\displaystyle x_{2k}\) 是 \(\displaystyle x_n\) 的子网. 再构造一个映射 \(\displaystyle \psi:\mathbb N\to\mathbb N\) 其像无限但不满足本章的最终共尾条件，并说明由它得到的重索引不属于本章定义的子网.
+\end{FAExercise}
+
+\begin{FAExercise}[聚点三元组构造]{ex:i01-09}
+重做引理\ref{i01:cluster-subnet}的正向构造，逐项验证 \(\displaystyle B\) 非空、有向，\(\displaystyle \varphi\) 保序且最终共尾，并指出每一步使用了聚点定义中的哪个量词.
+\end{FAExercise}
+
+\begin{FAExercise}[从有限交性质构造网]{ex:i01-10}
+设闭集族 \(\displaystyle \mathcal F\) 具有有限交性质. 使用\autoref{fa:FND-B02}反向证明中的指标集 \(\displaystyle D\)，证明所构造的网最终落在每个 \(\displaystyle F\in\mathcal F\). 不得对所有有限子族预先选定代表点.
+\end{FAExercise}
+
+\begin{FAExercise}[积拓扑基本邻域]{ex:i01-11}
+设 \(\displaystyle X=\prod_{i\in I}X_i\). 证明对任意 \(\displaystyle x\in X\)，有限交 \(\displaystyle \bigcap_{k=1}^{n}\pi_{i_k}^{-1}(U_{i_k}), \; x_{i_k}\in U_{i_k}\)，
+构成 \(\displaystyle x\) 的一个邻域基，并解释“只限制有限多个坐标”的精确含义.
+\end{FAExercise}
+
+\begin{FAExercise}[有限积作为 Tychonoff 特例]{ex:i01-12}
+由\autoref{fa:FND-B01}推出有限个紧空间的积紧. 再用开覆盖与有限交性质给出一个不调用\autoref{fa:FND-B01}的有限积证明，并比较两条证明的依赖长度.
+\end{FAExercise}
+
+\begin{FAExercise}[Alexander 子基条件]{ex:i01-13}
+设 \(\displaystyle \mathcal S\) 为拓扑子基. 把“每个由 \(\displaystyle \mathcal S\) 中集合组成的开覆盖有有限子覆盖”严格改写成闭子基的有限交性质语言，并由引理\ref{i01:alexander}说明两种表述的关系.
+\end{FAExercise}
+
+\begin{FAExercise}[积分接口的假设辨析]{ex:i01-14}
+逐项判断 Fatou、单调收敛、支配收敛、Hölder、Minkowski 与本章选定的 Radon--Nikodym 版本是否要求 \(\displaystyle \sigma\)-有限性. 对每一项只写本章已冻结的假设，不添加更强条件.
+\end{FAExercise}
+
+\begin{FAExercise}[Hölder 端点]{ex:i01-15}
+从 \(\displaystyle \|g\|_{\infty,\mu}\) 的定义直接证明 \(\displaystyle p=1,q=\infty\) 的 Hölder 不等式，并说明证明不需要 \(\displaystyle \mu(\Omega)<\infty\).
+\end{FAExercise}
+
+\begin{FAExercise}[延后结果识别]{ex:i01-16}
+判断下列四种用法是否合法，并给出一句依赖理由：预告 I-02 的完备化；用 I-02 的列紧性等价证明\autoref{fa:FND-B02}；在例子中说明 \(\displaystyle L^p\) 将于 I-03 定义；用 Banach--Alaoglu 反证\autoref{fa:FND-B01}.
+\end{FAExercise}

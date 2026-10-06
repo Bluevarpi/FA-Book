@@ -1,0 +1,885 @@
+\chapter{抽象 Cauchy 问题、变参数与扰动}\label{chap:II-11}
+\FAChapterOpening
+{把 \(\displaystyle C_0\) 半群转化为线性演化的存在唯一性工具；区分经典解与温和解；从 II-04 的 Bochner 积分严格建立 Duhamel/常数变易公式；证明有界扰动定理与 Dyson--Phillips 展开；在既有热半群和平移半群上解释受迫演化.}
+{II-04 的 Bochner 积分、支配收敛、有界算子换序与连续曲线积分接口；II-08 的 \(\displaystyle C_0\) 半群、生成元、增长界、域不变与 Laplace 预解；II-09 仅作为已经冻结的生成定理背景，本章核心证明不调用 Hille--Yosida 或 Lumer--Phillips.}
+{\begin{center}
+\begin{tikzpicture}[x=0.72cm,y=1.05cm]
+\node[fa/node] (sg) at (0,1.55) {生成元闭稠密/预解};
+\node[fa/node] (boch) at (0,-1.55) {Bochner积分};
+\node[fa/node] (a01) at (3.6,1.55) {齐次经典解};
+\node[fa/node] (a02) at (7.2,0) {温和解/常数变易};
+\node[fa/node] (c01) at (10.8,1.55) {温和解稳定性};
+\node[fa/node] (b01) at (10.8,0) {经典/温和比较};
+\node[fa/node] (pert) at (10.8,-1.55) {有界扰动定理};
+\draw[fa/arrow] (sg) -- (a01);
+\draw[fa/arrow] (a01) -- (a02);
+\draw[fa/arrow] (boch) -- (a02);
+\draw[fa/arrow] (a02) -- (c01);
+\draw[fa/arrow] (a01) to[bend left=10] (b01);
+\draw[fa/arrow] (a02) -- (b01);
+\draw[fa/arrow] (sg) to[bend right=12] (pert);
+\draw[fa/arrow] (a02) -- (pert);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle X\) 为复 Banach 空间，固定有限时间窗 \(\displaystyle 0<T<\infty\). 设 \(\displaystyle(\mathcal T(t))_{t\geqslant0}\) 为 \(\displaystyle X\) 上的 \(\displaystyle C_0\) 半群，其生成元为 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X.\)
+沿用 II-08 的一个合法增长估计 \(\displaystyle \|\mathcal T(t)\| \leqslant M\mathrm{e}^{\omega t}, \; M\geqslant1, \; \omega\in\mathbb R.\)
+记 \(\displaystyle\omega_+=\max(\omega,0)\) 与 \(\displaystyle M_T=M\mathrm{e}^{\omega_+T}\). 由 II-08 的\autoref{fa:SG-A02}，\(\displaystyle\mathcal A\) 闭且稠密定义；由 II-05 的\autoref{fa:UNB-A01}、\autoref{fa:UNB-B01}，继续使用冻结图范数 \(\displaystyle \|x\|_{\mathcal A} = \|x\|+\|\mathcal Ax\|,\)
+并且 \(\displaystyle D(\mathcal A)_{\mathrm{graph}}:=(D(\mathcal A),\|\cdot\|_{\mathcal A})\) 是 Banach 空间. 本章写 \(\displaystyle f\in C([0,T];D(\mathcal A)_{\mathrm{graph}})\) 时，连续性一律指图范数连续. 半群演化、抽象 Cauchy 问题与扰动以 Yosida 与 Brezis 为标准参考；以下证明只从本书已建立的接口独立重构，并以二者作次级交叉参照\cite{yosida,brezis2011}.
+
+\section{抽象 Cauchy 问题}\label{sec:ii11-acp}
+\index{abstract Cauchy problem@抽象 Cauchy 问题}\index{Cauchy problem@Cauchy 问题}
+
+\begin{FADefinition}[A][齐次与非齐次抽象 Cauchy 问题]{ii11:acp-definition}
+给定 \(\displaystyle x\in X\). 齐次抽象 Cauchy 问题为 \(\displaystyle u'(t)=\mathcal Au(t), \; u(0)=x.\)
+若另给外力项 \(\displaystyle f\)，则非齐次抽象 Cauchy 问题为 \(\displaystyle u'(t)=\mathcal Au(t)+f(t), \; u(0)=x.\)
+当讨论经典解时本章取 \(\displaystyle f\in C([0,T];X)\)；当讨论温和解时取 \(\displaystyle f\in L^1(0,T;X)\)，其中积分与等价类均取 II-04 的 Bochner 意义. 两类正则性不混用.
+\end{FADefinition}
+
+\begin{FADefinition}[A][经典解]{ii11:classical-solution}
+对齐次 ACP，函数 \(\displaystyle u\) 称为经典解，当且仅当 \(\displaystyle u\in C([0,T];D(\mathcal A)_{\mathrm{graph}})\cap C^1([0,T];X),\)
+且满足 \(\displaystyle u'(t)=\mathcal Au(t)\)、\(\displaystyle u(0)=x\). 对非齐次 ACP，另假设 \(\displaystyle f\in C([0,T];X)\)，并要求 \(\displaystyle u'(t)=\mathcal Au(t)+f(t)\)、\(\displaystyle u(0)=x\). 端点导数按相应单侧导数理解，且 \(\displaystyle C^1([0,T];X)\) 要求导数连续延拓到端点. 因为 \(\displaystyle u\) 对图范数连续，映射 \(\displaystyle t\mapsto\mathcal Au(t)\) 自动在 \(\displaystyle X\) 中连续.
+\end{FADefinition}
+
+\begin{FADefinition}[A][温和解]{ii11:mild-solution}
+设 \(\displaystyle x\in X\)、\(\displaystyle f\in L^1(0,T;X)\). 连续函数 \(\displaystyle u:[0,T]\to X\) 称为非齐次 ACP 的温和解，当且仅当
+\[
+u(t)
+=
+\mathcal T(t)x
++
+\int_0^t\mathcal T(t-s)f(s)\,\mathrm{d}s
+\;
+(0\leqslant t\leqslant T).
+\]
+该式中的积分不是形式记号；在使用此定义得到任何存在性结论之前，本章将在\autoref{ii11:duhamel-legality}与\autoref{ii11:duhamel-continuity}中证明其强可测性、Bochner 可积性与时间连续性.
+\end{FADefinition}
+
+\begin{FACounterexample}[非 \(\displaystyle C_0\) 代数半群不能给出抽象 Cauchy 问题演化]\label{ii11:nonc0-acp-failure}
+复用 II-08 的代数半群 \(\displaystyle \mathcal S(0)=\mathcal I, \; \mathcal S(t)=0 \;(t>0).\)
+若 \(\displaystyle x\neq0\)，则形式轨道 \(\displaystyle u(t)=\mathcal S(t)x\) 在 \(\displaystyle t=0\) 不连续，故不能成为本章意义下的经典解或温和解. 因而 \(\displaystyle C_0\) 假设对连续时间演化是本质条件.
+\end{FACounterexample}
+
+\begin{FAProof}
+对 \(\displaystyle t>0\) 有 \(\displaystyle u(t)=0\)，而 \(\displaystyle u(0)=x\neq0\). 因此 \(\displaystyle\|u(t)-u(0)\|=\|x\|\) 对全部 \(\displaystyle t>0\) 成立，故 \(\displaystyle u(t)\not\to u(0)\) 当 \(\displaystyle t\downarrow0\). 两种解概念都要求至少 \(\displaystyle X\)-值连续性，所以该代数半群不能提供本章的 ACP 演化.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{经典解}\label{sec:ii11-classical}
+\index{classical solution@经典解}\index{graph norm@图范数!ACP}
+
+\begin{FATheorem}[A][齐次抽象 Cauchy 问题的精确经典正则性]{fa:ACP-A01}
+设 \(\displaystyle\mathcal A\) 生成 \(\displaystyle C_0\) 半群 \(\displaystyle\mathcal T\). 对任意 \(\displaystyle x\in X\) 与任意给定的有限 \(\displaystyle T>0\)，以下等价：
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(\displaystyle x\in D(\mathcal A)\)；
+\item 齐次 ACP 在 \(\displaystyle[0,T]\) 上存在经典解.
+\end{enumerate}
+条件成立时经典解唯一，并且 \(\displaystyle u(t)=\mathcal T(t)x,\) \(\displaystyle u\in C([0,T];D(\mathcal A)_{\mathrm{graph}})\cap C^1([0,T];X),\)
+以及 \(\displaystyle u'(t) = \mathcal A\mathcal T(t)x = \mathcal T(t)\mathcal Ax.\)
+因此 \(\displaystyle x\in D(\mathcal A)\) 正是初始时刻经典解所需的精确正则性.
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle x\in D(\mathcal A)\). 由 II-08 的\autoref{fa:SG-B02}，对全部 \(\displaystyle t\geqslant0\)，\(\displaystyle\mathcal T(t)x\in D(\mathcal A)\)，且
+\[
+\mathcal A\mathcal T(t)x
+=
+\mathcal T(t)\mathcal Ax,
+\;
+\frac{\mathrm{d}}{\mathrm{d}t}\mathcal T(t)x
+=
+\mathcal T(t)\mathcal Ax.
+\]
+由 II-08 的轨道全局连续性，\(\displaystyle t\mapsto\mathcal T(t)x\) 与 \(\displaystyle t\mapsto\mathcal T(t)\mathcal Ax\) 都连续. 因而对 \(\displaystyle s,t\in[0,T]\)，
+\[
+\begin{aligned}
+\|\mathcal T(t)x-\mathcal T(s)x\|_{\mathcal A}
+&=
+\|\mathcal T(t)x-\mathcal T(s)x\|\\
+&\mathrel{\phantom{=}}+
+\|\mathcal T(t)\mathcal Ax-\mathcal T(s)\mathcal Ax\|
+\longrightarrow0
+\end{aligned}
+\]
+当 \(\displaystyle t\to s\). 故 \(\displaystyle u(t)=\mathcal T(t)x\) 属于 \(\displaystyle C([0,T];D(\mathcal A)_{\mathrm{graph}})\cap C^1([0,T];X)\)，并满足齐次 ACP.
+
+现证唯一性. 设 \(\displaystyle v\) 是任意经典解，固定 \(\displaystyle t\in[0,T]\)，并令 \(\displaystyle F(s)=\mathcal T(t-s)v(s), \; 0\leqslant s\leqslant t.\)
+由定义，\(\displaystyle v(s)\in D(\mathcal A)\). 对 \(\displaystyle0<s<t\)，考察差商时把 \(\displaystyle v(s+h)-v(s)\) 与半群时间变化分开；\autoref{fa:SG-B02}给出 \(\displaystyle r\mapsto\mathcal T(r)v(s)\) 的微分，\autoref{fa:SG-B01}给局部一致有界性，故 \(\displaystyle F'(s) = -\mathcal T(t-s)\mathcal Av(s) + \mathcal T(t-s)v'(s) = 0.\)
+这里第一项合法正因为 \(\displaystyle v(s)\in D(\mathcal A)\)，且生成元域在半群下不变. 函数 \(\displaystyle F\) 在 \(\displaystyle[0,t]\) 连续，故 Banach 值基本微积分定理给 \(\displaystyle F(t)=F(0)\). 因而 \(\displaystyle v(t)=\mathcal T(t)v(0)=\mathcal T(t)x.\)
+最后，若经典解存在，则其定义在 \(\displaystyle t=0\) 直接给出 \(\displaystyle u(0)=x\in D(\mathcal A)\). 这一步说明必要性恰来自初值本身，而不是额外的平滑化假设. 因此两条件等价，且表示与唯一性均成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[精确初值正则性]
+\autoref{fa:ACP-A01}不声称一般 \(\displaystyle x\in X\) 的轨道在 \(\displaystyle t=0\) 可微. 对 \(\displaystyle x\notin D(\mathcal A)\)，轨道 \(\displaystyle\mathcal T(t)x\) 仍连续，但不能是本章定义的齐次经典解.
+\end{FARemark}
+
+\section{温和解}\label{sec:ii11-mild}
+\index{mild solution@温和解}\index{Duhamel formula@Duhamel 公式}\index{Bochner integral@Bochner 积分!Duhamel}
+
+\begin{FAProposition}[B][Duhamel 被积函数的 Bochner 合法性]{ii11:duhamel-legality}
+设 \(\displaystyle f\in L^1(0,T;X)\)，固定 \(\displaystyle t\in[0,T]\)，并在 \(\displaystyle[0,T]\) 上定义 \(\displaystyle F_t(s) = 1_{[0,t]}(s)\mathcal T(t-s)f(s).\)
+则 \(\displaystyle F_t\) 强可测且 Bochner 可积. 特别地，
+\[
+\int_0^t\mathcal T(t-s)f(s)\,\mathrm{d}s
+\]
+在 \(\displaystyle X\) 中合法.
+\end{FAProposition}
+
+\begin{FAProof}
+按 II-04 的 \(\displaystyle L^1\) 代表元约定，取可积简单函数 \(\displaystyle f_n\) 使 \(\displaystyle f_n\to f\) 几乎处处且在 \(\displaystyle L^1(0,T;X)\) 中收敛. 写 \(\displaystyle f_n=\sum_{j=1}^{N_n}x_{n,j}1_{E_{n,j}}\). 对固定向量 \(\displaystyle x_{n,j}\)，映射 \(\displaystyle s\mapsto\mathcal T(t-s)x_{n,j}\) 在 \(\displaystyle[0,t]\) 连续. 连续 Banach 值函数可由有限值简单函数点态逼近，因此 \(\displaystyle s\mapsto 1_{E_{n,j}\cap[0,t]}(s)\mathcal T(t-s)x_{n,j}\)
+强可测. 有限求和给 \(\displaystyle F_{t,n}(s) := 1_{[0,t]}(s)\mathcal T(t-s)f_n(s)\)
+强可测. 在 \(\displaystyle f_n(s)\to f(s)\) 的点上，固定 \(\displaystyle s\leqslant t\) 时 \(\displaystyle\mathcal T(t-s)\) 是有界算子，所以 \(\displaystyle F_{t,n}(s)\to F_t(s)\). 强可测函数的几乎处处点态极限仍强可测，故 \(\displaystyle F_t\) 强可测.
+
+当 \(\displaystyle0\leqslant s\leqslant t\leqslant T\) 时，增长估计给 \(\displaystyle \|\mathcal T(t-s)f(s)\| \leqslant M\mathrm{e}^{\omega(t-s)}\|f(s)\| \leqslant M_T\|f(s)\|.\)
+右侧可积. 由 II-04 的\autoref{fa:BOCH-A01}，强可测且范数可积即 Bochner 可积，因此 \(\displaystyle F_t\in L^1(0,T;X)\)，所述 Duhamel 积分合法.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][Duhamel 卷积的连续性]{ii11:duhamel-continuity}
+对 \(\displaystyle f\in L^1(0,T;X)\) 定义
+\[
+(\mathcal Vf)(t)
+=
+\int_0^t\mathcal T(t-s)f(s)\,\mathrm{d}s.
+\]
+则 \(\displaystyle\mathcal Vf\in C([0,T];X)\).
+\end{FAProposition}
+
+\begin{FAProof}
+取 \(\displaystyle t_n\to t\) 于 \(\displaystyle[0,T]\)，并把积分统一写在 \(\displaystyle[0,T]\) 上： \(\displaystyle G_n(s) = 1_{[0,t_n]}(s)\mathcal T(t_n-s)f(s), \; G(s) = 1_{[0,t]}(s)\mathcal T(t-s)f(s).\)
+由上一命题，各 \(\displaystyle G_n\) 与 \(\displaystyle G\) 强可测. 对几乎处处的 \(\displaystyle s\neq t\)，若 \(\displaystyle s<t\)，则最终 \(\displaystyle s<t_n\) 且强连续性给 \(\displaystyle\mathcal T(t_n-s)f(s)\to\mathcal T(t-s)f(s)\)；若 \(\displaystyle s>t\)，则最终 \(\displaystyle s>t_n\) 且两边均为零. 因而 \(\displaystyle G_n(s)\to G(s)\) 几乎处处. 又有 \(\displaystyle \|G_n(s)-G(s)\| \leqslant 2M_T\|f(s)\|\)
+几乎处处. 右侧属于 \(\displaystyle L^1(0,T)\). 对 \(\displaystyle G_n\) 应用 II-04 的 Bochner 支配收敛定理\autoref{fa:BOCH-B01}，得到
+\[
+\left\|
+(\mathcal Vf)(t_n)-(\mathcal Vf)(t)
+\right\|
+\leqslant
+\int_{[0,T]}\|G_n(s)-G(s)\|\,\mathrm{d}s
+\longrightarrow0.
+\]
+因此 \(\displaystyle\mathcal Vf\) 在 \(\displaystyle[0,T]\) 连续.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][温和解与常数变易公式]{fa:ACP-A02}
+设 \(\displaystyle\mathcal A\) 生成 \(\displaystyle C_0\) 半群 \(\displaystyle\mathcal T\). 对任意 \(\displaystyle x\in X, \; f\in L^1(0,T;X),\)
+非齐次 ACP 存在唯一温和解，且
+\[
+u(t)
+=
+\mathcal T(t)x
++
+\int_0^t\mathcal T(t-s)f(s)\,\mathrm{d}s,
+\;
+0\leqslant t\leqslant T.
+\]
+并且 \(\displaystyle u\in C([0,T];X)\).
+\end{FATheorem}
+
+\begin{FAProof}
+\autoref{ii11:duhamel-legality}已证明每个 \(\displaystyle t\) 的积分是合法 Bochner 积分，\autoref{ii11:duhamel-continuity}给出 Duhamel 项连续；II-08 的轨道连续性给 \(\displaystyle t\mapsto\mathcal T(t)x\) 连续. 因而右侧定义一个 \(\displaystyle C([0,T];X)\) 函数，并满足\autoref{ii11:mild-solution}的温和解定义. 反之，任何温和解按定义必须逐点等于同一右侧，因此唯一. 该表示正是本章的常数变易公式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][温和解的重新起步恒等式]{ii11:restart-identity}
+设 \(\displaystyle u\) 为\autoref{fa:ACP-A02}的温和解. 对 \(\displaystyle0\leqslant r\leqslant t\leqslant T\)，有
+\[
+u(t)
+=
+\mathcal T(t-r)u(r)
++
+\int_r^t\mathcal T(t-s)f(s)\,\mathrm{d}s.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由 Bochner 积分对可测子区间的可加性，\(\displaystyle \int_0^t=\int_0^r+\int_r^t\). 同时，由半群律与 II-04 的有界算子换序公式\autoref{fa:BOCH-B02}，
+\[
+\begin{aligned}
+\mathcal T(t-r)u(r)
+&=
+\mathcal T(t-r)\mathcal T(r)x
++
+\mathcal T(t-r)\int_0^r\mathcal T(r-s)f(s)\,\mathrm{d}s\\
+&=
+\mathcal T(t)x
++
+\int_0^r\mathcal T(t-s)f(s)\,\mathrm{d}s.
+\end{aligned}
+\]
+再加上 \(\displaystyle\int_r^t\mathcal T(t-s)f(s)\,\mathrm{d}s\) 即得原温和公式. 全程只拆分单个 Bochner 积分，不使用 Fubini.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][温和解的估计与数据稳定性]{fa:ACP-C01}
+设 \(\displaystyle\|\mathcal T(t)\|\leqslant M\mathrm{e}^{\omega t}\). 对\autoref{fa:ACP-A02}的温和解，
+\[
+\|u(t)\|
+\leqslant
+M\mathrm{e}^{\omega t}\|x\|
++
+M\int_0^t\mathrm{e}^{\omega(t-s)}\|f(s)\|\,\mathrm{d}s.
+\]
+若 \(\displaystyle u_1,u_2\) 分别对应数据 \(\displaystyle(x_1,f_1)\)、\(\displaystyle(x_2,f_2)\)，则
+\[
+\begin{aligned}
+\|u_1(t)-u_2(t)\|
+&\leqslant
+M\mathrm{e}^{\omega t}\|x_1-x_2\|\\
+&\mathrel{\phantom{\leqslant}}+
+M\int_0^t\mathrm{e}^{\omega(t-s)}\|f_1(s)-f_2(s)\|\,\mathrm{d}s.
+\end{aligned}
+\]
+特别地，
+\[
+\sup_{0\leqslant t\leqslant T}\|u(t)\|
+\leqslant
+M\mathrm{e}^{\omega_+T}
+\left(
+\|x\|+\|f\|_{L^1(0,T;X)}
+\right).
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由常数变易公式、增长界与 II-04 的 Bochner 范数估计\autoref{fa:BOCH-C01}，
+\[
+\begin{aligned}
+\|u(t)\|
+&\leqslant
+\|\mathcal T(t)x\|
++
+\int_0^t\|\mathcal T(t-s)f(s)\|\,\mathrm{d}s\\
+&\leqslant
+M\mathrm{e}^{\omega t}\|x\|
++
+M\int_0^t\mathrm{e}^{\omega(t-s)}\|f(s)\|\,\mathrm{d}s.
+\end{aligned}
+\]
+把同一计算应用于 \(\displaystyle u_1-u_2\) 与数据 \(\displaystyle(x_1-x_2,f_1-f_2)\)，得到稳定性估计. 最后对 \(\displaystyle0\leqslant s\leqslant t\leqslant T\) 使用 \(\displaystyle\mathrm{e}^{\omega t}\leqslant\mathrm{e}^{\omega_+T}\) 与 \(\displaystyle\mathrm{e}^{\omega(t-s)}\leqslant\mathrm{e}^{\omega_+T}\)，再取上确界即可.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{常数变易公式}\label{sec:ii11-variation}
+\index{variation of constants@变参数公式}\index{classical versus mild@经典与温和解}
+
+\begin{FATheorem}[B][经典与温和的比较]{fa:ACP-B01}
+设 \(\displaystyle\mathcal A\) 生成 \(\displaystyle\mathcal T\).
+\begin{enumerate}[label=\textup{(\Alph*)}]
+\item 若 \(\displaystyle x\in D(\mathcal A)\)、\(\displaystyle f\in C([0,T];X)\)，且 \(\displaystyle u\) 是非齐次 ACP 的经典解，则 \(\displaystyle u\) 必为\autoref{fa:ACP-A02}的温和解.
+\item 若 \(\displaystyle x\in D(\mathcal A)\)、\(\displaystyle f\in C([0,T];D(\mathcal A)_{\mathrm{graph}})\)，则\autoref{fa:ACP-A02}的温和解是经典解.
+\end{enumerate}
+第二部分是本章选定的充分正则性条件，不声称任意 \(\displaystyle x\in X\)、\(\displaystyle f\in L^1(0,T;X)\) 的温和解自动为经典解.
+\end{FATheorem}
+
+\begin{FAProof}
+先证（A）. 固定 \(\displaystyle t\in[0,T]\)，令 \(\displaystyle F(s)=\mathcal T(t-s)u(s), \; 0\leqslant s\leqslant t.\)
+因为 \(\displaystyle u(s)\in D(\mathcal A)\)，对 \(\displaystyle0<s<t\) 可按\autoref{fa:ACP-A01}唯一性证明中的差商分解使用\autoref{fa:SG-B02}，得到 \(\displaystyle F'(s)=-\mathcal T(t-s)\mathcal Au(s)+\mathcal T(t-s)u'(s)=\mathcal T(t-s)f(s).\)
+右侧连续，因此 II-04 的 Banach 值基本微积分定理给
+\[
+F(t)-F(0)
+=
+\int_0^t\mathcal T(t-s)f(s)\,\mathrm{d}s.
+\]
+由 \(\displaystyle F(t)=u(t)\)、\(\displaystyle F(0)=\mathcal T(t)x\)，得到
+\[
+u(t)
+=
+\mathcal T(t)x
++
+\int_0^t\mathcal T(t-s)f(s)\,\mathrm{d}s.
+\]
+故经典解一定是温和解.
+
+再证（B）所需的图空间正则性. 对 \(\displaystyle r\geqslant0\)、\(\displaystyle y\in D(\mathcal A)\)，\autoref{fa:SG-B02}给 \(\displaystyle\mathcal A\mathcal T(r)y=\mathcal T(r)\mathcal Ay\)，故
+\[
+\begin{aligned}
+\|\mathcal T(r)y\|_{\mathcal A}
+&=
+\|\mathcal T(r)y\|+\|\mathcal A\mathcal T(r)y\|
+=
+\|\mathcal T(r)y\|+\|\mathcal T(r)\mathcal Ay\|\\
+&\leqslant
+\|\mathcal T(r)\|\|y\|_{\mathcal A}.
+\end{aligned}
+\]
+因此 \(\displaystyle\mathcal T(r):D(\mathcal A)_{\mathrm{graph}}\to D(\mathcal A)_{\mathrm{graph}}\) 有界. 又对 \(\displaystyle r_n\to r\)，
+\[
+\begin{aligned}
+\|\mathcal T(r_n)y-\mathcal T(r)y\|_{\mathcal A}
+&=
+\|\mathcal T(r_n)y-\mathcal T(r)y\|\\
+&\mathrel{\phantom{=}}+
+\|\mathcal T(r_n)\mathcal Ay-\mathcal T(r)\mathcal Ay\|
+\longrightarrow0,
+\end{aligned}
+\]
+所以轨道在图范数中连续.
+
+令
+\[
+w(t)
+=
+\int_0^t\mathcal T(t-s)f(s)\,\mathrm{d}s.
+\]
+固定 \(\displaystyle t\). 若 \(\displaystyle s_n\to s\) 于 \(\displaystyle[0,t]\)，则
+\[
+\begin{aligned}
+&\|\mathcal T(t-s_n)f(s_n)-\mathcal T(t-s)f(s)\|_{\mathcal A}\\
+&\leqslant
+\|\mathcal T(t-s_n)\|\|f(s_n)-f(s)\|_{\mathcal A}
++
+\|\mathcal T(t-s_n)f(s)-\mathcal T(t-s)f(s)\|_{\mathcal A}.
+\end{aligned}
+\]
+第一项由\autoref{fa:SG-B01}的局部一致有界性与 \(\displaystyle f\) 的图范数连续性趋于零，第二项由固定向量 \(\displaystyle f(s)\in D(\mathcal A)\) 的图范数轨道连续性趋于零. 因而 \(\displaystyle s\mapsto\mathcal T(t-s)f(s)\) 在 \(\displaystyle[0,t]\) 上以 \(\displaystyle D(\mathcal A)_{\mathrm{graph}}\) 为值连续. 由\autoref{fa:UNB-B01}，该目标空间是 Banach 空间，因此 II-04 的 Bochner 积分可直接应用于此图空间. 记 \(\displaystyle\mathcal J:D(\mathcal A)_{\mathrm{graph}}\to X\) 为自然嵌入，记 \(\displaystyle\widetilde{\mathcal A}:D(\mathcal A)_{\mathrm{graph}}\to X\)、\(\displaystyle\widetilde{\mathcal A}y=\mathcal Ay\). 两者均有界，且 \(\displaystyle\|\widetilde{\mathcal A}y\|\leqslant\|y\|_{\mathcal A}\). 对图空间 Bochner 积分应用\autoref{fa:BOCH-B02}，先由 \(\displaystyle\mathcal J\) 识别其在 \(\displaystyle X\) 中正是 \(\displaystyle w(t)\)，再由 \(\displaystyle\widetilde{\mathcal A}\) 得
+\[
+w(t)\in D(\mathcal A),
+\;
+\mathcal Aw(t)
+=
+\int_0^t\mathcal T(t-s)\mathcal Af(s)\,\mathrm{d}s.
+\]
+由于 \(\displaystyle\mathcal Af\in C([0,T];X)\subseteq L^1(0,T;X)\)，\autoref{ii11:duhamel-continuity}同时作用于 \(\displaystyle f\) 与 \(\displaystyle\mathcal Af\)，得到 \(\displaystyle t\mapsto w(t)\) 与 \(\displaystyle t\mapsto\mathcal Aw(t)\) 连续. 因而 \(\displaystyle w\in C([0,T];D(\mathcal A)_{\mathrm{graph}})\).
+
+现求导. 对 \(\displaystyle h>0\) 且 \(\displaystyle t+h\leqslant T\)，半群律、积分拆分与\autoref{fa:BOCH-B02}给
+\[
+w(t+h)-w(t)
+=
+(\mathcal T(h)-\mathcal I)w(t)
++
+\int_t^{t+h}\mathcal T(t+h-s)f(s)\,\mathrm{d}s.
+\]
+除以 \(\displaystyle h\). 因 \(\displaystyle w(t)\in D(\mathcal A)\)，第一项趋于 \(\displaystyle\mathcal Aw(t)\). 对第二项令 \(\displaystyle s=t+r\)，则其与 \(\displaystyle f(t)\) 的差的范数不超过
+\[
+\sup_{0\leqslant r\leqslant h}
+\|\mathcal T(h-r)(f(t+r)-f(t))\|
++
+\sup_{0\leqslant r\leqslant h}
+\|\mathcal T(h-r)f(t)-f(t)\|,
+\]
+两项分别由局部一致有界性、\(\displaystyle f\) 的连续性与固定向量轨道在零点的强连续性趋于 \(\displaystyle0\). 因而右导数为 \(\displaystyle\mathcal Aw(t)+f(t)\).
+
+对内点的左导数，令 \(\displaystyle k>0\)、\(\displaystyle t-k\geqslant0\). 重新起步形式给
+\[
+w(t)-w(t-k)
+=
+(\mathcal T(k)-\mathcal I)w(t-k)
++
+\int_{t-k}^t\mathcal T(t-s)f(s)\,\mathrm{d}s.
+\]
+由\autoref{fa:SG-B02}的轨道积分恒等式，
+\[
+\frac{(\mathcal T(k)-\mathcal I)w(t-k)}k
+=
+\frac1k\int_0^k\mathcal T(r)\mathcal Aw(t-k)\,\mathrm{d}r.
+\]
+取 \(\displaystyle k\leqslant1\) 并令 \(\displaystyle M_1=\sup_{0\leqslant r\leqslant1}\|\mathcal T(r)\|\). 图范数连续性给 \(\displaystyle\mathcal Aw(t-k)\to\mathcal Aw(t)\)，且
+\[
+\begin{aligned}
+&\displaystyle \left\|
+\frac1k\int_0^k\mathcal T(r)\mathcal Aw(t-k)\,\mathrm{d}r
+-\mathcal Aw(t)
+\right\|\\[6pt]
+&\leqslant
+M_1\|\mathcal Aw(t-k)-\mathcal Aw(t)\|
++
+\sup_{0\leqslant r\leqslant k}
+\|\mathcal T(r)\mathcal Aw(t)-\mathcal Aw(t)\|
+\longrightarrow0.
+\end{aligned}
+\]
+对末项令 \(\displaystyle s=t-r\). 直接减去 \(\displaystyle f(t)\) 并用三角不等式，其平均值与 \(\displaystyle f(t)\) 的差不超过
+\[
+M_1\sup_{t-k\leqslant s\leqslant t}\|f(s)-f(t)\|
++
+\sup_{0\leqslant r\leqslant k}\|\mathcal T(r)f(t)-f(t)\|,
+\]
+故也趋于零. 因而左导数等于 \(\displaystyle\mathcal Aw(t)+f(t)\)，且端点取相应单侧极限. 于是 \(\displaystyle w'(t)=\mathcal Aw(t)+f(t).\)
+齐次部分由\autoref{fa:ACP-A01}满足 \(\displaystyle(\mathcal T(t)x)'=\mathcal A\mathcal T(t)x\)，且在图范数中连续. 故 \(\displaystyle u(t)=\mathcal T(t)x+w(t)\) 属于经典解类，并满足 \(\displaystyle u'(t)=\mathcal Au(t)+f(t)\). 两部分均证毕.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[经典/温和正则性边界]
+\autoref{fa:ACP-A02}只在 \(\displaystyle x\in X\)、\(\displaystyle f\in L^1(0,T;X)\) 下给连续温和解. 若没有额外的定义域正则性，\(\displaystyle u(t)\) 未必属于 \(\displaystyle D(\mathcal A)\)，也未必可微. 本章只采用\autoref{fa:ACP-B01}（B）的图范数连续外力项作为充分提升条件，不把它误写为一般 \(\displaystyle L^1\) 外力项的结论.
+\end{FAWarning}
+
+\begin{FALemma}[C][局部 Gronwall 引理]{ii11:local-gronwall}
+设连续函数 \(\displaystyle\varphi:[0,T]\to[0,\infty)\) 满足
+\[
+\varphi(t)
+\leqslant
+C+K\int_0^t\varphi(s)\,\mathrm{d}s,
+\;
+C,K\geqslant0.
+\]
+则 \(\displaystyle \varphi(t) \leqslant C\mathrm{e}^{Kt} \; (0\leqslant t\leqslant T).\)
+特别地，若 \(\displaystyle C=0\)，则 \(\displaystyle\varphi\equiv0\).
+\end{FALemma}
+
+\begin{FAProof}
+令
+\[
+\psi(t)
+=
+C+K\int_0^t\varphi(s)\,\mathrm{d}s.
+\]
+则 \(\displaystyle\varphi\leqslant\psi\)，且 \(\displaystyle\psi'(t)=K\varphi(t)\leqslant K\psi(t)\). 因而
+\[
+\frac{\mathrm{d}}{\mathrm{d}t}
+\left(
+\mathrm{e}^{-Kt}\psi(t)
+\right)
+\leqslant0.
+\]
+所以 \(\displaystyle\psi(t)\leqslant\psi(0)\mathrm{e}^{Kt}=C\mathrm{e}^{Kt}\)，再由 \(\displaystyle\varphi\leqslant\psi\) 得结论. 若 \(\displaystyle C=0\)，则 \(\displaystyle0\leqslant\varphi(t)\leqslant0\)，故 \(\displaystyle\varphi\equiv0\).
+\hfill\(\square\)
+\end{FAProof}
+
+\section{扰动}\label{sec:ii11-perturbation}
+\index{bounded perturbation@有界扰动}\index{Dyson--Phillips series@Dyson--Phillips 级数}\index{Volterra equation@Volterra 方程}
+
+设 \(\displaystyle\mathcal B\in\mathcal B(X)\)，记 \(\displaystyle b=\|\mathcal B\|\)，并定义 \(\displaystyle D(\mathcal A+\mathcal B)=D(\mathcal A), \; (\mathcal A+\mathcal B)x=\mathcal Ax+\mathcal Bx.\)
+本节从 Dyson--Phillips 级数直接构造扰动半群，不调用 II-09 的生成定理，因而不存在生成定理循环.
+
+\begin{FAProposition}[B][Dyson--Phillips 迭代的合法性与估计]{ii11:dyson-phillips}
+定义 \(\displaystyle \mathcal S_0(t)=\mathcal T(t),\)
+并递归定义对每个 \(\displaystyle x\in X\)，
+\[
+\mathcal S_{n+1}(t)x
+=
+\int_0^t
+\mathcal T(t-s)\mathcal B\mathcal S_n(s)x
+\,\mathrm{d}s.
+\]
+则每个积分都是合法的 \(\displaystyle X\)-值 Bochner 积分，每个 \(\displaystyle\mathcal S_n(t)\in\mathcal B(X)\)，对固定 \(\displaystyle x\) 的轨道 \(\displaystyle t\mapsto\mathcal S_n(t)x\) 强连续，并且 \(\displaystyle \|\mathcal S_n(t)\| \leqslant M^{n+1}b^n\frac{t^n}{n!}\mathrm{e}^{\omega t} \; (n\geqslant0).\)
+因此级数 \(\displaystyle\sum_{n=0}^{\infty}\mathcal S_n(t)\) 在每个紧时间区间上一致算子范数收敛.
+\end{FAProposition}
+
+\begin{FAProof}
+对 \(\displaystyle n=0\)，\(\displaystyle\mathcal S_0(t)=\mathcal T(t)\) 强连续，且估计正是给定增长界. 递归假设 \(\displaystyle t\mapsto\mathcal S_n(t)x\) 连续. 因 \(\displaystyle\mathcal B\) 有界，\(\displaystyle s\mapsto\mathcal B\mathcal S_n(s)x\) 连续，故属于 \(\displaystyle L^1(0,T;X)\). 将\autoref{ii11:duhamel-legality}与\autoref{ii11:duhamel-continuity}应用于该外力项，得到 \(\displaystyle\mathcal S_{n+1}(t)x\) 的积分合法且轨道连续. 线性由积分线性递归得到.
+
+再作算子范数估计. 若递归假设对全部 \(\displaystyle s\geqslant0\) 有 \(\displaystyle \|\mathcal S_n(s)\| \leqslant M^{n+1}b^n\frac{s^n}{n!}\mathrm{e}^{\omega s},\)
+则由\autoref{fa:BOCH-C01}，
+\[
+\begin{aligned}
+\displaystyle \|\mathcal S_{n+1}(t)x\|
+&\displaystyle \leqslant
+\int_0^t
+M\mathrm{e}^{\omega(t-s)}b
+M^{n+1}b^n\frac{s^n}{n!}\mathrm{e}^{\omega s}
+\|x\|\,\mathrm{d}s\\[12pt]
+&\displaystyle =
+M^{n+2}b^{n+1}\mathrm{e}^{\omega t}\|x\|
+\frac{t^{n+1}}{(n+1)!}.
+\end{aligned}
+\]
+取 \(\displaystyle\|x\|\leqslant1\) 的上确界即完成归纳. 对任意固定 \(\displaystyle R>0\) 与 \(\displaystyle0\leqslant t\leqslant R\)， \(\displaystyle \|\mathcal S_n(t)\| \leqslant M\mathrm{e}^{\omega_+R} \frac{(MbR)^n}{n!}.\)
+标量指数级数收敛，故 Weierstrass 判别给算子级数在 \(\displaystyle[0,R]\) 上一致收敛.
+\hfill\(\square\)
+\end{FAProof}
+
+定义
+\[
+\mathcal S(t)
+=
+\sum_{n=0}^{\infty}\mathcal S_n(t).
+\]
+由上一估计，
+\[
+\|\mathcal S(t)\|\leqslant M\mathrm{e}^{\omega t}\sum_{n=0}^{\infty}\frac{(Mbt)^n}{n!}=M\mathrm{e}^{(\omega+Mb)t}.
+\]
+
+\begin{FAProposition}[B][扰动族的强连续性与 Volterra 方程]{ii11:perturbed-volterra}
+族 \(\displaystyle(\mathcal S(t))_{t\geqslant0}\subseteq\mathcal B(X)\) 强连续，\(\displaystyle\mathcal S(0)=\mathcal I\)，并且对全部 \(\displaystyle x\in X\)、\(\displaystyle t\geqslant0\)，
+\[
+\mathcal S(t)x
+=
+\mathcal T(t)x
++
+\int_0^t
+\mathcal T(t-s)\mathcal B\mathcal S(s)x
+\,\mathrm{d}s.
+\]
+该积分始终是 \(\displaystyle X\)-值 Bochner 积分；上式只表示强算子恒等式.
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in X\) 与紧区间 \(\displaystyle[0,R]\). 每个 \(\displaystyle t\mapsto\mathcal S_n(t)x\) 连续，而算子范数级数尾在 \(\displaystyle[0,R]\) 上一致趋零，故 \(\displaystyle\sum_n\mathcal S_n(t)x\) 是连续函数的一致极限. 这证明强连续性；这里没有假设 \(\displaystyle t\mapsto\mathcal T(t)\) 在算子范数连续. 又 \(\displaystyle\mathcal S_0(0)=\mathcal I\)、\(\displaystyle\mathcal S_n(0)=0\) 对 \(\displaystyle n\geqslant1\)，故 \(\displaystyle\mathcal S(0)=\mathcal I\).
+
+令 \(\displaystyle P_N(s)=\sum_{n=0}^{N}\mathcal S_n(s)\). 递归式给
+\[
+\sum_{n=0}^{N}\mathcal S_{n+1}(t)x
+=
+\int_0^t
+\mathcal T(t-s)\mathcal BP_N(s)x
+\,\mathrm{d}s.
+\]
+由紧区间上一致算子范数收敛，\(\displaystyle P_N(s)x\to\mathcal S(s)x\) 一致. 若 \(\displaystyle0\leqslant t\leqslant R\)，则
+\[
+\begin{aligned}
+&\left\|
+\int_0^t
+\mathcal T(t-s)\mathcal B(P_N(s)-\mathcal S(s))x
+\,\mathrm{d}s
+\right\|\\
+&\leqslant
+M_Rbt\|x\|
+\sup_{0\leqslant s\leqslant R}
+\|P_N(s)-\mathcal S(s)\|
+\longrightarrow0,
+\end{aligned}
+\]
+其中 \(\displaystyle M_R=\sup_{0\leqslant r\leqslant R}\|\mathcal T(r)\|<\infty\) 来自\autoref{fa:SG-B01}. 左侧有限和则收敛到 \(\displaystyle\mathcal S(t)x-\mathcal T(t)x\). 因而可在 \(\displaystyle X\) 中取极限，得到所述 Volterra 方程.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][Volterra 方程的连续解唯一性]{ii11:volterra-uniqueness}
+固定 \(\displaystyle y_0\in X\). 若连续函数 \(\displaystyle y,z:[0,T]\to X\) 都满足
+\[
+w(t)
+=
+\mathcal T(t)y_0
++
+\int_0^t\mathcal T(t-s)\mathcal Bw(s)\,\mathrm{d}s,
+\]
+则 \(\displaystyle y=z\).
+\end{FALemma}
+
+\begin{FAProof}
+令 \(\displaystyle d(t)=\|y(t)-z(t)\|\). 由\autoref{fa:SG-B01}，\(\displaystyle M_T:=\sup_{0\leqslant r\leqslant T}\|\mathcal T(r)\|<\infty\). 因而
+\[
+d(t)
+\leqslant
+M_Tb\int_0^t d(s)\,\mathrm{d}s.
+\]
+函数 \(\displaystyle d\) 连续且非负. 对\autoref{ii11:local-gronwall}取 \(\displaystyle C=0\)、\(\displaystyle K=M_Tb\)，得到 \(\displaystyle d\equiv0\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][扰动族的半群律]{ii11:perturbed-semigroup-law}
+对全部 \(\displaystyle r,t\geqslant0\)， \(\displaystyle \mathcal S(t+r) = \mathcal S(t)\mathcal S(r).\)
+因此 \(\displaystyle(\mathcal S(t))_{t\geqslant0}\) 是 \(\displaystyle C_0\) 半群.
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle r\geqslant0\) 与 \(\displaystyle x\in X\). 把\autoref{ii11:perturbed-volterra}在 \(\displaystyle t+r\) 处分割为 \(\displaystyle[0,r]\) 与 \(\displaystyle[r,t+r]\)：
+\[
+\begin{aligned}
+\mathcal S(t+r)x
+&=
+\mathcal T(t+r)x
++
+\int_0^r\mathcal T(t+r-s)\mathcal B\mathcal S(s)x\,\mathrm{d}s\\
+&\mathrel{\phantom{=}}+
+\int_r^{t+r}\mathcal T(t+r-s)\mathcal B\mathcal S(s)x\,\mathrm{d}s.
+\end{aligned}
+\]
+半群律与\autoref{fa:BOCH-B02}把前两项合成
+\[
+\mathcal T(t)
+\left(
+\mathcal T(r)x+
+\int_0^r\mathcal T(r-s)\mathcal B\mathcal S(s)x\,\mathrm{d}s
+\right)
+=
+\mathcal T(t)\mathcal S(r)x.
+\]
+末项令 \(\displaystyle s=r+q\)，得到
+\[
+\int_0^t
+\mathcal T(t-q)\mathcal B\mathcal S(q+r)x
+\,\mathrm{d}q.
+\]
+故 \(\displaystyle y(t):=\mathcal S(t+r)x\) 满足初值 \(\displaystyle y(0)=\mathcal S(r)x\) 的 Volterra 方程. 另一方面，把\autoref{ii11:perturbed-volterra}应用于初值 \(\displaystyle\mathcal S(r)x\)，可知 \(\displaystyle z(t):=\mathcal S(t)\mathcal S(r)x\) 满足同一方程. 在任意有限区间上由\autoref{ii11:volterra-uniqueness}得 \(\displaystyle y=z\). 因 \(\displaystyle r,t,x\) 任意，半群律成立；再结合已证强连续性与 \(\displaystyle\mathcal S(0)=\mathcal I\)，得到 \(\displaystyle C_0\) 半群.
+\hfill\(\square\)
+\end{FAProof}
+
+令 \(\displaystyle\mathcal G=\operatorname{Gen}(\mathcal S)\).
+
+\begin{FAProposition}[B][扰动生成元的正向包含]{ii11:generator-forward-inclusion}
+有 \(\displaystyle D(\mathcal A)\subseteq D(\mathcal G), \; \mathcal Gx=(\mathcal A+\mathcal B)x \; (x\in D(\mathcal A)).\)
+即 \(\displaystyle\mathcal A+\mathcal B\subseteq\mathcal G\).
+\end{FAProposition}
+
+\begin{FAProof}
+设 \(\displaystyle x\in D(\mathcal A)\). 由 Volterra 方程，
+\[
+\frac{\mathcal S(h)x-x}{h}
+=
+\frac{\mathcal T(h)x-x}{h}
++
+\frac1h
+\int_0^h
+\mathcal T(h-s)\mathcal B\mathcal S(s)x
+\,\mathrm{d}s.
+\]
+第一项由生成元定义趋于 \(\displaystyle\mathcal Ax\). 对第二项减去 \(\displaystyle\mathcal Bx\)，由\autoref{fa:BOCH-C01}得其范数不超过
+\[
+\begin{aligned}
+&\displaystyle \frac1h\int_0^h
+\|\mathcal T(h-s)(\mathcal B\mathcal S(s)x-\mathcal Bx)\|
+\,\mathrm{d}s\\[12pt]
+&\displaystyle \mathrel{\phantom{+}}+
+\frac1h\int_0^h
+\|\mathcal T(h-s)\mathcal Bx-\mathcal Bx\|
+\,\mathrm{d}s.
+\end{aligned}
+\]
+取 \(\displaystyle h\leqslant1\). 第一项由 \(\displaystyle M_1:=\sup_{0\leqslant r\leqslant1}\|\mathcal T(r)\|<\infty\) 控制为 \(\displaystyle M_1b\sup_{0\leqslant s\leqslant h}\|\mathcal S(s)x-x\|\)，它由 \(\displaystyle\mathcal S\) 在零点强连续性趋于零. 第二项不超过 \(\displaystyle \sup_{0\leqslant r\leqslant h}\|\mathcal T(r)\mathcal Bx-\mathcal Bx\|\)，由固定向量轨道强连续性也趋于零. 故积分平均项趋于 \(\displaystyle\mathcal Bx\)，从而 \(\displaystyle \frac{\mathcal S(h)x-x}{h} \longrightarrow \mathcal Ax+\mathcal Bx.\)
+因此 \(\displaystyle x\in D(\mathcal G)\) 且 \(\displaystyle\mathcal Gx=(\mathcal A+\mathcal B)x\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][\(\displaystyle\mathcal A+\mathcal B\)的共同预解点]{ii11:common-resolvent}
+若实数 \(\displaystyle\lambda>\omega+M\|\mathcal B\|\)，则 \(\displaystyle \lambda\in\rho(\mathcal A+\mathcal B),\)
+且
+\[
+R(\lambda,\mathcal A+\mathcal B)
+=
+R(\lambda,\mathcal A)
+\left(
+\mathcal I-\mathcal BR(\lambda,\mathcal A)
+\right)^{-1}.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由 II-08 的\autoref{fa:SG-A02}，当 \(\displaystyle\lambda>\omega\) 时 \(\displaystyle \|R(\lambda,\mathcal A)\| \leqslant \frac{M}{\lambda-\omega}.\)
+因此当前选择满足 \(\displaystyle \|\mathcal BR(\lambda,\mathcal A)\| \leqslant \frac{M\|\mathcal B\|}{\lambda-\omega} <1.\)
+令 \(\displaystyle\mathcal C=\mathcal BR(\lambda,\mathcal A)\). 算子范数级数 \(\displaystyle\sum_{n=0}^{\infty}\mathcal C^n\) 绝对收敛，且有限部分和满足 \(\displaystyle(\mathcal I-\mathcal C)\sum_{n=0}^{N}\mathcal C^n=\mathcal I-\mathcal C^{N+1}\). 令 \(\displaystyle N\to\infty\)，得到 \(\displaystyle\mathcal I-\mathcal C\) 有界可逆.
+
+对 \(\displaystyle x\in D(\mathcal A)\)，
+\[
+\begin{aligned}
+&\left(
+\mathcal I-\mathcal BR(\lambda,\mathcal A)
+\right)
+(\lambda\mathcal I-\mathcal A)x\\
+&=
+(\lambda\mathcal I-\mathcal A)x
+-\mathcal Bx
+=
+\left(
+\lambda\mathcal I-(\mathcal A+\mathcal B)
+\right)x.
+\end{aligned}
+\]
+这里因 \(\displaystyle R(\lambda,\mathcal A)(\lambda\mathcal I-\mathcal A)x=x\)，因子顺序不能交换. 两个因子都双射，故 \(\displaystyle\lambda\mathcal I-(\mathcal A+\mathcal B)\) 从 \(\displaystyle D(\mathcal A)\) 到 \(\displaystyle X\) 双射，其逆为
+\[
+R(\lambda,\mathcal A)
+\left(
+\mathcal I-\mathcal BR(\lambda,\mathcal A)
+\right)^{-1}.
+\]
+该逆在 \(\displaystyle X\) 上有界，因此 \(\displaystyle\lambda\in\rho(\mathcal A+\mathcal B)\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][扰动生成元的精确识别]{ii11:generator-exact}
+有 \(\displaystyle D(\mathcal G)=D(\mathcal A), \; \mathcal G=\mathcal A+\mathcal B.\)
+\end{FAProposition}
+
+\begin{FAProof}
+已知 \(\displaystyle\mathcal A+\mathcal B\subseteq\mathcal G\)，且 \(\displaystyle \|\mathcal S(t)\| \leqslant M\mathrm{e}^{(\omega+M\|\mathcal B\|)t}.\)
+取与\autoref{ii11:common-resolvent}相同的实数 \(\displaystyle\lambda>\omega+M\|\mathcal B\|\). 对扰动半群应用\autoref{fa:SG-A02}，得到 \(\displaystyle\lambda\in\rho(\mathcal G)\)；上一命题给 \(\displaystyle\lambda\in\rho(\mathcal A+\mathcal B)\).
+
+任取 \(\displaystyle y\in X\)，令 \(\displaystyle x=R(\lambda,\mathcal A+\mathcal B)y.\)
+则 \(\displaystyle x\in D(\mathcal A+\mathcal B)\subseteq D(\mathcal G)\)，且由算子包含 \(\displaystyle (\lambda\mathcal I-\mathcal G)x = (\lambda\mathcal I-(\mathcal A+\mathcal B))x = y.\)
+因为 \(\displaystyle\lambda\in\rho(\mathcal G)\)，解唯一，故 \(\displaystyle R(\lambda,\mathcal G)y = R(\lambda,\mathcal A+\mathcal B)y \; \forall\,y\in X.\)
+两个预解算子的值域分别是 \(\displaystyle D(\mathcal G)\) 与 \(\displaystyle D(\mathcal A+\mathcal B)\)，所以 \(\displaystyle D(\mathcal G) = D(\mathcal A+\mathcal B) = D(\mathcal A).\)
+结合已有包含，得到 \(\displaystyle\mathcal G=\mathcal A+\mathcal B\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][有界扰动定理]{fa:PERT-B01}
+设 \(\displaystyle\mathcal A\) 生成 \(\displaystyle C_0\) 半群 \(\displaystyle\mathcal T\)，且 \(\displaystyle\mathcal B\in\mathcal B(X)\). 则 \(\displaystyle \mathcal A+\mathcal B, \; D(\mathcal A+\mathcal B)=D(\mathcal A),\)
+生成唯一 \(\displaystyle C_0\) 半群 \(\displaystyle\mathcal S\). 对每个 \(\displaystyle x\in X\)，
+\[
+\mathcal S(t)x
+=
+\mathcal T(t)x
++
+\int_0^t\mathcal T(t-s)\mathcal B\mathcal S(s)x\,\mathrm{d}s,
+\]
+并且
+\[
+\mathcal S(t)
+=
+\sum_{n=0}^{\infty}\mathcal S_n(t)
+\]
+在每个紧时间区间上一致算子范数收敛，其中 \(\displaystyle\mathcal S_n\) 为 Dyson--Phillips 迭代. 若 \(\displaystyle \|\mathcal T(t)\| \leqslant M\mathrm{e}^{\omega t},\)
+则 \(\displaystyle \|\mathcal S(t)\| \leqslant M\mathrm{e}^{(\omega+M\|\mathcal B\|)t}.\)
+\end{FATheorem}
+
+\begin{FAProof}
+\par\noindent\autoref{ii11:dyson-phillips}给出 Dyson--Phillips 级数的一致收敛与增长估计；\autoref{ii11:perturbed-volterra}给强连续性、初值与 Volterra 方程；\autoref{ii11:perturbed-semigroup-law}给半群律；\autoref{ii11:generator-exact}证明其生成元精确等于 \(\displaystyle\mathcal A+\mathcal B\). 现只需证明“唯一生成半群”. 若另一个 \(\displaystyle C_0\) 半群 \(\displaystyle\mathcal R\) 也以 \(\displaystyle\mathcal A+\mathcal B\) 为生成元，则对每个 \(\displaystyle x\in D(\mathcal A)\)，\autoref{fa:ACP-A01}分别给出 \(\displaystyle\mathcal S(t)x\) 与 \(\displaystyle\mathcal R(t)x\) 都是同一齐次 ACP 的经典解；由同一定理的唯一性，\(\displaystyle\mathcal S(t)x=\mathcal R(t)x\). 又 \(\displaystyle D(\mathcal A)\) 由\autoref{fa:SG-A02}稠密，且固定 \(\displaystyle t\) 时两算子均有界，故等式延拓到全部 \(\displaystyle x\in X\). 因此生成半群唯一.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{规范模型复用}
+
+\begin{FAApplication}[受迫热演化]
+复用 II-08 的标准模型：\(\displaystyle H=L^2(0,1)\)、\(\displaystyle\mathcal A_{\mathrm{heat}}=-\mathcal L_D\) 与收缩半群 \(\displaystyle \mathcal H(t)=\mathrm{e}^{-t\mathcal L_D}.\)
+对 \(\displaystyle x\in L^2(0,1)\)、\(\displaystyle f\in L^1(0,T;L^2(0,1))\)，\autoref{fa:ACP-A02}给唯一温和解
+\[
+u(t)
+=
+\mathcal H(t)x
++
+\int_0^t\mathcal H(t-s)f(s)\,\mathrm{d}s.
+\]
+由 \(\displaystyle\|\mathcal H(t)\|\leqslant1\)，
+\[
+\|u(t)\|
+\leqslant
+\|x\|+
+\int_0^t\|f(s)\|\,\mathrm{d}s.
+\]
+若进一步 \(\displaystyle x\in D(\mathcal L_D)\) 且 \(\displaystyle f\in C([0,T];D(\mathcal L_D)_{\mathrm{graph}})\)，则 \(\displaystyle D(-\mathcal L_D)\) 与 \(\displaystyle D(\mathcal L_D)\) 的图范数相同，故\autoref{fa:ACP-B01}给 \(\displaystyle u\) 为经典解，并满足 \(\displaystyle u'(t)=-\mathcal L_Du(t)+f(t).\)
+这里没有使用 Sobolev 弱解或任何 II-13 理论.
+\end{FAApplication}
+
+\begin{FAApplication}[受迫平移演化]
+复用 II-08 的标准模型：\(\displaystyle X=C_0(\mathbb R)\)， \(\displaystyle (\mathcal T_{\mathrm{tr}}(t)x)(r)=x(r+t),\) \(\displaystyle D(\mathcal A_{\mathrm{tr}})=C_0^1(\mathbb R), \; \mathcal A_{\mathrm{tr}}x=x'.\)
+若 \(\displaystyle F\in L^1(0,T;C_0(\mathbb R))\)，则
+\[
+u(t)
+=
+\mathcal T_{\mathrm{tr}}(t)x
++
+\int_0^t\mathcal T_{\mathrm{tr}}(t-s)F(s)\,\mathrm{d}s.
+\]
+固定 \(\displaystyle r\in\mathbb R\). 点值泛函 \(\displaystyle\delta_r:g\mapsto g(r)\) 属于 \(\displaystyle C_0(\mathbb R)^*\)，故由\autoref{fa:BOCH-B02}，
+\[
+u(t)(r)=x(r+t)+\int_0^t\delta_r(\mathcal T_{\mathrm{tr}}(t-s)F(s))\,\mathrm{d}s=x(r+t)+\int_0^tF(s)(r+t-s)\,\mathrm{d}s.
+\]
+若 \(\displaystyle x\in C_0^1(\mathbb R)\) 且 \(\displaystyle F\in C([0,T];C_0^1(\mathbb R)_{\mathrm{graph}})\)，则\autoref{fa:ACP-B01}给 \(\displaystyle u'(t)=\mathcal A_{\mathrm{tr}}u(t)+F(t)\)
+在 \(\displaystyle C_0(\mathbb R)\) 中经典成立. 本章不把该式改写为分布意义的输运方程.
+\end{FAApplication}
+
+\begin{FAApplication}[有界势扰动]
+在 \(\displaystyle L^2(0,1)\) 上取 \(\displaystyle V\in L^\infty(0,1)\)，定义乘法算子 \(\displaystyle (\mathcal B_Vu)(x)=V(x)u(x).\)
+则
+\[
+\|\mathcal B_Vu\|_2^2
+=
+\int_0^1|V(x)|^2|u(x)|^2\,\mathrm{d}x
+\leqslant
+\|V\|_\infty^2\|u\|_2^2,
+\]
+故 \(\displaystyle\mathcal B_V\in\mathcal B(L^2(0,1))\) 且 \(\displaystyle\|\mathcal B_V\|\leqslant\|V\|_\infty\). 因 \(\displaystyle-\mathcal L_D\) 生成收缩热半群，\autoref{fa:PERT-B01}给 \(\displaystyle -\mathcal L_D+\mathcal B_V, \; D(-\mathcal L_D+\mathcal B_V)=D(\mathcal L_D),\)
+生成 \(\displaystyle C_0\) 半群 \(\displaystyle\mathcal S_V\)，并且以 \(\displaystyle M=1\)、\(\displaystyle\omega=0\) 得 \(\displaystyle \|\mathcal S_V(t)\|\leqslant\mathrm{e}^{\|V\|_\infty t}\). 该估计不蕴含 \(\displaystyle\mathcal S_V\) 必为收缩半群；本章不附加保证收缩性的势函数条件.
+\end{FAApplication}
+
+\subsection{后续边界}
+
+\begin{FARemark}[非自治演化的 D 级预告]
+若演化方程改为 \(\displaystyle u'(t)=\mathcal A(t)u(t)+f(t),\)
+一般不能再由单一半群 \(\displaystyle\mathcal T(t)\) 编码全部时间传播，而需要后续的演化族等结构. 本章只记录这一面向读者的预告，不定义演化族，不证明 Kato 型非自治定理，不引入时间有序指数或 Dyson 时间排序理论.
+\end{FARemark}
+
+\begin{FAWarning}[II-12、II-13 与 II-15的理论边界]
+II-12 才正式建立分布与弱导数；II-13 才正式建立 Sobolev 空间；II-15 才正式建立 Lax--Milgram、典型椭圆 Dirichlet 弱解以及与这些工具相连的偏微分方程应用. 本章只处理抽象半群演化及 II-08 已建立的热半群、平移半群模型，不使用分布解、弱导数、Sobolev 弱解、Lax--Milgram 或椭圆弱形式.
+\end{FAWarning}
+
+\subsection*{本章习题}\label{sec:ii11-exercises}
+
+\begin{FAExercise}[齐次抽象 Cauchy 问题的精确正则性]{ex:ii11-01}
+从\autoref{fa:SG-B02}出发完整重建\autoref{fa:ACP-A01}的存在性，并单独证明 \(\displaystyle t\mapsto\mathcal T(t)x\) 在图范数中连续；再说明经典解在 \(\displaystyle t=0\) 的定义为何强制 \(\displaystyle x\in D(\mathcal A)\).
+\end{FAExercise}
+
+\begin{FAExercise}[经典唯一性的差商合法性]{ex:ii11-02}
+对 \(\displaystyle F(s)=\mathcal T(t-s)v(s)\) 不直接引用形式乘积法则，而用差商分解证明 \(\displaystyle F'(s)=0\). 必须指出 \(\displaystyle v(s)\in D(\mathcal A)\)、\autoref{fa:SG-B02}与局部一致有界性分别作用于哪一步.
+\end{FAExercise}
+
+\begin{FAExercise}[非 \(\displaystyle C_0\) 失效]{ex:ii11-03}
+对 \(\displaystyle\mathcal S(0)=\mathcal I\)、\(\displaystyle\mathcal S(t)=0\) 当 \(\displaystyle t>0\)，验证半群律并证明任意 \(\displaystyle x\neq0\) 的形式轨道不可能成为本章任一解概念中的连续演化.
+\end{FAExercise}
+
+\begin{FAExercise}[Duhamel 被积函数的强可测性]{ex:ii11-04}
+设 \(\displaystyle f\in L^1(0,T;X)\). 从可积简单函数 \(\displaystyle f_n\to f\) 的几乎处处逼近出发，逐项证明 \(\displaystyle1_{[0,t]}(s)\mathcal T(t-s)f(s)\) 强可测；不得以“显然可测”代替连续轨道与简单函数逼近步骤.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^1\) 外力项与 Bochner 可积性]{ex:ii11-05}
+由 \(\displaystyle M_T=M\mathrm{e}^{\omega_+T}\) 证明 \(\displaystyle\|\mathcal T(t-s)f(s)\|\leqslant M_T\|f(s)\|\)，并仅用\autoref{fa:BOCH-A01}推出 Duhamel 积分存在.
+\end{FAExercise}
+
+\begin{FAExercise}[Duhamel 项连续性]{ex:ii11-06}
+对 \(\displaystyle t_n\to t\) 把所有积分延拓到 \(\displaystyle[0,T]\)，分别处理 \(\displaystyle s<t\)、\(\displaystyle s>t\) 与零测单点 \(\displaystyle s=t\)，再用 \(\displaystyle2M_T\|f(s)\|\) 完成 Bochner 支配收敛论证.
+\end{FAExercise}
+
+\begin{FAExercise}[温和解的重新起步恒等式]{ex:ii11-07}
+证明\autoref{fa:ACP-A02}的存在唯一性，然后只拆分 \(\displaystyle\int_0^t=\int_0^r+\int_r^t\) 并使用半群律推导\autoref{ii11:restart-identity}. 禁止调用 Fubini.
+\end{FAExercise}
+
+\begin{FAExercise}[温和解的数据稳定性]{ex:ii11-08}
+从常数变易公式证明\autoref{fa:ACP-C01}的逐时刻估计、两组数据差估计与有限时间上确界估计，并核对 \(\displaystyle\omega<0\) 时使用 \(\displaystyle\omega_+=0\) 的必要性.
+\end{FAExercise}
+
+\begin{FAExercise}[经典推出温和]{ex:ii11-09}
+设 \(\displaystyle f\in C([0,T];X)\). 对 \(\displaystyle F(s)=\mathcal T(t-s)u(s)\) 证明 \(\displaystyle F'(s)=\mathcal T(t-s)f(s)\)，并由 Banach 值基本微积分定理推出常数变易公式；重点核对负号.
+\end{FAExercise}
+
+\begin{FAExercise}[图空间半群]{ex:ii11-10}
+证明 \(\displaystyle\mathcal T(r)\) 在 \(\displaystyle D(\mathcal A)_{\mathrm{graph}}\) 上有界且其算子范数不超过 \(\displaystyle\|\mathcal T(r)\|\)，并证明每条 \(\displaystyle D(\mathcal A)\) 轨道在图范数中连续.
+\end{FAExercise}
+
+\begin{FAExercise}[图空间 Bochner 积分与生成元换序]{ex:ii11-11}
+在 \(\displaystyle f\in C([0,T];D(\mathcal A)_{\mathrm{graph}})\) 下，以 \(\displaystyle D(\mathcal A)_{\mathrm{graph}}\) 为 Banach 目标空间积分，使用自然嵌入与 \(\displaystyle y\mapsto\mathcal Ay\) 两个有界算子证明 \(\displaystyle w(t)\in D(\mathcal A)\) 及 \(\displaystyle\mathcal Aw(t)=\int_0^t\mathcal T(t-s)\mathcal Af(s)\,\mathrm{d}s\).
+\end{FAExercise}
+
+\begin{FAExercise}[温和提升为经典]{ex:ii11-12}
+从 \(\displaystyle w(t+h)-w(t)=(\mathcal T(h)-\mathcal I)w(t)+\int_t^{t+h}\mathcal T(t+h-s)f(s)\,\mathrm{d}s\) 出发证明右导数，再用图范数连续性完整处理内点左导数与 \(\displaystyle t=T\) 的左端点极限.
+\end{FAExercise}
+
+\begin{FAExercise}[正则性边界警示]{ex:ii11-13}
+解释为什么 \(\displaystyle x\in X\)、\(\displaystyle f\in L^1(0,T;X)\) 只足以得到连续温和解，而不能从本章结果推出 \(\displaystyle u(t)\in D(\mathcal A)\) 或 \(\displaystyle u'\) 存在；给出需要补充的本章充分条件.
+\end{FAExercise}
+
+\begin{FAExercise}[局部 Gronwall]{ex:ii11-14}
+对 \(\displaystyle\varphi(t)\leqslant C+K\int_0^t\varphi(s)\,\mathrm{d}s\) 定义辅助函数 \(\displaystyle\psi\)，证明 \(\displaystyle(\mathrm{e}^{-Kt}\psi(t))'\leqslant0\)，并推出 \(\displaystyle C=0\) 时的唯一性结论.
+\end{FAExercise}
+
+\begin{FAExercise}[Dyson--Phillips 递归合法性]{ex:ii11-15}
+从 \(\displaystyle\mathcal S_0=\mathcal T\) 开始，归纳证明 \(\displaystyle s\mapsto\mathcal B\mathcal S_n(s)x\) 连续、每一步 Bochner 积分合法且 \(\displaystyle t\mapsto\mathcal S_n(t)x\) 强连续.
+\end{FAExercise}
+
+\begin{FAExercise}[Dyson 阶乘估计与级数收敛]{ex:ii11-16}
+归纳证明 \(\displaystyle\|\mathcal S_n(t)\|\leqslant \frac{M^{n+1}b^nt^n\mathrm{e}^{\omega t}}{n!}\)，再在任意 \(\displaystyle[0,R]\) 上给出 Weierstrass 控制项，并推出 \(\displaystyle\|\mathcal S(t)\|\leqslant M\mathrm{e}^{(\omega+Mb)t}\).
+\end{FAExercise}
+
+\begin{FAExercise}[Volterra 唯一性与扰动半群律]{ex:ii11-17}
+先用\autoref{ii11:local-gronwall}证明连续 Volterra 解唯一；再从 \(\displaystyle t+r\) 处的积分分割推导 \(\displaystyle\mathcal S(t+r)x\) 与 \(\displaystyle\mathcal S(t)\mathcal S(r)x\) 满足同一 Volterra 方程，从而证明半群律.
+\end{FAExercise}
+
+\begin{FAExercise}[生成元的平均化扰动极限]{ex:ii11-18}
+对 \(\displaystyle x\in D(\mathcal A)\)，严格证明
+\[
+\frac1h\int_0^h\mathcal T(h-s)\mathcal B\mathcal S(s)x\,\mathrm{d}s
+\longrightarrow
+\mathcal Bx,
+\]
+并据此得到 \(\displaystyle\mathcal A+\mathcal B\subseteq\operatorname{Gen}(\mathcal S)\).
+\end{FAExercise}
+
+\begin{FAExercise}[共同预解点与生成元精确等式]{ex:ii11-19}
+取实数 \(\displaystyle\lambda>\omega+M\|\mathcal B\|\). 先用 Neumann 级数直接证明 \(\displaystyle\mathcal I-\mathcal BR(\lambda,\mathcal A)\) 可逆，再核对因子分解的顺序，最后利用 \(\displaystyle\lambda\) 同时属于两个预解集推出 \(\displaystyle D(\mathcal G)=D(\mathcal A)\) 与 \(\displaystyle\mathcal G=\mathcal A+\mathcal B\).
+\end{FAExercise}
+
+\begin{FAExercise}[受迫热半群]{ex:ii11-20}
+对 Dirichlet 热半群模型写出 \(\displaystyle x\in L^2(0,1)\)、\(\displaystyle f\in L^1(0,T;L^2(0,1))\) 的温和解，并由收缩性证明能量范数估计；再写出 \(\displaystyle x\in D(\mathcal L_D)\)、图范数连续外力项时的经典方程，禁止使用 Sobolev 弱解术语.
+\end{FAExercise}
+
+\begin{FAExercise}[受迫平移公式]{ex:ii11-21}
+对平移半群模型使用有界点值泛函与\autoref{fa:BOCH-B02}证明
+\[
+u(t)(r)=x(r+t)+\int_0^tF(s)(r+t-s)\,\mathrm{d}s.
+\]
+再说明图范数连续 \(\displaystyle C_0^1(\mathbb R)\)-值外力项如何给出经典输运演化，而不引入分布导数.
+\end{FAExercise}
+
+\begin{FAExercise}[有界势与后续理论边界]{ex:ii11-22}
+证明 \(\displaystyle\|\mathcal B_V\|\leqslant\|V\|_\infty\)，用\autoref{fa:PERT-B01}得到 \(\displaystyle-\mathcal L_D+\mathcal B_V\) 的生成半群与增长界. 随后分别说明分布、Sobolev、Lax--Milgram 与非自治演化族为什么不属于本章已建立的形式上的理论.
+\end{FAExercise}

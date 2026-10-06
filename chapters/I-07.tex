@@ -1,0 +1,464 @@
+\chapter{对偶、二次对偶与弱/弱*拓扑基础}\label{chap:I-07}
+\FAChapterOpening
+{在连续对偶的基础上建立二次对偶与自然嵌入；给出自反性的定义及典型正、反例；证明 \(\displaystyle 1<p<\infty\) 时 \(\displaystyle L^p\) 与 \(\displaystyle \ell^p\) 的对偶与自反性；规范定义弱拓扑和弱*拓扑并用网刻画收敛；比较范数、弱、弱*三种收敛模式.}
+{I-05的连续对偶、对偶范数与对偶配对；I-06的Hahn--Banach范数保持延拓、对偶范数表示与对偶分离点.}
+{\begin{center}
+\begin{tikzpicture}[x=2.0cm,y=1.05cm]
+\node[fa/node] (hb) at (0,0) {距离公式};
+\node[fa/node] (dual) at (1.45,0) {自然嵌入/自反性};
+\node[fa/node] (wt) at (2.95,0) {弱/弱*拓扑};
+\node[fa/node] (tool) at (4.45,0.65) {弱邻域工具};
+\node[fa/node] (wb1) at (5.95,0.65) {弱收敛};
+\node[fa/node] (wb2) at (5.95,-0.65) {弱*收敛};
+\node[fa/node] (rn) at (0,-1.3) {测度导数};
+\node[fa/node] (lp) at (2.1,-1.3) {\(\displaystyle L^p\)对偶/自反};
+\draw[fa/arrow] (hb) -- (dual);
+\draw[fa/arrow] (dual) -- (wt);
+\draw[fa/arrow] (wt) -- (tool);
+\draw[fa/arrow] (tool) -- (wb1);
+\draw[fa/arrow] (wt) -- (wb2);
+\draw[fa/arrow] (rn) -- (lp);
+\draw[fa/arrow] (hb) -- (lp);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\)，\(\displaystyle X\) 为 \(\displaystyle \mathbb K\)-赋范空间，除非另行说明不要求 \(\displaystyle X\) 完备. I-05 已定义 \(\displaystyle X^*\) 及对偶范数，本章只引用这一既定定义. Banach 对偶配对写作 \(\displaystyle x^*(x)\) 或 \(\displaystyle \langle x^*,x\rangle_{X^*,X}\)，它不是 I-04 的 Hilbert 内积. 特别地，在复数 \(\displaystyle L^p\) 与 \(\displaystyle \ell^p\) 的对偶识别中采用 Banach 双线性配对 \(\displaystyle \Lambda_g(f)=\int fg\,\mathrm{d}\mu\)，不插入复共轭；这与 Hilbert 空间 Riesz 表示中的内积约定分开.
+
+\section{对偶与二次对偶}\label{sec:i07-dual-bidual}
+\index{bidual@二次对偶}\index{dual pairing@对偶配对}
+
+I-05 已在\autoref{i05:continuous-dual-def}定义连续对偶 \(\displaystyle X^*=\mathcal B(X,\mathbb K)\). 由\autoref{i05:dual-banach}，\(\displaystyle X^*\) 总是 Banach 空间，即使 \(\displaystyle X\) 不完备. 因而可以再次取连续对偶并定义 \(\displaystyle X^{**}:=(X^*)^*\).
+由于任意赋范空间的连续对偶都完备，\(\displaystyle X^{**}\) 也总是 Banach 空间. 这只说明二次对偶完备，不能反推 \(\displaystyle X\) 本身完备.
+
+\begin{FARemark}[Banach配对与Hilbert内积]
+对偶配对 \(\displaystyle \langle x^*,x\rangle_{X^*,X}=x^*(x)\) 对 \(\displaystyle x^*\) 与 \(\displaystyle x\) 都按标量乘法线性解释. 本章复数 \(\displaystyle L^p\) 对偶采用 \(\displaystyle \int fg\,\mathrm{d}\mu\). I-04 的 Hilbert 内积带有其自身的共轭线性约定，二者不得混写.
+\end{FARemark}
+
+\section{自然嵌入}\label{sec:i07-natural-embedding}
+\index{canonical embedding@自然嵌入}\index{reflexive space@自反空间}
+
+\begin{FADefinition}[A][二次对偶自然嵌入与自反性]{fa:DUAL-A01}
+对每个 \(\displaystyle x\in X\)，定义 \(\displaystyle J_Xx:X^*\to\mathbb K\) 为 \(\displaystyle (J_Xx)(x^*)=x^*(x), \; x^*\in X^*\).
+由下述证明，\(\displaystyle J_Xx\in X^{**}\)，从而得到自然嵌入 \(\displaystyle J_X:X\to X^{**}\).
+若 \(\displaystyle J_X\) 满射，即 \(\displaystyle J_X(X)=X^{**}\)，则称 \(\displaystyle X\) 为自反空间.
+\end{FADefinition}
+
+\begin{FAProposition}[B][自然嵌入的良定义、线性与等距性]{i07:natural-embedding-isometry}
+对任意赋范空间 \(\displaystyle X\)，自然嵌入 \(\displaystyle J_X:X\to X^{**}\) 良定义、线性且满足 \(\displaystyle \|J_Xx\|=\|x\|, \; x\in X\).
+特别地，\(\displaystyle J_X\) 单射.
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in X\). 对 \(\displaystyle x_1^*,x_2^*\in X^*\) 与 \(\displaystyle \alpha,\beta\in\mathbb K\)，有 \(\displaystyle (J_Xx)(\alpha x_1^*+\beta x_2^*)=\alpha x_1^*(x)+\beta x_2^*(x)\)，故 \(\displaystyle J_Xx\) 线性. 又由对偶范数定义，\(\displaystyle |(J_Xx)(x^*)|=|x^*(x)|\leqslant\|x^*\|\|x\|\)，故 \(\displaystyle J_Xx\) 连续且 \(\displaystyle \|J_Xx\|\leqslant\|x\|\). 因而 \(\displaystyle J_Xx\in X^{**}\)，良定义成立.
+
+对 \(\displaystyle x,y\in X\) 与 \(\displaystyle \alpha,\beta\in\mathbb K\)，任取 \(\displaystyle x^*\in X^*\)，则
+\[
+\bigl(J_X(\alpha x+\beta y)\bigr)(x^*)
+=x^*(\alpha x+\beta y)
+=\alpha(J_Xx)(x^*)+\beta(J_Xy)(x^*).
+\]
+故 \(\displaystyle J_X\) 线性. 最后由二次对偶范数与 I-06 的对偶范数表示\autoref{i06:dual-norm-representation}， \(\displaystyle \|J_Xx\| =\sup_{\|x^*\|\leqslant1}|(J_Xx)(x^*)| =\sup_{\|x^*\|\leqslant1}|x^*(x)| =\|x\|\).
+因此 \(\displaystyle J_X\) 等距. 若 \(\displaystyle J_Xx=0\)，则 \(\displaystyle \|x\|=\|J_Xx\|=0\)，故 \(\displaystyle x=0\)，所以 \(\displaystyle J_X\) 单射.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][自反赋范空间自动完备]{i07:reflexive-banach}
+若赋范空间 \(\displaystyle X\) 自反，则 \(\displaystyle X\) 为 Banach 空间.
+\end{FACorollary}
+
+\begin{FAProof}
+由\autoref{i05:dual-banach}应用于 \(\displaystyle X^*\)，\(\displaystyle X^{**}\) 为 Banach 空间. 自反性说明 \(\displaystyle J_X:X\to X^{**}\) 满射，而\autoref{i07:natural-embedding-isometry}说明它是等距线性映射. 因此 \(\displaystyle X\) 与 Banach 空间 \(\displaystyle X^{**}\) 等距同构，故 \(\displaystyle X\) 完备.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{\texorpdfstring{\(\displaystyle L^p\)}{Lp}对偶与自反性}
+\index{Lp dual@Lp对偶}\index{Radon-Nikodym theorem@Radon--Nikodym定理}
+
+\begin{FALemma}[C][有限测度集上的简单函数逼近]{i07:finite-measure-simple-density}
+设 \(\displaystyle E\in\Sigma\)、\(\displaystyle \mu(E)<\infty\)、\(\displaystyle 1\leqslant p<\infty\). 若 \(\displaystyle f\in L^p(\mu)\) 且 \(\displaystyle f=0\) 几乎处处于 \(\displaystyle \Omega\setminus E\)，则存在支撑于 \(\displaystyle E\) 的简单函数列 \(\displaystyle (s_m)\)，使 \(\displaystyle \|s_m-f\|_p\to0\).
+\end{FALemma}
+
+\begin{FAProof}
+先令 \(\displaystyle f^{(M)}=f\mathbf1_{\{|f|\leqslant M\}}\). 则 \(\displaystyle |f-f^{(M)}|^p=|f|^p\mathbf1_{\{|f|>M\}}\to0\) 几乎处处，且被 \(\displaystyle |f|^p\in L^1\) 控制，所以支配收敛给出 \(\displaystyle \|f-f^{(M)}\|_p\to0\). 固定 \(\displaystyle M\). 在实数情形，把区间 \(\displaystyle [-M,M]\) 按网格 \(\displaystyle 2^{-m}\) 分割并将每个函数值取到相应左端点，得到可测简单函数 \(\displaystyle s_{M,m}\)，满足 \(\displaystyle |s_{M,m}-f^{(M)}|\leqslant2^{-m}\mathbf1_E\)，故 \(\displaystyle \|s_{M,m}-f^{(M)}\|_p\leqslant2^{-m}\mu(E)^{\frac{1}{p}}\to0\). 复数情形分别量化实部与虚部，得到同样结论，只把点态误差常数改为 \(\displaystyle \sqrt2\,2^{-m}\). 先选 \(\displaystyle M\) 控制截断误差，再选 \(\displaystyle m\) 控制简单函数误差，作对角选择即得所需简单函数列.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][\(\displaystyle L^p\)对偶与自反性]{fa:LPSPACE-B01}
+设 \(\displaystyle (\Omega,\Sigma,\mu)\) 为 \(\displaystyle \sigma\)-有限测度空间，\(\displaystyle 1<p<\infty\)，并令 \(\displaystyle q\) 满足 \(\displaystyle \frac{1}{p}+\frac{1}{q}=1\). 则映射
+\[
+L^q(\mu)\longrightarrow(L^p(\mu))^*,
+\;
+g\longmapsto\Lambda_g,
+\;
+\Lambda_g(f)=\int_\Omega fg\,\mathrm{d}\mu
+\]
+为线性等距同构. 因而 \(\displaystyle L^p(\mu)\) 自反.
+\end{FATheorem}
+
+\begin{FAProof}
+先证映射良定义并等距. 对 \(\displaystyle g\in L^q\)，Hölder 不等式给出 \(\displaystyle |\Lambda_g(f)| \leqslant\int_\Omega|fg|\,\mathrm{d}\mu \leqslant\|f\|_p\|g\|_q\)，
+故 \(\displaystyle \Lambda_g\in(L^p)^*\) 且 \(\displaystyle \|\Lambda_g\|\leqslant\|g\|_q\). 若 \(\displaystyle g=0\)，两侧均为零，故等号成立. 若 \(\displaystyle g\neq0\)，在 \(\displaystyle g\neq0\) 处令 \(\displaystyle f=\frac{|g|^{q-2}\overline g}{\|g\|_q^{\frac{q}{p}}}\)，
+在 \(\displaystyle g=0\) 处令 \(\displaystyle f=0\). 因为 \(\displaystyle (q-1)p=q\)，有
+\[
+\|f\|_p^p
+=\frac{\int_\Omega|g|^q\,\mathrm{d}\mu}{\|g\|_q^q}
+=1,
+\;
+\Lambda_g(f)
+=\frac{\int_\Omega|g|^q\,\mathrm{d}\mu}{\|g\|_q^{\frac{q}{p}}}
+=\|g\|_q.
+\]
+这里 \(\displaystyle |g|^{q-2}\overline g\) 正是使 \(\displaystyle fg\) 非负实值的相位选择. 因此 \(\displaystyle \|\Lambda_g\|=\|g\|_q\)，映射为线性等距嵌入.
+
+以下证满射. 给定 \(\displaystyle F\in(L^p)^*\). 由 \(\displaystyle \sigma\)-有限性，取可测集合 \(\displaystyle D_j\) 满足 \(\displaystyle \Omega=\bigcup_{j=1}^{\infty}D_j\) 且 \(\displaystyle \mu(D_j)<\infty\). 令 \(\displaystyle E_n=\bigcup_{j=1}^nD_j\)，则 \(\displaystyle E_n\uparrow\Omega\) 且 \(\displaystyle \mu(E_n)<\infty\). 对可测 \(\displaystyle A\subseteq E_n\)，定义 \(\displaystyle \nu_n(A)=F(\mathbf1_A)\).
+因为 \(\displaystyle \mu(E_n)<\infty\)，每个 \(\displaystyle \mathbf1_A\in L^p\). 由定义 \(\displaystyle \nu_n(\varnothing)=0\). 若 \(\displaystyle A,B\subseteq E_n\) 可测且不交，则 \(\displaystyle \mathbf1_{A\cup B}=\mathbf1_A+\mathbf1_B\)，由 \(\displaystyle F\) 的线性性得到 \(\displaystyle \nu_n(A\cup B)=\nu_n(A)+\nu_n(B)\)，故 \(\displaystyle \nu_n\) 有限可加. 若 \(\displaystyle (A_k)\) 两两不交且均包含于 \(\displaystyle E_n\)，记 \(\displaystyle A=\bigcup_{k=1}^{\infty}A_k\). 对 \(\displaystyle N\in\mathbb N\)，
+\[
+\left\|\mathbf1_A-\mathbf1_{\cup_{k=1}^NA_k}\right\|_p^p
+=\mu\!\left(\bigcup_{k>N}A_k\right).
+\]
+右端随 \(\displaystyle N\to\infty\) 下降到 \(\displaystyle0\)，因为这些尾集包含于有限测度集 \(\displaystyle E_n\). 故指示函数在 \(\displaystyle L^p\) 中收敛. 由 \(\displaystyle F\) 连续与有限可加性，
+\[
+\nu_n(A)
+=\lim_{N\to\infty}F\!\left(\mathbf1_{\cup_{k=1}^NA_k}\right)
+=\sum_{k=1}^{\infty}\nu_n(A_k).
+\]
+所以 \(\displaystyle \nu_n\) 可列可加.
+
+再证有限总变差. 对任意有限可测分割 \(\displaystyle E_n=A_1\dot\cup\cdots\dot\cup A_m\)，对每个 \(\displaystyle j\) 选择 \(\displaystyle |\theta_j|=1\) 使 \(\displaystyle \theta_j\nu_n(A_j)=|\nu_n(A_j)|\)；若 \(\displaystyle \nu_n(A_j)=0\)，任取 \(\displaystyle \theta_j=1\). 令 \(\displaystyle s=\sum_{j=1}^m\theta_j\mathbf1_{A_j}\).
+则 \(\displaystyle |s|=1\) 几乎处处于 \(\displaystyle E_n\)，从而 \(\displaystyle \|s\|_p=\mu(E_n)^{\frac{1}{p}}\)，并且
+\[
+\sum_{j=1}^m|\nu_n(A_j)|
+=F(s)
+\leqslant|F(s)|
+\leqslant\|F\|\mu(E_n)^{\frac{1}{p}}.
+\]
+对全部有限分割取上确界，得到 \(\displaystyle |\nu_n|(E_n)\leqslant\|F\|\mu(E_n)^{\frac{1}{p}}<\infty\). 若 \(\displaystyle \mu(A)=0\)，则 \(\displaystyle \mathbf1_A=0\) 于 \(\displaystyle L^p\)，故 \(\displaystyle \nu_n(A)=0\). 因此 \(\displaystyle \nu_n\ll\mu\). I-01 冻结的 Radon--Nikodym 接口现可合法应用：存在 \(\displaystyle h_n\in L^1(E_n)\)，使 \(\displaystyle \nu_n(A)=\int_Ah_n\,\mathrm{d}\mu\)
+对全部可测 \(\displaystyle A\subseteq E_n\) 成立，且 \(\displaystyle h_n\) 在几乎处处意义下唯一.
+
+由线性性，对每个支撑于 \(\displaystyle E_n\) 的简单函数 \(\displaystyle s\)，有 \(\displaystyle F(s)=\int_{E_n}s h_n\,\mathrm{d}\mu\).
+还需证明 \(\displaystyle h_n\in L^q(E_n)\). 对 \(\displaystyle r\in\mathbb N\)，令 \(\displaystyle B_r=E_n\cap\{|h_n|\leqslant r\}\)，并在 \(\displaystyle h_n\neq0\) 处定义 \(\displaystyle f_r=\mathbf1_{B_r}|h_n|^{q-2}\overline{h_n}\)，
+在 \(\displaystyle h_n=0\) 处令 \(\displaystyle f_r=0\). 因 \(\displaystyle \mu(E_n)<\infty\) 且 \(\displaystyle |f_r|=\mathbf1_{B_r}|h_n|^{q-1}\leqslant r^{q-1}\mathbf1_{E_n}\)，有 \(\displaystyle f_r\in L^p\). 在有限测度集 \(\displaystyle B_r\) 上应用\autoref{i07:finite-measure-simple-density}，取支撑于 \(\displaystyle B_r\) 的简单函数 \(\displaystyle s_k\) 使 \(\displaystyle s_k\to f_r\) 于 \(\displaystyle L^p\). 对每个 \(\displaystyle s_k\)，已有 \(\displaystyle F(s_k)=\int s_kh_n\,\mathrm{d}\mu\). 由于 \(\displaystyle |h_n|\leqslant r\) 于 \(\displaystyle B_r\) 且 \(\displaystyle \mu(B_r)<\infty\)，有 \(\displaystyle h_n\mathbf1_{B_r}\in L^q\). 因此 Hölder 给出 \(\displaystyle \int(s_k-f_r)h_n\,\mathrm{d}\mu\to0\). 再由 \(\displaystyle F\) 连续，令 \(\displaystyle k\to\infty\) 得到 \(\displaystyle F(f_r)=\int_{E_n}f_rh_n\,\mathrm{d}\mu =\int_{B_r}|h_n|^q\,\mathrm{d}\mu\).
+记 \(\displaystyle A_r=\int_{B_r}|h_n|^q\,\mathrm{d}\mu\). 又 \(\displaystyle \|f_r\|_p^p=A_r\)，故 \(\displaystyle A_r =F(f_r) \leqslant|F(f_r)| \leqslant\|F\|A_r^{\frac{1}{p}}\).
+若 \(\displaystyle A_r=0\) 无需处理；若 \(\displaystyle A_r>0\)，则 \(\displaystyle A_r^{\frac{1}{q}}\leqslant\|F\|\). 令 \(\displaystyle r\to\infty\)，由单调收敛得到 \(\displaystyle \|h_n\|_q\leqslant\|F\|\).
+因此 \(\displaystyle h_n\in L^q(E_n)\). 现在对任意支撑于 \(\displaystyle E_n\) 的 \(\displaystyle f\in L^p\)，由\autoref{i07:finite-measure-simple-density}取简单函数 \(\displaystyle s_k\to f\) 于 \(\displaystyle L^p\). \(\displaystyle F\) 连续，而 \(\displaystyle h_n\in L^q\) 使 Hölder 可用于积分差，故 \(\displaystyle F(f)=\int_{E_n}fh_n\,\mathrm{d}\mu\).
+
+若 \(\displaystyle m>n\)，则对每个可测 \(\displaystyle A\subseteq E_n\)， \(\displaystyle \int_Ah_m\,\mathrm{d}\mu =F(\mathbf1_A) =\int_Ah_n\,\mathrm{d}\mu\).
+由Radon--Nikodym唯一性，\(\displaystyle h_m=h_n\) 几乎处处于 \(\displaystyle E_n\). 令 \(\displaystyle E_0=\varnothing\)，并在互不相交的可测层 \(\displaystyle E_n\setminus E_{n-1}\) 上定义 \(\displaystyle h=h_n\). 这样得到可测 \(\displaystyle h\)，且由上述一致性，\(\displaystyle h=h_n\) 几乎处处于每个 \(\displaystyle E_n\). 又 \(\displaystyle \int_{E_n}|h|^q\,\mathrm{d}\mu =\|h_n\|_q^q \leqslant\|F\|^q\).
+令 \(\displaystyle n\to\infty\)，单调收敛给出 \(\displaystyle h\in L^q(\mu)\) 且 \(\displaystyle \|h\|_q\leqslant\|F\|\).
+
+最后取任意 \(\displaystyle f\in L^p\). 因 \(\displaystyle E_n\uparrow\Omega\)，单调收敛应用于 \(\displaystyle |f|^p\mathbf1_{E_n}\) 得到 \(\displaystyle \|f-f\mathbf1_{E_n}\|_p\to0\). 因而
+\[
+F(f)
+=\lim_{n\to\infty}F(f\mathbf1_{E_n})
+=\lim_{n\to\infty}\int_\Omega f\mathbf1_{E_n}h\,\mathrm{d}\mu
+=\int_\Omega fh\,\mathrm{d}\mu,
+\]
+其中最后一步由 Hölder 估计尾部积分. 故 \(\displaystyle F=\Lambda_h\)，满射成立. 已证等距性，于是 \(\displaystyle \|F\|=\|h\|_q\).
+
+现证自反性. 对共轭指数 \(\displaystyle q\) 再应用刚证的对偶定理，得到 \(\displaystyle L^q\cong(L^p)^*\) 与 \(\displaystyle L^p\cong(L^q)^*\). 给定 \(\displaystyle G\in(L^p)^{**}\)，定义 \(\displaystyle \widetilde G:L^q\to\mathbb K\) 为 \(\displaystyle \widetilde G(g)=G(\Lambda_g)\). 因 \(\displaystyle g\mapsto\Lambda_g\) 线性等距，\(\displaystyle \widetilde G\in(L^q)^*\). 因此存在 \(\displaystyle f\in L^p\)，使 \(\displaystyle \widetilde G(g)=\int_\Omega gf\,\mathrm{d}\mu, \; g\in L^q\).
+另一方面，
+\[
+(J_{L^p}f)(\Lambda_g)
+=\Lambda_g(f)
+=\int_\Omega fg\,\mathrm{d}\mu
+=\int_\Omega gf\,\mathrm{d}\mu.
+\]
+故 \(\displaystyle G(\Lambda_g)=(J_{L^p}f)(\Lambda_g)\) 对全部 \(\displaystyle g\in L^q\) 成立. 由于 \(\displaystyle g\mapsto\Lambda_g\) 满射到 \(\displaystyle (L^p)^*\)，得到 \(\displaystyle G=J_{L^p}f\). 因此 \(\displaystyle J_{L^p}\) 满射，\(\displaystyle L^p\) 自反.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[\(\displaystyle \ell^p\)的对偶与自反性]\label{i07:ellp-dual-reflexive}
+把 \(\displaystyle \ell^p\) 视为 \(\displaystyle \mathbb N\) 上的计数测度的 \(\displaystyle L^p\). 计数测度为 \(\displaystyle \sigma\)-有限，因此当 \(\displaystyle 1<p<\infty\) 且 \(\displaystyle \frac{1}{p}+\frac{1}{q}=1\) 时，\autoref{fa:LPSPACE-B01}给出 \(\displaystyle (\ell^p)^*\cong\ell^q\)
+的线性等距同构，配对为 \(\displaystyle \Lambda_a(x)=\sum_{n=1}^{\infty}x_na_n\). 同一定理还给出 \(\displaystyle \ell^p\) 自反.
+\end{FAExample}
+
+\subsection{\texorpdfstring{\(\displaystyle c_0\)}{c0}与\texorpdfstring{\(\displaystyle \ell^1\)}{l1}的对偶}
+
+\begin{FAProposition}[B][\(\displaystyle c_0^*\cong\ell^1\)]{i07:c0-dual}
+映射
+\[
+\ell^1\longrightarrow(c_0)^*,
+\;
+a\longmapsto\varphi_a,
+\;
+\varphi_a(x)=\sum_{n=1}^{\infty}a_nx_n
+\]
+是线性等距同构.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle a\in\ell^1\)、\(\displaystyle x\in c_0\)，则级数绝对收敛且 \(\displaystyle |\varphi_a(x)|\leqslant\|a\|_1\|x\|_\infty\)，所以 \(\displaystyle \varphi_a\in(c_0)^*\) 且 \(\displaystyle \|\varphi_a\|\leqslant\|a\|_1\).
+
+反之，给定 \(\displaystyle \varphi\in(c_0)^*\)，令 \(\displaystyle a_n=\varphi(e_n)\). 对有限集合 \(\displaystyle F\subseteq\mathbb N\)，定义有限支撑向量 \(\displaystyle x^F\) 如下：若 \(\displaystyle a_n\neq0\) 且 \(\displaystyle n\in F\)，取 \(\displaystyle x_n^F=\frac{\overline{a_n}}{|a_n|}\)；若 \(\displaystyle a_n=0\) 或 \(\displaystyle n\notin F\)，取 \(\displaystyle x_n^F=0\). 则 \(\displaystyle \|x^F\|_\infty\leqslant1\)，且 \(\displaystyle \sum_{n\in F}|a_n| =\varphi(x^F) \leqslant|\varphi(x^F)| \leqslant\|\varphi\|\).
+对有限部分和取上确界得 \(\displaystyle a\in\ell^1\) 且 \(\displaystyle \|a\|_1\leqslant\|\varphi\|\). 对任意 \(\displaystyle x\in c_0\)，定义截断 \(\displaystyle x^{(N)}=(x_1,\dots,x_N,0,\dots)\).
+因 \(\displaystyle x_n\to0\)，有 \(\displaystyle \|x^{(N)}-x\|_\infty\to0\). 连续性给出
+\[
+\varphi(x)
+=\lim_{N\to\infty}\varphi(x^{(N)})
+=\lim_{N\to\infty}\sum_{n=1}^Na_nx_n
+=\sum_{n=1}^{\infty}a_nx_n.
+\]
+故 \(\displaystyle \varphi=\varphi_a\). 已有 \(\displaystyle \|\varphi_a\|\leqslant\|a\|_1\)，而刚才的有限集合估计应用于 \(\displaystyle \varphi_a\) 给出 \(\displaystyle \|a\|_1\leqslant\|\varphi_a\|\)，所以范数相等.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][\(\displaystyle (\ell^1)^*\cong\ell^\infty\)]{i07:l1-dual}
+映射 \(\displaystyle b\mapsto\psi_b\)，其中 \(\displaystyle \psi_b(x)=\sum_{n=1}^{\infty}b_nx_n, \; b\in\ell^\infty\)，
+给出 \(\displaystyle \ell^\infty\) 到 \(\displaystyle (\ell^1)^*\) 的线性等距同构.
+\end{FAProposition}
+
+\begin{FAProof}
+对 \(\displaystyle b\in\ell^\infty\) 与 \(\displaystyle x\in\ell^1\)，有 \(\displaystyle |\psi_b(x)|\leqslant\|b\|_\infty\|x\|_1\)，故 \(\displaystyle \|\psi_b\|\leqslant\|b\|_\infty\). 对每个 \(\displaystyle n\)，\(\displaystyle |\psi_b(e_n)|=|b_n|\leqslant\|\psi_b\|\)，取上确界得反向不等式，所以 \(\displaystyle \|\psi_b\|=\|b\|_\infty\).
+
+给定 \(\displaystyle \psi\in(\ell^1)^*\)，令 \(\displaystyle b_n=\psi(e_n)\). 因 \(\displaystyle |b_n|\leqslant\|\psi\|\)，有 \(\displaystyle b\in\ell^\infty\). 对有限支撑 \(\displaystyle x\)，线性性直接给出 \(\displaystyle \psi(x)=\sum_nb_nx_n=\psi_b(x)\). 对一般 \(\displaystyle x\in\ell^1\)，其截断 \(\displaystyle x^{(N)}\) 满足 \(\displaystyle \|x-x^{(N)}\|_1\to0\). 由 \(\displaystyle \psi\) 与 \(\displaystyle \psi_b\) 连续，令 \(\displaystyle N\to\infty\) 得 \(\displaystyle \psi(x)=\psi_b(x)\). 因而映射满射且等距.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[\(\displaystyle c_0\)不是自反空间]\label{i07:c0-nonreflexive}
+由\autoref{i07:c0-dual}与\autoref{i07:l1-dual}，在具体线性等距识别 \(\displaystyle (c_0)^*\cong\ell^1, \; (c_0)^{**}\cong\ell^\infty\)
+下，\(\displaystyle J_{c_0}x\) 作用在 \(\displaystyle a\in\ell^1\) 上为 \(\displaystyle (J_{c_0}x)(a)=\varphi_a(x)=\sum_{n=1}^{\infty}a_nx_n\).
+这正对应于自然包含 \(\displaystyle c_0\hookrightarrow\ell^\infty\). 常数序列 \(\displaystyle (1,1,\dots)\in\ell^\infty\setminus c_0\)，故 \(\displaystyle J_{c_0}\) 不满射，所以 \(\displaystyle c_0\) 不自反. 该论证只使用具体对偶识别，不使用任何弱紧性判据.
+\end{FACounterexample}
+
+\section{弱拓扑}\label{sec:i07-weak-topology}
+\index{weak topology@弱拓扑}\index{weak convergence@弱收敛}
+
+\begin{FALightBox}{定义接口}[弱拓扑]
+\(\displaystyle X\) 上的弱拓扑 \(\displaystyle \sigma(X,X^*)\) 是使每个 \(\displaystyle x^*\in X^*\) 连续的最弱拓扑. 等价地，它由半范数族 \(\displaystyle p_{x^*}(x)=|x^*(x)|\) 生成. 在 \(\displaystyle0\) 处的基本邻域可写为
+\[
+U(x_1^*,\dots,x_m^*;\varepsilon_1,\dots,\varepsilon_m)
+=\{x\in X:|x_j^*(x)|<\varepsilon_j,\ 1\leqslant j\leqslant m\},
+\]
+其中 \(\displaystyle m\in\mathbb N\)、\(\displaystyle x_j^*\in X^*\)、\(\displaystyle \varepsilon_j>0\). \(\displaystyle x_0\) 处的基本邻域由上述集合平移为 \(\displaystyle x_0+U\).
+\end{FALightBox}
+
+\begin{FAProposition}[C][弱邻域计算工具]{fa:WT-C01}
+弱拓扑的基本邻域满足以下性质：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 有限多个对偶半范数不等式构成基本弱邻域，有限交仍包含且可写成同型基本邻域；
+\item 加法与标量乘法在这些基本邻域上满足拓扑向量运算所需的局部估计；
+\item 范数拓扑强于弱拓扑；
+\item 对网的弱收敛，只需逐一控制基本邻域中有限多个泛函值.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+（i） 两个基本零邻域的交只需把两组有限泛函与正阈值合并；重复上述合并过程即可处理一般有限交. （ii） 对给定 \(\displaystyle U=U(x_1^*,\dots,x_m^*;\varepsilon_1,\dots,\varepsilon_m)\)，令 \(\displaystyle W=U(x_1^*,\dots,x_m^*;\frac{\varepsilon_1}{2},\dots,\frac{\varepsilon_m}{2})\). 若 \(\displaystyle u,v\in W\)，则 \(\displaystyle |x_j^*(u+v)|\leqslant|x_j^*(u)|+|x_j^*(v)|<\varepsilon_j\)，所以 \(\displaystyle W+W\subseteq U\). 对固定 \(\displaystyle \lambda_0\in\mathbb K\)、\(\displaystyle x_0\in X\)，写
+\[
+|x_j^*(\lambda x-\lambda_0x_0)|
+\leqslant |\lambda-\lambda_0|\,|x_j^*(x_0)|
++|\lambda|\,|x_j^*(x-x_0)|.
+\]
+先把 \(\displaystyle \lambda\) 限制在 \(\displaystyle |\lambda-\lambda_0|<1\)，于是 \(\displaystyle |\lambda|\leqslant|\lambda_0|+1\). 再对有限多个 \(\displaystyle j\) 同时缩小标量邻域与 \(\displaystyle x_0\) 的基本弱邻域，使上式两项分别小于 \(\displaystyle \frac{\varepsilon_j}{2}\)，即可得到标量乘法的局部连续估计. （iii） 若 \(\displaystyle \|x\|<\delta\)，则 \(\displaystyle |x_j^*(x)|\leqslant\|x_j^*\|\delta\). 对有限多个非零 \(\displaystyle x_j^*\)，取 \(\displaystyle \delta<\min_j\frac{\varepsilon_j}{\|x_j^*\|}\)；零泛函无需约束. 因而某个范数球包含于 \(\displaystyle U\)，故范数拓扑强于弱拓扑. （iv） 正是基本邻域的有限约束形式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][弱拓扑为Hausdorff]{i07:weak-hausdorff}
+\(\displaystyle \sigma(X,X^*)\) 是 Hausdorff 拓扑.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle x\neq y\)，由 I-06 的对偶分离点结论\autoref{fa:HB-C01}，存在 \(\displaystyle x^*\in X^*\) 使 \(\displaystyle x^*(x)\neq x^*(y)\). 令 \(\displaystyle d=|x^*(x)-x^*(y)|>0\) 与 \(\displaystyle \delta=\frac{d}{3}\). 则 \(\displaystyle U_x=\{z:|x^*(z)-x^*(x)|<\delta\}, \; U_y=\{z:|x^*(z)-x^*(y)|<\delta\}\)
+分别是 \(\displaystyle x\)、\(\displaystyle y\) 的弱邻域. 若 \(\displaystyle z\in U_x\cap U_y\)，三角不等式给出 \(\displaystyle d<2\delta=\frac{2d}{3}\)，矛盾. 故两邻域不交.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][弱收敛的泛函刻画]{fa:WT-B01}
+对任意网 \(\displaystyle (x_\alpha)\subseteq X\) 与 \(\displaystyle x\in X\)， \(\displaystyle x_\alpha\rightharpoonup x \iff \forall\,x^*\in X^*,\ x^*(x_\alpha)\to x^*(x)\).
+序列情形是该结论的特例.
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle x_\alpha\rightharpoonup x\)，则弱拓扑定义保证每个 \(\displaystyle x^*:X\to\mathbb K\) 连续，所以 \(\displaystyle x^*(x_\alpha)\to x^*(x)\). 反之，假设对每个 \(\displaystyle x^*\in X^*\) 均有逐点收敛. 任取 \(\displaystyle x\) 的基本弱邻域 \(\displaystyle x+U(x_1^*,\dots,x_m^*;\varepsilon_1,\dots,\varepsilon_m)\).
+对每个 \(\displaystyle j\)，存在指标 \(\displaystyle \alpha_j\)，使 \(\displaystyle \alpha\geqslant\alpha_j\) 时 \(\displaystyle |x_j^*(x_\alpha-x)|<\varepsilon_j\). 因指标集有向，存在 \(\displaystyle \alpha_0\) 同时支配有限个 \(\displaystyle \alpha_j\). 当 \(\displaystyle \alpha\geqslant\alpha_0\) 时，\(\displaystyle x_\alpha\) 落入该基本邻域. 故 \(\displaystyle x_\alpha\rightharpoonup x\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][范数收敛蕴含弱收敛]{i07:norm-implies-weak}
+若网 \(\displaystyle x_\alpha\to x\) 于范数，则 \(\displaystyle x_\alpha\rightharpoonup x\).
+\end{FACorollary}
+
+\begin{FAProof}
+对任意 \(\displaystyle x^*\in X^*\)， \(\displaystyle |x^*(x_\alpha)-x^*(x)| =|x^*(x_\alpha-x)| \leqslant\|x^*\|\|x_\alpha-x\|\to0\).
+由\autoref{fa:WT-B01}得 \(\displaystyle x_\alpha\rightharpoonup x\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[弱收敛不推出范数收敛]\label{i07:ce-weak-norm}
+在 \(\displaystyle \ell^2\) 中取标准单位向量 \(\displaystyle e_n\). 由\autoref{fa:LPSPACE-B01}在 \(\displaystyle p=2\) 的结论，每个 \(\displaystyle \varphi\in(\ell^2)^*\) 唯一对应某个 \(\displaystyle a\in\ell^2\)，且 \(\displaystyle \varphi(x)=\sum_ka_kx_k\). 因而 \(\displaystyle \varphi(e_n)=a_n\to0\)，因为每个 \(\displaystyle \ell^2\) 序列的坐标趋于 \(\displaystyle0\). 由\autoref{fa:WT-B01}，\(\displaystyle e_n\rightharpoonup0\). 但 \(\displaystyle \|e_n\|_2=1\) 对全部 \(\displaystyle n\) 成立，所以 \(\displaystyle e_n\) 不范数收敛到 \(\displaystyle0\). 这里的范数有界性只来自该具体序列的直接计算. 本章尚未证明一般弱收敛序列的范数有界性；该结论留到 I-08. 对任意弱收敛网，不断言其整个取值范围范数有界.
+\end{FACounterexample}
+
+\section{弱*拓扑}\label{sec:i07-weak-star-topology}
+\index{weak-star topology@弱*拓扑}\index{weak-star convergence@弱*收敛}
+
+\begin{FALightBox}{定义接口}[相对于预对偶的弱*拓扑]
+\(\displaystyle X^*\) 上相对于给定预对偶 \(\displaystyle X\) 的弱*拓扑 \(\displaystyle \sigma(X^*,X)\) 是使每个取值映射 \(\displaystyle x^*\mapsto x^*(x)\)、\(\displaystyle x\in X\) 连续的最弱拓扑. 在 \(\displaystyle0\) 处的基本邻域为
+\[
+V(x_1,\dots,x_m;\varepsilon_1,\dots,\varepsilon_m)
+=\{x^*\in X^*:|x^*(x_j)|<\varepsilon_j,\ 1\leqslant j\leqslant m\}.
+\]
+一般点 \(\displaystyle x_0^*\) 的基本邻域由平移得到.
+\end{FALightBox}
+
+\begin{FAProposition}[B][弱*拓扑为Hausdorff]{i07:weak-star-hausdorff}
+\(\displaystyle \sigma(X^*,X)\) 是 Hausdorff 拓扑.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle x_1^*\neq x_2^*\)，则非零线性泛函 \(\displaystyle x_1^*-x_2^*\) 不可能在全部 \(\displaystyle X\) 上取零，所以存在 \(\displaystyle x\in X\) 使 \(\displaystyle (x_1^*-x_2^*)(x)\neq0\). 令 \(\displaystyle d=|x_1^*(x)-x_2^*(x)|\) 与 \(\displaystyle \delta=\frac{d}{3}\)，用单个取值映射构造两个半径 \(\displaystyle \delta\) 的基本弱*邻域，按与\autoref{i07:weak-hausdorff}相同的三角不等式即可证明它们不交. 此处不需要 Hahn--Banach.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][弱*收敛的预对偶刻画]{fa:WT-B02}
+对任意网 \(\displaystyle (x_\alpha^*)\subseteq X^*\) 与 \(\displaystyle x^*\in X^*\)， \(\displaystyle x_\alpha^*\overset{w^*}{\longrightarrow}x^* \iff \forall\,x\in X,\ x_\alpha^*(x)\to x^*(x)\).
+序列情形是该结论的特例.
+\end{FATheorem}
+
+\begin{FAProof}
+正向由弱*拓扑定义中全部取值映射的连续性得到. 反向设对每个 \(\displaystyle x\in X\) 均有点值收敛. 任取 \(\displaystyle x^*\) 的基本弱*邻域 \(\displaystyle x^*+V(x_1,\dots,x_m;\varepsilon_1,\dots,\varepsilon_m)\).
+对有限多个 \(\displaystyle x_j\) 分别取得最终成立的点值估计，再利用网的有向性取共同上界指标，即得 \(\displaystyle x_\alpha^*\) 最终落入该邻域. 故 \(\displaystyle x_\alpha^*\overset{w^*}{\longrightarrow}x^*\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[A][弱拓扑与弱*拓扑规范定义]{fa:WT-A01}
+赋范空间 \(\displaystyle X\) 上的弱拓扑是 \(\displaystyle \sigma(X,X^*)\)，其基本邻域由有限多个 \(\displaystyle x^*\in X^*\) 的半范数约束给出，收敛判据为\autoref{fa:WT-B01}. 给定预对偶 \(\displaystyle X\) 后，\(\displaystyle X^*\) 上的弱*拓扑是 \(\displaystyle \sigma(X^*,X)\)，其基本邻域由有限多个 \(\displaystyle x\in X\) 的取值约束给出，收敛判据为\autoref{fa:WT-B02}.
+\end{FADefinition}
+
+\begin{FAProposition}[B][\(\displaystyle X^*\)上的弱*拓扑与弱拓扑比较]{i07:weak-star-vs-weak}
+在 \(\displaystyle X^*\) 上，\(\displaystyle \sigma(X^*,X)\) 不强于 \(\displaystyle \sigma(X^*,X^{**})\). 若 \(\displaystyle X\) 自反，则两种拓扑相同.
+\end{FAProposition}
+
+\begin{FAProof}
+对每个 \(\displaystyle x\in X\)，取值映射 \(\displaystyle x^*\mapsto x^*(x)\) 正是二次对偶元 \(\displaystyle J_Xx\in X^{**}\) 作用于 \(\displaystyle x^*\). 因而生成弱*拓扑的泛函族对应于 \(\displaystyle J_X(X)\subseteq X^{**}\)，而生成 \(\displaystyle X^*\) 上弱拓扑的泛函族是全部 \(\displaystyle X^{**}\). 所以弱*拓扑不强于弱拓扑. 若 \(\displaystyle X\) 自反，则 \(\displaystyle J_X(X)=X^{**}\)，两组生成泛函相同，故两种拓扑相同.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Schur性质的局部证明}
+
+\begin{FAProposition}[B][\(\displaystyle \ell^1\)的Schur性质]{i07:schur-l1}
+若序列 \(\displaystyle x^{(k)}\rightharpoonup0\) 于 \(\displaystyle \ell^1\)，则 \(\displaystyle \|x^{(k)}\|_1\to0\).
+\end{FAProposition}
+
+\begin{FAProof}
+反设结论不成立. 则存在 \(\displaystyle \varepsilon>0\) 与子列，仍记为 \(\displaystyle x^{(k)}\)，使 \(\displaystyle \|x^{(k)}\|_1\geqslant\varepsilon\) 对全部 \(\displaystyle k\) 成立. 由\autoref{i07:l1-dual}，每个坐标泛函属于 \(\displaystyle (\ell^1)^*=\ell^\infty\). 弱收敛因此给出 \(\displaystyle x_n^{(k)}\to0\) 对每个固定 \(\displaystyle n\) 成立.
+
+递归构造 \(\displaystyle 0=N_0<N_1<N_2<\cdots\) 与进一步子列 \(\displaystyle x^{(k_j)}\). 已知 \(\displaystyle N_{j-1}\) 后，由有限多个坐标分别趋零，可取足够大的 \(\displaystyle k_j\)，使 \(\displaystyle \sum_{n\leqslant N_{j-1}}|x_n^{(k_j)}|<\frac{\varepsilon}{8}\).
+固定该 \(\displaystyle x^{(k_j)}\in\ell^1\)，再取 \(\displaystyle N_j>N_{j-1}\) 使 \(\displaystyle \sum_{n>N_j}|x_n^{(k_j)}|<\frac{\varepsilon}{8}\).
+令 \(\displaystyle B_j=(N_{j-1},N_j]\cap\mathbb N\). 因 \(\displaystyle \|x^{(k_j)}\|_1\geqslant\varepsilon\)，得到 \(\displaystyle \sum_{n\in B_j}|x_n^{(k_j)}|>\frac{3\varepsilon}{4}\).
+在每个互不相交的 \(\displaystyle B_j\) 上定义 \(\displaystyle b_n=\frac{\overline{x_n^{(k_j)}}}{|x_n^{(k_j)}|}\) 当 \(\displaystyle x_n^{(k_j)}\neq0\)，零坐标取 \(\displaystyle b_n=0\)；未落在任何分块的坐标也取零. 则 \(\displaystyle b=(b_n)\in\ell^\infty\) 且 \(\displaystyle \|b\|_\infty\leqslant1\). 由\autoref{i07:l1-dual}，\(\displaystyle \psi_b(x)=\sum_nb_nx_n\) 属于 \(\displaystyle (\ell^1)^*\). 对 \(\displaystyle x^{(k_j)}\)，分块内贡献为正实数且大于 \(\displaystyle \frac{3\varepsilon}{4}\)，分块外贡献的绝对值至多 \(\displaystyle \frac{\varepsilon}{4}\). 因而 \(\displaystyle \operatorname{Re}\psi_b(x^{(k_j)})>\frac{\varepsilon}{2}\).
+这与 \(\displaystyle x^{(k_j)}\rightharpoonup0\) 要求 \(\displaystyle \psi_b(x^{(k_j)})\to0\) 矛盾. 故 \(\displaystyle \|x^{(k)}\|_1\to0\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[弱*收敛可不弱收敛]\label{i07:ce-wstar-weak}
+由\autoref{i07:c0-dual}，把 \(\displaystyle e_n\in\ell^1\) 看作 \(\displaystyle c_0\) 上第 \(\displaystyle n\) 个坐标泛函. 对任意 \(\displaystyle x=(x_k)\in c_0\)，有 \(\displaystyle e_n(x)=x_n\to0\). 由\autoref{fa:WT-B02}， \(\displaystyle e_n\overset{w^*}{\longrightarrow}0\)
+于 \(\displaystyle (c_0)^*\cong\ell^1\). 但是 \(\displaystyle \|e_n\|_1=1\). 若 \(\displaystyle e_n\) 在 \(\displaystyle \ell^1\) 中弱收敛到 \(\displaystyle0\)，\autoref{i07:schur-l1}将推出 \(\displaystyle \|e_n\|_1\to0\)，矛盾. 因此该序列弱*收敛到 \(\displaystyle0\)，但不弱收敛到 \(\displaystyle0\). 这给出弱*拓扑严格弱于弱拓扑的具体情形.
+\end{FACounterexample}
+
+\section{禁止提前使用的结论}\label{sec:i07-deferred-results}
+
+\begin{FAWarning}[延后结果边界]
+本章只建立对偶、二次对偶、自反性定义、弱拓扑与弱*拓扑及其局部例子. 下列结论尚未建立，不能进入本章任何证明链：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item Baire纲定理与一致有界性原理（Banach--Steinhaus）留到 I-08；
+\item 一般的“弱收敛序列必范数有界”结论留到 I-08 用一致有界性原理证明；该结论不扩张为“任意弱收敛网的整个取值范围必范数有界”.
+\item 开映射定理、有界逆定理与闭图像定理留到 I-09；
+\item Banach--Alaoglu 与自反空间闭单位球弱紧性留到 I-10；
+\item Banach 对偶算子与 Hilbert 伴随留到 I-11，本章不定义相应算子；
+\item Mackey 拓扑只作 D 级预告：它将在更高层次的局部凸空间理论中讨论，本章不定义也不使用.
+\end{enumerate}
+\end{FAWarning}
+
+\begin{FARemark}[关于有界性的逻辑位置]
+\autoref{i07:ce-weak-norm}中 \(\displaystyle \|e_n\|_2=1\) 与\autoref{i07:ce-wstar-weak}中 \(\displaystyle \|e_n\|_1=1\) 都是具体序列的直接计算. 它们不构成“一般弱收敛序列必范数有界”的证明；该序列结论留到 I-08 由一致有界性原理建立. 对任意弱收敛网，不断言其整个取值范围范数有界. 对弱*收敛序列，只有预对偶为 Banach 空间时，才能由 I-08 的一致有界性原理推出范数有界；预对偶不完备时不作此断言.
+\end{FARemark}
+
+\subsection{本章习题}\label{sec:i07-exercises}
+
+\begin{FAExercise}[二次对偶的完备性]{ex:i07-01}
+证明对任意赋范空间 \(\displaystyle X\)，\(\displaystyle X^{**}\) 为 Banach 空间. 指出为什么这一事实不能单独推出 \(\displaystyle X\) 完备.
+\end{FAExercise}
+
+\begin{FAExercise}[自然嵌入的逐点线性]{ex:i07-02}
+从定义 \(\displaystyle (J_Xx)(x^*)=x^*(x)\) 出发，逐项证明对固定 \(\displaystyle x\)，\(\displaystyle J_Xx\) 是 \(\displaystyle X^*\) 上的连续线性泛函，并写出 \(\displaystyle \|J_Xx\|\leqslant\|x\|\) 的直接估计.
+\end{FAExercise}
+
+\begin{FAExercise}[等距性的Hahn--Banach输入]{ex:i07-03}
+只引用\autoref{i06:dual-norm-representation}，证明 \(\displaystyle \|J_Xx\|=\|x\|\). 不得重新证明 Hahn--Banach 定理.
+\end{FAExercise}
+
+\begin{FAExercise}[自反性与完备性]{ex:i07-04}
+假设 \(\displaystyle J_X\) 满射. 用 \(\displaystyle X^{**}\) 完备与 \(\displaystyle J_X\) 等距证明 \(\displaystyle X\) 完备，不使用弱紧性.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^q\)到\(\displaystyle (L^p)^*\)的等距性]{ex:i07-05}
+设 \(\displaystyle 1<p<\infty\)、\(\displaystyle \frac{1}{p}+\frac{1}{q}=1\). 对 \(\displaystyle0\neq g\in L^q\)，构造单位向量 \(\displaystyle f\in L^p\) 使 \(\displaystyle \int fg\,\mathrm{d}\mu=\|g\|_q\)，并单独写出复数相位选择.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle \sigma\)-有限耗尽]{ex:i07-06}
+从 \(\displaystyle \Omega=\bigcup_{j=1}^{\infty}D_j\) 与 \(\displaystyle \mu(D_j)<\infty\) 构造递增 \(\displaystyle E_n\uparrow\Omega\)，并证明 \(\displaystyle \mu(E_n)<\infty\). 解释这一有限性在 \(\displaystyle \nu_n(A)=F(\mathbf1_A)\) 的定义中为何必要.
+\end{FAExercise}
+
+\begin{FAExercise}[局部测度的可列可加性]{ex:i07-07}
+对两两不交的 \(\displaystyle A_k\subseteq E_n\)，完整证明 \(\displaystyle \mathbf1_{\cup_{k=1}^NA_k}\to\mathbf1_{\cup_{k=1}^{\infty}A_k}\) 于 \(\displaystyle L^p\)，再由 \(\displaystyle F\) 连续推出 \(\displaystyle \nu_n\) 可列可加.
+\end{FAExercise}
+
+\begin{FAExercise}[有限总变差估计]{ex:i07-08}
+对有限分割 \(\displaystyle E_n=A_1\dot\cup\cdots\dot\cup A_m\)，选择相位 \(\displaystyle \theta_j\) 并构造 \(\displaystyle s=\sum_j\theta_j\mathbf1_{A_j}\). 证明 \(\displaystyle |\nu_n|(E_n)\leqslant\|F\|\mu(E_n)^{\frac{1}{p}}\).
+\end{FAExercise}
+
+\begin{FAExercise}[Radon--Nikodym密度的\(\displaystyle L^q\)估计]{ex:i07-09}
+从 \(\displaystyle f_r=\mathbf1_{B_r}|h_n|^{q-2}\overline{h_n}\) 出发，证明 \(\displaystyle \|f_r\|_p^p=\int_{B_r}|h_n|^q\,\mathrm{d}\mu\)，并完成 \(\displaystyle \|h_n\|_q\leqslant\|F\|\) 的单调收敛论证.
+\end{FAExercise}
+
+\begin{FAExercise}[全局密度拼接]{ex:i07-10}
+证明 \(\displaystyle h_m=h_n\) 几乎处处于 \(\displaystyle E_n\) 当 \(\displaystyle m>n\)，并从 \(\displaystyle \int_{E_n}|h|^q\,\mathrm{d}\mu\leqslant\|F\|^q\) 推出 \(\displaystyle h\in L^q\). 再证明 \(\displaystyle F(f)=\int fh\,\mathrm{d}\mu\) 对全部 \(\displaystyle f\in L^p\) 成立.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^p\)自反性的二次对偶计算]{ex:i07-11}
+给定 \(\displaystyle G\in(L^p)^{**}\)，定义 \(\displaystyle \widetilde G(g)=G(\Lambda_g)\). 证明 \(\displaystyle \widetilde G\in(L^q)^*\)，并从 \(\displaystyle (L^q)^*\cong L^p\) 推出 \(\displaystyle G=J_{L^p}f\).
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle \ell^p\)作为计数测度空间]{ex:i07-12}
+证明 \(\displaystyle \mathbb N\) 上的计数测度为 \(\displaystyle \sigma\)-有限，并从\autoref{fa:LPSPACE-B01}推出 \(\displaystyle (\ell^p)^*\cong\ell^q\) 与 \(\displaystyle \ell^p\) 自反，\(\displaystyle 1<p<\infty\).
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle c_0^*\)的满射性]{ex:i07-13}
+设 \(\displaystyle \varphi\in(c_0)^*\) 与 \(\displaystyle a_n=\varphi(e_n)\). 用有限支撑相位向量证明 \(\displaystyle a\in\ell^1\)，再用 \(\displaystyle c_0\) 的截断向量证明 \(\displaystyle \varphi(x)=\sum_na_nx_n\).
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle (\ell^1)^*\)的识别]{ex:i07-14}
+给定 \(\displaystyle \psi\in(\ell^1)^*\)，令 \(\displaystyle b_n=\psi(e_n)\). 证明 \(\displaystyle b\in\ell^\infty\)，先在 \(\displaystyle c_{00}\) 上得到表示，再利用截断在 \(\displaystyle \ell^1\) 中稠密扩张到全部 \(\displaystyle \ell^1\)，并证明范数相等.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle c_0\)非自反的具体识别]{ex:i07-15}
+在 \(\displaystyle (c_0)^{**}\cong\ell^\infty\) 的具体识别下，验证 \(\displaystyle J_{c_0}\) 对应 \(\displaystyle c_0\hookrightarrow\ell^\infty\). 用常数序列证明该映射不满射.
+\end{FAExercise}
+
+\begin{FAExercise}[基本弱邻域的有限交]{ex:i07-16}
+写出两个基本弱零邻域的交，并把它表示为一个同型基本邻域. 再给定一个基本弱零邻域 \(\displaystyle U\)，显式构造 \(\displaystyle W\) 使 \(\displaystyle W+W\subseteq U\).
+\end{FAExercise}
+
+\begin{FAExercise}[弱收敛的网判据]{ex:i07-17}
+不用序列化参数，完整重建\autoref{fa:WT-B01}的反向证明，明确指出有向集性质如何同时处理有限多个泛函约束.
+\end{FAExercise}
+
+\begin{FAExercise}[范数收敛与弱收敛]{ex:i07-18}
+证明范数收敛网必弱收敛. 再用 \(\displaystyle \ell^2\) 的标准基说明反向命题失败，并指出该例中使用的 \(\displaystyle \ell^2\) 对偶识别来自何处.
+\end{FAExercise}
+
+\begin{FAExercise}[基本弱*邻域与网判据]{ex:i07-19}
+写出 \(\displaystyle x_0^*\in X^*\) 的一般基本弱*邻域，并证明 \(\displaystyle x_\alpha^*\overset{w^*}{\longrightarrow}x^*\) 当且仅当对每个 \(\displaystyle x\in X\) 有 \(\displaystyle x_\alpha^*(x)\to x^*(x)\).
+\end{FAExercise}
+
+\begin{FAExercise}[弱*与弱的比较]{ex:i07-20}
+把取值映射 \(\displaystyle x^*\mapsto x^*(x)\) 写成 \(\displaystyle J_Xx\in X^{**}\) 的作用，证明 \(\displaystyle \sigma(X^*,X)\) 不强于 \(\displaystyle \sigma(X^*,X^{**})\). 再证明若 \(\displaystyle X\) 自反，则二者相同.
+\end{FAExercise}
+
+\begin{FAExercise}[Schur分块构造]{ex:i07-21}
+假设 \(\displaystyle x^{(k)}\rightharpoonup0\) 于 \(\displaystyle \ell^1\) 但存在 \(\displaystyle \varepsilon>0\) 使某子列范数至少为 \(\displaystyle \varepsilon\). 按\autoref{i07:schur-l1}构造分块与 \(\displaystyle b\in\ell^\infty\)，并逐项验证 \(\displaystyle \operatorname{Re}\psi_b(x^{(k_j)})>\frac{\varepsilon}{2}\).
+\end{FAExercise}
+
+\begin{FAExercise}[弱*收敛不蕴含弱收敛的反例与禁止推断]{ex:i07-22}
+在 \(\displaystyle (c_0)^*\cong\ell^1\) 中证明 \(\displaystyle e_n\overset{w^*}{\longrightarrow}0\) 但 \(\displaystyle e_n\) 不弱收敛到 \(\displaystyle0\). 然后判断并解释下列论证为何在本章非法：“任意弱收敛序列都范数有界，因为一致有界性原理可用于其自然嵌入像.”
+\end{FAExercise}

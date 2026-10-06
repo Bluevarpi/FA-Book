@@ -1,0 +1,597 @@
+\chapter{Palais--Smale 条件与变形引理}\label{chap:III-09}
+\FAChapterOpening
+{把 \(\displaystyle C^1\) 微分结构与紧性结合为临界点拓扑变形工具：先冻结临界点、临界值与 Palais--Smale 序列的精确语言，再由水平紧性推出定量梯度下界，构造 Banach 空间中的局部 Lipschitz 伪梯度与双向流，最后证明定量变形引理，并在半线性椭圆能量上完整核验次临界 Palais--Smale 紧性.}
+{本章前置为 III-01、III-06 与 III-08. 本章实际调用 III-01 的 Fréchet 导数与链式法则\autoref{fa:DIFF-A01}、\autoref{fa:DIFF-A02}，III-06 的能量/子水平集接口\autoref{fa:VAR-A01}，III-08 的近似临界序列接口\autoref{fa:EK-B01}. 第五节另调用 II-13 的 \(\displaystyle H_0^1\) 能量空间、Poincaré 与零延拓接口，以及 II-14 的既定 Sobolev 连续/紧嵌入\autoref{fa:SOB-A02}、\autoref{fa:SOB-A03}.}
+{\begin{center}
+\begin{tikzpicture}[x=0.92cm,y=0.84cm]
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (diff) at (0.7,3.2) {Fréchet微分};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (var) at (3.0,3.2) {凸/下半连续/强制性};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (psa) at (3.0,1.8) {Palais--Smale条件};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (psc) at (5.3,3.2) {强Palais--Smale极限};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (psb) at (5.3,1.8) {定量梯度下界};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (defb) at (7.6,3.2) {伪梯度流};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (defa) at (8.0,1.4) {定量变形引理};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (sob) at (7.6,-0.2) {Rellich--Kondrachov紧嵌入};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (exmp) at (10.0,-0.2) {半线性Dirichlet能量};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (future) at (10.7,1.6) {III-10};
+\draw[fa/arrow] (diff) -- (psa);
+\draw[fa/arrow] (var) -- (psa);
+\draw[fa/arrow] (psa) -- (psb);
+\draw[fa/arrow] (psa) -- (psc);
+\draw[fa/arrow] (diff.north) -- (0.7,3.8) -- (6.5,3.8) -- (6.5,2.5) -- (defa.north west);
+\draw[fa/arrow] (psb) -- (defa);
+\draw[fa/arrow] (defb) -- (defa);
+\draw[fa/arrow] (sob) -- (exmp);
+\draw[fa/arrow] (diff.south west) -- (0.7,0.55) -- (9.0,0.55) -- (exmp.north);
+\draw[fa/arrow,dashed] (psa.south) -- (3.0,0.8) -- (10.7,0.8) -- (future.south);
+\draw[fa/arrow,dashed] (defa) -- (future);
+\end{tikzpicture}
+\end{center}}
+
+本章固定标量域为 \(\displaystyle\mathbb R\). 主线对象为实 Banach 空间 \(\displaystyle X\). 固定泛函 \(\displaystyle\Phi\in C^1(X;\mathbb R)\). 所有导数都按\autoref{fa:DIFF-A01}解释为 \(\displaystyle\Phi'(u)\in X^*\)，所有小量都使用对偶范数 \(\displaystyle\|\Phi'(u)\|_{X^*}\). 在一般 Banach 空间中不把导数偷换成 Hilbert 梯度，也不使用 Riesz 同构作为默认记号.
+
+\section{临界点}\label{sec:iii09-critical-points}
+\index{critical point@临界点}\index{critical value@临界值}\index{sublevel set@子水平集}
+
+定义临界点集、水平临界点集与子水平集分别为
+\(\displaystyle K(\Phi):=\{u\in X:\Phi'(u)=0\}\),
+\(\displaystyle K_c:=\{u\in X:\Phi(u)=c,\ \Phi'(u)=0\}\),
+以及
+\(\displaystyle \Phi^a:=\{u\in X:\Phi(u)\leqslant a\}\).
+若 \(\displaystyle u\in K(\Phi)\)，则称 \(\displaystyle u\) 为临界点. 若存在 \(\displaystyle u\in K(\Phi)\) 使 \(\displaystyle\Phi(u)=c\)，则称 \(\displaystyle c\) 为临界值. 因而 \(\displaystyle c\) 是临界值当且仅当 \(\displaystyle K_c\neq\varnothing\). 临界值只记录导数在某个水平上消失，不意味着该点是局部极小点或全局极小点.
+
+因为 \(\displaystyle\Phi\in C^1(X;\mathbb R)\)，映射 \(\displaystyle u\mapsto\Phi'(u)\in X^*\) 关于算子范数连续. 集合 \(\displaystyle\{0\}\subseteq X^*\) 范数闭，所以 \(\displaystyle K(\Phi)=(\Phi')^{-1}(\{0\})\) 范数闭. 又因 \(\displaystyle \Phi\) 连续，\(\displaystyle \Phi^{-1}(\{c\})\) 范数闭，从而 \(\displaystyle K_c=K(\Phi)\cap\Phi^{-1}(\{c\})\) 范数闭.
+
+\begin{FAProposition}[C][强 Palais--Smale 序列极限的临界性闭合]{fa:PS-C01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi\in C^1(X;\mathbb R)\)，并设 \(\displaystyle u_n\to u\) 在 \(\displaystyle X\) 中强收敛.
+\begin{enumerate}
+\item 若 \(\displaystyle\|\Phi'(u_n)\|_{X^*}\to0\)，则 \(\displaystyle\Phi'(u)=0\).
+\item 若进一步有 \(\displaystyle\Phi(u_n)\to c\)，则 \(\displaystyle u\in K_c\).
+\item 因而只要某个满足 \(\displaystyle\Phi(u_n)\to c\) 与 \(\displaystyle\|\Phi'(u_n)\|_{X^*}\to0\) 的序列含有强收敛子列，其每个这样得到的子列极限都属于 \(\displaystyle K_c\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+由 \(\displaystyle\Phi'\) 在 \(\displaystyle X^*\) 范数中连续，\(\displaystyle u_n\to u\) 给
+\(\displaystyle \|\Phi'(u_n)-\Phi'(u)\|_{X^*}\longrightarrow0\).
+因此
+\[
+\|\Phi'(u)\|_{X^*}
+\leqslant
+\|\Phi'(u)-\Phi'(u_n)\|_{X^*}
++
+\|\Phi'(u_n)\|_{X^*}
+\longrightarrow0,
+\]
+故 \(\displaystyle\Phi'(u)=0\). 又因 \(\displaystyle C^1\) 泛函特别连续，若 \(\displaystyle\Phi(u_n)\to c\)，则同时有 \(\displaystyle\Phi(u_n)\to\Phi(u)\)，故 \(\displaystyle\Phi(u)=c\). 第二项成立. 第三项只需把同一论证应用于任意强收敛子列即得.\hfill\(\square\)
+\end{FAProof}
+
+III-08 的\autoref{fa:EK-B01}已经说明：当 \(\displaystyle\Phi\) 下有界时，可以从近极小序列构造 \(\displaystyle\Phi(u_n)\to m:=\inf_X\Phi\) 且 \(\displaystyle\|\Phi'(u_n)\|_{X^*}\to0\) 的近似临界序列.\autoref{fa:PS-C01}只说明一旦已有强收敛，极限必为水平 \(\displaystyle m\) 临界点；它本身不提供收敛子列. 本章第二节要加入的 Palais--Smale 条件正是这一紧性缺口的控制条件.
+
+\section{Palais--Smale条件}\label{sec:iii09-palais-smale}
+\index{Palais--Smale condition@Palais--Smale 条件}\index{Palais--Smale sequence@Palais--Smale 序列}
+
+\begin{FADefinition}[A][Palais--Smale 条件]{fa:PS-A01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi\in C^1(X;\mathbb R)\).
+\begin{enumerate}
+\item 序列 \(\displaystyle(u_n)\subseteq X\) 称为 Palais--Smale 序列，若实数序列 \(\displaystyle(\Phi(u_n))\) 有界，并且
+\(\displaystyle \|\Phi'(u_n)\|_{X^*}\longrightarrow0\).
+\item 称 \(\displaystyle\Phi\) 满足全局 Palais--Smale 条件，简记 \(\displaystyle(PS)\)，若每个 Palais--Smale 序列都存在范数收敛子列.
+\item 对固定 \(\displaystyle c\in\mathbb R\)，称 \(\displaystyle\Phi\) 满足水平条件 \(\displaystyle(PS)_c\)，若每个满足
+\(\displaystyle \Phi(u_n)\longrightarrow c, \; \|\Phi'(u_n)\|_{X^*}\longrightarrow0\)
+的序列都存在范数收敛子列.
+\end{enumerate}
+\end{FADefinition}
+
+全局 \(\displaystyle(PS)\) 自动推出每个 \(\displaystyle(PS)_c\)：若 \(\displaystyle\Phi(u_n)\to c\)，则 \(\displaystyle(\Phi(u_n))\) 有界，所以该序列已经是 Palais--Smale 序列，全局条件直接给范数收敛子列. 反向一般不能由单个水平条件推出，因为全局条件同时控制全部有界能量水平.
+
+Palais--Smale 紧性的量词只针对“能量有界且导数趋零”的候选序列. 它不声称任意有界序列范数预紧，不等价于自反性，也不等价于强制性. 特别地，\(\displaystyle(PS)_c\) 本身不保证 \(\displaystyle c\) 是临界值：只有当存在水平 \(\displaystyle c\) PS 序列时，紧性与\autoref{fa:PS-C01}才能产生 \(\displaystyle K_c\) 中的极限.
+
+\begin{FAProposition}[B][空临界水平附近的定量梯度下界]{fa:PS-B01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi\in C^1(X;\mathbb R)\)，并固定 \(\displaystyle c\in\mathbb R\). 若 \(\displaystyle\Phi\) 满足 \(\displaystyle(PS)_c\) 且 \(\displaystyle K_c=\varnothing\)，则存在 \(\displaystyle\varepsilon_0>0\) 与 \(\displaystyle\delta>0\)，使对每个满足
+\(\displaystyle |\Phi(u)-c|\leqslant2\varepsilon_0\)
+的 \(\displaystyle u\in X\)，都有
+\(\displaystyle \|\Phi'(u)\|_{X^*}\geqslant\delta\).
+\end{FAProposition}
+
+\begin{FAProof}
+反设结论不成立. 则对每个 \(\displaystyle n\in\mathbb N\)，把 \(\displaystyle\varepsilon_0=\frac{1}{n}\) 与 \(\displaystyle\delta=\frac{1}{n}\) 代入否定命题，可以选到 \(\displaystyle u_n\in X\) 使
+\(\displaystyle |\Phi(u_n)-c|\leqslant\frac{2}{n}, \; \|\Phi'(u_n)\|_{X^*}<\frac{1}{n}\).
+于是 \(\displaystyle\Phi(u_n)\to c\) 且 \(\displaystyle\|\Phi'(u_n)\|_{X^*}\to0\). 由 \(\displaystyle(PS)_c\)，存在子列 \(\displaystyle u_{n_k}\to u\) 在 \(\displaystyle X\) 中强收敛. 再由\autoref{fa:PS-C01}，\(\displaystyle u\in K_c\)，与 \(\displaystyle K_c=\varnothing\) 矛盾. 因而所需 \(\displaystyle\varepsilon_0,\delta\) 必存在.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[全局紧能量带]
+若 \(\displaystyle\Phi\) 满足全局 \(\displaystyle(PS)\)，且闭区间 \(\displaystyle[a,b]\) 内没有临界值，则存在 \(\displaystyle\delta>0\) 使
+\(\displaystyle a\leqslant\Phi(u)\leqslant b \Longrightarrow \|\Phi'(u)\|_{X^*}\geqslant\delta\).
+事实上，若不存在这样的 \(\displaystyle\delta\)，可取 \(\displaystyle u_n\) 满足 \(\displaystyle a\leqslant\Phi(u_n)\leqslant b\) 与 \(\displaystyle\|\Phi'(u_n)\|_{X^*}\leqslant\frac{1}{n}\). 实紧区间 \(\displaystyle[a,b]\) 中的序列 \(\displaystyle\Phi(u_n)\) 有收敛子列，仍记为 \(\displaystyle\Phi(u_n)\to c\in[a,b]\). 原序列是 Palais--Smale 序列，所以全局 \(\displaystyle(PS)\) 再给一个范数收敛子列.\autoref{fa:PS-C01}产生 \(\displaystyle u\in K_c\)，于是 \(\displaystyle c\) 为 \(\displaystyle[a,b]\) 中的临界值，矛盾. 标量子列抽取与 Banach 空间紧性是两个不同步骤，不能省略前者.
+\end{FARemark}
+
+\section{伪梯度}\label{sec:iii09-pseudogradient}
+\index{pseudo-gradient@伪梯度}\index{locally Lipschitz@局部 Lipschitz}\index{partition of unity@单位分解!度量支集}
+
+令
+\(\displaystyle U:=X\setminus K(\Phi)=\{u\in X:\Phi'(u)\neq0\}\).
+因为 \(\displaystyle K(\Phi)\) 范数闭，\(\displaystyle U\) 范数开. 一般 Banach 空间上没有规范梯度向量 \(\displaystyle\nabla\Phi(u)\). 所需对象只需在每点选择一个单位范数方向，使导数在该方向上达到固定比例的对偶范数，再用局部有限 Lipschitz 单位分解把这些局部方向拼成向量场.
+
+\begin{FAProposition}[B][伪梯度与 Banach 空间流]{fa:DEF-B01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi\in C^1(X;\mathbb R)\)，并令 \(\displaystyle U=X\setminus K(\Phi)\). 则存在局部 Lipschitz 映射 \(\displaystyle V:U\to X\) 与统一常数 \(\displaystyle\kappa=\frac{1}{2}\)，使对每个 \(\displaystyle u\in U\)，
+\(\displaystyle \|V(u)\|_X\leqslant1\),
+并且
+\(\displaystyle \Phi'(u)[V(u)] \geqslant \kappa\|\Phi'(u)\|_{X^*}\).
+此外，若 \(\displaystyle G:X\to X\) 有界且局部 Lipschitz，则自治方程 \(\displaystyle z'(s)=G(z(s))\) 对每个初值 \(\displaystyle z(0)=x\) 有唯一全局解 \(\displaystyle z(\cdot;x):\mathbb R\to X\). 对每个固定 \(\displaystyle s\in\mathbb R\)，流映射 \(\displaystyle\Theta_s(x):=z(s;x)\) 连续，并且 \(\displaystyle\Theta_s^{-1}=\Theta_{-s}\).
+\end{FAProposition}
+
+\begin{FAProof}
+先构造局部方向. 固定 \(\displaystyle u\in U\)，记 \(\displaystyle p_u:=\Phi'(u)\in X^*\setminus\{0\}\). 由对偶范数的上确界定义，可取 \(\displaystyle e_u\in X\)、\(\displaystyle\|e_u\|_X=1\)，使
+\(\displaystyle p_u[e_u] > \frac{3}{4}\|p_u\|_{X^*}\).
+由于 \(\displaystyle\Phi':X\to X^*\) 连续，可取范数开邻域 \(\displaystyle W_u\subseteq U\) 使对全部 \(\displaystyle v\in W_u\)，
+\(\displaystyle \|\Phi'(v)-p_u\|_{X^*} < \frac{1}{8}\|p_u\|_{X^*}\).
+于是
+\(\displaystyle \Phi'(v)[e_u] \geqslant p_u[e_u]-\|\Phi'(v)-p_u\|_{X^*} > \frac{5}{8}\|p_u\|_{X^*}\),
+而
+\(\displaystyle \|\Phi'(v)\|_{X^*} \leqslant \|p_u\|_{X^*}+\|\Phi'(v)-p_u\|_{X^*} < \frac{9}{8}\|p_u\|_{X^*}\).
+故对 \(\displaystyle v\in W_u\)，
+\(\displaystyle \Phi'(v)[e_u] > \frac{5}{9}\|\Phi'(v)\|_{X^*} \geqslant \frac{1}{2}\|\Phi'(v)\|_{X^*}\).
+
+下面显式补足局部度量细化构造. I-01 尚未建立可直接调用的仿紧性或单位分解定理，因此这里从度量本身构造所需的局部有限细化，而不调用任何外部仿紧性定理. 把开覆盖 \(\displaystyle\{W_u:u\in U\}\) 的指标集用选择公理良序化，记为 \(\displaystyle(W_\alpha)_{\alpha\in A}\). 对 \(\displaystyle n\geqslant1\) 与 \(\displaystyle\alpha\in A\)，令
+\[
+S_{\alpha,n}
+:=
+\left\{
+ x\in U:
+ B_U\!\left(x,\frac{4}{n}\right)\subseteq W_\alpha,
+ \ x\notin\bigcup_{\beta<\alpha}W_\beta
+\right\},
+\]
+并令
+\(\displaystyle T_{\alpha,n} := \{x\in U:d(x,S_{\alpha,n})<\frac{1}{n}\}\),
+其中 \(\displaystyle S_{\alpha,n}=\varnothing\) 时令 \(\displaystyle T_{\alpha,n}=\varnothing\). 对任意 \(\displaystyle x\in U\)，取包含 \(\displaystyle x\) 的最小指标 \(\displaystyle\alpha(x)\). 因 \(\displaystyle W_{\alpha(x)}\) 开，可取充分大的 \(\displaystyle n\) 使 \(\displaystyle B_U\!\left(x,\frac{4}{n}\right)\subseteq W_{\alpha(x)}\)；此时 \(\displaystyle x\in S_{\alpha(x),n}\subseteq T_{\alpha(x),n}\). 因而全部 \(\displaystyle T_{\alpha,n}\) 覆盖 \(\displaystyle U\).
+
+每个 \(\displaystyle T_{\alpha,n}\) 都从属于原覆盖，并且甚至满足闭包包含. 若 \(\displaystyle z\in\overline{T_{\alpha,n}}\)，则 \(\displaystyle d(z,S_{\alpha,n})\leqslant\frac{1}{n}\). 取 \(\displaystyle s_k\in S_{\alpha,n}\) 使 \(\displaystyle d(z,s_k)<\frac{1}{n}+\frac{1}{k}\)；对充分大的 \(\displaystyle k\)，有 \(\displaystyle d(z,s_k)<\frac{2}{n}<\frac{4}{n}\)，故 \(\displaystyle z\in B_U\!\left(s_k,\frac{4}{n}\right)\subseteq W_\alpha\). 因此
+\(\displaystyle \overline{T_{\alpha,n}} \subseteq W_\alpha\).
+固定 \(\displaystyle n\). 我们还证明族 \(\displaystyle(T_{\alpha,n})_{\alpha\in A}\) 离散. 若某个球 \(\displaystyle B_U\!\left(y,\frac{1}{4n}\right)\) 同时遇到 \(\displaystyle T_{\alpha,n}\) 与 \(\displaystyle T_{\gamma,n}\)，不妨 \(\displaystyle\alpha<\gamma\). 分别取交点附近的 \(\displaystyle s_\alpha\in S_{\alpha,n}\)、\(\displaystyle s_\gamma\in S_{\gamma,n}\)，并把距离逼近误差取得足够小，则
+\(\displaystyle d(s_\alpha,s_\gamma) < \frac{5}{2n} < \frac{4}{n}\).
+于是 \(\displaystyle s_\gamma\in B_U(s_\alpha,\frac{4}{n})\subseteq W_\alpha\)，这与 \(\displaystyle s_\gamma\notin\bigcup_{\beta<\gamma}W_\beta\) 矛盾. 所以每个点都有邻域在固定第 \(\displaystyle n\) 层至多遇到一个 \(\displaystyle T_{\alpha,n}\).
+
+为了把这些逐层离散族合成局部有限族，令
+\(\displaystyle G_n := \bigcup_{1\leqslant k\leqslant n}\ \bigcup_{\alpha\in A}T_{\alpha,k}\).
+则 \(\displaystyle(G_n)\) 是递增开覆盖. 置 \(\displaystyle F_0=\varnothing\)，并对 \(\displaystyle n\geqslant1\) 令
+\(\displaystyle F_n := \left\{ x\in U: d(x,U\setminus G_n)\geqslant\frac{1}{n} \right\}\),
+约定 \(\displaystyle G_n=U\) 时到空集的距离为 \(\displaystyle+\infty\). 每个 \(\displaystyle F_n\) 闭，\(\displaystyle F_n\subseteq G_n\)，且 \(\displaystyle F_n\subseteq F_{n+1}\). 此外 \(\displaystyle\{\operatorname{int}F_n\}\) 覆盖 \(\displaystyle U\)：若 \(\displaystyle x\in G_m\)，则因 \(\displaystyle G_m\) 开有 \(\displaystyle\delta=d(x,U\setminus G_m)>0\)；对充分大的 \(\displaystyle n\geqslant m\)，\(\displaystyle d(x,U\setminus G_n)\geqslant\delta>\frac{1}{n}\)，故 \(\displaystyle x\in\operatorname{int}F_n\).
+
+最后定义
+\(\displaystyle P_{\alpha,n} := T_{\alpha,n}\setminus F_{n-1}\).
+这是开族，且 \(\displaystyle\overline{P_{\alpha,n}}\subseteq\overline{T_{\alpha,n}}\subseteq W_\alpha\). 它覆盖 \(\displaystyle U\)：给定 \(\displaystyle x\)，取最小 \(\displaystyle m\) 使 \(\displaystyle x\in G_m\)，则 \(\displaystyle x\notin G_{m-1}\supseteq F_{m-1}\)，而 \(\displaystyle x\) 必落在某个 \(\displaystyle T_{\alpha,m}\)，故 \(\displaystyle x\in P_{\alpha,m}\). 它还是局部有限：取 \(\displaystyle N\) 使 \(\displaystyle x\in\operatorname{int}F_N\)，则该邻域不遇到任何 \(\displaystyle n\geqslant N+1\) 的 \(\displaystyle P_{\alpha,n}\)；剩余只有有限多个层，而每层离散. 于是得到了真正的局部有限开细化. 以下把非空 \(\displaystyle P_{\alpha,n}\) 重新记为 \(\displaystyle(P_i)_{i\in I}\)，并令对应的原覆盖元素为 \(\displaystyle W_{u_i}\).
+
+对每个 \(\displaystyle i\)，若 \(\displaystyle P_i\neq U\)，定义
+\(\displaystyle \rho_i(v):=\operatorname{dist}(v,U\setminus P_i)\),
+若 \(\displaystyle P_i=U\)，则定义 \(\displaystyle\rho_i\equiv1\). 到闭集的距离函数为 \(\displaystyle1\)-Lipschitz；在这里即使 \(\displaystyle U\setminus P_i\) 不闭，到集合的距离函数仍满足同一 \(\displaystyle1\)-Lipschitz 估计. 对 \(\displaystyle v\in P_i\)，开性给某个 \(\displaystyle r>0\) 使 \(\displaystyle B_U(v,r)\subseteq P_i\)，故 \(\displaystyle\rho_i(v)\geqslant r>0\). 对 \(\displaystyle v\notin P_i\)，有 \(\displaystyle\rho_i(v)=0\). 因而 \(\displaystyle\operatorname{supp}\rho_i\subseteq\overline{P_i}\subseteq W_{u_i}\).
+
+由于 \(\displaystyle(P_i)\) 局部有限，和
+\(\displaystyle R(v):=\sum_{i\in I}\rho_i(v)\)
+在每个点附近实际只是有限和，故 \(\displaystyle R\) 局部 Lipschitz. 覆盖性质保证每个 \(\displaystyle v\in U\) 至少属于某个 \(\displaystyle P_i\)，于是 \(\displaystyle R(v)>0\). 定义
+\(\displaystyle \lambda_i(v):=\frac{\rho_i(v)}{R(v)}\).
+对任意固定 \(\displaystyle v_0\in U\)，连续性与 \(\displaystyle R(v_0)>0\) 给一个邻域使 \(\displaystyle R\) 有正下界；在该邻域上倒数 \(\displaystyle\frac{1}{R}\) Lipschitz. 因而每个 \(\displaystyle\lambda_i\) 局部 Lipschitz，族局部有限，并满足
+\(\displaystyle 0\leqslant\lambda_i\leqslant1, \; \sum_i\lambda_i=1, \; \operatorname{supp}\lambda_i\subseteq W_{u_i}\).
+这就是本证明实际需要的局部 Lipschitz 单位分解，且其解析构造已由距离函数完成.
+
+现在定义
+\(\displaystyle V(v):=\sum_{i\in I}\lambda_i(v)e_{u_i}\).
+局部有限性使该和逐点有限，并使 \(\displaystyle V\) 局部 Lipschitz. 凸组合与 \(\displaystyle\|e_{u_i}\|_X=1\) 给
+\(\displaystyle \|V(v)\|_X \leqslant \sum_i\lambda_i(v)\|e_{u_i}\|_X =1\).
+若 \(\displaystyle\lambda_i(v)>0\)，则 \(\displaystyle v\in\operatorname{supp}\lambda_i\subseteq W_{u_i}\)，所以局部方向估计适用. 因而
+\[
+\begin{aligned}
+\displaystyle \Phi'(v)[V(v)]
+&=\displaystyle \sum_i\lambda_i(v)\Phi'(v)[e_{u_i}]\\[6pt]
+&\geqslant\displaystyle \frac{1}{2}\sum_i\lambda_i(v)\|\Phi'(v)\|_{X^*}\\[12pt]
+&=\displaystyle \frac{1}{2}\|\Phi'(v)\|_{X^*}.
+\end{aligned}
+\]
+伪梯度构造完成.
+
+再证明变形所需的 Banach 空间常微分方程构造. 设 \(\displaystyle G:X\to X\) 有界局部 Lipschitz，并取 \(\displaystyle M\geqslant0\) 使 \(\displaystyle\|G(x)\|_X\leqslant M\) 对全部 \(\displaystyle x\) 成立. 固定 \(\displaystyle x_0\in X\). 由局部 Lipschitz 性，存在 \(\displaystyle r>0\) 与 \(\displaystyle L<\infty\)，使 \(\displaystyle G\) 在 \(\displaystyle B(x_0,r)\) 上 \(\displaystyle L\)-Lipschitz. 取 \(\displaystyle\tau>0\) 足够小，使 \(\displaystyle M\tau<\frac{r}{2}\) 且 \(\displaystyle L\tau<\frac{1}{2}\). 在完备空间 \(\displaystyle C([-\tau,\tau];\overline B(x_0,\frac{r}{2}))\) 上定义 Picard 映射
+\(\displaystyle (\mathcal Pz)(s) := x_0+ \int_0^sG(z(\sigma))\,\mathrm{d}\sigma\).
+连续的 Banach 值被积函数在紧区间上按 II-04 的 Bochner 接口可积. 有界性估计 \(\displaystyle\|G\|\leqslant M\) 给 \(\displaystyle\|\mathcal Pz(s)-x_0\|_X\leqslant M\tau<\frac{r}{2}\)，所以 \(\displaystyle\mathcal P\) 保持该取值于闭球的函数空间. 对 \(\displaystyle z,w\)，
+\(\displaystyle \|\mathcal Pz-\mathcal Pw\|_{\infty} \leqslant L\tau\|z-w\|_{\infty} < \frac{1}{2}\|z-w\|_{\infty}\).
+Banach 压缩映射原理因而给唯一局部不动点，亦即唯一局部解. 同一压缩估计还给初值的局部连续依赖性：若初值在更小的球内，并在同一 \(\displaystyle r,L,\tau\) 上构造解，则
+\(\displaystyle \|z(\cdot;x)-z(\cdot;y)\|_{\infty} \leqslant \frac{1}{1-L\tau}\|x-y\|_X\).
+
+任一解满足
+\(\displaystyle \|z(t)-z(s)\|_X \leqslant \int_s^t\|G(z(\sigma))\|_X\,\mathrm{d}\sigma \leqslant M|t-s|\).
+若向前最大存在区间的有限端点为 \(\displaystyle b<\infty\)，则上式使 \(\displaystyle z(t)\) 在 \(\displaystyle t\uparrow b\) 时 Cauchy. 由 Banach 完备性给极限 \(\displaystyle x_b\in X\). 在 \(\displaystyle x_b\) 附近重新使用刚才的局部不动点构造，即可把解延过 \(\displaystyle b\)，与最大性矛盾. 因而向前解对所有 \(\displaystyle t\geqslant0\) 存在. 对向量场 \(\displaystyle-G\) 或直接反向时间重复同一论证，得到全部负时间.
+
+固定有限 \(\displaystyle T>0\). 一条参考轨道 \(\displaystyle z([-T,T];x_0)\) 是紧区间的连续像，故紧. 由局部 Lipschitz 邻域取有限子覆盖，并把 \(\displaystyle[-T,T]\) 划分为有限个充分短的子区间，使每一段都落在某个共同的局部 Picard 邻域. 上述初值 Lipschitz 估计在第一段给连续性，再把终点作为下一段初值逐段迭代，即得 \(\displaystyle x\mapsto z(s;x)\) 对每个 \(\displaystyle|s|\leqslant T\) 连续. 由于 \(\displaystyle T\) 任意，\(\displaystyle\Theta_s\) 对所有固定 \(\displaystyle s\in\mathbb R\) 连续.
+
+自治方程的唯一性给流恒等式 \(\displaystyle\Theta_{s+t}=\Theta_s\circ\Theta_t\). 取 \(\displaystyle t=-s\)，得到 \(\displaystyle\Theta_{-s}\circ\Theta_s=\Theta_0=\operatorname{id}\) 以及 \(\displaystyle\Theta_s\circ\Theta_{-s}=\operatorname{id}\). 因而 \(\displaystyle\Theta_s^{-1}=\Theta_{-s}\)，且逆映射连续. 上述 Banach 空间流构造完成.\hfill\(\square\)
+\end{FAProof}
+
+\section{变形引理}\label{sec:iii09-deformation}
+\index{deformation lemma@形变引理}\index{energy descent@能量下降}\index{flow@流!变形引理}
+
+\begin{FATheorem}[A][定量变形引理]{fa:DEF-A01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi\in C^1(X;\mathbb R)\)，固定 \(\displaystyle c\in\mathbb R\). 假设 \(\displaystyle\Phi\) 满足 \(\displaystyle(PS)_c\) 且 \(\displaystyle K_c=\varnothing\). 则存在 \(\displaystyle\varepsilon>0\) 与连续映射 \(\displaystyle\eta:[0,1]\times X\to X\)，使：
+\begin{enumerate}
+\item \(\displaystyle\eta(0,u)=u\) 对全部 \(\displaystyle u\in X\) 成立.
+\item 对每个 \(\displaystyle t\in[0,1]\) 与 \(\displaystyle u\in X\)，有 \(\displaystyle\Phi(\eta(t,u))\leqslant\Phi(u)\).
+\item 若 \(\displaystyle|\Phi(u)-c|\geqslant2\varepsilon\)，则 \(\displaystyle\eta(t,u)=u\) 对全部 \(\displaystyle t\in[0,1]\) 成立.
+\item \(\displaystyle\eta(1,\Phi^{c+\varepsilon})\subseteq\Phi^{c-\varepsilon}\).
+\item 对每个固定 \(\displaystyle t\in[0,1]\)，映射 \(\displaystyle\eta(t,\cdot):X\to X\) 为同胚.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{fa:PS-B01}，存在 \(\displaystyle\varepsilon_0>0\) 与 \(\displaystyle\delta>0\)，使
+\(\displaystyle |\Phi(u)-c|\leqslant2\varepsilon_0 \Longrightarrow \|\Phi'(u)\|_{X^*}\geqslant\delta\).
+特别地，闭外层能量带 \(\displaystyle|\Phi-c|\leqslant2\varepsilon_0\) 不含临界点. 取任意 \(\displaystyle\varepsilon\) 满足 \(\displaystyle0<\varepsilon\leqslant\varepsilon_0\). 定义标量截断 \(\displaystyle\chi:\mathbb R\to[0,1]\) 为
+\[
+\chi(r)
+:=
+\begin{cases}
+1,&|r-c|\leqslant\varepsilon,\\
+\dfrac{2\varepsilon-|r-c|}{\varepsilon},&\varepsilon<|r-c|<2\varepsilon,\\
+0,&|r-c|\geqslant2\varepsilon.
+\end{cases}
+\]
+它连续且 \(\displaystyle\frac{1}{\varepsilon}\)-Lipschitz.
+
+取\autoref{fa:DEF-B01}的伪梯度 \(\displaystyle V:U\to X\). 为避免在 \(\displaystyle U\) 外写无意义的 \(\displaystyle V(u)\)，直接分段定义全局向量场
+\[
+G(u)
+:=
+\begin{cases}
+-\chi(\Phi(u))V(u),&|\Phi(u)-c|<2\varepsilon,\\
+0,&|\Phi(u)-c|\geqslant2\varepsilon.
+\end{cases}
+\]
+第一种情形属于外层能量带，梯度下界保证 \(\displaystyle\Phi'(u)\neq0\)，所以 \(\displaystyle V(u)\) 定义良好. 又有 \(\displaystyle\|G(u)\|_X\leqslant1\)，故 \(\displaystyle G\) 有界.
+
+证明 \(\displaystyle G\) 局部 Lipschitz. 先取 \(\displaystyle u_0\in U\). 因 \(\displaystyle U\) 开且 \(\displaystyle V\) 局部 Lipschitz，可取一个凸范数邻域 \(\displaystyle N\subseteq U\)，使 \(\displaystyle V\) 在 \(\displaystyle N\) 上以常数 \(\displaystyle L_V\) Lipschitz 且满足 \(\displaystyle\|V\|\leqslant M_V\). 由于 \(\displaystyle\Phi\in C^1\)，缩小 \(\displaystyle N\) 后 \(\displaystyle\Phi\) 在 \(\displaystyle N\) 上以某个 \(\displaystyle L_\Phi\) Lipschitz. 在整个 \(\displaystyle N\) 上，分段定义与统一公式 \(\displaystyle G=-\chi(\Phi)V\) 相同，因为能量带外 \(\displaystyle\chi(\Phi)=0\). 因而对任意 \(\displaystyle u,v\in N\)，
+\[
+\begin{aligned}
+\displaystyle \|G(u)-G(v)\|_X
+&\leqslant\displaystyle
+|\chi(\Phi(u))|\,\|V(u)-V(v)\|_X\\
+&\mathrel{\phantom{\leqslant}}+\displaystyle
+\|V(v)\|_X\,|\chi(\Phi(u))-\chi(\Phi(v))|\\[6pt]
+&\leqslant\displaystyle
+\left(L_V+\frac{M_VL_\Phi}{\varepsilon}\right)\|u-v\|_X.
+\end{aligned}
+\]
+这给出了邻域内任意两点的统一 Lipschitz 估计，包括截断边界两侧.
+
+再取 \(\displaystyle u_0\notin U\). 此时 \(\displaystyle\Phi'(u_0)=0\). 由前面的梯度下界陈述，闭能量带 \(\displaystyle|\Phi-c|\leqslant2\varepsilon_0\) 不含临界点；又 \(\displaystyle\varepsilon\leqslant\varepsilon_0\)，故 \(\displaystyle|\Phi(u_0)-c|>2\varepsilon\). 连续性给出 \(\displaystyle u_0\) 的某个邻域，使其中恒有 \(\displaystyle|\Phi-c|>2\varepsilon\)，所以 \(\displaystyle\chi(\Phi)=0\) 且 \(\displaystyle G=0\). 因而 \(\displaystyle G\) 在该邻域 Lipschitz. 两种情形覆盖全部 \(\displaystyle X\)，故 \(\displaystyle G:X\to X\) 全局定义、有界且局部 Lipschitz.
+
+由\autoref{fa:DEF-B01}的 Banach 空间伪梯度与流构造，方程
+\(\displaystyle z'(s)=G(z(s)), \; z(0)=u\)
+有唯一全局双向流 \(\displaystyle\Theta_s(u)=z(s;u)\)，并且每个 \(\displaystyle\Theta_s\) 为同胚，逆映射为 \(\displaystyle\Theta_{-s}\).
+
+沿任一轨道，\autoref{fa:DIFF-A02}的链式法则给
+\(\displaystyle \frac{\mathrm{d}}{\mathrm{d}s}\Phi(z(s)) = \Phi'(z(s))[G(z(s))]\).
+若 \(\displaystyle|\Phi(z(s))-c|\geqslant2\varepsilon\)，右侧为零. 若位于严格外层能量带，则
+\[
+\begin{aligned}
+\displaystyle \Phi'(z(s))[G(z(s))]
+&=-\displaystyle \chi(\Phi(z(s)))\Phi'(z(s))[V(z(s))]\\
+&\leqslant\displaystyle
+-\kappa\chi(\Phi(z(s)))\|\Phi'(z(s))\|_{X^*}\\
+&\leqslant\displaystyle 0.
+\end{aligned}
+\]
+因此能量 \(\displaystyle s\mapsto\Phi(z(s))\) 在正向时间上单调不增. 在内层能量带 \(\displaystyle c-\varepsilon\leqslant\Phi(z(s))\leqslant c+\varepsilon\) 中，\(\displaystyle\chi=1\) 且梯度下界给 \(\displaystyle\|\Phi'(z(s))\|_{X^*}\geqslant\delta\)，所以
+\(\displaystyle \frac{\mathrm{d}}{\mathrm{d}s}\Phi(z(s)) \leqslant -\kappa\delta\).
+
+取
+\(\displaystyle T:=\frac{2\varepsilon}{\kappa\delta}\),
+并定义
+\(\displaystyle \eta(t,u):=\Theta_{tT}(u)\).
+流对时间与初值连续，所以 \(\displaystyle\eta\) 连续，且 \(\displaystyle\eta(0,u)=u\). 上述能量导数估计给第二项.
+
+若 \(\displaystyle|\Phi(u)-c|\geqslant2\varepsilon\)，则 \(\displaystyle G(u)=0\)，常值曲线 \(\displaystyle z(s)\equiv u\) 是该初值的解. 唯一性迫使流轨道就是常值曲线，所以第三项成立.
+
+现在取 \(\displaystyle u\in\Phi^{c+\varepsilon}\). 若 \(\displaystyle\Phi(u)\leqslant c-\varepsilon\)，能量单调性已给 \(\displaystyle\Phi(\eta(1,u))\leqslant c-\varepsilon\). 只需考虑
+\(\displaystyle c-\varepsilon < \Phi(u) \leqslant c+\varepsilon\).
+若轨道在某个 \(\displaystyle s\leqslant T\) 已满足 \(\displaystyle\Phi(z(s))\leqslant c-\varepsilon\)，则以后由单调性不会重新上升. 反之，若整个 \(\displaystyle[0,T]\) 上始终有 \(\displaystyle\Phi(z(s))>c-\varepsilon\)，则初始上界与单调性保证轨道全程位于内层能量带. 因而积分定量下降估计得
+\[
+\Phi(z(T))
+\leqslant
+\Phi(u)-\kappa\delta T
+\leqslant
+c+\varepsilon-2\varepsilon
+=
+c-\varepsilon,
+\]
+仍得到目标子水平集. 所以第四项成立.
+
+最后，对固定 \(\displaystyle t\in[0,1]\)，\(\displaystyle\eta(t,\cdot)=\Theta_{tT}\). 由双向唯一性，逆映射为 \(\displaystyle\Theta_{-tT}\)，且两者连续. 因而 \(\displaystyle\eta(t,\cdot)\) 为同胚. 五项结论全部闭合.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[变形引理的逻辑链]
+\autoref{fa:DEF-A01}没有循环调用“标准变形引理”. 完整依赖链为
+\[
+\begin{aligned}
+(PS)_c+K_c=\varnothing
+&\Longrightarrow \text{梯度下界}\\
+&\Longrightarrow \text{伪梯度}\\
+&\Longrightarrow \text{有界局部 Lipschitz 流}\\
+&\Longrightarrow \text{定量能量下降}\\
+&\Longrightarrow \text{子水平集变形}.
+\end{aligned}
+\]
+III-10 将把该工具作用于极小极大水平；当前章不陈述也不证明山路定理，不定义其极小极大值，并且不调用任何 III-10 正式结果.
+\end{FARemark}
+
+\section{紧性失效}\label{sec:iii09-compactness-failure}
+\index{compactness failure@紧性失效}\index{semilinear elliptic energy@半线性椭圆能量}\index{Nemytskii map@Nemytskii 映射}
+
+本节一正一反两个模型说明 Palais--Smale 条件的角色. 次临界半线性 Dirichlet 能量模型在严格次临界 Sobolev 范围中由紧嵌入产生强预紧性；Palais--Smale 紧性失效反例则表明即使能量恒定、导数恒为零，也可能完全没有范数收敛子列.
+
+\begin{FAApplication}[次临界半线性 Dirichlet 能量的全局 Palais--Smale 条件]
+固定 \(\displaystyle d\in\mathbb N\)，令 \(\displaystyle\Omega\subset\mathbb R^d\) 为非空有界 Lipschitz 域，并取实 Hilbert 空间
+\(\displaystyle X:=H_0^1(\Omega;\mathbb R), \; \|u\|_X:=\|\nabla u\|_{L^2(\Omega)}\).
+由 II-13 的 \(\displaystyle H_0^1\)能量空间与\autoref{fa:SOB-B01}，该能量范数完备且来自内积. 若 \(\displaystyle d\geqslant3\)，设
+\(\displaystyle 2<q<2^*:=\frac{2d}{d-2}\);
+若 \(\displaystyle d=1,2\)，设 \(\displaystyle2<q<\infty\). 定义
+\[
+\mathcal J(u)
+:=
+\frac{1}{2}\int_\Omega|\nabla u|^2\,\mathrm{d}x
+-
+\frac{1}{q}\int_\Omega|u|^q\,\mathrm{d}x.
+\]
+则 \(\displaystyle\mathcal J\in C^1(X;\mathbb R)\)，并且
+\[
+\mathcal J'(u)[v]
+=
+\int_\Omega\nabla u\mathbin{\cdot}\nabla v\,\mathrm{d}x
+-
+\int_\Omega|u|^{q-2}uv\,\mathrm{d}x.
+\]
+此外，\(\displaystyle\mathcal J\) 满足全局 \(\displaystyle(PS)\).
+\end{FAApplication}
+
+先核验 Sobolev 接口在有界 Lipschitz 假设下的合法使用. 冻结\autoref{fa:SOB-A02}、\autoref{fa:SOB-A03}的正式区域正则性假设是有界 \(\displaystyle C^1\)，而当前 \(\displaystyle\Omega\) 只假设 Lipschitz. 不把冻结定理静默扩大到 Lipschitz. 因 \(\displaystyle\Omega\) 有界，可取一个有界光滑域 \(\displaystyle D\) 使 \(\displaystyle\overline\Omega\subset D\)，例如充分大的开球. II-13 的零延拓接口把每个 \(\displaystyle u\in H_0^1(\Omega)\) 延拓为 \(\displaystyle E_0u\in H_0^1(D)\)，并保持函数与弱梯度在 \(\displaystyle\Omega\) 内的值、在 \(\displaystyle D\setminus\Omega\) 上为零. 因而\autoref{fa:SOB-A02}作用于 \(\displaystyle D\) 后给
+\[
+\|u\|_{L^q(\Omega)}
+=
+\|E_0u\|_{L^q(D)}
+\leqslant
+C\|E_0u\|_{H^1(D)}
+\leqslant
+C'\|u\|_X,
+\]
+其中最后一步使用 Poincaré 范数等价性. 同样，若 \(\displaystyle(u_n)\) 在 \(\displaystyle X\) 有界，则 \(\displaystyle(E_0u_n)\) 在 \(\displaystyle H^1(D)\) 有界；严格次临界假设使\autoref{fa:SOB-A03}可在 \(\displaystyle D\) 上抽取一个在 \(\displaystyle L^q(D)\) 中强收敛的子列，限制后得到 \(\displaystyle L^q(\Omega)\) 中强收敛. 因此当前 Lipschitz 域没有要求任何未冻结的 Lipschitz 版本 Rellich 定理.
+
+记
+\(\displaystyle N(s):=|s|^{q-2}s, \; q':=\frac{q}{q-1}\).
+对任意 \(\displaystyle a,b\in\mathbb R\)，实函数 \(\displaystyle N\) 的中值估计给某个只依赖 \(\displaystyle q\) 的 \(\displaystyle C_q>0\)，使
+\(\displaystyle |N(a)-N(b)| \leqslant C_q(|a|+|b|)^{q-2}|a-b|\).
+对 \(\displaystyle u,v\in L^q(\Omega)\)，用 Hölder 指数 \(\displaystyle \frac{q}{q-2}\) 与 \(\displaystyle q\) 得
+\[
+\begin{aligned}
+\displaystyle \|N(u)-N(v)\|_{L^{q'}(\Omega)}
+&\leqslant\displaystyle
+C_q\|(|u|+|v|)^{q-2}|u-v|\|_{q'}\\
+&\leqslant\displaystyle
+C_q(\|u\|_q+\|v\|_q)^{q-2}\|u-v\|_q.
+\end{aligned}
+\]
+所以 Nemytskii 映射 \(\displaystyle N:L^q(\Omega)\to L^{q'}(\Omega)\) 连续.
+
+定义 \(\displaystyle P(u)=q^{-1}\int_\Omega|u|^q\,\mathrm{d}x\). 对 \(\displaystyle u,h\in L^q(\Omega)\)，实变量微积分基本定理给几乎处处恒等式
+\[
+\frac{1}{q}|u+h|^q-
+\frac{1}{q}|u|^q-
+N(u)h
+=
+\int_0^1\bigl(N(u+th)-N(u)\bigr)h\,\mathrm{d}t.
+\]
+对 \(\displaystyle x\) 积分并使用上面的 Nemytskii 估计，得到
+\[
+\left|P(u+h)-P(u)-\int_\Omega N(u)h\,\mathrm{d}x\right|
+\leqslant
+C_q(\|u\|_q+\|h\|_q)^{q-2}\|h\|_q^2.
+\]
+因此余项除以 \(\displaystyle\|h\|_q\) 后趋于零，且导数映射 \(\displaystyle u\mapsto N(u)\in L^{q'}\) 连续. 结合连续嵌入 \(\displaystyle X\hookrightarrow L^q(\Omega)\)，得到 \(\displaystyle P\in C^1(X;\mathbb R)\)，
+\(\displaystyle P'(u)[v] = \int_\Omega|u|^{q-2}uv\,\mathrm{d}x\).
+二次项 \(\displaystyle Q(u)=\frac{1}{2}\|u\|_X^2\) 的导数为能量内积 \(\displaystyle Q'(u)[v]=\int_\Omega\nabla u\mathbin{\cdot}\nabla v\,\mathrm{d}x\). 故 \(\displaystyle\mathcal J=Q-P\in C^1\)，且导数公式如上. 这也证明 \(\displaystyle\mathcal J\) 良定义.
+
+现证明全局 Palais--Smale 条件. 取任意 Palais--Smale 序列 \(\displaystyle(u_n)\subseteq X\). 存在 \(\displaystyle C<\infty\) 使 \(\displaystyle|\mathcal J(u_n)|\leqslant C\)，并记 \(\displaystyle\alpha_n:=\|\mathcal J'(u_n)\|_{X^*}\to0\). 直接计算
+\[
+\mathcal J(u_n)-\frac{1}{q}\mathcal J'(u_n)[u_n]
+=
+\left(\frac{1}{2}-\frac{1}{q}\right)\|u_n\|_X^2.
+\]
+若 \(\displaystyle\|u_n\|_X\) 无界，则可取子列仍记为 \(\displaystyle u_n\) 使 \(\displaystyle r_n:=\|u_n\|_X\to\infty\). 由上式与对偶范数估计，
+\[
+\left(\frac{1}{2}-\frac{1}{q}\right)r_n^2
+\leqslant
+C+
+\frac{1}{q}\alpha_nr_n.
+\]
+除以 \(\displaystyle r_n^2\) 得
+\[
+0<\frac{1}{2}-\frac{1}{q}
+\leqslant
+\frac{C}{r_n^2}
++
+\frac{\alpha_n}{qr_n}
+\longrightarrow0,
+\]
+矛盾. 因而 \(\displaystyle(u_n)\) 在 \(\displaystyle X\) 中有界.
+
+下一步需要一个弱收敛子列. 这里只用 Hilbert 空间中的序列抽取，不借用 I-10 明确延后的 Eberlein--\v Smulian 定理. 令 \(\displaystyle H_0=\overline{\operatorname{span}}\{u_n:n\in\mathbb N\}\subseteq X\). 它是可分 Hilbert 子空间. 取 \(\displaystyle H_0\) 的可数标准正交基 \(\displaystyle(e_j)\). 对每个固定 \(\displaystyle j\)，实数序列 \(\displaystyle\langle u_n,e_j\rangle_X\) 有界；对角抽取给子列，仍记为 \(\displaystyle u_n\)，使全部坐标同时收敛到某些 \(\displaystyle a_j\). 由 Bessel 不等式\autoref{fa:HIL-B01}，对每个 \(\displaystyle m\)，
+\[
+\sum_{j=1}^m|a_j|^2
+=
+\lim_{n\to\infty}
+\sum_{j=1}^m|\langle u_n,e_j\rangle_X|^2
+\leqslant
+\sup_n\|u_n\|_X^2.
+\]
+故 \(\displaystyle(a_j)\in\ell^2\)，从而 \(\displaystyle u:=\sum_j a_je_j\in H_0\). 对有限线性组合的 \(\displaystyle e_j\)，坐标收敛已给内积收敛；再用 \(\displaystyle(u_n)\) 的一致范数上界与稠密性把它延拓到全部 \(\displaystyle H_0\). 对 \(\displaystyle H_0^\perp\) 中向量，两边配对都为零. 因而
+\(\displaystyle u_n\rightharpoonup u \;\text{于 }X\).
+这一步是 Hilbert 几何的序列抽取，而不是把弱紧性擅自等同于弱序列紧性.
+
+对该子列作零延拓并使用前述\autoref{fa:SOB-A03}紧性，可再取子列使某个 \(\displaystyle v\in L^q(\Omega)\) 满足
+\(\displaystyle u_n\longrightarrow v \;\text{在 }L^q(\Omega)\text{ 中强收敛}\).
+由连续嵌入 \(\displaystyle X\hookrightarrow L^q(\Omega)\)，每个 \(\displaystyle g\in L^{q'}(\Omega)\) 都在 \(\displaystyle X\) 上定义有界线性泛函 \(\displaystyle w\mapsto\int_\Omega wg\,\mathrm{d}x\). 因 \(\displaystyle u_n\rightharpoonup u\) 于 \(\displaystyle X\)，这些配对收敛到 \(\displaystyle u\)；而 \(\displaystyle L^q\) 中的强收敛又使这些配对收敛到 \(\displaystyle v\). 因此 \(\displaystyle v=u\) 几乎处处，故
+\(\displaystyle u_n\longrightarrow u \;\text{在 }L^q(\Omega)\text{ 中强收敛}\).
+由 Nemytskii 连续性，
+\(\displaystyle |u_n|^{q-2}u_n \longrightarrow |u|^{q-2}u \;\text{在 }L^{q'}(\Omega)\text{ 中强收敛}\).
+
+固定任意 \(\displaystyle w\in X\). 在 \(\displaystyle X\) 中的弱收敛给出
+\[
+\int_\Omega\nabla u_n\mathbin{\cdot}\nabla w\,\mathrm{d}x
+\longrightarrow
+\int_\Omega\nabla u\mathbin{\cdot}\nabla w\,\mathrm{d}x,
+\]
+而 Hölder 不等式与 \(\displaystyle L^{q'}\) 中的强收敛给出
+\[
+\int_\Omega|u_n|^{q-2}u_nw\,\mathrm{d}x
+\longrightarrow
+\int_\Omega|u|^{q-2}uw\,\mathrm{d}x.
+\]
+另一方面 \(\displaystyle|\mathcal J'(u_n)[w]|\leqslant\alpha_n\|w\|_X\to0\). 因而 \(\displaystyle\mathcal J'(u)[w]=0\) 对全部 \(\displaystyle w\in X\) 成立，即 \(\displaystyle\mathcal J'(u)=0\).
+
+最后计算
+\[
+\begin{aligned}
+\displaystyle (\mathcal J'(u_n)-\mathcal J'(u))[u_n-u]
+&=\displaystyle \|u_n-u\|_X^2\\
+&\mathrel{\phantom{=}}-\displaystyle
+\int_\Omega
+\bigl(N(u_n)-N(u)\bigr)(u_n-u)\,\mathrm{d}x.
+\end{aligned}
+\]
+左侧趋于零，因为 \(\displaystyle\mathcal J'(u)=0\)、\(\displaystyle\|\mathcal J'(u_n)\|_{X^*}\to0\)，且 \(\displaystyle(u_n-u)\) 有界. 非线性积分的绝对值至多为
+\(\displaystyle \|N(u_n)-N(u)\|_{q'}\|u_n-u\|_q \longrightarrow0\).
+所以 \(\displaystyle\|u_n-u\|_X^2\to0\). 因而每个 PS 序列都含范数收敛子列，\(\displaystyle\mathcal J\) 满足全局 \(\displaystyle(PS)\). 临界端点 \(\displaystyle q=2^*\) 在 \(\displaystyle d\geqslant3\) 时没有进入证明，因为\autoref{fa:SOB-A03}的紧性明确排除该端点.
+
+若 \(\displaystyle u\neq0\) 是 \(\displaystyle\mathcal J\) 的临界点，则导数恒等式只说明
+\[
+\int_\Omega\nabla u\mathbin{\cdot}\nabla v\,\mathrm{d}x
+=
+\int_\Omega|u|^{q-2}uv\,\mathrm{d}x,
+\;
+\forall\,v\in H_0^1(\Omega),
+\]
+即 \(\displaystyle u\) 是 \(\displaystyle-\Delta u=|u|^{q-2}u\) 的 Dirichlet 弱解. 本章不证明存在非零临界点，不验证山路几何，也不构造极小极大值.
+
+\begin{FACounterexample}[导数恒零仍可失去强预紧性]
+取实 Hilbert 空间 \(\displaystyle X=\ell^2\)，并定义
+\(\displaystyle \Psi(x):=\frac{1}{4}\|x\|_2^4-\frac{1}{2}\|x\|_2^2\).
+由 Hilbert 范数平方的微分规则，\(\displaystyle\Psi\in C^1(X;\mathbb R)\)，且对 \(\displaystyle x,h\in\ell^2\)，
+\(\displaystyle \Psi'(x)[h] = (\|x\|_2^2-1)\langle x,h\rangle\).
+对规范基 \(\displaystyle(e_n)\)，有 \(\displaystyle\|e_n\|_2=1\)，所以
+\(\displaystyle \Psi(e_n)=-\frac{1}{4}, \; \Psi'(e_n)=0\).
+因此 \(\displaystyle(e_n)\) 是水平 \(\displaystyle c=-\frac{1}{4}\) 的 PS 序列. 但对 \(\displaystyle n\neq m\)，
+\(\displaystyle \|e_n-e_m\|_2=\sqrt2\),
+所以它没有范数 Cauchy 子列，更没有范数收敛子列. 因而 \(\displaystyle(PS)_{-\frac{1}{4}}\) 失败.
+
+这个例子精确否定如下错误推理：能量有界，甚至常数，加上导数范数趋零，甚至恒为零，并不足以推出强预紧性. Palais--Smale 条件是额外紧性假设，不是 \(\displaystyle C^1\) 微分结构的自动后果. 该例不是山路定理的反例，也不承担 III-10 的任何结论.
+\end{FACounterexample}
+
+\begin{FARemark}[延后结果：Cerami]
+Cerami 条件把 Palais--Smale 序列中的导数小量条件替换为
+\(\displaystyle (1+\|u_n\|_X)\|\Phi'(u_n)\|_{X^*}\longrightarrow0\).
+它在某些非紧变分问题中提供另一种紧性表述. 本章只登记这一 D 级读者边界，不建立正式定理，不证明它与 Palais--Smale 条件的比较，也不在任何证明中调用它.
+\end{FARemark}
+
+\begin{FARemark}[III-10 边界]
+本章已经建立 \(\displaystyle(PS)_c\)、梯度下界、伪梯度、全局有界流与定量变形的闭合接口. 下一章可以把\autoref{fa:DEF-A01}作用于某个极小极大水平，但当前不使用山路定理、山路几何、一般极小极大变形框架或其他山路/极小极大正式内容.
+\end{FARemark}
+
+\subsection*{本章习题}\label{sec:iii09-exercises}
+
+\begin{FAExercise}[临界点与临界值]{ex:iii09-01}
+设 \(\displaystyle\Phi\in C^1(X;\mathbb R)\). 写出 \(\displaystyle K(\Phi)\)、\(\displaystyle K_c\) 与 \(\displaystyle\Phi^a\) 的定义，并证明 \(\displaystyle c\) 为临界值当且仅当 \(\displaystyle K_c\neq\varnothing\). 给出一个临界点不是局部极小点的一维例子.
+\end{FAExercise}
+
+\begin{FAExercise}[临界点集闭性]{ex:iii09-02}
+只用 \(\displaystyle\Phi'\) 的算子范数连续性证明 \(\displaystyle K(\Phi)\) 范数闭，再证明 \(\displaystyle K_c\) 范数闭.
+\end{FAExercise}
+
+\begin{FAExercise}[Palais--Smale 条件的序列判定]{ex:iii09-03}
+对给定序列 \(\displaystyle(u_n)\subseteq X\)，分别写出“是全局 PS 序列”与“是水平 \(\displaystyle c\) 候选序列”的全部条件. 说明后者自动给能量有界，而前者不必有能量极限.
+\end{FAExercise}
+
+\begin{FAExercise}[全局 Palais--Smale 条件推出水平条件]{ex:iii09-04}
+完整证明 \(\displaystyle(PS)\Rightarrow(PS)_c\) 对全部 \(\displaystyle c\in\mathbb R\) 成立，并指出证明中何处使用 \(\displaystyle\Phi(u_n)\to c\) 来得到能量有界.
+\end{FAExercise}
+
+\begin{FAExercise}[强 Palais--Smale 序列极限]{ex:iii09-05}
+重建\autoref{fa:PS-C01}，分别指出导数连续性与泛函连续性的作用. 不得把弱收敛替换成强收敛的结论.
+\end{FAExercise}
+
+\begin{FAExercise}[III-08 衔接]{ex:iii09-06}
+设 \(\displaystyle\Phi\in C^1(X;\mathbb R)\) 下有界，并使用\autoref{fa:EK-B01}构造 \(\displaystyle\Phi(u_n)\to\inf_X\Phi\)、\(\displaystyle\|\Phi'(u_n)\|_{X^*}\to0\) 的序列. 说明还需加入什么紧性假设才能从中提取临界点.
+\end{FAExercise}
+
+\begin{FAExercise}[空临界水平附近的定量梯度下界]{ex:iii09-07}
+逐行重建\autoref{fa:PS-B01}的反证论证，包括 \(\displaystyle\frac{2}{n}\) 能量窗口、\(\displaystyle\frac{1}{n}\) 导数上界、\(\displaystyle(PS)_c\) 子列抽取与\autoref{fa:PS-C01}的最终矛盾.
+\end{FAExercise}
+
+\begin{FAExercise}[紧能量带]{ex:iii09-08}
+假设 \(\displaystyle\Phi\) 满足全局 \(\displaystyle(PS)\)，并且 \(\displaystyle[a,b]\) 中无临界值. 证明能量带上导数范数有正下界. 必须显式先从实数序列 \(\displaystyle\Phi(u_n)\in[a,b]\) 抽取收敛子列，再使用全局 PS.
+\end{FAExercise}
+
+\begin{FAExercise}[局部伪梯度方向]{ex:iii09-09}
+固定 \(\displaystyle u\in U\). 从对偶范数上确界选择单位向量 \(\displaystyle e_u\)，并用导数连续性构造邻域 \(\displaystyle W_u\)，使 \(\displaystyle\Phi'(v)[e_u]\geqslant\frac{1}{2}\|\Phi'(v)\|_{X^*}\) 对 \(\displaystyle v\in W_u\) 成立. 给出全部常数.
+\end{FAExercise}
+
+\begin{FAExercise}[度量 Lipschitz 单位分解]{ex:iii09-10}
+从局部有限开细化 \(\displaystyle(P_i)\) 出发，定义距离函数 \(\displaystyle\rho_i\)、和 \(\displaystyle R\) 与 \(\displaystyle\lambda_i=\frac{\rho_i}{R}\). 证明 \(\displaystyle\lambda_i\) 局部 Lipschitz、局部有限、非负、和为一，并验证支集从属于原覆盖.
+\end{FAExercise}
+
+\begin{FAExercise}[伪梯度估计]{ex:iii09-11}
+用习题\ref{ex:iii09-09}与\ref{ex:iii09-10}定义 \(\displaystyle V=\sum_i\lambda_ie_{u_i}\). 证明 \(\displaystyle\|V\|\leqslant1\) 与 \(\displaystyle\Phi'(u)[V(u)]\geqslant\frac{1}{2}\|\Phi'(u)\|_{X^*}\)，并指出局部有限性在良定义性与局部 Lipschitz 性中的两个不同作用.
+\end{FAExercise}
+
+\begin{FAExercise}[有界局部 Lipschitz 常微分方程]{ex:iii09-12}
+对有界局部 Lipschitz \(\displaystyle G:X\to X\)，完整重做\autoref{fa:DEF-B01}中局部 Picard 压缩映射论证、有界速度下的有限端点延拓、负时间延拓与初值连续依赖性. 最后证明 \(\displaystyle\Theta_s^{-1}=\Theta_{-s}\).
+\end{FAExercise}
+
+\begin{FAExercise}[能量单调性]{ex:iii09-13}
+设 \(\displaystyle G=-\chi(\Phi)V\) 在截断能量带内、能量带外为零. 用 Fréchet 链式法则证明沿流的能量单调不增，并在内层能量带推出导数上界 \(\displaystyle-\kappa\delta\).
+\end{FAExercise}
+
+\begin{FAExercise}[截断构造]{ex:iii09-14}
+验证\autoref{fa:DEF-A01}中分段标量截断 \(\displaystyle\chi\) 为 \(\displaystyle\frac{1}{\varepsilon}\)-Lipschitz. 再证明分段延拓向量场 \(\displaystyle G\) 在 \(\displaystyle|\Phi-c|=2\varepsilon\) 的边界点仍局部 Lipschitz.
+\end{FAExercise}
+
+\begin{FAExercise}[定量变形引理]{ex:iii09-15}
+不引用“标准变形引理”，从 \(\displaystyle(PS)_c+K_c=\varnothing\) 开始，依次重建梯度下界、伪梯度、截断向量场、全局流、时间 \(\displaystyle T=\frac{2\varepsilon}{\kappa\delta}\) 与 \(\displaystyle\eta(t,u)=\Theta_{tT}(u)\)，最后证明\autoref{fa:DEF-A01}的五项结论.
+\end{FAExercise}
+
+\begin{FAExercise}[子水平集下降]{ex:iii09-16}
+单独证明 \(\displaystyle\eta(1,\Phi^{c+\varepsilon})\subseteq\Phi^{c-\varepsilon}\). 必须分成初始能量已低于 \(\displaystyle c-\varepsilon\)、轨道中途越过该水平、以及整个时间区间始终留在内层能量带三种逻辑情形.
+\end{FAExercise}
+
+\begin{FAExercise}[Palais--Smale 紧性失效的反例]{ex:iii09-17}
+对 \(\displaystyle\Psi(x)=\frac{1}{4}\|x\|^4-\frac{1}{2}\|x\|^2\) 在实 \(\displaystyle\ell^2\)，从范数平方导数计算 \(\displaystyle\Psi'\)，再验证 \(\displaystyle(e_n)\) 是水平 \(\displaystyle-\frac{1}{4}\) PS 序列且没有范数 Cauchy 子列. 说明该例精确否定什么紧性推理.
+\end{FAExercise}
+
+\begin{FAExercise}[次临界半线性 Dirichlet 能量的导数]{ex:iii09-18}
+在次临界半线性 Dirichlet 能量模型背景中证明 Nemytskii 估计
+\(\displaystyle \|N(u)-N(v)\|_{q'} \leqslant C_q(\|u\|_q+\|v\|_q)^{q-2}\|u-v\|_q\),
+并由积分余项证明 \(\displaystyle\mathcal J\in C^1(X;\mathbb R)\) 及正文导数公式.
+\end{FAExercise}
+
+\begin{FAExercise}[Palais--Smale 序列的有界性恒等式]{ex:iii09-19}
+对次临界半线性 Dirichlet 能量模型的任意 Palais--Smale 序列验证
+\(\displaystyle \mathcal J(u_n)-\frac{1}{q}\mathcal J'(u_n)[u_n] = \left(\frac{1}{2}-\frac{1}{q}\right)\|u_n\|_X^2\),
+并严格用反设存在无界子列证明 \(\displaystyle(u_n)\) 有界.
+\end{FAExercise}
+
+\begin{FAExercise}[Rellich的强 \(\displaystyle L^q\) 子列抽取]{ex:iii09-20}
+保持 \(\displaystyle\Omega\) 只为有界 Lipschitz 域. 取光滑有界 \(\displaystyle D\supset\overline\Omega\)，通过 II-13 零延拓把有界 \(\displaystyle H_0^1(\Omega)\) 序列送入 \(\displaystyle H^1(D)\)，再用\autoref{fa:SOB-A03}在严格次临界 \(\displaystyle q\) 下抽取强 \(\displaystyle L^q\) 子列. 明确解释为什么这没有把\autoref{fa:SOB-A03}的 \(\displaystyle C^1\)-区域假设擅自弱化.
+\end{FAExercise}
+
+\begin{FAExercise}[非线性收敛与强 \(\displaystyle H_0^1\) 收敛]{ex:iii09-21}
+从 \(\displaystyle u_n\rightharpoonup u\) 在 \(\displaystyle X\) 中成立且 \(\displaystyle u_n\to u\) 在 \(\displaystyle L^q\) 中强收敛出发，证明 \(\displaystyle N(u_n)\to N(u)\) 在 \(\displaystyle L^{q'}\) 中成立、\(\displaystyle\mathcal J'(u)=0\)，再使用正文导数差恒等式推出 \(\displaystyle u_n\to u\) 在 \(\displaystyle X\) 中强收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[后续边界：山路与 Cerami]{ex:iii09-22}
+逐项判断下列操作在 III-09 是否允许，并给出依赖理由：使用\autoref{fa:DEF-A01}预告 III-10；在本章证明山路定理；把 Cerami 条件作为 D 级延后定义提及；证明 Cerami 与 Palais--Smale 的比较定理；把临界 Sobolev 端点 \(\displaystyle q=2^*\) 当作紧嵌入使用.
+\end{FAExercise}

@@ -1,0 +1,1242 @@
+\chapter{无界自伴谱定理与函数演算}\label{chap:II-07}
+\FAChapterOpening
+{把 II-03 的有界正规 PVM 理论推进到无界自伴算子：先建立无界谱积分的定义域、闭性与乘法接口，再由非实预解算子的有界正规谱定理构造唯一谱测度，最后建立可测函数演算、谱截断核以及乘法算子与 Dirichlet Laplace 算子模型.}
+{II-03，特别是\autoref{fa:CSTAR-A02}与有界 Borel 谱积分；II-05，特别是\autoref{fa:UNB-A01}；II-06，特别是\autoref{fa:SA-A02}.}
+{\begin{center}
+\begin{tikzpicture}[x=0.78cm,y=0.95cm]
+\node[fa/node] (cstar) at (0,1.25) {有界正规谱定理};
+\node[fa/node] (sa) at (0,-1.25) {自伴值域判据};
+\node[fa/node] (a01) at (4.2,0) {无界自伴谱定理};
+\node[fa/node] (a02) at (8.0,1.25) {可测函数演算};
+\node[fa/node] (b01) at (8.0,-1.25) {谱测度定义域};
+\node[fa/node] (c01) at (11.8,-1.25) {谱估计/控制收敛};
+\draw[fa/arrow] (cstar) -- (a01);
+\draw[fa/arrow] (sa) -- (a01);
+\draw[fa/arrow] (a01) -- (a02);
+\draw[fa/arrow] (a01) -- (b01);
+\draw[fa/arrow] (b01) -- (c01);
+\draw[fa/arrow] (a02) -- (c01);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle H\) 为复 Hilbert 空间，内积对第一变量线性、对第二变量共轭线性. 所有无界算子均显式写成 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\). 若写 \(\displaystyle\mathcal A=\int\lambda\,\mathrm{d}E(\lambda)\)，其含义始终包括定义域相等以及在该定义域上作用值相等. 本章的证明路线以 II-03、II-05、II-06 的既有接口独立重构，参考无界自伴谱论的标准组织见\cite{reed-simon1980,conway1990}，不复制来源文字或证明.
+
+\newpage
+\section{投影值测度}\label{sec:ii07-pvm}
+\index{projection-valued measure@投影值测度}\index{spectral integral@谱积分!无界}
+
+\begin{FADefinition}[A][实轴上的投影值测度]{ii07:pvm-definition}
+称映射
+\(\displaystyle E:\mathcal B(\mathbb R)\to\mathcal B(H)\)
+为 \(\displaystyle\mathbb R\) 上的投影值测度，若对全部 Borel 集 \(\displaystyle B,C\subseteq\mathbb R\) 有
+\(\displaystyle E(B)^*=E(B), \; E(B)^2=E(B),\)
+\(\displaystyle E(\varnothing)=0, \; E(\mathbb R)=\mathcal I, \; E(B)E(C)=E(B\cap C),\)
+并且对任意两两不交的 Borel 集列 \(\displaystyle(B_n)\) 与任意 \(\displaystyle x\in H\)，
+\[
+E\left(\bigcup_{n=1}^{\infty}B_n\right)x
+=
+\sum_{n=1}^{\infty}E(B_n)x,
+\]
+其中右侧在 \(\displaystyle H\)-范数中收敛. 若每个标量测度 \(\displaystyle B\mapsto\langle E(B)x,y\rangle\) 都是有限正则复 Borel 测度，则称 \(\displaystyle E\) 正则.
+\end{FADefinition}
+
+对 \(\displaystyle x,y\in H\) 定义
+\(\displaystyle \mu_x^E(B)=\langle E(B)x,x\rangle=\|E(B)x\|^2, \; \mu_{x,y}^E(B)=\langle E(B)x,y\rangle.\)
+特别地，
+\(\displaystyle \mu_x^E(\mathbb R)=\|x\|^2.\)
+II-03 的\autoref{fa:CSTAR-B02}与\autoref{ii03:bounded-borel-spectral-integral}已经完整建立紧谱上的同一 PVM 接口及有界 Borel 谱积分. 对本章的实轴 PVM，完全相同的简单函数构造给出：若 \(\displaystyle g:\mathbb R\to\mathbb C\) 有界 Borel，则
+\[
+g(E):=\int_{\mathbb R}g(\lambda)\,\mathrm{d}E(\lambda)\in\mathcal B(H),
+\]
+并保持线性、乘法、投影兼容与
+\(\displaystyle g(E)^*=\overline g(E).\)
+
+\begin{FAProposition}[B][有界谱积分的向量范数恒等式]{ii07:bounded-spectral-norm}
+若 \(\displaystyle g:\mathbb R\to\mathbb C\) 有界 Borel，则对每个 \(\displaystyle x\in H\)，
+\[
+\|g(E)x\|^2
+=
+\int_{\mathbb R}|g(\lambda)|^2\,\mathrm{d}\mu_x^E(\lambda).
+\]
+并且对任意 Borel 集 \(\displaystyle B\)，
+\(\displaystyle E(B)g(E)=g(E)E(B)=(1_Bg)(E).\)
+\end{FAProposition}
+
+\begin{FAProof}
+由 II-03 的有界 Borel 乘法性与伴随公式，
+\[
+\begin{aligned}
+\displaystyle \|g(E)x\|^2 &\displaystyle =\langle g(E)x,g(E)x\rangle\\
+\displaystyle &\displaystyle =\langle g(E)^*g(E)x,x\rangle\\
+\displaystyle &\displaystyle =\langle |g|^2(E)x,x\rangle\\
+\displaystyle &\displaystyle =\int_{\mathbb R}|g(\lambda)|^2\,\mathrm{d}\mu_x^E(\lambda).
+\end{aligned}
+\]
+又 \(\displaystyle E(B)=1_B(E)\)，故乘法性直接给出第二式.
+\hfill\(\square\)
+\end{FAProof}
+
+以下局部构造只依赖 PVM 与上一命题，不分配新的内部登记编号. 虽然先在 \(\displaystyle\mathbb R\) 上表述，但证明只使用 Borel 结构、PVM 运算与标量谱测度；因此把 \(\displaystyle\mathbb R\) 替换为任意 Borel 子空间 \(\displaystyle X\subseteq\mathbb C\)，并令有限值 Borel 函数定义在 \(\displaystyle X\) 上时，下述截断定义、范数恒等式、稠密性、闭性、投影兼容性及乘法公式逐字成立. 后文只在 \(\displaystyle X=\sigma(\mathcal R)\) 时使用这一同一接口.
+
+\begin{FADefinition}[B][无界谱积分]{ii07:unbounded-spectral-integral}
+设 \(\displaystyle f:\mathbb R\to\mathbb C\) 为有限值 Borel 函数. 定义
+\[
+D(f(E))
+=
+\left\{
+ x\in H:
+ \int_{\mathbb R}|f(\lambda)|^2\,\mathrm{d}\mu_x^E(\lambda)<\infty
+\right\}.
+\]
+令
+\(\displaystyle B_n=\{\lambda:|f(\lambda)|\leqslant n\}, \; f_n=f1_{B_n}.\)
+对 \(\displaystyle x\in D(f(E))\)，定义
+\[
+f(E)x
+:=
+\lim_{n\to\infty}f_n(E)x.
+\]
+\end{FADefinition}
+
+\begin{FAProposition}[B][无界谱积分的良定义与范数恒等式]{ii07:unbounded-integral-basic}
+对\autoref{ii07:unbounded-spectral-integral}中的 \(\displaystyle f\)，若 \(\displaystyle x\in D(f(E))\)，则 \(\displaystyle f_n(E)x\) 在 \(\displaystyle H\) 中为 Cauchy 列，定义与截断序列的等价选择无关，并且
+\[
+\|f(E)x\|^2
+=
+\int_{\mathbb R}|f(\lambda)|^2\,\mathrm{d}\mu_x^E(\lambda).
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle n\geqslant m\)，由\autoref{ii07:bounded-spectral-norm}，
+\[
+\|f_n(E)x-f_m(E)x\|^2
+=
+\int_{\mathbb R}|f_n-f_m|^2\,\mathrm{d}\mu_x^E.
+\]
+因为 \(\displaystyle f_n(\lambda)\to f(\lambda)\) 且 \(\displaystyle|f_n-f_m|^2\leqslant4|f|^2\)，而 \(\displaystyle|f|^2\in L^1(\mu_x^E)\)，标量控制收敛定理给右侧趋于零. 若 \(\displaystyle h_n\) 是另一列有界 Borel 截断，满足 \(\displaystyle h_n\to f\) 且 \(\displaystyle|h_n|\leqslant|f|\)，同一计算应用于 \(\displaystyle f_n-h_m\) 给出相同极限，故定义不依赖此类截断选择.
+
+再由\autoref{ii07:bounded-spectral-norm}，
+\[
+\|f_n(E)x\|^2
+=
+\int_{B_n}|f|^2\,\mathrm{d}\mu_x^E.
+\]
+左侧收敛到 \(\displaystyle\|f(E)x\|^2\)，右侧由单调收敛定理收敛到 \(\displaystyle\int|f|^2\,\mathrm{d}\mu_x^E\)，得到所述恒等式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][谱投影与无界谱积分兼容]{ii07:projection-unbounded-compatibility}
+若 \(\displaystyle x\in D(f(E))\) 且 \(\displaystyle B\in\mathcal B(\mathbb R)\)，则
+\(\displaystyle E(B)x\in D(f(E)), \; E(B)f(E)x=f(E)E(B)x=(1_Bf)(E)x.\)
+更一般地，若 \(\displaystyle f\) 在 \(\displaystyle B\) 上按 \(\displaystyle E\)-零集意义满足 \(\displaystyle|f|\leqslant M\)，则
+\(\displaystyle E(B)H\subseteq D(f(E)), \; \|f(E)E(B)\|\leqslant M.\)
+\end{FAProposition}
+
+\begin{FAProof}
+由 PVM 乘法性，
+\(\displaystyle \mu_{E(B)x}^E(C) = \|E(C)E(B)x\|^2 = \|E(C\cap B)x\|^2 = \mu_x^E(C\cap B).\)
+因此若 \(\displaystyle x\in D(f(E))\)，则
+\[
+\int|f|^2\,\mathrm{d}\mu_{E(B)x}^E
+=
+\int_B|f|^2\,\mathrm{d}\mu_x^E<\infty.
+\]
+对每个有界截断 \(\displaystyle f_n\)，\autoref{ii07:bounded-spectral-norm}给
+\(\displaystyle E(B)f_n(E)x=f_n(E)E(B)x=(1_Bf_n)(E)x.\)
+令 \(\displaystyle n\to\infty\) 即得第一组三式.
+
+若 \(\displaystyle E(B\cap\{|f|>M\})=0\)，则对任意 \(\displaystyle x\in H\)，
+\[
+\int|f|^2\,\mathrm{d}\mu_{E(B)x}^E
+=
+\int_B|f|^2\,\mathrm{d}\mu_x^E
+\leqslant
+M^2\|E(B)x\|^2.
+\]
+所以 \(\displaystyle E(B)x\in D(f(E))\)，并由\autoref{ii07:unbounded-integral-basic}得到算子范数估计.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][无界谱积分定义域稠密且算子闭]{ii07:unbounded-integral-closed-dense}
+对任意有限值 Borel 函数 \(\displaystyle f\)，算子
+\(\displaystyle f(E):D(f(E))\subseteq H\to H\)
+稠密定义且闭.
+\end{FAProposition}
+
+\begin{FAProof}
+令 \(\displaystyle B_n=\{|f|\leqslant n\}\). 因 \(\displaystyle B_n\uparrow\mathbb R\)，PVM 的强可数可加性给 \(\displaystyle E(B_n)x\to x\) 对全部 \(\displaystyle x\in H\) 成立. 由\autoref{ii07:projection-unbounded-compatibility}，\(\displaystyle E(B_n)H\subseteq D(f(E))\)，故 \(\displaystyle D(f(E))\) 稠密.
+
+再证闭性. 设 \(\displaystyle x_k\in D(f(E))\)、\(\displaystyle x_k\to x\) 且 \(\displaystyle f(E)x_k\to y\). 对每个固定 \(\displaystyle n\)，由\autoref{ii07:projection-unbounded-compatibility}，
+\(\displaystyle E(B_n)f(E)x_k=f_n(E)x_k.\)
+左右两边分别利用 \(\displaystyle E(B_n)\) 与 \(\displaystyle f_n(E)\) 有界取极限，得到
+\(\displaystyle f_n(E)x=E(B_n)y.\)
+于是由\autoref{ii07:bounded-spectral-norm}，
+\[
+\int_{B_n}|f|^2\,\mathrm{d}\mu_x^E
+=
+\|f_n(E)x\|^2
+=
+\|E(B_n)y\|^2
+\leqslant
+\|y\|^2.
+\]
+令 \(\displaystyle n\to\infty\)，单调收敛给 \(\displaystyle\int|f|^2\,\mathrm{d}\mu_x^E<\infty\)，故 \(\displaystyle x\in D(f(E))\). 最后 \(\displaystyle f_n(E)x=E(B_n)y\to y\)，而无界谱积分定义给 \(\displaystyle f_n(E)x\to f(E)x\)，所以 \(\displaystyle f(E)x=y\). 因而 \(\displaystyle f(E)\) 闭.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][无界谱积分的标量测度转移与乘法]{ii07:generic-product}
+设 \(\displaystyle f,g:\mathbb R\to\mathbb C\) 为有限值 Borel 函数.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 若 \(\displaystyle x\in D(f(E))\)，则对全部 Borel 集 \(\displaystyle B\)，
+\[
+\mu_{f(E)x}^E(B)
+=
+\int_B|f(\lambda)|^2\,\mathrm{d}\mu_x^E(\lambda).
+\]
+\item 复合算子的精确定义域为
+\[
+D(g(E)f(E))
+=
+\left\{
+ x\in D(f(E)):
+ \int_{\mathbb R}|g(\lambda)f(\lambda)|^2\,\mathrm{d}\mu_x^E(\lambda)<\infty
+\right\},
+\]
+并且在此定义域上
+\(\displaystyle g(E)f(E)x=(gf)(E)x.\)
+\item 若内层函数 \(\displaystyle f\) 有界，则
+\(\displaystyle g(E)f(E)=(gf)(E)\)
+作为算子等式成立.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+对（i），由\autoref{ii07:projection-unbounded-compatibility}与\autoref{ii07:unbounded-integral-basic}，
+\[
+\mu_{f(E)x}^E(B)=\|E(B)f(E)x\|^2=\|(1_Bf)(E)x\|^2=\int_B|f|^2\,\mathrm{d}\mu_x^E.
+\]
+
+对（ii），按复合算子定义，\(\displaystyle x\in D(g(E)f(E))\) 当且仅当 \(\displaystyle x\in D(f(E))\) 且 \(\displaystyle f(E)x\in D(g(E))\). 由（i），第二条件等价于
+\[
+\int|g|^2\,\mathrm{d}\mu_{f(E)x}^E
+=
+\int|gf|^2\,\mathrm{d}\mu_x^E<\infty,
+\]
+这给出定义域公式.
+
+只需证明作用公式. 令 \(\displaystyle g_m=g1_{\{|g|\leqslant m\}}\). 对固定 \(\displaystyle m\)，再以 \(\displaystyle f_n\) 截断 \(\displaystyle f\). 有界 Borel 乘法性给
+\(\displaystyle g_m(E)f_n(E)x=(g_mf_n)(E)x.\)
+令 \(\displaystyle n\to\infty\). 左侧因 \(\displaystyle g_m(E)\) 有界而收敛到 \(\displaystyle g_m(E)f(E)x\)；右侧由 \(\displaystyle|g_m(f_n-f)|^2\leqslant m^2|f_n-f|^2\) 与\autoref{ii07:unbounded-integral-basic}收敛到 \(\displaystyle(g_mf)(E)x\). 再令 \(\displaystyle m\to\infty\). 左侧按 \(\displaystyle f(E)x\in D(g(E))\) 收敛到 \(\displaystyle g(E)f(E)x\)；右侧因 \(\displaystyle x\in D((gf)(E))\) 收敛到 \(\displaystyle(gf)(E)x\). 因而作用公式成立.
+
+若 \(\displaystyle f\) 有界，则 \(\displaystyle D(f(E))=H\)，（ii）的定义域正好等于 \(\displaystyle D((gf)(E))\)，故得到完整算子等式.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{自伴谱定理}\label{sec:ii07-selfadjoint-spectral-theorem}
+\index{spectral theorem@谱定理!无界自伴算子}\index{resolvent@预解算子!自伴}
+
+现设
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq H\to H\)
+自伴. 由 II-06 的\autoref{fa:SA-A02}及其非实预解估计，\(\displaystyle\mathcal A-\mathrm{i}\mathcal I\) 与 \(\displaystyle\mathcal A+\mathrm{i}\mathcal I\) 均从 \(\displaystyle D(\mathcal A)\) 双射到 \(\displaystyle H\)，且其逆为有界算子. 定义
+\[
+\mathcal R=(\mathcal A-\mathrm{i}\mathcal I)^{-1},
+\;
+\mathcal S=(\mathcal A+\mathrm{i}\mathcal I)^{-1}.
+\]
+
+\begin{FAProposition}[B][自伴预解的伴随与正规性]{ii07:resolvent-normal}
+上述 \(\displaystyle\mathcal R,\mathcal S\in\mathcal B(H)\) 满足
+\(\displaystyle \mathcal R^*=\mathcal S,\)
+\[
+\mathcal R-\mathcal R^*
+=
+2\mathrm{i}\mathcal R\mathcal R^*,
+\;
+\mathcal R\mathcal R^*=\mathcal R^*\mathcal R.
+\]
+特别地，\(\displaystyle\mathcal R\) 为有界正规算子.
+\end{FAProposition}
+
+\begin{FAProof}
+任取 \(\displaystyle u,v\in H\)，令 \(\displaystyle x=\mathcal Ru\)、\(\displaystyle y=\mathcal Sv\). 则 \(\displaystyle x,y\in D(\mathcal A)\) 且
+\(\displaystyle u=(\mathcal A-\mathrm{i}\mathcal I)x, \; v=(\mathcal A+\mathrm{i}\mathcal I)y.\)
+由第一变量线性约定与自伴性，
+\[
+\begin{aligned}
+\displaystyle \langle\mathcal Ru,v\rangle &\displaystyle =\langle x,(\mathcal A+\mathrm{i}\mathcal I)y\rangle\\
+\displaystyle &\displaystyle =\langle x,\mathcal Ay\rangle-\mathrm{i}\langle x,y\rangle\\
+\displaystyle &\displaystyle =\langle\mathcal Ax,y\rangle-\mathrm{i}\langle x,y\rangle\\
+\displaystyle &\displaystyle =\langle(\mathcal A-\mathrm{i}\mathcal I)x,y\rangle\\
+\displaystyle &\displaystyle =\langle u,\mathcal Sv\rangle.
+\end{aligned}
+\]
+故 \(\displaystyle\mathcal R^*=\mathcal S\).
+
+由于 \(\displaystyle\mathcal S(H)\subseteq D(\mathcal A)\)，有
+\[
+\mathcal R-\mathcal S=\mathcal R(\mathcal A+\mathrm{i}\mathcal I)\mathcal S-\mathcal R(\mathcal A-\mathrm{i}\mathcal I)\mathcal S=2\mathrm{i}\mathcal R\mathcal S.
+\]
+同理交换两侧角色得到 \(\displaystyle\mathcal R-\mathcal S=2\mathrm{i}\mathcal S\mathcal R\). 因此 \(\displaystyle\mathcal R\mathcal S=\mathcal S\mathcal R\). 代入 \(\displaystyle\mathcal S=\mathcal R^*\) 即得两条所需公式与正规性.
+\hfill\(\square\)
+\end{FAProof}
+
+对有界正规算子 \(\displaystyle\mathcal R\) 应用 II-03 的\autoref{fa:CSTAR-A02}. 令 \(\displaystyle K=\sigma(\mathcal R)\)，则存在唯一正则 PVM \(\displaystyle\mathcal F\) 于 \(\displaystyle K\)，使
+\[
+\mathcal R
+=
+\int_K z\,\mathrm{d}\mathcal F(z).
+\]
+
+\begin{FAProposition}[B][预解谱曲线与零原子]{ii07:resolvent-curve}
+对上述 \(\displaystyle\mathcal F\)，有
+\(\displaystyle \mathcal F(\{0\})=0.\)
+并且对每个 \(\displaystyle z\in K\)，
+\(\displaystyle z-\overline z=2\mathrm{i}|z|^2, \; \operatorname{Im}z=|z|^2.\)
+若 \(\displaystyle z\neq0\)，定义
+\(\displaystyle \psi(z)=\mathrm{i}+\frac1z,\)
+则 \(\displaystyle\psi(z)\in\mathbb R\). 其逆参数映射为
+\(\displaystyle r(\lambda)=\frac1{\lambda-\mathrm{i}}, \; \lambda\in\mathbb R.\)
+\end{FAProposition}
+
+\begin{FAProof}
+因为 \(\displaystyle\mathcal R\) 是 \(\displaystyle\mathcal A-\mathrm{i}\mathcal I\) 的逆，所以 \(\displaystyle\ker\mathcal R=\{0\}\). II-03 的谱原子恒等式\autoref{ii03:eigenvalue-projection}给
+\(\displaystyle \mathcal F(\{0\})H=\ker\mathcal R=\{0\},\)
+故 \(\displaystyle\mathcal F(\{0\})=0\).
+
+由\autoref{ii07:resolvent-normal}，
+\(\displaystyle \mathcal R-\mathcal R^*-2\mathrm{i}\mathcal R\mathcal R^*=0.\)
+在 II-03 的连续函数演算中，左侧对应连续函数
+\(\displaystyle h(z)=z-\overline z-2\mathrm{i}|z|^2\)
+于 \(\displaystyle K\). \autoref{fa:CSTAR-A01}的等距性给 \(\displaystyle\|h\|_{C(K)}=\|h(\mathcal R)\|=0\)，故 \(\displaystyle h(z)=0\) 对全部 \(\displaystyle z\in K\) 成立. 除以 \(\displaystyle2\mathrm{i}\) 得 \(\displaystyle\operatorname{Im}z=|z|^2\).
+
+若 \(\displaystyle z\neq0\)，则
+\(\displaystyle \operatorname{Im}\frac1z = -\frac{\operatorname{Im}z}{|z|^2} =-1,\)
+所以 \(\displaystyle\psi(z)\) 的虚部为零. 最后直接计算
+\(\displaystyle \psi(r(\lambda))=\lambda, \; r(\psi(z))=z\)
+即得互逆性.
+\hfill\(\square\)
+\end{FAProof}
+
+对任意 \(\displaystyle B\in\mathcal B(\mathbb R)\)，定义
+\(\displaystyle E_{\mathcal A}(B) = \mathcal F\bigl(\{z\in K\setminus\{0\}:\psi(z)\in B\}\bigr).\)
+
+\begin{FAProposition}[B][由预解投影值测度推送得到自伴谱测度]{ii07:pushforward-pvm}
+映射 \(\displaystyle E_{\mathcal A}:\mathcal B(\mathbb R)\to\mathcal B(H)\) 是正则 PVM. 对 \(\displaystyle x\in H\)，其标量测度
+\(\displaystyle \mu_x^{\mathcal A}(B) := \|E_{\mathcal A}(B)x\|^2\)
+是有限正则正 Borel 测度，且 \(\displaystyle\mu_x^{\mathcal A}(\mathbb R)=\|x\|^2\).
+\end{FAProposition}
+
+\begin{FAProof}
+因为 \(\displaystyle\psi\) 在 \(\displaystyle K\setminus\{0\}\) 上连续，所以每个逆像集合为 Borel 集. PVM 的自伴投影、乘法性与有限可加性由 \(\displaystyle\mathcal F\) 直接继承. 对两两不交的 \(\displaystyle B_n\)，其 \(\displaystyle\psi\)-逆像也两两不交，故 \(\displaystyle\mathcal F\) 的强可数可加性给 \(\displaystyle E_{\mathcal A}\) 的强可数可加性. 又
+\(\displaystyle E_{\mathcal A}(\mathbb R) = \mathcal F(K\setminus\{0\}) = \mathcal I-\mathcal F(\{0\}) = \mathcal I.\)
+因此 \(\displaystyle E_{\mathcal A}\) 是 PVM，且标量测度有限，总质量为 \(\displaystyle\|x\|^2\).
+
+只需证明正则性. 固定 \(\displaystyle x\in H\)，令
+\(\displaystyle \nu_x(C)=\|\mathcal F(C)x\|^2.\)
+由 \(\displaystyle\nu_x(\{0\})=0\) 与有限测度的从上连续性，对任意 \(\displaystyle\varepsilon>0\) 可取 \(\displaystyle\delta>0\)，使
+\(\displaystyle \nu_x(K\cap\{|z|<\delta\})<\varepsilon.\)
+置
+\(\displaystyle K_\delta=K\cap\{|z|\geqslant\delta\}.\)
+这是紧集，且 \(\displaystyle\psi|_{K_\delta}\) 连续. 对任意 Borel 集 \(\displaystyle B\subseteq\mathbb R\)，集合
+\(\displaystyle A_\delta = K_\delta\cap\psi^{-1}(B)\)
+是 \(\displaystyle K_\delta\) 中的 Borel 集. 由 \(\displaystyle\nu_x\) 的正则性，可取紧集 \(\displaystyle C\subseteq A_\delta\)，使 \(\displaystyle\nu_x(A_\delta\setminus C)<\varepsilon\). 则 \(\displaystyle\psi(C)\) 为 \(\displaystyle B\) 中紧集，并且
+\(\displaystyle \mu_x^{\mathcal A}(B\setminus\psi(C)) \leqslant \nu_x(K\cap\{|z|<\delta\}) + \nu_x(A_\delta\setminus C) <2\varepsilon.\)
+故 \(\displaystyle\mu_x^{\mathcal A}\) 对全部 Borel 集内正则. 因其有限，对补集应用内正则性即得外正则性. 所以 \(\displaystyle\mu_x^{\mathcal A}\) 正则. 极化再给全部 \(\displaystyle\mu_{x,y}^{\mathcal A}\) 的正则性.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][推送谱积分的换元规则]{ii07:pushforward-change-variable}
+设 \(\displaystyle h:\mathbb R\to\mathbb C\) 为有限值 Borel 函数. 在 \(\displaystyle K\setminus\{0\}\) 上定义 \(\displaystyle\widetilde h=h\circ\psi\)，并任意指定 \(\displaystyle\widetilde h(0)\) 的有限值. 则
+\[
+D(h(E_{\mathcal A}))=D(\widetilde h(\mathcal F)),
+\;
+h(E_{\mathcal A})=\widetilde h(\mathcal F).
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由 \(\displaystyle E_{\mathcal A}\) 的定义，对任意非负 Borel 函数 \(\displaystyle q\)，简单函数逼近与单调收敛给
+\[
+\int_{\mathbb R}q(\lambda)\,\mathrm{d}\mu_x^{\mathcal A}(\lambda)
+=
+\int_{K\setminus\{0\}}q(\psi(z))\,\mathrm{d}\nu_x(z).
+\]
+取 \(\displaystyle q=|h|^2\) 得到两个定义域完全相同. 对有界截断 \(\displaystyle h_n\)，II-03 的有界 Borel 谱积分由简单函数定义，因此直接有 \(\displaystyle h_n(E_{\mathcal A})=\widetilde h_n(\mathcal F)\). 在共同定义域上令 \(\displaystyle n\to\infty\)，两侧按\autoref{ii07:unbounded-spectral-integral}的定义收敛，得到算子等式.
+\hfill\(\square\)
+\end{FAProof}
+
+定义候选谱积分算子
+\[
+\mathcal T
+=
+\int_{\mathbb R}\lambda\,\mathrm{d}E_{\mathcal A}(\lambda),
+\]
+其定义域为
+\[
+D(\mathcal T)
+=
+\left\{
+ x\in H:
+ \int_{\mathbb R}\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}(\lambda)<\infty
+\right\}.
+\]
+
+\begin{FAProposition}[B][正向定义域包含：\(\displaystyle\mathcal A\subseteq\mathcal T\)]{ii07:a-subset-t}
+有
+\(\displaystyle \mathcal A\subseteq\mathcal T.\)
+\end{FAProposition}
+
+\begin{FAProof}
+任取 \(\displaystyle y\in H\)，令 \(\displaystyle x=\mathcal Ry\). 因 \(\displaystyle\operatorname{Ran}\mathcal R=D(\mathcal A)\)，这覆盖全部 \(\displaystyle x\in D(\mathcal A)\). 由 \(\displaystyle\mathcal R=z(\mathcal F)\) 与\autoref{ii07:generic-product}的（i），
+\[
+\mu_{\mathcal Ry}^{\mathcal F}(C)
+=
+\int_C|z|^2\,\mathrm{d}\mu_y^{\mathcal F}(z).
+\]
+因此由\autoref{ii07:pushforward-change-variable}，
+\[
+\begin{aligned}
+\displaystyle \int_{\mathbb R}\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}(\lambda) &\displaystyle = \int_{K\setminus\{0\}}|\psi(z)|^2|z|^2\,\mathrm{d}\mu_y^{\mathcal F}(z)\\
+\displaystyle &\displaystyle = \int_K|1+\mathrm{i}z|^2\,\mathrm{d}\mu_y^{\mathcal F}(z)<\infty,
+\end{aligned}
+\]
+其中使用 \(\displaystyle\psi(z)z=1+\mathrm{i}z\)，而右端被紧集 \(\displaystyle K\) 上的连续有界函数控制. 故 \(\displaystyle x\in D(\mathcal T)\).
+
+再由换元规则，\(\displaystyle\mathcal T=\psi(\mathcal F)\). 由于内层函数 \(\displaystyle z\) 有界，\autoref{ii07:generic-product}的（iii） 给
+\(\displaystyle \mathcal T\mathcal Ry = (\psi z)(\mathcal F)y = (1+\mathrm{i}z)(\mathcal F)y = (\mathcal I+\mathrm{i}\mathcal R)y.\)
+另一方面，\(\displaystyle(\mathcal A-\mathrm{i}\mathcal I)\mathcal Ry=y\)，故
+\(\displaystyle \mathcal A\mathcal Ry=(\mathcal I+\mathrm{i}\mathcal R)y.\)
+所以 \(\displaystyle\mathcal Ax=\mathcal Tx\) 对全部 \(\displaystyle x\in D(\mathcal A)\) 成立，证明 \(\displaystyle\mathcal A\subseteq\mathcal T\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][从推送谱测度恢复预解]{ii07:recover-resolvent}
+令
+\(\displaystyle r(\lambda)=\frac1{\lambda-\mathrm{i}}.\)
+则
+\(\displaystyle r(E_{\mathcal A})=\mathcal R.\)
+\end{FAProposition}
+
+\begin{FAProof}
+函数 \(\displaystyle r\) 在 \(\displaystyle\mathbb R\) 上有界. 由\autoref{ii07:pushforward-change-variable}，
+\(\displaystyle r(E_{\mathcal A})=(r\circ\psi)(\mathcal F).\)
+在 \(\displaystyle K\setminus\{0\}\) 上有 \(\displaystyle r(\psi(z))=z\)，而 \(\displaystyle\mathcal F(\{0\})=0\)，故右侧等于 \(\displaystyle z(\mathcal F)=\mathcal R\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][反向定义域包含：\(\displaystyle\mathcal T\subseteq\mathcal A\)]{ii07:t-subset-a}
+有
+\(\displaystyle \mathcal T\subseteq\mathcal A.\)
+因此
+\[
+\mathcal A
+=
+\mathcal T
+=
+\int_{\mathbb R}\lambda\,\mathrm{d}E_{\mathcal A}(\lambda)
+\]
+作为算子等式成立.
+\end{FAProposition}
+
+\begin{FAProof}
+任取 \(\displaystyle x\in D(\mathcal T)\)，令
+\(\displaystyle y=(\mathcal T-\mathrm{i}\mathcal I)x\in H.\)
+由\autoref{ii07:recover-resolvent}与\autoref{ii07:generic-product}的（ii），
+\[
+\mathcal Ry=r(E_{\mathcal A})(\mathcal T-\mathrm{i}\mathcal I)x=\bigl(r(\lambda)(\lambda-\mathrm{i})\bigr)(E_{\mathcal A})x=x.
+\]
+这里复合定义域合法，因为 \(\displaystyle x\in D(\mathcal T)\)，且乘积函数恒为 \(\displaystyle1\). 因此
+\(\displaystyle x\in\operatorname{Ran}\mathcal R=D(\mathcal A).\)
+由 \(\displaystyle(\mathcal A-\mathrm{i}\mathcal I)x=y\) 得
+\(\displaystyle \mathcal Ax=y+\mathrm{i}x=\mathcal Tx.\)
+故 \(\displaystyle\mathcal T\subseteq\mathcal A\). 与\autoref{ii07:a-subset-t}合并即得完整算子等式，包括定义域相等.
+\hfill\(\square\)
+\end{FAProof}
+
+定义 PVM 的支撑为
+\[
+\operatorname{supp}E_{\mathcal A}
+=
+\left\{
+ t\in\mathbb R:
+ E_{\mathcal A}((t-\varepsilon,t+\varepsilon))\neq0
+ \text{ 对全部 }\varepsilon>0
+\right\}.
+\]
+
+\begin{FAProposition}[B][谱测度支撑等于算子谱]{ii07:support-spectrum}
+有
+\(\displaystyle \operatorname{supp}E_{\mathcal A}=\sigma(\mathcal A)\subseteq\mathbb R.\)
+\end{FAProposition}
+
+\begin{FAProof}
+先设 \(\displaystyle t\notin\operatorname{supp}E_{\mathcal A}\). 存在 \(\displaystyle\varepsilon>0\) 使
+\(\displaystyle E_{\mathcal A}((t-\varepsilon,t+\varepsilon))=0.\)
+定义有界 Borel 函数
+\[
+g(\lambda)
+=
+\begin{cases}
+(\lambda-t)^{-1},&|\lambda-t|\geqslant\varepsilon,\\
+0,&|\lambda-t|<\varepsilon.
+\end{cases}
+\]
+因为 \(\displaystyle\lambda g(\lambda)\) 有界，\autoref{ii07:generic-product}的（i） 或定义域公式给 \(\displaystyle g(E_{\mathcal A})H\subseteq D(\mathcal A)\). 又函数 \(\displaystyle(\lambda-t)g(\lambda)\) 在谱测度意义下等于 \(\displaystyle1\)，故\autoref{ii07:generic-product}给
+\(\displaystyle (\mathcal A-t\mathcal I)g(E_{\mathcal A})=\mathcal I\)
+于 \(\displaystyle H\)，以及
+\(\displaystyle g(E_{\mathcal A})(\mathcal A-t\mathcal I)=\mathcal I\)
+于 \(\displaystyle D(\mathcal A)\). 所以 \(\displaystyle\mathcal A-t\mathcal I\) 有有界两侧逆，\(\displaystyle t\in\rho(\mathcal A)\).
+
+反之设 \(\displaystyle t\in\rho(\mathcal A)\)，令
+\(\displaystyle M=\|(\mathcal A-t\mathcal I)^{-1}\|.\)
+取 \(\displaystyle0<\varepsilon<M^{-1}\). 若
+\(\displaystyle P:=E_{\mathcal A}((t-\varepsilon,t+\varepsilon))\neq0,\)
+取非零 \(\displaystyle x\in PH\). 由\autoref{ii07:projection-unbounded-compatibility}，区间上 \(\displaystyle|\lambda|\) 有界，故 \(\displaystyle x\in D(\mathcal A)\). 又
+\[
+\|(\mathcal A-t\mathcal I)x\|^2
+=
+\int_{(t-\varepsilon,t+\varepsilon)}|\lambda-t|^2\,\mathrm{d}\mu_x^{\mathcal A}
+\leqslant
+\varepsilon^2\|x\|^2.
+\]
+但逆算子估计给
+\(\displaystyle \|x\| \leqslant M\|(\mathcal A-t\mathcal I)x\| \leqslant M\varepsilon\|x\|,\)
+与 \(\displaystyle M\varepsilon<1\) 及 \(\displaystyle x\neq0\) 矛盾. 因此相应邻域谱投影为零，\(\displaystyle t\notin\operatorname{supp}E_{\mathcal A}\). 两个方向给出等式，而支撑位于 \(\displaystyle\mathbb R\)，故 \(\displaystyle\sigma(\mathcal A)\subseteq\mathbb R\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][无界自伴谱测度的唯一性]{ii07:pvm-uniqueness}
+若 \(\displaystyle E'\) 是另一正则 PVM，满足
+\[
+D(\mathcal A)
+=
+\left\{
+ x:\int_{\mathbb R}\lambda^2\,\mathrm{d}\mu_x^{E'}(\lambda)<\infty
+\right\}
+\]
+以及
+\[
+\mathcal Ax
+=
+\int_{\mathbb R}\lambda\,\mathrm{d}E'(\lambda)x
+\;
+\forall\,x\in D(\mathcal A),
+\]
+则 \(\displaystyle E'=E_{\mathcal A}\).
+\end{FAProposition}
+
+\begin{FAProof}
+仍令 \(\displaystyle r(\lambda)=(\lambda-\mathrm{i})^{-1}\)，并置 \(\displaystyle\mathcal R'=r(E')\in\mathcal B(H)\). 因 \(\displaystyle\lambda r(\lambda)\) 有界，对任意 \(\displaystyle y\in H\)，标量测度转移给
+\[
+\int\lambda^2\,\mathrm{d}\mu_{\mathcal R'y}^{E'}
+=
+\int\lambda^2|r(\lambda)|^2\,\mathrm{d}\mu_y^{E'}<\infty.
+\]
+故 \(\displaystyle\mathcal R'y\in D(\mathcal A)\). 由乘法规则，
+\(\displaystyle (\mathcal A-\mathrm{i}\mathcal I)\mathcal R'y = ((\lambda-\mathrm{i})r(\lambda))(E')y =y.\)
+同理对 \(\displaystyle x\in D(\mathcal A)\)，\(\displaystyle\mathcal R'(\mathcal A-\mathrm{i}\mathcal I)x=x\). 所以
+\(\displaystyle \mathcal R'= (\mathcal A-\mathrm{i}\mathcal I)^{-1}=\mathcal R.\)
+
+把 \(\displaystyle E'\) 通过连续单射 \(\displaystyle r:\mathbb R\to\mathbb C\) 推送，得到 PVM \(\displaystyle\mathcal G\) 于紧曲线闭包 \(\displaystyle\Gamma=\overline{r(\mathbb R)}\)，其中 \(\displaystyle\mathcal G(\{0\})=0\). 每个标量测度都是有限 Borel 测度在连续映射下的推送；因 \(\displaystyle\Gamma\) 为紧度量空间，它们正则，故 \(\displaystyle\mathcal G\) 为正则 PVM. 此外
+\[
+\mathcal R=\int_\Gamma z\,\mathrm{d}\mathcal G(z).
+\]
+现在证明 \(\displaystyle\mathcal G\) 集中于 \(\displaystyle K=\sigma(\mathcal R)\). 若 \(\displaystyle\zeta\in\Gamma\setminus K\)，令 \(\displaystyle M_\zeta=\|(\mathcal R-\zeta\mathcal I)^{-1}\|\). 可取以 \(\displaystyle\zeta\) 为中心、半径小于 \(\displaystyle M_\zeta^{-1}\) 的相对开球 \(\displaystyle U_\zeta\subseteq\Gamma\setminus K\). 若 \(\displaystyle\mathcal G(U_\zeta)\neq0\)，取非零 \(\displaystyle x\) 于其值域，则
+\(\displaystyle \|(\mathcal R-\zeta\mathcal I)x\|<M_\zeta^{-1}\|x\|,\)
+与逆算子估计矛盾. 因 \(\displaystyle\Gamma\setminus K\) 为第二可数空间中的开集，可由可数个此类零投影开球覆盖；强可数可加性给 \(\displaystyle\mathcal G(\Gamma\setminus K)=0\). 因而 \(\displaystyle\mathcal G\) 限制为 \(\displaystyle K\) 上的正则 PVM.
+
+II-03 的\autoref{fa:CSTAR-A02}对 \(\displaystyle\mathcal R\) 的 PVM 唯一性于是给
+\(\displaystyle \mathcal G=\mathcal F\)
+于 \(\displaystyle K\). 对任意 Borel 集 \(\displaystyle B\subseteq\mathbb R\)，\(\displaystyle r(B)\) 是 \(\displaystyle\Gamma\setminus\{0\}\) 中的 Borel 集，因为 \(\displaystyle r\) 是 \(\displaystyle\mathbb R\) 到其像的同胚. 由单射性，
+\(\displaystyle E'(B)=\mathcal G(r(B))=\mathcal F(K\cap r(B))=E_{\mathcal A}(B).\)
+故谱测度唯一.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][无界自伴算子谱定理]{fa:UST-A01}
+设
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq H\to H\)
+自伴. 则存在唯一正则 PVM \(\displaystyle E_{\mathcal A}\) 于 \(\displaystyle\mathbb R\)，满足
+\(\displaystyle \operatorname{supp}E_{\mathcal A} = \sigma(\mathcal A) \subseteq \mathbb R,\)
+\[
+D(\mathcal A)
+=
+\left\{
+ x\in H:
+ \int_{\mathbb R}\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}(\lambda)<\infty
+\right\},
+\]
+且对全部 \(\displaystyle x\in D(\mathcal A)\)，
+\[
+\mathcal Ax
+=
+\int_{\mathbb R}\lambda\,\mathrm{d}E_{\mathcal A}(\lambda)x.
+\]
+这里最后一式是包含定义域等式的无界算子谱积分表示.
+\end{FATheorem}
+
+\begin{FAProof}
+存在性由\autoref{ii07:resolvent-normal}、II-03 的\autoref{fa:CSTAR-A02}、\autoref{ii07:resolvent-curve}与\autoref{ii07:pushforward-pvm}构造. \autoref{ii07:a-subset-t}与\autoref{ii07:t-subset-a}给出定义域及作用的双向包含，因此得到完整算子等式. \autoref{ii07:support-spectrum}给出支撑等于谱，\autoref{ii07:pvm-uniqueness}给出唯一性. 整个证明只使用 II-03 的有界正规谱定理与 II-06 的自伴预解接口，没有调用后续 Stone 定理.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{可测函数演算}\label{sec:ii07-measurable-calculus}
+\index{functional calculus@函数演算!无界可测}\index{measurable functional calculus@可测函数演算}
+
+以下固定 \(\displaystyle E=E_{\mathcal A}\)，其中 \(\displaystyle\mathcal A\) 自伴. 对任意有限值 Borel 函数 \(\displaystyle f:\mathbb R\to\mathbb C\)，定义
+\(\displaystyle f(\mathcal A):=f(E),\)
+所以
+\[
+D(f(\mathcal A))
+=
+\left\{
+ x\in H:
+ \int_{\mathbb R}|f(\lambda)|^2\,\mathrm{d}\mu_x^E(\lambda)<\infty
+\right\}.
+\]
+
+\begin{FAProposition}[B][可测函数演算的伴随公式]{ii07:measurable-adjoint}
+对任意有限值 Borel 函数 \(\displaystyle f\)，
+\(\displaystyle f(\mathcal A)^*=\overline f(\mathcal A)\)
+作为算子等式成立.
+\end{FAProposition}
+
+\begin{FAProof}
+令 \(\displaystyle B_n=\{|f|\leqslant n\}\)、\(\displaystyle f_n=f1_{B_n}\). 先取 \(\displaystyle y\in D(\overline f(\mathcal A))\). 对任意 \(\displaystyle x\in D(f(\mathcal A))\)，有
+\(\displaystyle \langle f_n(\mathcal A)x,y\rangle = \langle x,\overline f_n(\mathcal A)y\rangle\)
+由有界 Borel 伴随公式成立. 令 \(\displaystyle n\to\infty\)，\autoref{ii07:unbounded-integral-basic}给
+\(\displaystyle \langle f(\mathcal A)x,y\rangle = \langle x,\overline f(\mathcal A)y\rangle.\)
+因此 \(\displaystyle y\in D(f(\mathcal A)^*)\) 且 \(\displaystyle f(\mathcal A)^*y=\overline f(\mathcal A)y\)，即
+\(\displaystyle \overline f(\mathcal A)\subseteq f(\mathcal A)^*.\)
+
+反向设 \(\displaystyle y\in D(f(\mathcal A)^*)\)，并令 \(\displaystyle P_n=E(B_n)\). 对任意 \(\displaystyle x\in H\)，由谱投影兼容性，
+\(\displaystyle f_n(\mathcal A)x=f(\mathcal A)P_nx.\)
+故
+\[
+\langle f_n(\mathcal A)x,y\rangle=\langle f(\mathcal A)P_nx,y\rangle=\langle P_nx,f(\mathcal A)^*y\rangle=\langle x,P_nf(\mathcal A)^*y\rangle.
+\]
+所以
+\(\displaystyle f_n(\mathcal A)^*y=P_nf(\mathcal A)^*y.\)
+另一方面 \(\displaystyle f_n(\mathcal A)^*=\overline f_n(\mathcal A)\)，于是
+\(\displaystyle \|\overline f_n(\mathcal A)y\| \leqslant \|f(\mathcal A)^*y\|.\)
+由\autoref{ii07:bounded-spectral-norm}，
+\[
+\int_{B_n}|f|^2\,\mathrm{d}\mu_y^E
+\leqslant
+\|f(\mathcal A)^*y\|^2.
+\]
+令 \(\displaystyle n\to\infty\)，单调收敛给 \(\displaystyle y\in D(\overline f(\mathcal A))\). 同时
+\(\displaystyle \overline f_n(\mathcal A)y =P_nf(\mathcal A)^*y \to f(\mathcal A)^*y,\)
+而左侧按无界谱积分定义收敛到 \(\displaystyle\overline f(\mathcal A)y\). 因此 \(\displaystyle f(\mathcal A)^*\subseteq\overline f(\mathcal A)\)，两包含给出算子等式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][函数演算后的标量谱测度]{ii07:scalar-transfer}
+若 \(\displaystyle x\in D(f(\mathcal A))\)，则对任意 Borel 集 \(\displaystyle B\)，
+\[
+\mu_{f(\mathcal A)x}^{E}(B)
+=
+\int_B|f(\lambda)|^2\,\mathrm{d}\mu_x^E(\lambda).
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+这是\autoref{ii07:generic-product}的（i） 对 \(\displaystyle E=E_{\mathcal A}\) 的直接应用. 为明确截断逻辑，亦可写
+\(\displaystyle E(B)f_n(\mathcal A)x=(1_Bf_n)(\mathcal A)x\)
+并先用有界范数恒等式，再令 \(\displaystyle n\to\infty\). 得到同一公式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][定义域安全的和与积]{ii07:domain-safe-algebra}
+设 \(\displaystyle f,g:\mathbb R\to\mathbb C\) 为有限值 Borel 函数. 则
+\(\displaystyle f(\mathcal A)+g(\mathcal A) \subseteq (f+g)(\mathcal A),\)
+其中左侧定义域为 \(\displaystyle D(f(\mathcal A))\cap D(g(\mathcal A))\). 一般不能断言定义域相等.
+
+对乘积，
+\[
+D(g(\mathcal A)f(\mathcal A))
+=
+\left\{
+ x\in D(f(\mathcal A)):
+ \int_{\mathbb R}|g(\lambda)f(\lambda)|^2\,\mathrm{d}\mu_x^E(\lambda)<\infty
+\right\},
+\]
+且在此定义域上
+\(\displaystyle g(\mathcal A)f(\mathcal A)x=(gf)(\mathcal A)x.\)
+若内层函数 \(\displaystyle f\) 有界，则
+\(\displaystyle g(\mathcal A)f(\mathcal A)=(gf)(\mathcal A)\)
+作为算子等式成立.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle x\in D(f(\mathcal A))\cap D(g(\mathcal A))\)，则
+\(\displaystyle |f+g|^2\leqslant2|f|^2+2|g|^2\)
+给 \(\displaystyle x\in D((f+g)(\mathcal A))\). 对有界截断同时应用线性，再取极限，得到
+\(\displaystyle (f+g)(\mathcal A)x=f(\mathcal A)x+g(\mathcal A)x.\)
+因此只有算子包含. 定义域相等可能失败：若 \(\displaystyle\mathcal A\) 无界，取 \(\displaystyle f(\lambda)=\lambda\)、\(\displaystyle g(\lambda)=-\lambda\)，则 \(\displaystyle(f+g)(\mathcal A)=0\) 定义于全部 \(\displaystyle H\)，而左侧只定义于 \(\displaystyle D(\mathcal A)\).
+
+乘积的定义域与作用公式正是\autoref{ii07:generic-product}的（ii）. 若 \(\displaystyle f\) 有界，则 \(\displaystyle D(f(\mathcal A))=H\)，定义域公式退化为 \(\displaystyle D((gf)(\mathcal A))\)，由\autoref{ii07:generic-product}的（iii） 得完整算子等式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][有界部分的谱本质上确界范数]{ii07:bounded-calculus-norm}
+定义
+\[
+\|f\|_{E,\infty}
+=
+\inf\{C\geqslant0:E(\{|f|>C\})=0\}.
+\]
+若 \(\displaystyle\|f\|_{E,\infty}<\infty\)，则 \(\displaystyle D(f(\mathcal A))=H\)、\(\displaystyle f(\mathcal A)\in\mathcal B(H)\)，且
+\[
+\|f(\mathcal A)\|=\|f\|_{E,\infty}.
+\]
+若 \(\displaystyle f\) 在 \(\displaystyle\sigma(\mathcal A)\) 上连续且有界，则
+\[
+\|f(\mathcal A)\|
+=
+\sup_{\lambda\in\sigma(\mathcal A)}|f(\lambda)|.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+记 \(\displaystyle M=\|f\|_{E,\infty}\). 对任意 \(\displaystyle C>M\)，有 \(\displaystyle E(\{|f|>C\})=0\)，故对全部 \(\displaystyle x\in H\)，
+\[
+\int|f|^2\,\mathrm{d}\mu_x^E\leqslant C^2\|x\|^2.
+\]
+所以 \(\displaystyle D(f(\mathcal A))=H\)，并由谱范数恒等式得 \(\displaystyle\|f(\mathcal A)\|\leqslant C\). 令 \(\displaystyle C\downarrow M\) 得 \(\displaystyle\|f(\mathcal A)\|\leqslant M\).
+
+反之若 \(\displaystyle0\leqslant C<M\)，则 \(\displaystyle P=E(\{|f|>C\})\neq0\). 取单位向量 \(\displaystyle x\in PH\). 标量测度集中于 \(\displaystyle\{|f|>C\}\)，故
+\[
+\|f(\mathcal A)x\|^2
+=
+\int|f|^2\,\mathrm{d}\mu_x^E
+\geqslant
+C^2.
+\]
+于是 \(\displaystyle\|f(\mathcal A)\|\geqslant C\). 令 \(\displaystyle C\uparrow M\) 得等号.
+
+若 \(\displaystyle f\) 在 \(\displaystyle\sigma(\mathcal A)=\operatorname{supp}E\) 上连续，则由 \(\displaystyle E(\mathbb R\setminus\sigma(\mathcal A))=0\) 与 \(\displaystyle |f|\leqslant\sup_{\sigma(\mathcal A)}|f|\) 在谱上的成立，可得 \(\displaystyle\|f\|_{E,\infty}\leqslant\sup_{\sigma(\mathcal A)}|f|\). 若严格小于，取介于二者之间的 \(\displaystyle C\)，则存在 \(\displaystyle t\in\operatorname{supp}E\) 使 \(\displaystyle|f(t)|>C\). 连续性给一个 \(\displaystyle t\) 的开邻域 \(\displaystyle U\) 满足 \(\displaystyle|f|>C\) 于 \(\displaystyle U\)，而支撑定义给 \(\displaystyle E(U)\neq0\)，与 \(\displaystyle E(\{|f|>C\})=0\) 矛盾. 因而两上确界相同.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][实值与非负可测函数]{ii07:real-positive-calculus}
+若 \(\displaystyle f:\mathbb R\to\mathbb R\) 为有限值 Borel 函数，则 \(\displaystyle f(\mathcal A)\) 自伴. 若进一步 \(\displaystyle f\geqslant0\)，则 \(\displaystyle f(\mathcal A)\) 非负，即
+\(\displaystyle \langle f(\mathcal A)x,x\rangle\geqslant0 \; \forall\,x\in D(f(\mathcal A)).\)
+\end{FAProposition}
+
+\begin{FAProof}
+实值性给 \(\displaystyle\overline f=f\). 由\autoref{ii07:measurable-adjoint}，
+\(\displaystyle f(\mathcal A)^*=f(\mathcal A),\)
+故其自伴.
+
+若 \(\displaystyle f\geqslant0\) 且 \(\displaystyle x\in D(f(\mathcal A))\)，则 Cauchy--Schwarz 给
+\[
+\int f\,\mathrm{d}\mu_x^E
+\leqslant
+\mu_x^E(\mathbb R)^{\frac{1}{2}}
+\left(\int f^2\,\mathrm{d}\mu_x^E\right)^{\frac{1}{2}}
+<\infty.
+\]
+对 \(\displaystyle f_n=f1_{\{f\leqslant n\}}\)，有
+\[
+\langle f_n(\mathcal A)x,x\rangle
+=
+\int f_n\,\mathrm{d}\mu_x^E.
+\]
+令 \(\displaystyle n\to\infty\)，左侧收敛到 \(\displaystyle\langle f(\mathcal A)x,x\rangle\)，右侧由单调收敛得到
+\[
+\langle f(\mathcal A)x,x\rangle
+=
+\int f\,\mathrm{d}\mu_x^E
+\geqslant0.\]
+\hfill\(\square\)
+
+
+\end{FAProof}
+
+\begin{FATheorem}[A][无界自伴可测函数演算]{fa:UST-A02}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 自伴，\(\displaystyle E=E_{\mathcal A}\)，且 \(\displaystyle f:\mathbb R\to\mathbb C\) 为有限值 Borel 函数. 定义
+\[
+f(\mathcal A)=f(E),
+\;
+D(f(\mathcal A))
+=
+\left\{
+ x\in H:
+ \int|f|^2\,\mathrm{d}\mu_x^E<\infty
+\right\}.
+\]
+则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle f(\mathcal A)\) 稠密定义且闭.
+\item \(\displaystyle f(\mathcal A)^*=\overline f(\mathcal A)\) 作为算子等式.
+\item 若 \(\displaystyle f\) 实值，则 \(\displaystyle f(\mathcal A)\) 自伴；若 \(\displaystyle f\geqslant0\)，则 \(\displaystyle f(\mathcal A)\) 非负.
+\item \(\displaystyle1(\mathcal A)=\mathcal I\)、\(\displaystyle\operatorname{id}(\mathcal A)=\mathcal A\)，且对任意 Borel 集 \(\displaystyle B\)，\(\displaystyle1_B(\mathcal A)=E(B)\).
+\item 若 \(\displaystyle f\) 有界，则该定义退化为 II-03 的有界 Borel 谱积分.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+（i）由\autoref{ii07:unbounded-integral-closed-dense}；（ii）由\autoref{ii07:measurable-adjoint}；（iii）由\autoref{ii07:real-positive-calculus}. 常函数 \(\displaystyle1\) 与特征函数 \(\displaystyle1_B\) 有界，故定义直接给 \(\displaystyle1(\mathcal A)=\mathcal I\) 与 \(\displaystyle1_B(\mathcal A)=E(B)\). \autoref{fa:UST-A01}给出 \(\displaystyle\operatorname{id}(\mathcal A)=\mathcal A\) 的定义域和作用均相等. 有界 \(\displaystyle f\) 时 \(\displaystyle D(f(\mathcal A))=H\)，截断从某一步起可取为函数本身，所以与 II-03 的有界 Borel 谱积分一致.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][自伴预解的谱积分公式]{ii07:resolvent-spectral-formula}
+若 \(\displaystyle z\in\mathbb C\setminus\mathbb R\)，则
+\[
+(\mathcal A-z\mathcal I)^{-1}
+=
+\int_{\mathbb R}\frac1{\lambda-z}\,\mathrm{d}E_{\mathcal A}(\lambda),
+\]
+并且
+\[
+\|(\mathcal A-z\mathcal I)^{-1}\|
+\leqslant
+\frac1{|\operatorname{Im}z|}.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+函数 \(\displaystyle r_z(\lambda)=(\lambda-z)^{-1}\) 在 \(\displaystyle\mathbb R\) 上有界，且 \(\displaystyle\lambda r_z(\lambda)=1+zr_z(\lambda)\) 也有界. 因此 \(\displaystyle r_z(\mathcal A)H\subseteq D(\mathcal A)\). 由\autoref{ii07:domain-safe-algebra}的乘法公式，
+\(\displaystyle (\mathcal A-z\mathcal I)r_z(\mathcal A)=\mathcal I\)
+于 \(\displaystyle H\)，并且
+\(\displaystyle r_z(\mathcal A)(\mathcal A-z\mathcal I)=\mathcal I\)
+于 \(\displaystyle D(\mathcal A)\). 所以 \(\displaystyle r_z(\mathcal A)=(\mathcal A-z\mathcal I)^{-1}\). 又对实数 \(\displaystyle\lambda\)，
+\(\displaystyle |\lambda-z|\geqslant|\operatorname{Im}z|,\)
+故\autoref{ii07:bounded-calculus-norm}给出所述范数估计. 此公式是\autoref{fa:UST-A01}的推论，不参与其证明.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{谱积分刻画定义域}\label{sec:ii07-domain-spectral-integral}
+\index{spectral truncation@谱截断}\index{core@核!图范数}
+
+令
+\(\displaystyle P_n=E_{\mathcal A}([-n,n]).\)
+
+\begin{FATheorem}[B][自伴谱测度的定义域刻画与谱截断核]{fa:UST-B01}
+对自伴算子 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\)，上述 \(\displaystyle P_n\) 满足：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle P_n\to\mathcal I\) 强收敛.
+\item \(\displaystyle P_nH\subseteq D(\mathcal A)\).
+\item \(\displaystyle\mathcal AP_n\in\mathcal B(H)\)，且 \(\displaystyle\|\mathcal AP_n\|\leqslant n\).
+\item 对每个 \(\displaystyle x\in D(\mathcal A)\)，有 \(\displaystyle P_nx\to x\) 与 \(\displaystyle\mathcal AP_nx\to\mathcal Ax\).
+\item \(\displaystyle\bigcup_{n\geqslant1}P_nH\) 是 \(\displaystyle\mathcal A\) 的图范数核.
+\item 对任意 \(\displaystyle x\in H\)，
+\[
+x\in D(\mathcal A)
+\iff
+\sup_n\|\mathcal AP_nx\|<\infty.
+\]
+\item 对 \(\displaystyle x\in D(\mathcal A)\)，
+\[
+\|\mathcal Ax\|^2
+=
+\int_{\mathbb R}\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}(\lambda),
+\]
+故 II-05 的图范数
+\(\displaystyle \|x\|_{\mathcal A}=\|x\|+\|\mathcal Ax\|\)
+精确写成
+\[
+\|x\|_{\mathcal A}
+=
+\|x\|
++
+\left(
+\int_{\mathbb R}\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}(\lambda)
+\right)^{\frac{1}{2}}.
+\]
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+因 \(\displaystyle[-n,n]\uparrow\mathbb R\)，对任意 \(\displaystyle x\in H\)，
+\(\displaystyle \|x-P_nx\|^2 = \mu_x^{\mathcal A}(\mathbb R\setminus[-n,n]) \to0,\)
+证明（i）.
+
+在 \(\displaystyle[-n,n]\) 上 \(\displaystyle|\lambda|\leqslant n\). 由\autoref{ii07:projection-unbounded-compatibility}，\(\displaystyle P_nH\subseteq D(\mathcal A)\)，且
+\(\displaystyle \|\mathcal AP_n\|\leqslant n,\)
+得到（ii）与（iii）.
+
+若 \(\displaystyle x\in D(\mathcal A)\)，则（i）已给 \(\displaystyle P_nx\to x\). 又
+\[
+\begin{aligned}
+\displaystyle \|\mathcal Ax-\mathcal AP_nx\|^2 &\displaystyle =\|(1-1_{[-n,n]})\operatorname{id}(\mathcal A)x\|^2\\
+\displaystyle &\displaystyle =\int_{\{|\lambda|>n\}}\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}(\lambda) \to0
+\end{aligned}
+\]
+由单调或控制收敛成立. 这证明（iv）. 因 \(\displaystyle P_nx\in P_nH\)，且
+\(\displaystyle \|x-P_nx\|_{\mathcal A} = \|x-P_nx\|+\|\mathcal Ax-\mathcal AP_nx\| \to0,\)
+故 \(\displaystyle\bigcup_nP_nH\) 在 \(\displaystyle D(\mathcal A)\) 的图范数中稠密，得到（v）.
+
+若 \(\displaystyle x\in D(\mathcal A)\)，则
+\[
+\|\mathcal AP_nx\|^2
+=
+\int_{[-n,n]}\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}
+\leqslant
+\|\mathcal Ax\|^2,
+\]
+故上确界有限. 反之若 \(\displaystyle\sup_n\|\mathcal AP_nx\|<\infty\)，则上式与单调收敛给
+\[
+\int_{\mathbb R}\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}<\infty.
+\]
+由\autoref{fa:UST-A01}的定义域等式，\(\displaystyle x\in D(\mathcal A)\). 这证明（vi）.
+
+最后（vii）的第一式正是\autoref{ii07:unbounded-integral-basic}应用于 \(\displaystyle f(\lambda)=\lambda\)，再代入 II-05 已固定的图范数定义即可. 特别地，本书不把 \(\displaystyle\|x\|_{\mathcal A}^2\) 误写为 \(\displaystyle\|x\|^2+\|\mathcal Ax\|^2\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][无界函数演算的谱估计与控制收敛]{fa:UST-C01}
+设 \(\displaystyle f,f_n:\mathbb R\to\mathbb C\) 为有限值 Borel 函数，并令 \(\displaystyle g:\mathbb R\to[0,\infty)\) 为有限值 Borel 函数.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 对 \(\displaystyle x\in D(f(\mathcal A))\)，
+\[
+\|f(\mathcal A)x\|^2
+=
+\int_{\mathbb R}|f|^2\,\mathrm{d}\mu_x^{\mathcal A}.
+\]
+\item 若 Borel 集 \(\displaystyle B\) 上按 \(\displaystyle E_{\mathcal A}\)-零集意义有 \(\displaystyle|f|\leqslant M\)，则
+\[
+E_{\mathcal A}(B)H\subseteq D(f(\mathcal A)),
+\;
+\|f(\mathcal A)E_{\mathcal A}(B)\|\leqslant M.
+\]
+\item 若 \(\displaystyle f_n\to f\) 点态 \(\displaystyle E_{\mathcal A}\)-几乎处处，且 \(\displaystyle|f_n|\leqslant g\) 对全部 \(\displaystyle n\) 成立，则对每个 \(\displaystyle x\in D(g(\mathcal A))\)，
+\[
+x\in\bigcap_nD(f_n(\mathcal A))\cap D(f(\mathcal A)),
+\]
+并且
+\(\displaystyle f_n(\mathcal A)x\to f(\mathcal A)x.\)
+\item 若 \(\displaystyle f_n=f1_{\{|f|\leqslant n\}}\)，则对每个 \(\displaystyle x\in D(f(\mathcal A))\)，
+\(\displaystyle f_n(\mathcal A)x\to f(\mathcal A)x.\)
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+（i）由\autoref{ii07:unbounded-integral-basic}；（ii）由\autoref{ii07:projection-unbounded-compatibility}.
+
+对（iii），由 \(\displaystyle|f_n|\leqslant g\) 与 \(\displaystyle x\in D(g(\mathcal A))\)，有
+\[
+\int|f_n|^2\,\mathrm{d}\mu_x^{\mathcal A}
+\leqslant
+\int|g|^2\,\mathrm{d}\mu_x^{\mathcal A}<\infty.
+\]
+点态极限给 \(\displaystyle|f|\leqslant g\) 几乎处处，所以 \(\displaystyle x\in D(f(\mathcal A))\). 再由（i），
+\[
+\|f_n(\mathcal A)x-f(\mathcal A)x\|^2
+=
+\int|f_n-f|^2\,\mathrm{d}\mu_x^{\mathcal A}.
+\]
+被积函数点态趋于零，且 \(\displaystyle|f_n-f|^2\leqslant4|g|^2\)，右侧由标量控制收敛定理趋于零. 这证明（iii）.
+
+（iv）取控制函数 \(\displaystyle g=|f|\) 应用（iii）即可.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{模型}\label{sec:ii07-models}
+\index{multiplication operator@乘法算子!无界}\index{Dirichlet Laplacian@Dirichlet Laplace 算子!谱演算}
+
+\subsection{无界乘法算子模型的精确投影值测度与函数演算}
+
+沿用 II-05 与 II-06 的自伴乘法算子
+\[
+H=\ell^2(\mathbb N),
+\;
+D(\mathcal M)=\{x=(x_n)\in\ell^2:(nx_n)\in\ell^2\},
+\;
+\mathcal Mx=(nx_n).
+\]
+对 Borel 集 \(\displaystyle B\subseteq\mathbb R\)，定义
+\(\displaystyle (E_{\mathcal M}(B)x)_n=1_B(n)x_n.\)
+
+\begin{FAProposition}[B][精确谱测度与谱定理定义域]{ii07:mult-unb-pvm}
+上述 \(\displaystyle E_{\mathcal M}\) 是 \(\displaystyle\mathbb R\) 上的正则 PVM，且
+\[
+\mu_x^{\mathcal M}
+=
+\sum_{n=1}^{\infty}|x_n|^2\delta_n.
+\]
+因此
+\[
+\int_{\mathbb R}\lambda^2\,\mathrm{d}\mu_x^{\mathcal M}(\lambda)
+=
+\sum_{n=1}^{\infty}n^2|x_n|^2,
+\]
+所以\autoref{fa:UST-A01}给出的定义域恰为 II-05 的 \(\displaystyle D(\mathcal M)\).
+\end{FAProposition}
+
+\begin{FAProof}
+每个 \(\displaystyle E_{\mathcal M}(B)\) 都是按坐标乘以 \(\displaystyle0\) 或 \(\displaystyle1\) 的正交投影，故自伴且幂等；交集乘法、空集与全空间条件逐坐标成立. 若 \(\displaystyle(B_j)\) 两两不交，则对任意 \(\displaystyle x\in\ell^2\)，
+\[
+\left\|
+E_{\mathcal M}\left(\bigcup_{j=1}^{\infty}B_j\right)x
+-
+\sum_{j=1}^{N}E_{\mathcal M}(B_j)x
+\right\|_2^2
+=
+\sum_{n:\,n\in\cup_{j>N}B_j}|x_n|^2
+\to0.
+\]
+所以强可数可加性成立. 又
+\[
+\mu_x^{\mathcal M}(B)
+=
+\|E_{\mathcal M}(B)x\|_2^2
+=
+\sum_{n\in B\cap\mathbb N}|x_n|^2,
+\]
+即得到所述离散测度. 它是有限正则 Borel 测度；极化给复标量测度的正则性. 最后的积分与定义域等式由离散积分直接计算得到.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][可测函数演算]{ii07:mult-unb-calculus}
+对任意有限值 Borel 函数 \(\displaystyle f:\mathbb R\to\mathbb C\)，
+\[
+D(f(\mathcal M))
+=
+\left\{
+ x\in\ell^2:
+ (f(n)x_n)_{n\geqslant1}\in\ell^2
+\right\},
+\]
+并且
+\(\displaystyle f(\mathcal M)x=(f(n)x_n)_{n\geqslant1}.\)
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii07:mult-unb-pvm}，
+\[
+\int_{\mathbb R}|f(\lambda)|^2\,\mathrm{d}\mu_x^{\mathcal M}(\lambda)
+=
+\sum_{n=1}^{\infty}|f(n)x_n|^2.
+\]
+故\autoref{fa:UST-A02}的定义域正好是右侧序列属于 \(\displaystyle\ell^2\) 的条件. 对有界截断 \(\displaystyle f_k\)，谱积分逐坐标给 \(\displaystyle f_k(\mathcal M)x=(f_k(n)x_n)\). 在定义域内令 \(\displaystyle k\to\infty\)，由 \(\displaystyle\ell^2\) 范数收敛得到作用公式.
+\hfill\(\square\)
+\end{FAProof}
+
+这个模型把“无界函数演算就是乘法算子”完全显式化：无界性只改变允许的定义域，不改变谱变量上的逐点乘法规则.
+
+\subsection{非负谱支撑与平方根}
+
+II-06 的\autoref{ii06:dirichlet-laplacian-domain}已经证明 Dirichlet Laplace 算子
+\(\displaystyle \mathcal L_D:D(\mathcal L_D)\subseteq L^2(0,1)\to L^2(0,1)\)
+自伴且非负，并给出其精确定义域. 本章不重新证明该定义域，只应用\autoref{fa:UST-A01}得到唯一正则 PVM \(\displaystyle E_{\mathcal L_D}\).
+
+\begin{FAProposition}[B][非负自伴算子的谱支撑非负]{ii07:nonnegative-support}
+若 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 自伴且
+\(\displaystyle \langle\mathcal Ax,x\rangle\geqslant0 \; \forall\,x\in D(\mathcal A),\)
+则
+\[
+E_{\mathcal A}(( -\infty,0))=0,
+\;
+\operatorname{supp}E_{\mathcal A}\subseteq[0,\infty),
+\;
+\sigma(\mathcal A)\subseteq[0,\infty).
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle E_{\mathcal A}(( -\infty,0))\neq0\)，由于
+\(\displaystyle (-\infty,0) = \bigcup_{n,m\geqslant1}[-n,-\frac{1}{m}],\)
+强可数可加性蕴含存在某个有界负区间 \(\displaystyle B=[-n,-\frac{1}{m}]\) 满足 \(\displaystyle E_{\mathcal A}(B)\neq0\). 取非零 \(\displaystyle x\in E_{\mathcal A}(B)H\). 因 \(\displaystyle B\) 有界，\autoref{fa:UST-C01}的（ii） 应用于 \(\displaystyle f(\lambda)=\lambda\) 给 \(\displaystyle x\in D(\mathcal A)\). 又
+\[
+\langle\mathcal Ax,x\rangle
+=
+\int_B\lambda\,\mathrm{d}\mu_x^{\mathcal A}(\lambda)
+\leqslant
+-\frac1m\|x\|^2<0,
+\]
+与非负性矛盾. 所以负半轴谱投影为零. 支撑包含关系随即成立，再由\autoref{ii07:support-spectrum}得 \(\displaystyle\sigma(\mathcal A)\subseteq[0,\infty)\).
+\hfill\(\square\)
+\end{FAProof}
+
+应用于 \(\displaystyle\mathcal L_D\)，得到
+\(\displaystyle E_{\mathcal L_D}(( -\infty,0))=0.\)
+在负半轴任意定义 \(\displaystyle f(\lambda)=0\)，在 \(\displaystyle[0,\infty)\) 定义 \(\displaystyle f(\lambda)=\sqrt\lambda\). 置
+\(\displaystyle \mathcal L_D^{\frac{1}{2}}=f(\mathcal L_D).\)
+
+\begin{FAProposition}[B][谱平方根]{ii07:laplacian-sqrt}
+有
+\[
+D(\mathcal L_D^{\frac{1}{2}})
+=
+\left\{
+ x\in L^2(0,1):
+ \int_0^\infty\lambda\,\mathrm{d}\mu_x^{\mathcal L_D}(\lambda)<\infty
+\right\},
+\]
+且
+\(\displaystyle (\mathcal L_D^{\frac{1}{2}})^2=\mathcal L_D\)
+作为算子等式成立. 特别地，
+\(\displaystyle D((\mathcal L_D^{\frac{1}{2}})^2)=D(\mathcal L_D).\)
+\end{FAProposition}
+
+\begin{FAProof}
+第一式由\autoref{fa:UST-A02}的定义域公式与 \(\displaystyle|f(\lambda)|^2=\lambda\) 在谱支撑上成立直接得到.
+
+对平方，\autoref{ii07:domain-safe-algebra}的精确乘积定义域给
+\[
+D(f(\mathcal L_D)f(\mathcal L_D))
+=
+\left\{
+ x\in D(f(\mathcal L_D)):
+ \int_0^\infty\lambda^2\,\mathrm{d}\mu_x^{\mathcal L_D}<\infty
+\right\}.
+\]
+若第二积分有限，则由 Cauchy--Schwarz 与 \(\displaystyle\mu_x^{\mathcal L_D}(\mathbb R)=\|x\|^2\)，
+\[
+\int_0^\infty\lambda\,\mathrm{d}\mu_x^{\mathcal L_D}
+\leqslant
+\|x\|
+\left(
+\int_0^\infty\lambda^2\,\mathrm{d}\mu_x^{\mathcal L_D}
+\right)^{\frac{1}{2}}<\infty.
+\]
+故前面的 \(\displaystyle D(f(\mathcal L_D))\) 条件自动满足，乘积定义域正好等于 \(\displaystyle D(\mathcal L_D)\). 在该定义域上，乘法公式给
+\(\displaystyle (\mathcal L_D^{\frac{1}{2}})^2 =(f^2)(\mathcal L_D) =\operatorname{id}(\mathcal L_D) =\mathcal L_D,\)
+其中负半轴上的函数值只位于 \(\displaystyle E_{\mathcal L_D}\)-零集，不影响算子.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[平方根定义域与闭型定义域的边界]
+本章只得到谱积分刻画的 \(\displaystyle D(\mathcal L_D^{\frac{1}{2}})\). 不在这里断言它等于 II-06 的 \(\displaystyle V_0\)，因为这一识别属于闭型平方根/第二表示定理接口，需要额外证明；本轮不引入该后置理论.
+\end{FARemark}
+
+\subsection{适用范围与后续边界}
+
+\begin{FACounterexample}[对称但非自伴的反例的适用性边界]
+II-06 的最小一阶微分算子 \(\displaystyle\mathcal A_0\) 已被证明为闭、对称但不自伴，并且不是本质自伴. 因而\autoref{fa:UST-A01}不能直接应用于 \(\displaystyle\mathcal A_0\). “对称”不能替换“自伴”；缺失的定义域等式正是无界谱定理的必要边界. 本章不重新建立该反例.
+\end{FACounterexample}
+
+\begin{FARemark}[一般无界正规算子]
+一般闭正规无界算子的谱定理与可测函数演算属于本章的 D 级扩展. 本章只处理自伴算子，不建立一般无界正规谱定理、联合谱测度、直积分或谱重数理论.
+\end{FARemark}
+
+\begin{FAApplication}[Stone 理论之前可定义的酉算子]
+对 \(\displaystyle t\in\mathbb R\)，函数 \(\displaystyle u_t(\lambda)=\mathrm{e}^{\mathrm{i}t\lambda}\) 有界且 \(\displaystyle|u_t|=1\)，因此\autoref{fa:UST-A02}已允许定义
+\(\displaystyle \mathrm{e}^{\mathrm{i}t\mathcal A}:=u_t(\mathcal A)\in\mathcal B(H).\)
+由有界函数演算的伴随与乘法公式，
+\[
+(\mathrm{e}^{\mathrm{i}t\mathcal A})^*
+=
+\mathrm{e}^{-\mathrm{i}t\mathcal A},
+\;
+\mathrm{e}^{-\mathrm{i}t\mathcal A}\mathrm{e}^{\mathrm{i}t\mathcal A}
+=
+\mathcal I,
+\]
+故它是酉算子. 本章不证明 \(\displaystyle t\mapsto\mathrm{e}^{\mathrm{i}t\mathcal A}\) 的强连续性，不定义其生成元，也不证明 Stone 定理；这些内容留到 II-10.
+\end{FAApplication}
+
+\begin{FARemark}[II-08 边界]
+II-08 才建立 \(\displaystyle C_0\) 半群、生成元与 Laplace 预解接口；Hille--Yosida 与 Lumer--Phillips 更在后续章节. 本章没有创建 II-08 源文件，也没有使用任何半群生成定理.
+\end{FARemark}
+
+\subsection*{本章习题}\label{sec:ii07-exercises}
+
+\begin{FAExercise}[投影值测度的强可数可加性与连续性]{ex:ii07-01}
+从 PVM 的强可数可加性证明：若 \(\displaystyle B_n\uparrow B\)，则 \(\displaystyle E(B_n)x\to E(B)x\)；若 \(\displaystyle B_n\downarrow B\)，则同样强收敛. 再推出 \(\displaystyle\mu_x^E\) 的测度连续性.
+\end{FAExercise}
+
+\begin{FAExercise}[标量谱测度与投影局部化]{ex:ii07-02}
+证明 \(\displaystyle\mu_{E(B)x}^E(C)=\mu_x^E(B\cap C)\)，并由此重建\autoref{ii07:projection-unbounded-compatibility}中的定义域包含与范数估计.
+\end{FAExercise}
+
+\begin{FAExercise}[无界谱积分的 Cauchy 构造]{ex:ii07-03}
+对有限值 Borel 函数 \(\displaystyle f\)，从 \(\displaystyle f_n=f1_{\{|f|\leqslant n\}}\) 出发，完整证明 \(\displaystyle f_n(E)x\) 在 \(\displaystyle x\in D(f(E))\) 时为 Cauchy 列，并证明极限与等价截断选择无关.
+\end{FAExercise}
+
+\begin{FAExercise}[无界谱积分定义域稠密]{ex:ii07-04}
+证明 \(\displaystyle E(\{|f|\leqslant n\})H\subseteq D(f(E))\) 且这些子空间的并在 \(\displaystyle H\) 中稠密.
+\end{FAExercise}
+
+\begin{FAExercise}[无界谱积分闭性]{ex:ii07-05}
+按\autoref{ii07:unbounded-integral-closed-dense}的路线，从 \(\displaystyle f_n(E)x=E(B_n)y\) 推出 \(\displaystyle x\in D(f(E))\) 与 \(\displaystyle f(E)x=y\). 不得以“乘法算子直接闭”为由省略该闭性证明.
+\end{FAExercise}
+
+\begin{FAExercise}[预解伴随恒等式]{ex:ii07-06}
+设 \(\displaystyle\mathcal A\) 自伴，直接使用第一变量线性约定证明
+\(\displaystyle ((\mathcal A-\mathrm{i}\mathcal I)^{-1})^* =(\mathcal A+\mathrm{i}\mathcal I)^{-1}.\)
+要求逐步核对标量 \(\displaystyle\mathrm{i}\) 在第二变量中的共轭符号.
+\end{FAExercise}
+
+\begin{FAExercise}[预解正规性]{ex:ii07-07}
+在所有复合定义域合法性均写明的条件下证明
+\(\displaystyle \mathcal R-\mathcal S =2\mathrm{i}\mathcal R\mathcal S =2\mathrm{i}\mathcal S\mathcal R,\)
+并推出 \(\displaystyle\mathcal R\) 正规.
+\end{FAExercise}
+
+\begin{FAExercise}[预解谱曲线]{ex:ii07-08}
+由 \(\displaystyle\mathcal R-\mathcal R^*=2\mathrm{i}\mathcal R\mathcal R^*\) 与 II-03 连续函数演算的等距性证明 \(\displaystyle\operatorname{Im}z=|z|^2\) 于 \(\displaystyle\sigma(\mathcal R)\)，再证明 \(\displaystyle\psi(z)=\mathrm{i}+\frac{1}{z}\) 在非零谱点取实值.
+\end{FAExercise}
+
+\begin{FAExercise}[零谱原子与推送投影值测度]{ex:ii07-09}
+先用 \(\displaystyle\ker\mathcal R=\{0\}\) 与 II-03 的谱原子恒等式证明 \(\displaystyle\mathcal F(\{0\})=0\)，再完整验证 \(\displaystyle E_{\mathcal A}\) 的投影性、乘法性、单位质量与强可数可加性.
+\end{FAExercise}
+
+\begin{FAExercise}[推送标量测度的正则性]{ex:ii07-10}
+固定 \(\displaystyle x\in H\). 用 \(\displaystyle\nu_x(\{0\})=0\) 选取小质量邻域，再在 \(\displaystyle K_\delta\) 上进行紧集逼近，证明 \(\displaystyle\mu_x^{\mathcal A}\) 内正则；最后由有限性推出外正则.
+\end{FAExercise}
+
+\begin{FAExercise}[正向谱表示包含]{ex:ii07-11}
+对 \(\displaystyle x=\mathcal Ry\)，证明
+\[
+\int\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}
+=
+\int|1+\mathrm{i}z|^2\,\mathrm{d}\mu_y^{\mathcal F}<\infty,
+\]
+并推出 \(\displaystyle\mathcal A\mathcal Ry=\mathcal T\mathcal Ry\).
+\end{FAExercise}
+
+\begin{FAExercise}[反向谱表示包含与预解恢复]{ex:ii07-12}
+先证明 \(\displaystyle r(E_{\mathcal A})=\mathcal R\). 再对 \(\displaystyle x\in D(\mathcal T)\) 令 \(\displaystyle y=(\mathcal T-\mathrm{i}\mathcal I)x\)，利用精确乘积定义域证明 \(\displaystyle\mathcal Ry=x\)，从而得到 \(\displaystyle\mathcal T\subseteq\mathcal A\).
+\end{FAExercise}
+
+\begin{FAExercise}[支撑等于谱]{ex:ii07-13}
+完整证明\autoref{ii07:support-spectrum}的两个方向. 第一方向必须构造分段有界逆函数并验证其像落在 \(\displaystyle D(\mathcal A)\)；第二方向必须用预解逆范数产生局部谱投影为零的矛盾.
+\end{FAExercise}
+
+\begin{FAExercise}[投影值测度唯一性]{ex:ii07-14}
+设 \(\displaystyle E'\) 给出同一无界谱表示. 证明 \(\displaystyle r(E')=(\mathcal A-\mathrm{i}\mathcal I)^{-1}\)，再把 \(\displaystyle E'\) 通过 \(\displaystyle r\) 推送并使用 II-03 的\autoref{fa:CSTAR-A02}唯一性恢复 \(\displaystyle E'=E_{\mathcal A}\).
+\end{FAExercise}
+
+\begin{FAExercise}[可测函数演算的伴随两方向]{ex:ii07-15}
+重建\autoref{ii07:measurable-adjoint}. 反向必须使用 \(\displaystyle P_n=E(\{|f|\leqslant n\})\) 与
+\(\displaystyle \overline f_n(\mathcal A)y=P_nf(\mathcal A)^*y\)
+给出统一范数控制，再用单调收敛识别定义域.
+\end{FAExercise}
+
+\begin{FAExercise}[实值自伴与非负函数正性]{ex:ii07-16}
+由伴随公式证明实值 \(\displaystyle f\) 给出自伴 \(\displaystyle f(\mathcal A)\). 若 \(\displaystyle f\geqslant0\)，证明 \(\displaystyle\int f\,\mathrm{d}\mu_x\) 对 \(\displaystyle x\in D(f(\mathcal A))\) 有限，并由截断极限推出二次型非负.
+\end{FAExercise}
+
+\begin{FAExercise}[和的定义域不能无条件相等]{ex:ii07-17}
+证明 \(\displaystyle f(\mathcal A)+g(\mathcal A)\subseteq(f+g)(\mathcal A)\). 再在 II-05 的无界乘法算子模型上取 \(\displaystyle f(\lambda)=\lambda\)、\(\displaystyle g(\lambda)=-\lambda\)，严格展示左侧定义域为 \(\displaystyle D(\mathcal M)\) 而右侧定义域为全部 \(\displaystyle\ell^2\).
+\end{FAExercise}
+
+\begin{FAExercise}[积的精确定义域与有界内层特例]{ex:ii07-18}
+从标量测度转移公式推出 \(\displaystyle D(g(\mathcal A)f(\mathcal A))\) 的精确积分刻画，并证明作用等于 \(\displaystyle(gf)(\mathcal A)\). 最后说明为什么只有在内层 \(\displaystyle f\) 有界时才能直接写完整算子等式.
+\end{FAExercise}
+
+\begin{FAExercise}[自伴谱测度的定义域刻画与谱截断图范数核]{ex:ii07-19}
+完整证明\autoref{fa:UST-B01}，特别核对 \(\displaystyle\mathcal AP_n\) 的有界范数、\(\displaystyle\mathcal AP_nx\to\mathcal Ax\)、图范数核以及
+\[
+x\in D(\mathcal A)
+\iff
+\sup_n\|\mathcal AP_nx\|<\infty.
+\]
+不得把本书图范数的平方误写成 Hilbert 型和平方.
+\end{FAExercise}
+
+\begin{FAExercise}[谱控制收敛]{ex:ii07-20}
+设 \(\displaystyle f_n\to f\) 点态 \(\displaystyle E\)-几乎处处、\(\displaystyle|f_n|\leqslant g\)，且 \(\displaystyle x\in D(g(\mathcal A))\). 只使用标量测度 \(\displaystyle\mu_x\) 的控制收敛定理证明 \(\displaystyle f_n(\mathcal A)x\to f(\mathcal A)x\).
+\end{FAExercise}
+
+\begin{FAExercise}[无界乘法算子模型的投影值测度与完整可测演算]{ex:ii07-21}
+证明 \(\displaystyle(E_{\mathcal M}(B)x)_n=1_B(n)x_n\) 是正则 PVM，计算 \(\displaystyle\mu_x^{\mathcal M}\)，由此恢复 \(\displaystyle D(\mathcal M)\)，并证明对任意有限值 Borel \(\displaystyle f\) 有 \(\displaystyle f(\mathcal M)x=(f(n)x_n)\) 及其精确定义域.
+\end{FAExercise}
+
+\begin{FAExercise}[Dirichlet Laplace 算子模型、对称边界与 Stone 边界]{ex:ii07-22}
+从 II-06 已有的 \(\displaystyle\mathcal L_D\) 自伴非负性出发，证明 \(\displaystyle E_{\mathcal L_D}(( -\infty,0))=0\)，构造 \(\displaystyle\mathcal L_D^{\frac{1}{2}}\)，并证明 \(\displaystyle D((\mathcal L_D^{\frac{1}{2}})^2)=D(\mathcal L_D)\). 再说明为什么不能对对称但非自伴反例的 \(\displaystyle\mathcal A_0\) 使用\autoref{fa:UST-A01}，以及为什么 \(\displaystyle\mathrm{e}^{\mathrm{i}t\mathcal A}\) 的可定义性尚不足以证明 Stone 定理或任何 II-08 半群定理.
+\end{FAExercise}

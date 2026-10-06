@@ -1,0 +1,390 @@
+\chapter{Ekeland 变分原理}\label{chap:III-08}
+\FAChapterOpening
+{在精确极小值不存在时仍从近极小元提取更强的变分信息：建立 Ekeland 变分原理的完备度量形式，证明参数归一化与完整的下降集/Cauchy 构造，再在实 Banach 空间中把变分不等式转化为 Fréchet 导数小量，并为下一章的紧性分析准备近似临界序列.}
+{规范章节前置依赖为 I-02 与 III-06. 当前证明实际调用 I-01/I-02 的度量、Cauchy 与完备性接口\autoref{fa:FND-A01}、\autoref{fa:FND-A02}，III-06 的真性/下半连续接口\autoref{fa:VAR-A01}. 第三节另调用 III-01 的 Fréchet 导数类型\autoref{fa:DIFF-A01}，并复用 III-06 已冻结的椭圆能量泛函模型导数公式.}
+{\begin{center}
+\begin{tikzpicture}[x=0.88cm,y=0.82cm]
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (fnda1) at (0.7,3.3) {度量/完备/紧性};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (fnda2) at (3.4,3.3) {完备化定理};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (vara) at (6.1,3.3) {凸/下半连续/强制性};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (ekc) at (9.0,3.3) {参数归一化};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (diffa) at (11.8,3.3) {Fréchet微分};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (eka) at (5.2,1.8) {Ekeland原理};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (ekb) at (9.0,1.8) {近似临界估计};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (energy) at (11.8,1.0) {椭圆能量模型};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (residual) at (10.8,-0.2) {近似变分残差};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (future) at (5.9,0.2) {III-09};
+\draw[fa/arrow] (fnda1) -- (eka);
+\draw[fa/arrow] (fnda2) -- (eka);
+\draw[fa/arrow] (vara) -- (eka);
+\draw[fa/arrow] (ekc) -- (eka);
+\draw[fa/arrow] (eka) -- (ekb);
+\draw[fa/arrow] (diffa) -- (ekb);
+\draw[fa/arrow] (ekb) -- (residual);
+\draw[fa/arrow] (energy) -- (residual);
+\draw[fa/arrow,dashed] (ekb.south west) -- (future.north east);
+\end{tikzpicture}
+\end{center}}
+
+本章不假设紧性、凸性或可微性来证明 Ekeland 原理. 核心机制只有下半连续性、有下界泛函与完备度量空间：递归下降产生 Cauchy 序列，完备性把它的极限留在空间内，下半连续性再把极限送回所有下降集. 第三节才在实 Banach 空间与 \(\displaystyle C^1\) 条件下把度量变分不等式转写为导数估计.
+
+\section{精确极小值失效}\label{sec:iii08-failure}
+\index{near-minimizer@近似极小点}\index{infimum@下确界!Ekeland 原理}
+
+精确极小值即使在完备度量空间中也可能不存在. 复用 III-06/III-07 已冻结的非强制性导致极小元逃逸反例中的基本函数：在赋予通常度量的 \(\displaystyle\mathbb R\) 上令
+\(\displaystyle \varphi(x):=\mathrm{e}^{-x}\).
+空间 \(\displaystyle\mathbb R\) 完备，\(\displaystyle\varphi\) 连续，因而下半连续，并且以 \(\displaystyle0\) 为下界. 然而 \(\displaystyle\inf_{\mathbb R}\varphi=0\)，而每个有限 \(\displaystyle x\) 都满足 \(\displaystyle\varphi(x)>0\)，所以下确界不取得. 本章不把这个复用例子重新命名为独立反例；它只说明精确极小元不能作为后续变分分析的起点.
+
+设 \(\displaystyle(M,d)\) 为度量空间，\(\displaystyle\varphi:M\to(-\infty,+\infty]\) 真且有下界，并记
+\(\displaystyle m:=\inf_M\varphi\).
+真性给出有限上界，有下界假设给出有限下界，因此 \(\displaystyle m\in\mathbb R\). 给定 \(\displaystyle\varepsilon>0\)，若 \(\displaystyle x_0\in\operatorname{dom}\varphi\) 满足 \(\displaystyle\varphi(x_0)\leqslant m+\varepsilon\)，则称 \(\displaystyle x_0\) 为一个 \(\displaystyle\varepsilon\)-近极小元. 由下确界定义，对每个 \(\displaystyle\varepsilon>0\) 至少存在一个这样的 \(\displaystyle x_0\). 近极小性本身只控制能量差；Ekeland 原理将把它强化为带度量惩罚的严格变分不等式.
+
+\begin{FARemark}[近极小元与精确极小元]
+若精确极小元 \(\displaystyle\bar x\) 存在，则它对每个 \(\displaystyle\varepsilon>0\) 都是 \(\displaystyle\varepsilon\)-近极小元. 反向不成立：上面的 \(\displaystyle\mathrm{e}^{-x}\) 没有精确极小元，但对任意 \(\displaystyle\varepsilon>0\) 可取充分大的 \(\displaystyle x_0\) 使 \(\displaystyle\mathrm{e}^{-x_0}\leqslant\varepsilon\). 因而本章真正研究的是近极小元可以附带获得什么额外结构，而不是假设下确界已被取得.
+\end{FARemark}
+
+\section{Ekeland变分原理}\label{sec:iii08-ekeland}
+\index{Ekeland variational principle@Ekeland 变分原理}\index{complete metric space@完备度量空间!Ekeland 原理}\index{descent set@下降集}
+
+先把双参数陈述中的长度尺度与惩罚斜率分离. 这一步只改变度量的单位，不改变拓扑或完备性.
+
+\begin{FAProposition}[C][参数归一化与度量重标]{fa:EK-C01}
+设 \(\displaystyle(M,d)\) 为度量空间，\(\displaystyle\lambda>0\)，并定义
+\(\displaystyle d_\lambda(x,y):=\frac{1}{\lambda}d(x,y)\).
+则 \(\displaystyle d_\lambda\) 与 \(\displaystyle d\) 具有相同的收敛序列、Cauchy 序列与完备/不完备状态. 因而 Ekeland 原理中参数 \(\displaystyle\varepsilon>0\)、\(\displaystyle\lambda>0\) 的双参数形式等价于在度量 \(\displaystyle d_\lambda\) 下取长度参数 \(\displaystyle1\) 的归一化；其惩罚斜率为
+\(\displaystyle \alpha:=\frac{\varepsilon}{\lambda}\).
+特别地，选择 \(\displaystyle\lambda=\sqrt{\varepsilon}\) 时有 \(\displaystyle\alpha=\sqrt{\varepsilon}\).
+\end{FAProposition}
+
+\begin{FAProof}
+对任意序列 \(\displaystyle(x_n)\subseteq M\) 与 \(\displaystyle x\in M\)，有 \(\displaystyle d_\lambda(x_n,x)=\frac{d(x_n,x)}{\lambda}\). 因 \(\displaystyle\lambda>0\) 为固定常数，\(\displaystyle d(x_n,x)\to0\) 当且仅当 \(\displaystyle d_\lambda(x_n,x)\to0\)，所以两度量给出相同收敛.
+
+同理，\(\displaystyle(x_n)\) 关于 \(\displaystyle d\) 为 Cauchy，当且仅当对每个 \(\displaystyle\eta>0\) 存在 \(\displaystyle N\)，使 \(\displaystyle m,n\geqslant N\) 时 \(\displaystyle d(x_m,x_n)<\lambda\eta\)；这又当且仅当 \(\displaystyle d_\lambda(x_m,x_n)<\eta\). 因而两度量的 Cauchy 序列完全相同. 既然收敛与 Cauchy 类都相同，一个度量下每个 Cauchy 序列收敛，当且仅当另一个度量下也如此，所以完备性等价.
+
+若在 \(\displaystyle d_\lambda\) 下使用归一化长度参数 \(\displaystyle1\)，则结论 \(\displaystyle d_\lambda(x_\varepsilon,x_0)\leqslant1\) 正好等价于 \(\displaystyle d(x_\varepsilon,x_0)\leqslant\lambda\). 同时归一化惩罚项 \(\displaystyle\varepsilon d_\lambda(x,x_\varepsilon)\) 等于 \(\displaystyle\frac{\varepsilon}{\lambda}d(x,x_\varepsilon)\). 因而双参数陈述与归一化陈述完全等价. 最后代入 \(\displaystyle\lambda=\sqrt{\varepsilon}\) 即得 \(\displaystyle\alpha=\frac{\varepsilon}{\sqrt{\varepsilon}}=\sqrt{\varepsilon}\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][Ekeland 变分原理]{fa:EK-A01}
+设 \(\displaystyle(M,d)\) 为完备度量空间，\(\displaystyle\varphi:M\to(-\infty,+\infty]\) 真、下半连续且有下界. 给定 \(\displaystyle\varepsilon>0\)、\(\displaystyle\lambda>0\) 与 \(\displaystyle x_0\in\operatorname{dom}\varphi\)，并假设
+\(\displaystyle \varphi(x_0) \leqslant \inf_M\varphi+\varepsilon\).
+则存在 \(\displaystyle x_\varepsilon\in\operatorname{dom}\varphi\) 使以下三条同时成立.
+\begin{enumerate}
+\item \(\displaystyle\varphi(x_\varepsilon)\leqslant\varphi(x_0)\).
+\item \(\displaystyle d(x_\varepsilon,x_0)\leqslant\lambda\).
+\item 对每个 \(\displaystyle x\neq x_\varepsilon\)，
+\(\displaystyle \varphi(x) > \varphi(x_\varepsilon) - \frac{\varepsilon}{\lambda}d(x,x_\varepsilon)\),
+等价地，
+\(\displaystyle \varphi(x_\varepsilon) < \varphi(x) + \frac{\varepsilon}{\lambda}d(x,x_\varepsilon)\).
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+记 \(\displaystyle m=\inf_M\varphi\in\mathbb R\) 与 \(\displaystyle\alpha=\frac{\varepsilon}{\lambda}>0\). 对每个 \(\displaystyle x\in\operatorname{dom}\varphi\) 定义下降集
+\(\displaystyle S(x) := \{y\in M:\varphi(y)+\alpha d(y,x)\leqslant\varphi(x)\}\).
+因为 \(\displaystyle d(x,x)=0\)，总有 \(\displaystyle x\in S(x)\)，所以 \(\displaystyle S(x)\neq\varnothing\). 若 \(\displaystyle y\in S(x)\)，则 \(\displaystyle\varphi(y)\leqslant\varphi(x)<+\infty\)，故 \(\displaystyle y\in\operatorname{dom}\varphi\). 此外 \(\displaystyle\varphi\) 全局有下界，因此 \(\displaystyle\inf_{S(x)}\varphi\) 有下界；又因 \(\displaystyle x\in S(x)\) 且 \(\displaystyle\varphi(x)<+\infty\)，得到
+\(\displaystyle -\infty < \inf_{S(x)}\varphi \leqslant \varphi(x) < +\infty\).
+所以每次近似下确界选择都是合法的.
+
+取任意正的零序列 \(\displaystyle\delta_n\downarrow0\)，例如 \(\displaystyle\delta_n=2^{-n}\). 从给定 \(\displaystyle x_0\) 开始递归选择
+\[
+x_{n+1}\in S(x_n),
+\;
+\varphi(x_{n+1})
+\leqslant
+\inf_{S(x_n)}\varphi+\delta_n.
+\]
+先证明下降集嵌套. 若 \(\displaystyle y\in S(x)\) 且 \(\displaystyle z\in S(y)\)，则
+\[
+\varphi(z)+\alpha d(z,x)
+\leqslant
+\varphi(z)+\alpha d(z,y)+\alpha d(y,x)
+\leqslant
+\varphi(y)+\alpha d(y,x)
+\leqslant
+\varphi(x),
+\]
+所以 \(\displaystyle z\in S(x)\). 因而从 \(\displaystyle x_{n+1}\in S(x_n)\) 得
+\(\displaystyle S(x_{n+1})\subseteq S(x_n)\).
+同时 \(\displaystyle x_{n+1}\in S(x_n)\) 给
+\(\displaystyle \alpha d(x_{n+1},x_n) \leqslant \varphi(x_n)-\varphi(x_{n+1})\),
+所以 \(\displaystyle\varphi(x_n)\) 单调不增. 因 \(\displaystyle\varphi\) 有下界，存在 \(\displaystyle L\in\mathbb R\) 使 \(\displaystyle\varphi(x_n)\downarrow L\).
+
+对 \(\displaystyle m>n\) 求和并使用三角不等式，得到
+\[
+\alpha d(x_m,x_n)
+\leqslant
+\alpha\sum_{k=n}^{m-1}d(x_{k+1},x_k)
+\leqslant
+\varphi(x_n)-\varphi(x_m)
+\leqslant
+\varphi(x_n)-L.
+\]
+右端只依赖 \(\displaystyle n\)，并在 \(\displaystyle n\to\infty\) 时趋于零. 因此对每个 \(\displaystyle\eta>0\)，可取 \(\displaystyle N\) 使 \(\displaystyle n\geqslant N\) 时 \(\displaystyle\frac{\varphi(x_n)-L}{\alpha}<\eta\)；于是所有 \(\displaystyle m>n\geqslant N\) 都满足 \(\displaystyle d(x_m,x_n)<\eta\). 所以 \(\displaystyle(x_n)\) 是 Cauchy 序列. 这里使用的是望远镜尾项估计，而不是由 \(\displaystyle d(x_{n+1},x_n)\to0\) 错误推出 Cauchy.
+
+由完备性，存在 \(\displaystyle x_*\in M\) 使 \(\displaystyle x_n\to x_*\). 固定 \(\displaystyle n\). 由嵌套性，对全部 \(\displaystyle m>n\) 有 \(\displaystyle x_m\in S(x_n)\)，即
+\(\displaystyle \varphi(x_m)+\alpha d(x_m,x_n) \leqslant \varphi(x_n)\).
+当 \(\displaystyle m\to\infty\) 时，距离项由度量连续性收敛到 \(\displaystyle d(x_*,x_n)\)，而下半连续性给 \(\displaystyle\varphi(x_*)\leqslant\liminf_m\varphi(x_m)\). 因而
+\[
+\varphi(x_*)+
+\alpha d(x_*,x_n)
+\leqslant
+\liminf_{m\to\infty}
+\bigl(\varphi(x_m)+\alpha d(x_m,x_n)\bigr)
+\leqslant
+\varphi(x_n).
+\]
+所以 \(\displaystyle x_*\in S(x_n)\) 对每个 \(\displaystyle n\) 都成立，特别地 \(\displaystyle x_*\in\operatorname{dom}\varphi\).
+
+现在证明泛函值真正收敛到 \(\displaystyle\varphi(x_*)\). 由下半连续与 \(\displaystyle\varphi(x_n)\to L\)，有 \(\displaystyle\varphi(x_*)\leqslant L\). 另一方面，\(\displaystyle x_*\in S(x_n)\) 使
+\(\displaystyle \inf_{S(x_n)}\varphi \leqslant \varphi(x_*)\),
+故递归选择给
+\(\displaystyle \varphi(x_{n+1}) \leqslant \varphi(x_*)+\delta_n\).
+令 \(\displaystyle n\to\infty\) 得 \(\displaystyle L\leqslant\varphi(x_*)\). 因而
+\(\displaystyle L=\varphi(x_*)\).
+
+接着证明终止下降集为单点集. 若 \(\displaystyle y\in S(x_*)\)，则由三角不等式、\(\displaystyle y\in S(x_*)\) 与 \(\displaystyle x_*\in S(x_n)\)，对每个 \(\displaystyle n\) 有
+\[
+\varphi(y)+\alpha d(y,x_n)
+\leqslant
+\varphi(y)+\alpha d(y,x_*)+\alpha d(x_*,x_n)
+\leqslant
+\varphi(x_*)+\alpha d(x_*,x_n)
+\leqslant
+\varphi(x_n).
+\]
+所以 \(\displaystyle y\in S(x_n)\) 对每个 \(\displaystyle n\) 成立. 因此
+\[
+\varphi(x_{n+1})
+\leqslant
+\inf_{S(x_n)}\varphi+\delta_n
+\leqslant
+\varphi(y)+\delta_n.
+\]
+令 \(\displaystyle n\to\infty\) 并使用 \(\displaystyle\varphi(x_{n+1})\to\varphi(x_*)\)，得到 \(\displaystyle\varphi(x_*)\leqslant\varphi(y)\). 但 \(\displaystyle y\in S(x_*)\) 又给
+\(\displaystyle \varphi(y)+\alpha d(y,x_*) \leqslant \varphi(x_*)\).
+两式合并得 \(\displaystyle\alpha d(y,x_*)\leqslant0\). 因 \(\displaystyle\alpha>0\) 与度量非负性，必有 \(\displaystyle d(y,x_*)=0\)，故 \(\displaystyle y=x_*\). 因而
+\(\displaystyle S(x_*)=\{x_*\}\).
+于是每个 \(\displaystyle x\neq x_*\) 都不属于 \(\displaystyle S(x_*)\)，从而严格有
+\(\displaystyle \varphi(x)+\alpha d(x,x_*) > \varphi(x_*)\),
+这正是定理的严格变分不等式.
+
+最后给出能量与距离估计. 因 \(\displaystyle x_*\in S(x_0)\)，有
+\(\displaystyle \varphi(x_*) \leqslant \varphi(x_0)\),
+并且
+\[
+\alpha d(x_*,x_0)
+\leqslant
+\varphi(x_0)-\varphi(x_*)
+\leqslant
+\varphi(x_0)-m
+\leqslant
+\varepsilon.
+\]
+代入 \(\displaystyle\alpha=\frac{\varepsilon}{\lambda}\) 得 \(\displaystyle d(x_*,x_0)\leqslant\lambda\). 取 \(\displaystyle x_\varepsilon=x_*\) 即完成三项结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[假设的精确边界]
+\autoref{fa:EK-A01}的证明没有使用紧性、自反性、凸性或可微性. 下半连续性只在把 Cauchy 极限放回每个 \(\displaystyle S(x_n)\) 时使用；有下界假设保证泛函值的单调下降有有限极限；完备性只把 Cauchy 下降序列的极限留在 \(\displaystyle M\) 中. 第四节将证明最后一项不能删去.
+\end{FARemark}
+
+\section{近似临界点}\label{sec:iii08-critical}
+\index{approximate critical point@近似临界点}\index{Frechet derivative@Fréchet 微分!Ekeland 原理}
+
+\autoref{fa:EK-A01}本身是度量定理. 在赋范空间情形中，第三项变分不等式可以沿直线方向求一阶极限，从而得到定量导数小量估计. 这一步需要实标量域与 Fréchet 可微性，但不需要凸性.
+
+\begin{FATheorem}[B][Ekeland 导出的近似临界点估计]{fa:EK-B01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi\in C^1(X;\mathbb R)\) 且有下界. 给定 \(\displaystyle\varepsilon>0\)、\(\displaystyle\lambda>0\) 与 \(\displaystyle x_0\in X\)，并假设
+\(\displaystyle \Phi(x_0) \leqslant \inf_X\Phi+\varepsilon\).
+则存在 \(\displaystyle u\in X\) 满足
+\(\displaystyle \Phi(u) \leqslant \Phi(x_0)\),
+\(\displaystyle \|u-x_0\|_X \leqslant \lambda\),
+以及
+\(\displaystyle \|\Phi'(u)\|_{X^*} \leqslant \frac{\varepsilon}{\lambda}\).
+\end{FATheorem}
+
+\begin{FAProof}
+Banach 空间 \(\displaystyle X\) 关于范数度量完备，且实值 \(\displaystyle C^1\) 泛函连续，因而下半连续、真. 由\autoref{fa:EK-A01}存在 \(\displaystyle u\in X\) 满足前两项结论，并且对每个 \(\displaystyle v\neq u\)，
+\(\displaystyle \Phi(v) > \Phi(u)- \frac{\varepsilon}{\lambda}\|v-u\|_X\).
+固定 \(\displaystyle h\in X\setminus\{0\}\) 与 \(\displaystyle t>0\)，取 \(\displaystyle v=u+th\neq u\)，得到
+\[
+\frac{\Phi(u+th)-\Phi(u)}{t}
+>
+-
+\frac{\varepsilon}{\lambda}\|h\|_X.
+\]
+令 \(\displaystyle t\downarrow0\). 由 Fréchet 可微性及\autoref{fa:DIFF-A01}的导数类型，左端趋于 \(\displaystyle\Phi'(u)[h]\)，故
+\(\displaystyle \Phi'(u)[h] \geqslant - \frac{\varepsilon}{\lambda}\|h\|_X\).
+再把同一结论应用于 \(\displaystyle-h\)，得到
+\(\displaystyle -\Phi'(u)[h] \geqslant - \frac{\varepsilon}{\lambda}\|h\|_X\),
+即 \(\displaystyle\Phi'(u)[h]\leqslant\frac{\varepsilon}{\lambda}\|h\|_X\). 因此对全部 \(\displaystyle h\in X\)，包括平凡的 \(\displaystyle h=0\)，都有
+\(\displaystyle |\Phi'(u)[h]| \leqslant \frac{\varepsilon}{\lambda}\|h\|_X\).
+在 \(\displaystyle\|h\|_X\leqslant1\) 上取上确界，得到
+\(\displaystyle \|\Phi'(u)\|_{X^*} \leqslant \frac{\varepsilon}{\lambda}\).
+这给出第三项结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{从下确界到近似临界序列}
+
+设 \(\displaystyle m=\inf_X\Phi> -\infty\)，并取任意正序列 \(\displaystyle\varepsilon_n\downarrow0\). 由下确界定义，对每个 \(\displaystyle n\) 先选 \(\displaystyle x_n\in X\) 使
+\(\displaystyle \Phi(x_n) \leqslant m+\varepsilon_n\).
+令 \(\displaystyle\lambda_n=\sqrt{\varepsilon_n}\). 由\autoref{fa:EK-C01}，对应惩罚斜率为 \(\displaystyle\frac{\varepsilon_n}{\lambda_n}=\sqrt{\varepsilon_n}\). 再由\autoref{fa:EK-B01}，存在 \(\displaystyle u_n\in X\) 满足
+\(\displaystyle m \leqslant \Phi(u_n) \leqslant \Phi(x_n) \leqslant m+\varepsilon_n\),
+以及
+\(\displaystyle \|\Phi'(u_n)\|_{X^*} \leqslant \sqrt{\varepsilon_n}\).
+因此
+\(\displaystyle \Phi(u_n)\to m, \; \|\Phi'(u_n)\|_{X^*}\to0\).
+这就是本章需要的近似临界序列准备. 当前结论只给泛函值与导数的渐近小量，不声称 \(\displaystyle(u_n)\) 有界，不声称存在收敛子序列，也不引入任何 Palais--Smale 条件. 这些紧性问题统一留给 III-09.
+
+\begin{FAApplication}[近极小元的 Ekeland 修正]
+固定 III-06/III-07 的同一情形：\(\displaystyle\Omega\subset\mathbb R^d\) 为非空有界 Lipschitz 区域，\(\displaystyle X=H_0^1(\Omega;\mathbb R)\)，范数为 \(\displaystyle\|u\|_X=\|\nabla u\|_{L^2(\Omega)}\)，并取 \(\displaystyle f\in L^2(\Omega)\). 复用已冻结泛函
+\[
+\mathcal E(u)
+:=
+\frac{1}{2}\int_\Omega|\nabla u|^2\,\mathrm{d}x
+-
+\int_\Omega fu\,\mathrm{d}x.
+\]
+III-06 已证明 \(\displaystyle\mathcal E\in C^1(X;\mathbb R)\)、有下界，并冻结导数公式
+\[
+\mathcal E'(u)[v]
+=
+\int_\Omega\nabla u\cdot\nabla v\,\mathrm{d}x
+-
+\int_\Omega fv\,\mathrm{d}x.
+\]
+给定 \(\displaystyle\varepsilon>0\) 与任意 \(\displaystyle\varepsilon\)-近极小元 \(\displaystyle u_0\)，即
+\(\displaystyle \mathcal E(u_0) \leqslant \inf_X\mathcal E+\varepsilon\),
+取 \(\displaystyle\lambda=\sqrt{\varepsilon}\). 由\autoref{fa:EK-B01}存在 \(\displaystyle u_\varepsilon\in X\) 使
+\(\displaystyle \mathcal E(u_\varepsilon) \leqslant \mathcal E(u_0), \; \|u_\varepsilon-u_0\|_X \leqslant \sqrt{\varepsilon}\),
+并且
+\(\displaystyle \|\mathcal E'(u_\varepsilon)\|_{X^*} \leqslant \sqrt{\varepsilon}\).
+因此对每个 \(\displaystyle v\in X\)，由对偶范数定义与已冻结导数公式，
+\[
+\left|
+\int_\Omega\nabla u_\varepsilon\cdot\nabla v\,\mathrm{d}x
+-
+\int_\Omega fv\,\mathrm{d}x
+\right|
+\leqslant
+\sqrt{\varepsilon}\,\|v\|_X.
+\]
+这把近极小能量修正为近似弱 Euler--Lagrange 残差. 当前论证从近极小元出发，不借用 III-07 已知精确极小元把 Ekeland 应用退化为平凡情形.
+\end{FAApplication}
+
+\begin{FARemark}[III-09 接口]
+本节构造的 \(\displaystyle(u_n)\) 满足 \(\displaystyle\Phi(u_n)\to\inf_X\Phi\) 与 \(\displaystyle\|\Phi'(u_n)\|_{X^*}\to0\). III-09 将研究这类近似临界序列在额外紧性假设下是否具有收敛子序列. 当前章不定义 Palais--Smale 条件，不调用 Palais--Smale 条件/空临界水平附近的定量梯度下界，也不把收敛当作 Ekeland 原理的结论.
+\end{FARemark}
+
+\section{完备性}\label{sec:iii08-completeness}
+\index{completeness@完备性!Ekeland 原理}\index{counterexample@反例!不完备度量空间}
+
+完备性假设不是证明上的便利条件，而是定理的真实边界. 下面给出一个数值反例，直接破坏\autoref{fa:EK-A01}的严格变分不等式.
+
+\begin{FACounterexample}[非完备空间上 Ekeland 结论可失效]
+取通常的度量空间 \(\displaystyle M=(0,1)\)，并令 \(\displaystyle\varphi(x)=x\). 则 \(\displaystyle M\) 不完备，而 \(\displaystyle\varphi:M\to\mathbb R\) 连续，因而下半连续、真且有下界，并且 \(\displaystyle\inf_M\varphi=0\) 不取得.
+
+固定
+\(\displaystyle \varepsilon:=\frac{1}{4}, \; \lambda:=1, \; x_0:=\frac{1}{8}\).
+于是 \(\displaystyle\varphi(x_0)=\frac{1}{8}\leqslant\frac{1}{4}=\inf_M\varphi+\varepsilon\)，且惩罚斜率为 \(\displaystyle\alpha=\frac{\varepsilon}{\lambda}=\frac{1}{4}<1\). 假设存在满足 Ekeland 结论的 \(\displaystyle x_*\in(0,1)\). 取 \(\displaystyle y=\frac{x_*}{2}\in(0,1)\)，且 \(\displaystyle y\neq x_*\). 严格变分不等式要求
+\(\displaystyle y > x_*-\alpha(x_*-y) = x_*\left(1-\frac{\alpha}{2}\right) = \frac{7}{8}x_*\).
+但 \(\displaystyle y=\frac{x_*}{2}<\frac{7x_*}{8}\)，矛盾. 因而在该不完备空间中不存在任何 Ekeland 结论点.
+\end{FACounterexample}
+
+这个反例也精确解释证明中完备性出现的位置. 若在 \(\displaystyle(0,1)\) 内执行下降构造，可以产生趋向边界点 \(\displaystyle0\) 的 Cauchy 序列；问题不是 Cauchy 性质失败，而是极限 \(\displaystyle0\notin M\). \autoref{fa:EK-A01}的证明正是在“Cauchy 序列 \(\displaystyle(x_n)\) 有极限 \(\displaystyle x_*\in M\)”这一行使用完备性. 下半连续性只能控制一个已经属于定义域的极限的泛函值，不能把缺失的完备化中的点补回 \(\displaystyle M\).
+
+\begin{FARemark}[延后结果：Caristi]
+Caristi 不动点定理与 Ekeland 原理之间存在经典联系，但本章只把 Caristi 记为 D 级后续方向. 当前不陈述 Caristi 定理，不证明 Ekeland--Caristi 等价性，也不在任何证明或习题解答中调用它.
+\end{FARemark}
+
+\subsection*{本章习题}\label{sec:iii08-exercises}
+
+\begin{FAExercise}[精确极小值失效]{ex:iii08-01}
+在 \(\displaystyle\mathbb R\) 上取 \(\displaystyle\varphi(x)=\mathrm{e}^{-x}\). 验证空间完备、\(\displaystyle\varphi\) 连续、有下界，计算下确界，并证明没有精确极小元. 指出这个例子为什么只说明近极小元的必要性，而不否定\autoref{fa:EK-A01}.
+\end{FAExercise}
+
+\begin{FAExercise}[由下确界得到近极小元]{ex:iii08-02}
+设 \(\displaystyle\varphi:M\to(-\infty,+\infty]\) 真、有下界，并令 \(\displaystyle m=\inf_M\varphi\in\mathbb R\). 对任意 \(\displaystyle\varepsilon>0\)，只用下确界定义证明存在 \(\displaystyle x_0\in\operatorname{dom}\varphi\) 满足 \(\displaystyle\varphi(x_0)\leqslant m+\varepsilon\).
+\end{FAExercise}
+
+\begin{FAExercise}[惩罚斜率]{ex:iii08-03}
+给定 \(\displaystyle\varepsilon>0\)、\(\displaystyle\lambda>0\)，令 \(\displaystyle\alpha=\frac{\varepsilon}{\lambda}\). 把\autoref{fa:EK-A01}的第三项分别写成 \(\displaystyle\varphi(x)>\varphi(x_\varepsilon)-\alpha d(x,x_\varepsilon)\) 与 \(\displaystyle\varphi(x_\varepsilon)<\varphi(x)+\alpha d(x,x_\varepsilon)\)，并逐步验证二者等价.
+\end{FAExercise}
+
+\begin{FAExercise}[度量重标]{ex:iii08-04}
+完整证明\autoref{fa:EK-C01}：对 \(\displaystyle d_\lambda=\frac{d}{\lambda}\) 分别核对收敛、Cauchy 性质与完备性不变性，再把归一化长度界和惩罚项转回原度量.
+\end{FAExercise}
+
+\begin{FAExercise}[下降集嵌套性]{ex:iii08-05}
+定义 \(\displaystyle S(x)=\{y:\varphi(y)+\alpha d(y,x)\leqslant\varphi(x)\}\). 若 \(\displaystyle y\in S(x)\)、\(\displaystyle z\in S(y)\)，只用三角不等式证明 \(\displaystyle z\in S(x)\). 由此推出 \(\displaystyle S(x_{n+1})\subseteq S(x_n)\).
+\end{FAExercise}
+
+\begin{FAExercise}[望远镜距离估计]{ex:iii08-06}
+从 \(\displaystyle x_{n+1}\in S(x_n)\) 推出 \(\displaystyle\alpha d(x_{n+1},x_n)\leqslant\varphi(x_n)-\varphi(x_{n+1})\)，再对 \(\displaystyle m>n\) 求和，得到完整望远镜估计.
+\end{FAExercise}
+
+\begin{FAExercise}[Cauchy 证明]{ex:iii08-07}
+假设 \(\displaystyle\varphi(x_n)\downarrow L\in\mathbb R\)，并已知习题\ref{ex:iii08-06}的估计. 证明 \(\displaystyle d(x_m,x_n)\leqslant\frac{\varphi(x_n)-L}{\alpha}\) 对全部 \(\displaystyle m>n\) 成立，从而严格按 Cauchy 定义证明 \(\displaystyle(x_n)\) Cauchy. 说明为什么仅有相邻距离趋零不充分.
+\end{FAExercise}
+
+\begin{FAExercise}[下半连续极限传递]{ex:iii08-08}
+设 \(\displaystyle x_m\to x_*\)，且对固定 \(\displaystyle n\) 与全部 \(\displaystyle m>n\) 有 \(\displaystyle\varphi(x_m)+\alpha d(x_m,x_n)\leqslant\varphi(x_n)\). 用下半连续性与距离连续性证明 \(\displaystyle x_*\in S(x_n)\).
+\end{FAExercise}
+
+\begin{FAExercise}[终止单点下降集]{ex:iii08-09}
+在\autoref{fa:EK-A01}的情形中，先证明 \(\displaystyle\varphi(x_n)\to\varphi(x_*)\)，再假设 \(\displaystyle y\in S(x_*)\)，证明 \(\displaystyle y\in S(x_n)\) 对所有 \(\displaystyle n\) 成立，并最终推出 \(\displaystyle y=x_*\).
+\end{FAExercise}
+
+\begin{FAExercise}[距离估计]{ex:iii08-10}
+由 \(\displaystyle x_*\in S(x_0)\)、近极小元条件与 \(\displaystyle\alpha=\frac{\varepsilon}{\lambda}\)，完整推出 \(\displaystyle d(x_*,x_0)\leqslant\lambda\). 不得省略 \(\displaystyle\varphi(x_*)\geqslant\inf_M\varphi\) 这一比较.
+\end{FAExercise}
+
+\begin{FAExercise}[完整 Ekeland 变分原理]{ex:iii08-11}
+从下降集定义开始，依次完成非空性、近似下确界递归、嵌套性、望远镜/Cauchy 估计、完备空间中的极限、下半连续极限传递、泛函值收敛、终止单点集、严格变分不等式与距离估计，完整重建\autoref{fa:EK-A01}. 不得写“标准 Ekeland 证明”.
+\end{FAExercise}
+
+\begin{FAExercise}[不同 \(\displaystyle\lambda\)的作用]{ex:iii08-12}
+固定近极小元误差 \(\displaystyle\varepsilon\). 比较 \(\displaystyle\lambda=1\)、\(\displaystyle\lambda=\varepsilon\)、\(\displaystyle\lambda=\sqrt{\varepsilon}\) 时的距离估计与惩罚斜率 \(\displaystyle\frac{\varepsilon}{\lambda}\)，并说明为什么 \(\displaystyle\lambda=\sqrt{\varepsilon}\) 同时给出同阶的位置与导数估计.
+\end{FAExercise}
+
+\begin{FAExercise}[Banach 变分不等式]{ex:iii08-13}
+设 \(\displaystyle X\) 实 Banach，\(\displaystyle u\) 满足 Ekeland 变分不等式. 对任意 \(\displaystyle h\neq0\)、\(\displaystyle t>0\)，取 \(\displaystyle v=u+th\)，完整推出差商下界.
+\end{FAExercise}
+
+\begin{FAExercise}[单侧方向导数估计]{ex:iii08-14}
+在习题\ref{ex:iii08-13}的情形中，令 \(\displaystyle t\downarrow0\)，证明 \(\displaystyle\Phi'(u)[h]\geqslant-\frac{\varepsilon}{\lambda}\|h\|\). 再对 \(\displaystyle-h\) 重复论证，推出对应上界. 不得只写“令 \(\displaystyle v\to u\)”.
+\end{FAExercise}
+
+\begin{FAExercise}[对偶范数估计]{ex:iii08-15}
+从 \(\displaystyle|\Phi'(u)[h]|\leqslant\frac{\varepsilon}{\lambda}\|h\|\) 出发，按对偶范数定义在单位球上取上确界，证明 \(\displaystyle\|\Phi'(u)\|_{X^*}\leqslant\frac{\varepsilon}{\lambda}\).
+\end{FAExercise}
+
+\begin{FAExercise}[完整 Ekeland 导出的近似临界点估计]{ex:iii08-16}
+逐项核对实 Banach、\(\displaystyle C^1\)、有下界与近极小元假设，先调用\autoref{fa:EK-A01}获得能量/位置/变分结论，再用双侧方向论证完整证明\autoref{fa:EK-B01}.
+\end{FAExercise}
+
+\begin{FAExercise}[近似临界序列]{ex:iii08-17}
+设 \(\displaystyle m=\inf_X\Phi> -\infty\)，取任意 \(\displaystyle\varepsilon_n\downarrow0\). 先选 \(\displaystyle x_n\) 满足 \(\displaystyle\Phi(x_n)\leqslant m+\varepsilon_n\)，再取 \(\displaystyle\lambda_n=\sqrt{\varepsilon_n}\) 并应用\autoref{fa:EK-B01}. 完整证明 \(\displaystyle\Phi(u_n)\to m\) 与 \(\displaystyle\|\Phi'(u_n)\|_{X^*}\to0\).
+\end{FAExercise}
+
+\begin{FAExercise}[能量残差估计]{ex:iii08-18}
+对 III-06 的椭圆能量泛函模型，从 \(\displaystyle\|\mathcal E'(u_\varepsilon)\|_{X^*}\leqslant\sqrt{\varepsilon}\) 与已冻结导数公式推出对全部 \(\displaystyle v\in X\) 的近似弱 Euler--Lagrange 残差估计，并明确右端为何是 \(\displaystyle\sqrt{\varepsilon}\|v\|_X\).
+\end{FAExercise}
+
+\begin{FAExercise}[不完备空间反例]{ex:iii08-19}
+在 \(\displaystyle M=(0,1)\)、\(\displaystyle\varphi(x)=x\)、\(\displaystyle\varepsilon=\frac{1}{4}\)、\(\displaystyle\lambda=1\)、\(\displaystyle x_0=\frac{1}{8}\) 的情形中，验证近极小元假设. 对任意候选 \(\displaystyle x_*\)，取 \(\displaystyle y=\frac{x_*}{2}\)，逐项计算并证明严格变分不等式必然失败.
+\end{FAExercise}
+
+\begin{FAExercise}[完备性的证明位置]{ex:iii08-20}
+在\autoref{fa:EK-A01}的证明中指出唯一必须调用完备性的逻辑位置. 解释为什么下半连续性、有下界假设与 Cauchy 估计都不能替代“极限属于 \(\displaystyle M\)”这一步.
+\end{FAExercise}
+
+\begin{FAExercise}[Caristi 后续边界]{ex:iii08-21}
+只根据本章面向读者的边界说明 Caristi 不动点定理被标记为延后结果的原因. 不得陈述 Caristi 定理，不得证明 Ekeland--Caristi 等价性，也不得把它用于重证\autoref{fa:EK-A01}.
+\end{FAExercise}
+
+\begin{FAExercise}[III-09 接口与后续紧性边界]{ex:iii08-22}
+列出本章已经对近似临界序列证明的两条渐近事实，并列出本章没有证明的紧性结论. 只说明 III-09 将处理额外紧性假设；不得定义 Palais--Smale 条件，不得调用 Palais--Smale 条件、空临界水平附近的定量梯度下界、变形引理、山路定理或极小极大定理.
+\end{FAExercise}

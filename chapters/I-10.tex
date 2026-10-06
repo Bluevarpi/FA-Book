@@ -1,0 +1,475 @@
+\chapter{弱紧性、Banach--Alaoglu与自反性}\label{chap:I-10}
+\FAChapterOpening
+{在弱拓扑与弱*拓扑上建立一般拓扑紧性框架；以Tychonoff乘积紧性证明Banach--Alaoglu定理，以有限维分离证明Goldstine定理，并由自然嵌入把弱*紧性转化为自反空间中的弱紧性；最后给出闭有界凸集弱紧与纯拓扑存在性模板.}
+{I-06的Hahn--Banach与凸集分离；I-07的自然嵌入、自反性、弱/弱*拓扑及标准例；I-08的一致有界性原理.}
+{\begin{center}
+\begin{tikzpicture}[x=1.34cm,y=1.05cm]
+\node[fa/node] (fnd) at (0,1.4) {Tychonoff定理};
+\node[fa/node] (hb) at (0,0) {凸集分离定理};
+\node[fa/node] (wt) at (0,-1.4) {弱/弱*拓扑};
+\node[fa/node] (ubp) at (0,-2.8) {一致有界};
+\node[fa/node] (baa) at (2.3,1.0) {Banach--Alaoglu定理};
+\node[fa/node] (gold) at (2.3,-0.6) {Goldstine定理};
+\node[fa/node] (refa) at (4.65,0.45) {自反球弱紧};
+\node[fa/node] (refb) at (6.9,0.45) {闭有界凸集弱紧};
+\node[fa/node] (refc) at (9.1,0.45) {弱紧存在};
+\draw[fa/arrow] (fnd) -- (baa);
+\draw[fa/arrow] (wt) -- (baa);
+\draw[fa/arrow] (hb) -- (gold);
+\draw[fa/arrow] (wt) -- (gold);
+\draw[fa/arrow] (baa) -- (refa);
+\draw[fa/arrow] (gold) -- (refa);
+\draw[fa/arrow] (ubp) -- (refb);
+\draw[fa/arrow] (refa) -- (refb);
+\draw[fa/arrow] (refb) -- (refc);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). 紧性始终取一般拓扑意义，并由I-01的网/子网刻画承担主线；除度量范数紧性的局部反例外，不以序列或子序列替代一般紧性判据. Eberlein--\v Smulian定理只在本章末作D级说明，不进入任何证明链.
+
+\section{极集与乘积紧性}\label{sec:i10-polar-product}
+\index{weak compactness@弱紧性}\index{weak-star compactness@弱*紧性}\index{polar@极集}
+
+\begin{FADefinition}[A][弱紧性与弱*紧性]{i10:weak-compactness}
+设 \(\displaystyle K\subseteq X\). 若 \(\displaystyle K\) 在子空间拓扑 \(\displaystyle \sigma(X,X^*)|_K\) 下紧，则称 \(\displaystyle K\) 弱紧. 设 \(\displaystyle K^*\subseteq X^*\). 若 \(\displaystyle K^*\) 在子空间拓扑 \(\displaystyle \sigma(X^*,X)|_{K^*}\) 下紧，则称 \(\displaystyle K^*\) 弱*紧.
+\end{FADefinition}
+
+\begin{FAProposition}[C][紧性的网形式]{i10:weak-compact-net}
+集合 \(\displaystyle K\subseteq X\) 弱紧，当且仅当 \(\displaystyle K\) 中每个网都有一个子网弱收敛到 \(\displaystyle K\) 中某点. 对弱*拓扑应用同一网刻画可得：\(\displaystyle K^*\subseteq X^*\) 弱*紧，当且仅当其中每个网都有一个子网弱*收敛到 \(\displaystyle K^*\) 中某点.
+\end{FAProposition}
+
+\begin{FAProof}
+把 \(\displaystyle K\) 看作拓扑空间 \(\displaystyle (K,\sigma(X,X^*)|_K)\)，直接应用I-01的\autoref{fa:FND-B02}. 子网在子空间中的收敛与在 \(\displaystyle X\) 中收敛到 \(\displaystyle K\) 内点完全相同. 弱*情形把 \(\displaystyle \sigma(X,X^*)\) 换为 \(\displaystyle \sigma(X^*,X)\) 即得.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[B][极集]{i10:polar}
+对任意 \(\displaystyle A\subseteq X\)，定义其极集
+\(\displaystyle A^\circ = \left\{x^*\in X^*:|x^*(x)|\leqslant1\text{ 对全部 }x\in A\right\}\).
+这里的 \(\displaystyle \circ\) 是极集记号，与Hilbert空间中的正交补无关.
+\end{FADefinition}
+
+\begin{FAProposition}[B][闭单位球的极集]{i10:unit-ball-polar}
+若 \(\displaystyle \overline B_X=\{x\in X:\|x\|\leqslant1\}\)，则
+\(\displaystyle (\overline B_X)^\circ=\overline B_{X^*}\).
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle x^*\in(\overline B_X)^\circ\)，则对每个 \(\displaystyle \|x\|\leqslant1\) 有 \(\displaystyle |x^*(x)|\leqslant1\)，故对单位闭球取上确界得 \(\displaystyle \|x^*\|\leqslant1\)，即 \(\displaystyle x^*\in\overline B_{X^*}\). 反之，若 \(\displaystyle \|x^*\|\leqslant1\) 且 \(\displaystyle x\in\overline B_X\)，则 \(\displaystyle |x^*(x)|\leqslant\|x^*\|\|x\|\leqslant1\)，故 \(\displaystyle x^*\in(\overline B_X)^\circ\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][极集的弱*闭性]{i10:polar-wstar-closed}
+对任意 \(\displaystyle A\subseteq X\)，极集 \(\displaystyle A^\circ\) 在 \(\displaystyle \sigma(X^*,X)\) 下闭.
+\end{FAProposition}
+
+\begin{FAProof}
+由定义
+\[
+A^\circ
+=
+\bigcap_{x\in A}
+\left\{x^*\in X^*:|x^*(x)|\leqslant1\right\}.
+\]
+固定 \(\displaystyle x\in X\). 取值映射 \(\displaystyle e_x:X^*\to\mathbb K\)，\(\displaystyle e_x(x^*)=x^*(x)\)，按弱*拓扑定义连续，而 \(\displaystyle \{\lambda\in\mathbb K:|\lambda|\leqslant1\}\) 闭. 因而每个被交集合都是弱*闭集，任意交仍闭.
+\hfill\(\square\)
+\end{FAProof}
+
+本章不发展双极定理；这里只保留Banach--Alaoglu证明所需的极集接口.
+
+对每个 \(\displaystyle x\in X\)，定义紧标量盘
+\(\displaystyle D_x=\{\lambda\in\mathbb K:|\lambda|\leqslant\|x\|\}\).
+当 \(\displaystyle \mathbb K=\mathbb R\) 时，\(\displaystyle D_x\) 是闭区间；当 \(\displaystyle \mathbb K=\mathbb C\) 时，\(\displaystyle D_x\) 是闭圆盘. 两者都由Heine--Borel定理紧. 令
+\[
+P=\prod_{x\in X}D_x
+\]
+并赋积拓扑. 由I-01的Tychonoff定理\autoref{fa:FND-B01}，\(\displaystyle P\) 紧. 本章直接继承I-01中已经明示的选择公理依赖，不重新证明Tychonoff，也不引入新的选择步骤.
+
+\section{Banach--Alaoglu定理}\label{sec:i10-banach-alaoglu}
+\index{Banach-Alaoglu theorem@Banach--Alaoglu定理}
+
+\begin{FATheorem}[A][Banach--Alaoglu定理]{fa:BAA-A01}
+设 \(\displaystyle X\) 为任意赋范空间，不要求完备. 则闭对偶单位球
+\(\displaystyle \overline B_{X^*}=\{x^*\in X^*:\|x^*\|\leqslant1\}\)
+在弱*拓扑 \(\displaystyle \sigma(X^*,X)\) 下紧.
+\end{FATheorem}
+
+\begin{FAProof}
+使用上一节的紧乘积 \(\displaystyle P=\prod_{x\in X}D_x\). 定义
+\(\displaystyle \Phi:\overline B_{X^*}\to P, \; \Phi(x^*)=(x^*(x))_{x\in X}\).
+若 \(\displaystyle x^*\in\overline B_{X^*}\)，则对每个 \(\displaystyle x\in X\) 有 \(\displaystyle |x^*(x)|\leqslant\|x\|\)，故 \(\displaystyle x^*(x)\in D_x\)，所以 \(\displaystyle \Phi\) 良定义. 若 \(\displaystyle \Phi(x_1^*)=\Phi(x_2^*)\)，则两泛函在每个 \(\displaystyle x\in X\) 上取值相同，故 \(\displaystyle x_1^*=x_2^*\)，所以 \(\displaystyle \Phi\) 单射.
+
+现比较拓扑. 对每个 \(\displaystyle x\in X\)，记 \(\displaystyle \pi_x:P\to D_x\) 为第 \(\displaystyle x\) 个坐标投影，则
+\(\displaystyle \pi_x\circ\Phi(x^*)=x^*(x)\).
+弱*拓扑正是使全部取值映射 \(\displaystyle x^*\mapsto x^*(x)\)（\(\displaystyle x\in X\)）连续的最弱拓扑，而积拓扑在 \(\displaystyle P\) 上由各坐标投影生成.更具体地，固定 \(\displaystyle x_0^*\in\overline B_{X^*}\)，\(\displaystyle \Phi(x_0^*)\) 在 \(\displaystyle \Phi(\overline B_{X^*})\) 中的基本积拓扑子空间邻域由有限多个坐标 \(\displaystyle x_1,\dots,x_m\in X\) 与正数 \(\displaystyle \varepsilon_1,\dots,\varepsilon_m\) 给出；其在 \(\displaystyle \Phi\) 下的逆像恰为
+\(\displaystyle \bigl\{x^*\in\overline B_{X^*}: |x^*(x_j)-x_0^*(x_j)|<\varepsilon_j,\ 1\leqslant j\leqslant m\bigr\}\).
+这正是 \(\displaystyle x_0^*\) 的基本弱*邻域与闭单位球的交.因此 \(\displaystyle \Phi\) 连续.反过来，每个基本弱*邻域在 \(\displaystyle \Phi\) 下的像都是对应的基本积拓扑子空间邻域，故 \(\displaystyle \Phi^{-1}\) 在其像上连续.从而 \(\displaystyle \Phi\) 是弱*拓扑到积拓扑子空间拓扑的同胚.
+
+只需证明像在 \(\displaystyle P\) 中闭. 对任意 \(\displaystyle x,y\in X\) 与 \(\displaystyle \alpha,\beta\in\mathbb K\)，令
+\[
+L_{x,y,\alpha,\beta} = \left\{z\in P:z_{\alpha x+\beta y}=\alpha z_x+\beta z_y\right\}.
+\]
+映射 \(\displaystyle z\mapsto z_{\alpha x+\beta y}-\alpha z_x-\beta z_y\) 由有限个坐标投影与域运算组成，故连续；因此 \(\displaystyle L_{x,y,\alpha,\beta}\) 闭. 令
+\[
+L=
+\bigcap_{x,y\in X}
+\bigcap_{\alpha,\beta\in\mathbb K}
+L_{x,y,\alpha,\beta}.
+\]
+则 \(\displaystyle L\) 闭. 对任意 \(\displaystyle x^*\in\overline B_{X^*}\)，线性性给出 \(\displaystyle x^*(\alpha x+\beta y)=\alpha x^*(x)+\beta x^*(y)\)，故 \(\displaystyle \Phi(x^*)\in L\)，从而 \(\displaystyle \Phi(\overline B_{X^*})\subseteq L\).
+
+反之，取 \(\displaystyle z\in L\)，定义 \(\displaystyle x_z^*:X\to\mathbb K\) 为
+\(\displaystyle x_z^*(x)=z_x\).
+由 \(\displaystyle z\in L\)，对任意 \(\displaystyle x,y\in X\) 与 \(\displaystyle \alpha,\beta\in\mathbb K\) 有
+\(\displaystyle x_z^*(\alpha x+\beta y) =z_{\alpha x+\beta y} =\alpha z_x+\beta z_y =\alpha x_z^*(x)+\beta x_z^*(y)\)，
+故 \(\displaystyle x_z^*\) 线性. 又因 \(\displaystyle z\in P\)，
+\(\displaystyle |x_z^*(x)|=|z_x|\leqslant\|x\|\)
+对全部 \(\displaystyle x\in X\) 成立，所以 \(\displaystyle x_z^*\in X^*\) 且 \(\displaystyle \|x_z^*\|\leqslant1\). 因而 \(\displaystyle z=\Phi(x_z^*)\)，即 \(\displaystyle L\subseteq\Phi(\overline B_{X^*})\). 故
+\(\displaystyle \Phi(\overline B_{X^*})=L\)
+是紧空间 \(\displaystyle P\) 的闭子集，从而紧. 再由 \(\displaystyle \Phi\) 的弱*同胚性，\(\displaystyle \overline B_{X^*}\) 弱*紧. 整个证明没有使用 \(\displaystyle X\) 的完备性.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][Banach--Alaoglu的网形式]{i10:baa-net}
+任取网 \(\displaystyle (x_\alpha^*)\subseteq\overline B_{X^*}\)，存在子网 \(\displaystyle (x_{\alpha_\beta}^*)\) 与 \(\displaystyle x^*\in\overline B_{X^*}\)，使
+\(\displaystyle x_{\alpha_\beta}^*\overset{w^*}{\longrightarrow}x^*\).
+\end{FACorollary}
+
+\begin{FAProof}
+由\autoref{fa:BAA-A01}，\(\displaystyle \overline B_{X^*}\) 弱*紧；再应用\autoref{i10:weak-compact-net}的弱*版本即可.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[同一集合上的两种拓扑]
+I-07已经证明 \(\displaystyle (c_0)^*\cong\ell^1\). 因此 \(\displaystyle \overline B_{\ell^1}\) 作为 \(\displaystyle c_0\) 的闭对偶单位球，由\autoref{fa:BAA-A01}在 \(\displaystyle \sigma(\ell^1,c_0)\) 下紧. 同时I-07的\autoref{i07:ce-wstar-weak}给出 \(\displaystyle e_n\overset{w^*}{\longrightarrow}0\)，但由Schur性质 \(\displaystyle e_n\) 不弱收敛到 \(\displaystyle0\). 该例只说明弱*拓扑与弱拓扑不同，并不从这个序列单独推出 \(\displaystyle \overline B_{\ell^1}\) 是否弱紧.
+\end{FACounterexample}
+
+\section{Goldstine定理}\label{sec:i10-goldstine}
+\index{Goldstine theorem@Goldstine定理}
+
+\begin{FATheorem}[B][Goldstine定理]{fa:GOLD-B01}
+设 \(\displaystyle X\) 为任意赋范空间，\(\displaystyle J_X:X\to X^{**}\) 为自然嵌入. 则
+\(\displaystyle \overline{J_X(\overline B_X)}^{\,w^*} = \overline B_{X^{**}}\)，
+其中弱*拓扑是 \(\displaystyle \sigma(X^{**},X^*)\). 等价地，\(\displaystyle J_X(\overline B_X)\) 在 \(\displaystyle \overline B_{X^{**}}\) 中弱*稠密. 不要求 \(\displaystyle X\) 完备.
+\end{FATheorem}
+
+\begin{FAProof}
+由I-07自然嵌入的等距性，\(\displaystyle J_X(\overline B_X)\subseteq\overline B_{X^{**}}\).此外，由二次对偶范数的定义，
+\[
+\overline B_{X^{**}}=\bigcap_{\|x^*\|\leqslant 1}\bigl\{y^{**}\in X^{**}:|y^{**}(x^*)|\leqslant 1\bigr\}.
+\]
+对每个固定的 \(\displaystyle x^*\in X^*\)，取值映射 \(\displaystyle y^{**}\mapsto y^{**}(x^*)\) 按 \(\displaystyle \sigma(X^{**},X^*)\) 的定义连续，所以交中的每个集合都是弱*闭集，从而 \(\displaystyle \overline B_{X^{**}}\) 是弱*闭集.因此只需证明每个 \(\displaystyle x^{**}\in\overline B_{X^{**}}\) 都属于 \(\displaystyle J_X(\overline B_X)\) 的弱*闭包.
+
+固定 \(\displaystyle x^{**}\in\overline B_{X^{**}}\)，再固定其任意基本弱*邻域. 于是存在 \(\displaystyle x_1^*,\dots,x_m^*\in X^*\) 与 \(\displaystyle \varepsilon_1,\dots,\varepsilon_m>0\)，目标是找到 \(\displaystyle x\in\overline B_X\) 使
+\(\displaystyle |x_j^*(x)-x^{**}(x_j^*)|<\varepsilon_j, \; 1\leqslant j\leqslant m\).
+定义有限维线性映射
+\(\displaystyle \Psi:X\to\mathbb K^m, \; \Psi(x)=(x_1^*(x),\dots,x_m^*(x))\)，
+并令
+\(\displaystyle C=\overline{\Psi(\overline B_X)}\subseteq\mathbb K^m, \; a=(x^{**}(x_1^*),\dots,x^{**}(x_m^*))\).
+集合 \(\displaystyle \Psi(\overline B_X)\) 凸，故其闭包 \(\displaystyle C\) 是非空闭凸集. 现证 \(\displaystyle a\in C\).
+
+反设 \(\displaystyle a\notin C\). 在有限维赋范空间 \(\displaystyle \mathbb K^m\) 中应用I-06的点与闭凸集分离定理\autoref{fa:HB-A02}，存在非零 \(\displaystyle \varphi\in(\mathbb K^m)^*\) 使
+\[
+\sup_{z\in C}\operatorname{Re}\varphi(z)
+<
+\operatorname{Re}\varphi(a).
+\]
+由有限维坐标表示，可写
+\[
+\varphi(z_1,\dots,z_m)=\sum_{j=1}^m\lambda_jz_j.
+\]
+令
+\[
+g=\sum_{j=1}^m\lambda_jx_j^*\in X^*.
+\]
+因为 \(\displaystyle \operatorname{Re}\varphi\) 连续，闭包不改变其在 \(\displaystyle \Psi(\overline B_X)\) 上的上确界，所以
+\[
+\sup_{z\in C}\operatorname{Re}\varphi(z)
+=
+\sup_{\|x\|\leqslant1}\operatorname{Re}g(x)
+=
+\|g\|.
+\]
+最后一个等式在实数域由符号选择与对偶范数的逼近定义得到. 在复数域，对任意 \(\displaystyle \delta>0\) 先取 \(\displaystyle \|x\|\leqslant1\) 使 \(\displaystyle |g(x)|>\|g\|-\delta\)；若 \(\displaystyle g(x)\neq0\)，取 \(\displaystyle \eta=\frac{\overline{g(x)}}{|g(x)|}\)，则 \(\displaystyle \|\eta x\|\leqslant1\) 且 \(\displaystyle \operatorname{Re}g(\eta x)=|g(x)|\). 令 \(\displaystyle \delta\downarrow0\) 即得所需等式.
+
+另一方面，
+\[
+\operatorname{Re}\varphi(a)
+=
+\operatorname{Re}x^{**}(g)
+\leqslant
+|x^{**}(g)|
+\leqslant
+\|x^{**}\|\|g\|
+\leqslant
+\|g\|,
+\]
+与严格分离矛盾. 因此 \(\displaystyle a\in C\).
+
+既然 \(\displaystyle a\in\overline{\Psi(\overline B_X)}\)，则坐标开邻域
+\[
+\prod_{j=1}^m
+B_{\mathbb K}(x^{**}(x_j^*),\varepsilon_j)
+\]
+与 \(\displaystyle \Psi(\overline B_X)\) 相交. 因而存在 \(\displaystyle x\in\overline B_X\) 满足全部坐标不等式，这恰说明每个基本弱*邻域都与 \(\displaystyle J_X(\overline B_X)\) 相交. 所以
+\(\displaystyle \overline{J_X(\overline B_X)}^{\,w^*} = \overline B_{X^{**}}\).
+该证明只使用I-06的分离、I-07的弱*基本邻域与自然嵌入，不使用Banach--Alaoglu.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[Goldstine稠密而非满射]
+I-07已经建立 \(\displaystyle (c_0)^*\cong\ell^1\) 与 \(\displaystyle (c_0)^{**}\cong\ell^\infty\)，且在这些具体识别下 \(\displaystyle J_{c_0}\) 对应自然包含 \(\displaystyle c_0\hookrightarrow\ell^\infty\). 因而Goldstine给出
+\[
+\overline B_{c_0}
+\text{ 在 }
+(\overline B_{\ell^\infty},\sigma(\ell^\infty,\ell^1))
+\text{ 中弱*稠密}.
+\]
+但 \(\displaystyle (1,1,\dots)\in\overline B_{\ell^\infty}\setminus c_0\). 因此弱*稠密不意味着自然嵌入满射.
+\end{FAExample}
+
+\section{自反性与弱紧性}\label{sec:i10-reflexivity}
+\index{reflexive space@自反空间}\index{weakly closed@弱闭}
+
+\begin{FAProposition}[B][自然嵌入的弱/弱*拓扑相容性]{i10:jx-topology}
+对任意赋范空间 \(\displaystyle X\)，自然嵌入
+\(\displaystyle J_X:(X,\sigma(X,X^*)) \longrightarrow (J_X(X),\sigma(X^{**},X^*)|_{J_X(X)})\)
+是同胚.
+\end{FAProposition}
+
+\begin{FAProof}
+I-07已知 \(\displaystyle J_X:X\to X^{**}\) 是线性等距单射.固定 \(\displaystyle x_0\in X\).若 \(\displaystyle J_Xx_0\) 在 \(\displaystyle J_X(X)\) 中的基本弱*子空间邻域由 \(\displaystyle x_1^*,\dots,x_m^*\in X^*\) 与 \(\displaystyle \varepsilon_1,\dots,\varepsilon_m>0\) 给出，则其在 \(\displaystyle J_X\) 下的逆像为
+\(\displaystyle \bigl\{x\in X:|x_j^*(x-x_0)|<\varepsilon_j,\ 1\leqslant j\leqslant m\bigr\}\)，
+因为 \(\displaystyle (J_Xx)(x_j^*)=x_j^*(x)\).该集合是 \(\displaystyle x_0\) 的基本弱邻域，故 \(\displaystyle J_X:(X,\sigma(X,X^*))\to (J_X(X),\sigma(X^{**},X^*)|_{J_X(X)})\) 连续.
+反过来，若 \(\displaystyle U\) 是 \(\displaystyle x_0\) 的上述基本弱邻域，则
+\[
+J_X(U)=J_X(X)\cap\bigl\{y^{**}\in X^{**}:|y^{**}(x_j^*)-(J_Xx_0)(x_j^*)|<\varepsilon_j,\ 1\leqslant j\leqslant m\bigr\},
+\]
+右侧是 \(\displaystyle J_Xx_0\) 的基本弱*子空间邻域.因此 \(\displaystyle J_X^{-1}\) 在 \(\displaystyle J_X(X)\) 上连续.故 \(\displaystyle J_X\) 把 \(\displaystyle X\) 的弱拓扑与其像上的弱*子空间拓扑同胚对应.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][自反空间闭单位球弱紧]{fa:REF-A01}
+设 \(\displaystyle X\) 为自反赋范空间. 则 \(\displaystyle \overline B_X\) 在 \(\displaystyle \sigma(X,X^*)\) 下紧.
+\end{FATheorem}
+
+\begin{FAProof}
+I-07已经证明自反赋范空间自动完备，且 \(\displaystyle J_X:X\to X^{**}\) 是满射等距线性映射. 因此
+\(\displaystyle J_X(\overline B_X)=\overline B_{X^{**}}\).
+对赋范空间 \(\displaystyle X^*\) 应用Banach--Alaoglu定理\autoref{fa:BAA-A01}，得到 \(\displaystyle \overline B_{X^{**}}\) 在 \(\displaystyle \sigma(X^{**},X^*)\) 下紧. 由\autoref{i10:jx-topology}，\(\displaystyle J_X\) 把 \(\displaystyle \overline B_X\) 的弱拓扑同胚到 \(\displaystyle \overline B_{X^{**}}\) 的弱*子空间拓扑. 因而 \(\displaystyle \overline B_X\) 弱紧.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[A][闭单位球弱紧刻画自反性]{i10:reflexive-ball-characterization}
+对任意赋范空间 \(\displaystyle X\)，
+\(\displaystyle X\text{ 自反} \iff \overline B_X\text{ 弱紧}\).
+\end{FACorollary}
+
+\begin{FAProof}
+正向即\autoref{fa:REF-A01}. 反向假设 \(\displaystyle \overline B_X\) 弱紧. 由\autoref{i10:jx-topology}，限制映射 \(\displaystyle J_X|_{\overline B_X}\) 对相应的弱拓扑与弱*拓扑连续，故 \(\displaystyle J_X(\overline B_X)\) 弱*紧. I-07已经证明弱*拓扑Hausdorff，因此紧子集闭，故 \(\displaystyle J_X(\overline B_X)\) 弱*闭.
+
+另一方面，Goldstine定理\autoref{fa:GOLD-B01}给出
+\(\displaystyle \overline{J_X(\overline B_X)}^{\,w^*} = \overline B_{X^{**}}\).
+左侧集合已经闭，所以
+\(\displaystyle J_X(\overline B_X)=\overline B_{X^{**}}\).
+任取 \(\displaystyle x^{**}\in X^{**}\). 若 \(\displaystyle x^{**}=0\)，则 \(\displaystyle x^{**}=J_X0\in J_X(X)\). 若 \(\displaystyle x^{**}\neq0\)，则 \(\displaystyle \frac{x^{**}}{\|x^{**}\|}\in\overline B_{X^{**}}\)，存在 \(\displaystyle x\in\overline B_X\) 使 \(\displaystyle J_Xx=\frac{x^{**}}{\|x^{**}\|}\). 由线性性，\(\displaystyle x^{**}=J_X(\|x^{**}\|x)\). 因而 \(\displaystyle J_X\) 满射，\(\displaystyle X\) 自反. 这里没有使用任何弱序列紧性判据.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[闭单位球不弱紧]
+I-07已经证明 \(\displaystyle c_0\) 不自反. 由\autoref{i10:reflexive-ball-characterization}，\(\displaystyle \overline B_{c_0}\) 不弱紧. 该结论来自自反性刻画，而不是从某个序列缺少弱收敛子列推出.
+\end{FACounterexample}
+
+\begin{FAExample}[自反 \(\displaystyle L^p\)的弱紧单位球]
+I-07在 \(\displaystyle (\Omega,\Sigma,\mu)\) 为 \(\displaystyle \sigma\)-有限测度空间且 \(\displaystyle 1<p<\infty\) 时证明 \(\displaystyle L^p(\mu)\) 自反. 因而由\autoref{fa:REF-A01}，\(\displaystyle \overline B_{L^p(\mu)}\) 弱紧. 取 \(\displaystyle \mathbb N\) 上的计数测度即得 \(\displaystyle \ell^p\)，\(\displaystyle 1<p<\infty\)，为特例. 本章不扩大I-07已经证明的测度假设范围.
+\end{FAExample}
+
+\begin{FAProposition}[B][弱紧集必范数有界]{i10:weak-compact-bounded}
+若 \(\displaystyle K\subseteq X\) 弱紧，则 \(\displaystyle K\) 范数有界.
+\end{FAProposition}
+
+\begin{FAProof}
+空集情形平凡，以下设 \(\displaystyle K\neq\varnothing\). 对每个 \(\displaystyle x\in K\)，由自然嵌入得到 \(\displaystyle J_Xx\in X^{**}=\mathcal B(X^*,\mathbb K)\). 考虑算子族
+\(\displaystyle \mathcal F=\{J_Xx:x\in K\}\subseteq\mathcal B(X^*,\mathbb K)\).
+固定 \(\displaystyle x^*\in X^*\). 映射 \(\displaystyle x\mapsto x^*(x)\) 在弱拓扑下连续，所以 \(\displaystyle x^*(K)\subseteq\mathbb K\) 是紧集，从而有界. 因此
+\[
+\sup_{x\in K}|(J_Xx)(x^*)|
+=
+\sup_{x\in K}|x^*(x)|
+<\infty.
+\]
+故 \(\displaystyle \mathcal F\) 在Banach空间 \(\displaystyle X^*\) 上逐点有界. 应用I-08的一致有界性原理\autoref{fa:UBP-A01}，
+\[
+\sup_{x\in K}\|J_Xx\|<\infty.
+\]
+I-07已经证明 \(\displaystyle J_X\) 等距，所以 \(\displaystyle \sup_{x\in K}\|x\|<\infty\). 注意本证明只针对弱紧集合，不把I-08的序列有界结论错误扩张为任意收敛网整个值域有界.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][范数闭凸集是弱闭集]{i10:norm-closed-convex-weak-closed}
+若 \(\displaystyle C\subseteq X\) 范数闭且凸，则 \(\displaystyle C\) 弱闭.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle C=\varnothing\)，则 \(\displaystyle C\) 在任意拓扑下闭，结论成立. 设 \(\displaystyle C\neq\varnothing\)，固定 \(\displaystyle x_0\notin C\). 由I-06的凸集分离定理\autoref{fa:HB-A02}，存在 \(\displaystyle x^*\in X^*\) 使
+\[
+\sup_{c\in C}\operatorname{Re}x^*(c)
+<
+\operatorname{Re}x^*(x_0).
+\]
+取两者之间的实数 \(\displaystyle \alpha\). 则
+\(\displaystyle U=\{x\in X:\operatorname{Re}x^*(x)>\alpha\}\)
+是弱开集，因为 \(\displaystyle x^*\) 在弱拓扑下连续且 \(\displaystyle \operatorname{Re}:\mathbb K\to\mathbb R\) 连续. 该集合包含 \(\displaystyle x_0\) 且与 \(\displaystyle C\) 不交. 因此每个 \(\displaystyle x_0\in X\setminus C\) 都有与 \(\displaystyle C\) 不交的弱开邻域，故 \(\displaystyle X\setminus C\) 弱开，\(\displaystyle C\) 弱闭.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][闭有界凸集的弱紧性]{fa:REF-B01}
+设 \(\displaystyle X\) 自反，\(\displaystyle C\subseteq X\) 范数闭、有界且凸. 则 \(\displaystyle C\) 弱紧.
+\end{FATheorem}
+
+\begin{FAProof}
+空集情形平凡. 设 \(\displaystyle C\neq\varnothing\). 因 \(\displaystyle C\) 有界，存在 \(\displaystyle R>0\) 使 \(\displaystyle C\subseteq R\overline B_X\). 由\autoref{fa:REF-A01}，\(\displaystyle \overline B_X\) 弱紧；标量乘法 \(\displaystyle x\mapsto Rx\) 是弱拓扑同胚，所以 \(\displaystyle R\overline B_X\) 弱紧. 由\autoref{i10:norm-closed-convex-weak-closed}，\(\displaystyle C\) 弱闭. 因而 \(\displaystyle C\) 是弱紧空间 \(\displaystyle R\overline B_X\) 的闭子集，所以弱紧.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[凸性不可删除]
+取 \(\displaystyle X=\ell^2\). I-07已证明 \(\displaystyle \ell^2\) 自反. 令单位球面
+\(\displaystyle S=\{x\in\ell^2:\|x\|_2=1\}\).
+它范数闭且有界，但不凸. 标准基 \(\displaystyle e_n\in S\)，而I-07的弱收敛不蕴含范数收敛的反例给出 \(\displaystyle e_n\rightharpoonup0\)，且 \(\displaystyle0\notin S\). 因此 \(\displaystyle S\) 不是弱闭集. 弱拓扑Hausdorff，若 \(\displaystyle S\) 弱紧则必弱闭，矛盾. 这里使用序列只为证明集合不弱闭，并未使用序列紧性判据.
+\end{FACounterexample}
+
+\begin{FACounterexample}[弱紧不等于范数紧]
+由 \(\displaystyle \ell^2\) 自反与\autoref{fa:REF-A01}，闭单位球 \(\displaystyle \overline B_{\ell^2}\) 弱紧. 但对 \(\displaystyle n\neq m\)，
+\(\displaystyle \|e_n-e_m\|_2=\sqrt2\).
+所以 \(\displaystyle (e_n)\) 没有范数Cauchy子序列，进而由I-02的度量空间紧性等价\autoref{fa:FND-B03}，\(\displaystyle \overline B_{\ell^2}\) 不范数紧. 同时 \(\displaystyle e_n\rightharpoonup0\). 因而弱紧性严格不同于范数紧性；这里对范数拓扑使用的是度量空间的序列判据，与Eberlein--\v Smulian无关.
+\end{FACounterexample}
+
+\begin{FARemark}[D级边界：Eberlein--\v Smulian]
+在Banach空间中，弱紧性与相应的弱序列紧性之间存在深刻等价，这就是Eberlein--\v Smulian定理. 本章不证明也不使用它；所有弱紧与弱*紧论证仍以开覆盖、有限交性质或网/子网为准.
+\end{FARemark}
+
+\section{存在性模板}\label{sec:i10-existence}
+\index{finite intersection property@有限交性质}\index{extreme value theorem@极值存在性}
+
+\begin{FAProposition}[C][弱紧性的纯拓扑存在性模板]{fa:REF-C01}
+设 \(\displaystyle K\subseteq X\) 非空且弱紧.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 若 \(\displaystyle (F_i)_{i\in I}\) 是 \(\displaystyle K\) 中的弱闭子集族并具有有限交性质，则 \(\displaystyle \bigcap_{i\in I}F_i\neq\varnothing\).
+\item 若 \(\displaystyle f:K\to\mathbb R\) 弱连续，则 \(\displaystyle f\) 在 \(\displaystyle K\) 上同时取得最小值与最大值.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+对（i），\(\displaystyle K\) 是紧拓扑空间，I-01的紧性有限交性质\autoref{fa:FND-C01}直接给出 \(\displaystyle \bigcap_{i\in I}F_i\neq\varnothing\).
+
+对（ii），弱连续映射把紧集映为紧集，因此 \(\displaystyle f(K)\subseteq\mathbb R\) 非空且紧. 由实数上的Heine--Borel性质，紧集闭且有界，并包含其下确界与上确界. 因而存在 \(\displaystyle x_{\min},x_{\max}\in K\) 使 \(\displaystyle f(x_{\min})=\min f(K)\) 且 \(\displaystyle f(x_{\max})=\max f(K)\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[缺少紧性时弱连续函数可不取上确界]
+设 \(\displaystyle X\) 为非零赋范空间. 由I-06的范数化泛函结论，可取 \(\displaystyle x^*\in X^*\) 满足 \(\displaystyle \|x^*\|=1\). 令开单位球
+\(\displaystyle K=B_X(0,1)\)
+并定义
+\(\displaystyle f(x)=\operatorname{Re}x^*(x)\).
+函数 \(\displaystyle f\) 弱连续. 对任意 \(\displaystyle x\in K\)，
+\(\displaystyle f(x)\leqslant|x^*(x)|\leqslant\|x\|<1\)，
+所以 \(\displaystyle f\) 不可能取得数值 \(\displaystyle1\). 另一方面，由 \(\displaystyle \|x^*\|=1\)，对任意 \(\displaystyle \delta>0\) 存在 \(\displaystyle \|u\|\leqslant1\) 使 \(\displaystyle |x^*(u)|>1-\delta\). 在实数域选择符号，在复数域选择相位，再把所得向量乘以任意接近 \(\displaystyle1\) 的正标量以落入开单位球，可得到 \(\displaystyle f(x)>1-2\delta\). 因而
+\[
+\sup_{x\in K}f(x)=1,
+\]
+但上确界不取得. 这说明没有弱紧性时，连续极值存在性可以失败.
+\end{FACounterexample}
+
+\begin{FAWarning}[后续变分理论边界]
+本章的存在性模板只使用弱紧集、弱闭约束、有限交性质与弱连续实值函数. 弱下半连续、强制性与变分直接法分别留到第三卷相应章节；本章不把它们定义为当前对象，也不用它们证明任何结果. Banach对偶算子、Hilbert伴随以及强/弱算子拓扑同样留到I-11.
+\end{FAWarning}
+
+\subsection{本章习题}\label{sec:i10-exercises}
+
+\begin{FAExercise}[极集的基本性质]{ex:i10-01}
+设 \(\displaystyle A\subseteq X\). 直接由定义证明 \(\displaystyle A^\circ\) 平衡且凸，并验证 \(\displaystyle0\in A^\circ\). 不使用双极定理.
+\end{FAExercise}
+
+\begin{FAExercise}[单位球极集]{ex:i10-02}
+完整重建\autoref{i10:unit-ball-polar}，并分别写出两个集合包含中使用的范数不等式.
+\end{FAExercise}
+
+\begin{FAExercise}[极集的弱*闭性]{ex:i10-03}
+把 \(\displaystyle A^\circ\) 写成取值映射闭集的任意交，并说明为什么任意交可以无限而仍保持闭性.
+\end{FAExercise}
+
+\begin{FAExercise}[Banach--Alaoglu中的坐标盘]{ex:i10-04}
+对每个 \(\displaystyle x\in X\) 证明 \(\displaystyle D_x\) 紧，再说明为什么 \(\displaystyle P=\prod_{x\in X}D_x\) 的紧性恰是Tychonoff定理而不是有限维Heine--Borel定理.
+\end{FAExercise}
+
+\begin{FAExercise}[乘积嵌入的良定义与单射]{ex:i10-05}
+对 \(\displaystyle \Phi(x^*)=(x^*(x))_{x\in X}\) 逐项证明良定义与单射，并指出良定义中 \(\displaystyle \|x^*\|\leqslant1\) 的精确作用.
+\end{FAExercise}
+
+\begin{FAExercise}[弱*拓扑与积拓扑]{ex:i10-06}
+从初始拓扑的定义逐步证明 \(\displaystyle \Phi\) 把闭对偶单位球的弱*拓扑同胚到其像的积拓扑子空间拓扑.
+\end{FAExercise}
+
+\begin{FAExercise}[Banach--Alaoglu闭像证明]{ex:i10-07}
+从全部线性关系 \(\displaystyle z_{\alpha x+\beta y}=\alpha z_x+\beta z_y\) 构造闭集 \(\displaystyle L\)，并证明 \(\displaystyle L=\Phi(\overline B_{X^*})\). 特别证明由 \(\displaystyle z\in P\) 得到的泛函范数至多为 \(\displaystyle1\).
+\end{FAExercise}
+
+\begin{FAExercise}[Banach--Alaoglu的网形式]{ex:i10-08}
+只引用\autoref{fa:FND-B02}与\autoref{fa:BAA-A01}，证明闭对偶单位球中任意网都有弱*收敛子网. 不得把子网替换为子序列.
+\end{FAExercise}
+
+\begin{FAExercise}[Goldstine基本邻域]{ex:i10-09}
+写出 \(\displaystyle x^{**}\in X^{**}\) 的一般基本弱*邻域，并证明Goldstine密度只需在任意有限个 \(\displaystyle x_j^*\) 上同时逼近.
+\end{FAExercise}
+
+\begin{FAExercise}[Goldstine有限维分离]{ex:i10-10}
+重建 \(\displaystyle \Psi:X\to\mathbb K^m\)、\(\displaystyle C=\overline{\Psi(\overline B_X)}\) 与 \(\displaystyle a\) 的定义. 在假设 \(\displaystyle a\notin C\) 下，逐行把分离泛函转化为 \(\displaystyle g=\sum_j\lambda_jx_j^*\) 并导出矛盾.
+\end{FAExercise}
+
+\begin{FAExercise}[复数域的相位步骤]{ex:i10-11}
+设 \(\displaystyle g\in X^*\) 且 \(\displaystyle \mathbb K=\mathbb C\). 从对偶范数的上确界定义证明 \(\displaystyle \sup_{\|x\|\leqslant1}\operatorname{Re}g(x)=\|g\|\)，明确写出相位 \(\displaystyle \eta\) 的选择.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle c_0\) 序列空间模型中的Goldstine]{ex:i10-12}
+在I-07的具体识别 \(\displaystyle (c_0)^{**}\cong\ell^\infty\) 下，说明 \(\displaystyle \overline B_{c_0}\) 在 \(\displaystyle \overline B_{\ell^\infty}\) 的 \(\displaystyle \sigma(\ell^\infty,\ell^1)\) 拓扑中稠密，并用常数序列解释为什么稠密不等于满射.
+\end{FAExercise}
+
+\begin{FAExercise}[自然嵌入的拓扑相容性]{ex:i10-13}
+由 \(\displaystyle (J_Xx)(x^*)=x^*(x)\) 证明\autoref{i10:jx-topology}. 要求同时证明正向连续与逆映射在像上的连续，而不是只写坐标“对应”.
+\end{FAExercise}
+
+\begin{FAExercise}[自反单位球的弱紧性]{ex:i10-14}
+从 \(\displaystyle J_X(\overline B_X)=\overline B_{X^{**}}\) 出发，逐项标记Banach--Alaoglu与\autoref{i10:jx-topology}在\autoref{fa:REF-A01}中的作用.
+\end{FAExercise}
+
+\begin{FAExercise}[弱紧单位球推出自反]{ex:i10-15}
+假设 \(\displaystyle \overline B_X\) 弱紧. 不使用Eberlein--\v Smulian，证明 \(\displaystyle J_X(\overline B_X)\) 弱*闭，再与Goldstine结合证明 \(\displaystyle J_X\) 满射.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle c_0\)单位球的边界]{ex:i10-16}
+只使用I-07的 \(\displaystyle c_0\) 非自反性与\autoref{i10:reflexive-ball-characterization}，证明 \(\displaystyle \overline B_{c_0}\) 不弱紧. 明确说明为什么不需要寻找缺少弱收敛子列的序列.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^p\)的弱紧单位球]{ex:i10-17}
+在I-07已经证明的 \(\displaystyle \sigma\)-有限且 \(\displaystyle 1<p<\infty\) 的范围内，由自反性推出 \(\displaystyle \overline B_{L^p(\mu)}\) 弱紧. 再写出计数测度得到的 \(\displaystyle \ell^p\) 特例.
+\end{FAExercise}
+
+\begin{FAExercise}[弱紧集的范数有界性]{ex:i10-18}
+对 \(\displaystyle \mathcal F=\{J_Xx:x\in K\}\subseteq\mathcal B(X^*,\mathbb K)\)，证明每个 \(\displaystyle x^*\in X^*\) 上的逐点有界性，并说明一致有界性原理为什么作用在Banach空间 \(\displaystyle X^*\) 而不是 \(\displaystyle X\).
+\end{FAExercise}
+
+\begin{FAExercise}[闭凸集的弱闭性]{ex:i10-19}
+设 \(\displaystyle C\) 范数闭且凸. 对每个 \(\displaystyle x_0\notin C\) 使用\autoref{fa:HB-A02}构造一个包含 \(\displaystyle x_0\) 且与 \(\displaystyle C\) 不交的弱开半空间，从而证明 \(\displaystyle C\) 弱闭.
+\end{FAExercise}
+
+\begin{FAExercise}[闭有界凸集的弱紧性与凸性边界]{ex:i10-20}
+先用缩放后的弱紧单位球证明\autoref{fa:REF-B01}. 再在 \(\displaystyle \ell^2\) 中用单位球面与 \(\displaystyle e_n\rightharpoonup0\) 证明删除凸性后结论可失败，并指出该论证没有使用弱序列紧性等价.
+\end{FAExercise}
+
+\begin{FAExercise}[弱*与弱的拓扑区分]{ex:i10-21}
+在 \(\displaystyle (c_0)^*\cong\ell^1\) 中复用 \(\displaystyle e_n\overset{w^*}{\longrightarrow}0\) 而不弱收敛到 \(\displaystyle0\) 的结论. 说明它能证明两种拓扑不同，但为什么不能单靠这个序列判定 \(\displaystyle \overline B_{\ell^1}\) 是否弱紧.
+\end{FAExercise}
+
+\begin{FAExercise}[存在性模板与禁止前向调用]{ex:i10-22}
+设 \(\displaystyle K\) 非空弱紧. 分别用有限交性质与连续像紧性重建\autoref{fa:REF-C01}. 然后判断下列论证是否允许作为本章证明，并说明理由：使用Eberlein--\v Smulian把弱紧改写为弱序列紧；使用弱下半连续性证明极小值存在；使用I-11的算子拓扑结论.
+\end{FAExercise}

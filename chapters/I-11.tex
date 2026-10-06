@@ -1,0 +1,669 @@
+\chapter[对偶算子、Hilbert伴随与算子拓扑]{对偶算子、Hilbert伴随与\protect\\算子拓扑}\label{chap:I-11}
+\FAChapterOpening
+{严格区分Banach对偶算子与Hilbert伴随；建立对偶算子的范数、复合与弱*连续性，证明Hilbert伴随的存在唯一性、范数与核/值域正交关系；定义自伴、正、酉、正规算子；最后建立SOT/WOT及其基本收敛工具与严格性反例.}
+{I-04的Hilbert几何与Riesz表示；I-05的有界线性算子；I-07的对偶、弱/弱*拓扑与标准例；I-09之前已闭合的Banach基本原理链.}
+{\begin{center}
+\begin{tikzpicture}[x=1.30cm,y=1.05cm]
+\node[fa/node] (op) at (0,1.15) {连续/有界等价};
+\node[fa/node] (dual) at (0,-0.25) {自然嵌入/自反性};
+\node[fa/node] (hil) at (0,-1.65) {Riesz表示定理};
+\node[fa/node] (a01) at (2.45,0.7) {Banach对偶算子};
+\node[fa/node] (a02) at (2.45,-1.15) {Hilbert伴随};
+\node[fa/node] (b01) at (4.85,-1.15) {伴随正交关系};
+\node[fa/node] (otb) at (5.05,0.75) {强/弱算子拓扑};
+\node[fa/node] (otc) at (7.65,0.75) {算子拓扑收敛};
+\draw[fa/arrow] (op) -- (a01);
+\draw[fa/arrow] (dual) -- (a01);
+\draw[fa/arrow] (op) -- (a02);
+\draw[fa/arrow] (hil) -- (a02);
+\draw[fa/arrow] (a02) -- (b01);
+\draw[fa/arrow] (a01) -- (otb);
+\draw[fa/arrow] (a02) -- (otb);
+\draw[fa/arrow] (otb) -- (otc);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). Banach语境中对偶算子一律记为 \(\displaystyle \mathcal T'\)，Hilbert语境中伴随一律记为 \(\displaystyle \mathcal T^*\). 复Hilbert空间的内积继续采用I-04冻结约定：第一变量线性，第二变量共轭线性. 本章不定义预解集、谱或谱半径，也不建立紧算子、Fredholm理论、一般正规算子谱定理或无界算子伴随理论.
+
+\section{Banach 对偶算子}\label{sec:i11-banach-dual}
+\index{dual operator@对偶算子}\index{weak-star continuity@弱*连续性}
+
+\begin{FADefinition}[A][Banach对偶算子及其范数]{fa:ADJ-A01}
+设 \(\displaystyle X,Y\) 为赋范空间，不要求完备，且 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\). 定义
+\(\displaystyle \mathcal T':Y^*\to X^*, \; \mathcal T'y^*=y^*\circ\mathcal T\).
+等价地，对全部 \(\displaystyle x\in X\)、\(\displaystyle y^*\in Y^*\)，有
+\(\displaystyle \langle\mathcal T'y^*,x\rangle_{X^*,X} = \langle y^*,\mathcal T x\rangle_{Y^*,Y}\).
+则 \(\displaystyle \mathcal T'\) 是有界线性算子，并且
+\(\displaystyle \|\mathcal T'\|=\|\mathcal T\|\).
+\end{FADefinition}
+
+\begin{FAProof}
+固定 \(\displaystyle y^*\in Y^*\). 对每个 \(\displaystyle x\in X\)，
+\[
+|(\mathcal T'y^*)(x)|
+=|y^*(\mathcal T x)|
+\leqslant\|y^*\|\|\mathcal T x\|
+\leqslant\|y^*\|\|\mathcal T\|\|x\|.
+\]
+故 \(\displaystyle \mathcal T'y^*=y^*\circ\mathcal T\in X^*\)，且 \(\displaystyle \|\mathcal T'y^*\|\leqslant\|\mathcal T\|\|y^*\|\). 因而定义良好并有 \(\displaystyle \|\mathcal T'\|\leqslant\|\mathcal T\|\).
+
+对 \(\displaystyle y_1^*,y_2^*\in Y^*\) 与 \(\displaystyle \alpha,\beta\in\mathbb K\)，对每个 \(\displaystyle x\in X\) 有
+\[
+\bigl(\mathcal T'(\alpha y_1^*+\beta y_2^*)\bigr)(x)
+=(\alpha y_1^*+\beta y_2^*)(\mathcal T x)
+=\alpha(\mathcal T'y_1^*)(x)+\beta(\mathcal T'y_2^*)(x),
+\]
+故 \(\displaystyle \mathcal T'\) 线性.
+
+反向范数估计直接使用I-06的对偶范数表示\autoref{i06:dual-norm-representation}. 对每个 \(\displaystyle x\in X\)，
+\[
+\|\mathcal T x\|
+=
+\sup_{\|y^*\|\leqslant1}|y^*(\mathcal T x)|
+=
+\sup_{\|y^*\|\leqslant1}|(\mathcal T'y^*)(x)|.
+\]
+于是
+\[
+\begin{aligned}
+\displaystyle \|\mathcal T\|
+&\displaystyle =\sup_{\|x\|\leqslant1}\sup_{\|y^*\|\leqslant1}|y^*(\mathcal T x)|\\
+&\displaystyle =\sup_{\|y^*\|\leqslant1}\sup_{\|x\|\leqslant1}|(\mathcal T'y^*)(x)|\\
+&\displaystyle =\|\mathcal T'\|.
+\end{aligned}
+\]
+这里没有重新证明Hahn--Banach；唯一使用的是I-06已经建立的对偶范数表示.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][对偶算子的复合反序]{i11:dual-composition}
+设 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\)、\(\displaystyle \mathcal S\in\mathcal B(Y,Z)\). 则
+\(\displaystyle (\mathcal S\mathcal T)'=\mathcal T'\mathcal S', \; \mathcal I_X'=\mathcal I_{X^*}\).
+特别地，取对偶算子会反转复合顺序.
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle z^*\in Z^*\) 与 \(\displaystyle x\in X\). 由定义，
+\[
+\bigl((\mathcal S\mathcal T)'z^*\bigr)(x) =z^*(\mathcal S\mathcal T x) =(\mathcal S'z^*)(\mathcal T x) =\bigl(\mathcal T'\mathcal S'z^*\bigr)(x).
+\]
+两边对全部 \(\displaystyle x\) 取值相同，故 \(\displaystyle (\mathcal S\mathcal T)'z^*=\mathcal T'\mathcal S'z^*\). 再对全部 \(\displaystyle z^*\) 使用即得第一式. 对恒等算子，\(\displaystyle (\mathcal I_X'x^*)(x)=x^*(x)\)，故 \(\displaystyle \mathcal I_X'=\mathcal I_{X^*}\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][对偶算子的弱*连续性]{i11:dual-wstar-continuity}
+设 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\). 则
+\(\displaystyle \mathcal T':(Y^*,\sigma(Y^*,Y))\to(X^*,\sigma(X^*,X))\)
+连续. 等价地，若 \(\displaystyle y_\alpha^*\overset{w^*}{\longrightarrow}y^*\) 于 \(\displaystyle Y^*\)，则 \(\displaystyle \mathcal T'y_\alpha^*\overset{w^*}{\longrightarrow}\mathcal T'y^*\) 于 \(\displaystyle X^*\).
+\end{FAProposition}
+
+\begin{FAProof}
+固定任意 \(\displaystyle x\in X\). 弱*收敛给出
+\[
+(\mathcal T'y_\alpha^*)(x)
+=y_\alpha^*(\mathcal T x)
+\longrightarrow
+y^*(\mathcal T x)
+=(\mathcal T'y^*)(x).
+\]
+这对每个 \(\displaystyle x\) 成立，正是 \(\displaystyle X^*\) 中的弱*收敛定义.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][对偶算子的核与稠密值域]{i11:dual-kernel-range}
+设 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\). 则
+\(\displaystyle \ker\mathcal T' = \{y^*\in Y^*:y^*|_{\operatorname{Ran}\mathcal T}=0\}\).
+此外，
+\(\displaystyle \mathcal T'\text{ 单射} \iff \overline{\operatorname{Ran}\mathcal T}=Y\).
+\end{FALemma}
+
+\begin{FAProof}
+由定义，\(\displaystyle y^*\in\ker\mathcal T'\) 当且仅当对全部 \(\displaystyle x\in X\) 有 \(\displaystyle y^*(\mathcal T x)=0\)，这等价于 \(\displaystyle y^*\) 在 \(\displaystyle \operatorname{Ran}\mathcal T\) 上恒为零，故第一式成立.
+
+若 \(\displaystyle \overline{\operatorname{Ran}\mathcal T}=Y\) 且 \(\displaystyle y^*\in\ker\mathcal T'\)，则 \(\displaystyle y^*\) 在稠密子集 \(\displaystyle \operatorname{Ran}\mathcal T\) 上为零. 由连续性，它在 \(\displaystyle Y\) 上为零，故 \(\displaystyle y^*=0\)，所以 \(\displaystyle \mathcal T'\) 单射.
+
+反之，设 \(\displaystyle \overline{\operatorname{Ran}\mathcal T}\neq Y\). 取 \(\displaystyle y_0\notin\overline{\operatorname{Ran}\mathcal T}\). I-06的闭子空间分离结论给出非零 \(\displaystyle y^*\in Y^*\)，使 \(\displaystyle y^*\) 在 \(\displaystyle \overline{\operatorname{Ran}\mathcal T}\) 上恒为零. 特别地 \(\displaystyle y^*|_{\operatorname{Ran}\mathcal T}=0\)，故 \(\displaystyle y^*\in\ker\mathcal T'\setminus\{0\}\). 因而 \(\displaystyle \mathcal T'\) 非单射.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{三个典型算子族的Banach对偶}
+
+\begin{FAExample}[\(\displaystyle c_0\)上的对偶移位]\label{i11:shift-banach-dual}
+在 \(\displaystyle c_0\) 上定义右移 \(\displaystyle \mathcal S(x_1,x_2,\dots)=(0,x_1,x_2,\dots)\). I-07已建立等距识别 \(\displaystyle (c_0)^*\cong\ell^1\)，其中 \(\displaystyle a=(a_n)\in\ell^1\) 对应 \(\displaystyle \varphi_a(x)=\sum_{n=1}^\infty a_nx_n\). 对任意 \(\displaystyle x\in c_0\)，
+\[
+(\mathcal S'\varphi_a)(x)
+=\varphi_a(\mathcal Sx)
+=\sum_{n=2}^{\infty}a_nx_{n-1}
+=\sum_{m=1}^{\infty}a_{m+1}x_m.
+\]
+故在该识别下
+\(\displaystyle \mathcal S'(a_1,a_2,\dots)=(a_2,a_3,\dots)\).
+这里仅复用\autoref{i07:c0-dual}，不重新证明 \(\displaystyle (c_0)^*\cong\ell^1\).
+\end{FAExample}
+
+\begin{FAExample}[\(\displaystyle C(K)\)上的Banach对偶]
+沿用I-05的 \(\displaystyle \mathcal M_h:C(K)\to C(K)\). 对 \(\displaystyle \Lambda\in C(K)^*\) 与 \(\displaystyle f\in C(K)\)，
+\(\displaystyle (\mathcal M_h'\Lambda)(f) =\Lambda(\mathcal M_hf) =\Lambda(hf)\).
+因此 \(\displaystyle \mathcal M_h'\Lambda\) 完全由 \(\displaystyle f\mapsto\Lambda(hf)\) 描述. 本章不把 \(\displaystyle C(K)^*\) 识别为测度空间，因而不需要Riesz--Markov表示.
+\end{FAExample}
+
+\begin{FAExample}[Banach对偶层复用]
+沿用I-05的 \(\displaystyle \mathcal V:C[0,1]\to C[0,1]\). 对任意 \(\displaystyle \Lambda\in C[0,1]^*\)，
+\(\displaystyle \mathcal V'\Lambda=\Lambda\circ\mathcal V\).
+这已经给出本章所需的Banach对偶实现. 为避免在冻结前置之外偷用一般Fubini--Tonelli或额外密度定理，本章不建立 \(\displaystyle L^2\) 版本Volterra算子的Hilbert伴随公式；这不会影响后续任何本章证明.
+\end{FAExample}
+
+\section{Hilbert 伴随}\label{sec:i11-hilbert-adjoint}
+\index{adjoint operator@伴随算子}\index{Riesz representation theorem@Riesz表示定理}
+
+\begin{FATheorem}[A][Hilbert伴随的存在唯一性]{fa:ADJ-A02}
+设 \(\displaystyle H,K\) 为Hilbert空间，\(\displaystyle \mathcal T\in\mathcal B(H,K)\). 则存在唯一 \(\displaystyle \mathcal T^*\in\mathcal B(K,H)\)，使对全部 \(\displaystyle x\in H\)、\(\displaystyle y\in K\) 有
+\(\displaystyle \langle\mathcal T x,y\rangle_K = \langle x,\mathcal T^*y\rangle_H\).
+并且
+\(\displaystyle \|\mathcal T^*\|=\|\mathcal T\|\).
+\end{FATheorem}
+
+\begin{FAProof}
+固定 \(\displaystyle y\in K\)，定义 \(\displaystyle f_y:H\to\mathbb K\) 为 \(\displaystyle f_y(x)=\langle\mathcal T x,y\rangle_K\). 因内积第一变量线性，\(\displaystyle f_y\) 对 \(\displaystyle x\) 线性. 由Cauchy--Schwarz与算子范数估计，
+\[
+|f_y(x)|
+=|\langle\mathcal T x,y\rangle_K|
+\leqslant\|\mathcal T x\|\|y\|
+\leqslant\|\mathcal T\|\|x\|\|y\|.
+\]
+故 \(\displaystyle f_y\in H^*\) 且 \(\displaystyle \|f_y\|\leqslant\|\mathcal T\|\|y\|\). 由I-04的Hilbert空间Riesz表示定理\autoref{fa:HIL-A02}，存在唯一 \(\displaystyle z_y\in H\)，使
+\(\displaystyle f_y(x)=\langle x,z_y\rangle_H\)
+对全部 \(\displaystyle x\in H\) 成立. 定义 \(\displaystyle \mathcal T^*y=z_y\). 于是所需伴随恒等式成立.
+
+现证 \(\displaystyle \mathcal T^*\) 线性. 对 \(\displaystyle \alpha,\beta\in\mathbb K\) 与 \(\displaystyle y_1,y_2\in K\)，利用第二变量共轭线性，对每个 \(\displaystyle x\in H\) 有
+\[
+\begin{aligned}
+\displaystyle \langle\mathcal T x,\alpha y_1+\beta y_2\rangle_K
+&\displaystyle =\overline\alpha\langle\mathcal T x,y_1\rangle_K
++\overline\beta\langle\mathcal T x,y_2\rangle_K\\
+&\displaystyle =\overline\alpha\langle x,\mathcal T^*y_1\rangle_H
++\overline\beta\langle x,\mathcal T^*y_2\rangle_H\\
+&\displaystyle =\langle x,\alpha\mathcal T^*y_1+\beta\mathcal T^*y_2\rangle_H.
+\end{aligned}
+\]
+Riesz表示的唯一性给出
+\(\displaystyle \mathcal T^*(\alpha y_1+\beta y_2) =\alpha\mathcal T^*y_1+\beta\mathcal T^*y_2\).
+所以 \(\displaystyle \mathcal T^*\) 线性.
+
+由Riesz表示中的范数等式，
+\(\displaystyle \|\mathcal T^*y\| =\|f_y\| \leqslant\|\mathcal T\|\|y\|\)，
+故 \(\displaystyle \|\mathcal T^*\|\leqslant\|\mathcal T\|\). 反向对任意 \(\displaystyle x\in H\)，由Hilbert空间中的范数表示与伴随恒等式，
+\[
+\begin{aligned}
+\displaystyle \|\mathcal T x\|
+&\displaystyle =\sup_{\|y\|\leqslant1}|\langle\mathcal T x,y\rangle_K|\\
+&\displaystyle =\sup_{\|y\|\leqslant1}|\langle x,\mathcal T^*y\rangle_H|\\
+&\displaystyle \leqslant\|\mathcal T^*\|\|x\|.
+\end{aligned}
+\]
+于是 \(\displaystyle \|\mathcal T\|\leqslant\|\mathcal T^*\|\)，从而范数相等.
+
+若 \(\displaystyle \mathcal A:K\to H\) 也满足 \(\displaystyle \langle\mathcal T x,y\rangle_K=\langle x,\mathcal Ay\rangle_H\) 对全部 \(\displaystyle x,y\) 成立，则固定 \(\displaystyle y\) 后有 \(\displaystyle \langle x,(\mathcal A-\mathcal T^*)y\rangle_H=0\) 对全部 \(\displaystyle x\) 成立. 取 \(\displaystyle x=(\mathcal A-\mathcal T^*)y\) 得该向量范数平方为零，故 \(\displaystyle \mathcal Ay=\mathcal T^*y\). 对全部 \(\displaystyle y\) 成立，故唯一性得证.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][Hilbert伴随代数]{i11:adjoint-algebra}
+设相关算子均为Hilbert空间之间的有界线性算子. 则
+\[
+(\mathcal S\mathcal T)^*=\mathcal T^*\mathcal S^*, \; \mathcal I^*=\mathcal I, \; (\mathcal T^*)^*=\mathcal T.
+\]
+若 \(\displaystyle \alpha\in\mathbb K\)，则
+\(\displaystyle (\alpha\mathcal T)^*=\overline\alpha\mathcal T^*\).
+\end{FAProposition}
+
+\begin{FAProof}
+对适当的 \(\displaystyle x,z\)，
+\[
+\langle\mathcal S\mathcal T x,z\rangle
+=\langle\mathcal T x,\mathcal S^*z\rangle
+=\langle x,\mathcal T^*\mathcal S^*z\rangle,
+\]
+由伴随唯一性得 \(\displaystyle (\mathcal S\mathcal T)^*=\mathcal T^*\mathcal S^*\). 恒等算子满足 \(\displaystyle \langle\mathcal Ix,y\rangle=\langle x,y\rangle=\langle x,\mathcal Iy\rangle\)，故 \(\displaystyle \mathcal I^*=\mathcal I\).
+
+由伴随恒等式与共轭对称性，
+\[
+\langle\mathcal T^*y,x\rangle
+=\overline{\langle x,\mathcal T^*y\rangle}
+=\overline{\langle\mathcal T x,y\rangle}
+=\langle y,\mathcal T x\rangle.
+\]
+因此 \(\displaystyle \mathcal T\) 是 \(\displaystyle \mathcal T^*\) 的伴随，由唯一性得 \(\displaystyle (\mathcal T^*)^*=\mathcal T\).
+
+最后，因内积第一变量线性，对任意 \(\displaystyle x,y\) 有
+\[
+\langle\alpha\mathcal T x,y\rangle
+=\alpha\langle\mathcal T x,y\rangle
+=\alpha\langle x,\mathcal T^*y\rangle
+=\langle x,\overline\alpha\mathcal T^*y\rangle.
+\]
+由唯一性得 \(\displaystyle (\alpha\mathcal T)^*=\overline\alpha\mathcal T^*\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][Banach对偶与Hilbert伴随的Riesz桥梁]{i11:dual-adjoint-bridge}
+对Hilbert空间 \(\displaystyle H\)，定义Riesz映射
+\(\displaystyle \mathcal R_H:H\to H^*, \; (\mathcal R_Hz)(x)=\langle x,z\rangle_H\).
+在第一变量线性约定下，\(\displaystyle \mathcal R_H\) 是共轭线性等距双射. 若 \(\displaystyle \mathcal T\in\mathcal B(H,K)\)，则
+\(\displaystyle \mathcal T'\mathcal R_K = \mathcal R_H\mathcal T^*\).
+\end{FAProposition}
+
+\begin{FAProof}
+I-04的Riesz表示定理已经给出 \(\displaystyle \mathcal R_H\) 的满射性与等距性. 对 \(\displaystyle \alpha,\beta\in\mathbb K\)、\(\displaystyle z_1,z_2\in H\) 与 \(\displaystyle x\in H\)，
+\[
+(\mathcal R_H(\alpha z_1+\beta z_2))(x) =\langle x,\alpha z_1+\beta z_2\rangle_H =\overline\alpha\langle x,z_1\rangle_H+\overline\beta\langle x,z_2\rangle_H,
+\]
+故 \(\displaystyle \mathcal R_H\) 共轭线性. 对 \(\displaystyle y\in K\) 与 \(\displaystyle x\in H\)，
+\[
+(\mathcal T'\mathcal R_Ky)(x)
+=(\mathcal R_Ky)(\mathcal T x)
+=\langle\mathcal T x,y\rangle_K
+=\langle x,\mathcal T^*y\rangle_H
+=(\mathcal R_H\mathcal T^*y)(x).
+\]
+故所示算子恒等式成立. 该式只说明Riesz识别下两者相容；\(\displaystyle \mathcal T'\) 与 \(\displaystyle \mathcal T^*\) 的定义域和值域不同，不能直接视为同一算子.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][核与值域的伴随正交关系]{fa:ADJ-B01}
+设 \(\displaystyle \mathcal T\in\mathcal B(H,K)\). 则
+\[
+\ker\mathcal T^*=(\operatorname{Ran}\mathcal T)^\perp,
+\quad
+\ker\mathcal T=(\operatorname{Ran}\mathcal T^*)^\perp.
+\]
+因此
+\[
+\overline{\operatorname{Ran}\mathcal T}
+=(\ker\mathcal T^*)^\perp,
+\quad
+\overline{\operatorname{Ran}\mathcal T^*}
+=(\ker\mathcal T)^\perp.
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+对 \(\displaystyle y\in K\)，
+\[
+\begin{aligned}
+\displaystyle y\in\ker\mathcal T^*
+&\displaystyle \iff \mathcal T^*y=0\\
+&\displaystyle \iff \forall\,x\in H,\ \langle x,\mathcal T^*y\rangle_H=0\\
+&\displaystyle \iff \forall\,x\in H,\ \langle\mathcal T x,y\rangle_K=0\\
+&\displaystyle \iff y\in(\operatorname{Ran}\mathcal T)^\perp.
+\end{aligned}
+\]
+故第一式成立. 把 \(\displaystyle \mathcal T\) 换为 \(\displaystyle \mathcal T^*\)，再用 \(\displaystyle (\mathcal T^*)^*=\mathcal T\)，得到 \(\displaystyle \ker\mathcal T=(\operatorname{Ran}\mathcal T^*)^\perp\).
+
+I-04已建立对任意线性子空间 \(\displaystyle M\) 有 \(\displaystyle M^{\perp\perp}=\overline M\). 对前两式分别取正交补，便得
+\[
+\overline{\operatorname{Ran}\mathcal T}
+=(\ker\mathcal T^*)^\perp,
+\quad
+\overline{\operatorname{Ran}\mathcal T^*}
+=(\ker\mathcal T)^\perp.
+\]
+闭包不可省略，因为一般有界算子的值域未必闭.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[Hilbert伴随]\label{i11:shift-adjoint}
+在 \(\displaystyle \ell^2(\mathbb N)\) 上沿用I-05的右移 \(\displaystyle \mathcal S\) 与左移 \(\displaystyle \mathcal L\). 对 \(\displaystyle x=(x_n),y=(y_n)\in\ell^2\)，绝对收敛允许指标平移，并有
+\[
+\langle\mathcal Sx,y\rangle =\sum_{n=2}^{\infty}x_{n-1}\overline{y_n} =\sum_{m=1}^{\infty}x_m\overline{y_{m+1}} =\langle x,\mathcal Ly\rangle.
+\]
+故 \(\displaystyle \mathcal S^*=\mathcal L\). 再由 \(\displaystyle (\mathcal S^*)^*=\mathcal S\) 得 \(\displaystyle \mathcal L^*=\mathcal S\). 这不是对“已知公式”的引用，而是由冻结的 \(\displaystyle \ell^2\) 内积逐项计算得到.
+\end{FAExample}
+
+\section{正/自伴/酉/正规}\label{sec:i11-hilbert-classes}
+\index{self-adjoint operator@自伴算子}\index{positive operator@正算子}\index{unitary operator@酉算子}\index{normal operator@正规算子}
+
+\begin{FADefinition}[B][四类基本Hilbert算子]{i11:operator-classes}
+设 \(\displaystyle H\) 为Hilbert空间，\(\displaystyle \mathcal T\in\mathcal B(H)\).
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 若 \(\displaystyle \mathcal T=\mathcal T^*\)，称 \(\displaystyle \mathcal T\) 自伴.
+\item 若 \(\displaystyle \mathcal T=\mathcal T^*\) 且对全部 \(\displaystyle x\in H\) 有 \(\displaystyle \langle\mathcal T x,x\rangle\geqslant0\)，称 \(\displaystyle \mathcal T\) 为正算子.
+\item 若 \(\displaystyle \mathcal U^*\mathcal U=\mathcal U\mathcal U^*=\mathcal I\)，称 \(\displaystyle \mathcal U\) 为酉算子.
+\item 若 \(\displaystyle \mathcal T^*\mathcal T=\mathcal T\mathcal T^*\)，称 \(\displaystyle \mathcal T\) 为正规算子.
+\end{enumerate}
+\end{FADefinition}
+
+\begin{FAProposition}[B][基本包含关系]{i11:operator-class-relations}
+自伴算子与酉算子均正规；正算子按本章定义自动自伴.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle \mathcal T=\mathcal T^*\)，则 \(\displaystyle \mathcal T^*\mathcal T=\mathcal T^2=\mathcal T\mathcal T^*\)，故自伴算子正规. 若 \(\displaystyle \mathcal U\) 酉，则 \(\displaystyle \mathcal U^*\mathcal U=\mathcal I=\mathcal U\mathcal U^*\)，故酉算子正规. 正算子的定义已经包含 \(\displaystyle \mathcal T=\mathcal T^*\)，所以第三个结论无需额外定理. 本命题不使用任何谱论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][酉算子与满射等距]{i11:unitary-surjective-isometry}
+有界线性算子 \(\displaystyle \mathcal U:H\to H\) 酉，当且仅当它是满射等距映射.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle \mathcal U\) 酉，则对每个 \(\displaystyle x\in H\)，
+\[
+\|\mathcal Ux\|^2
+=\langle\mathcal Ux,\mathcal Ux\rangle
+=\langle x,\mathcal U^*\mathcal Ux\rangle
+=\|x\|^2,
+\]
+故 \(\displaystyle \mathcal U\) 等距. 对任意 \(\displaystyle y\in H\)，令 \(\displaystyle x=\mathcal U^*y\)，则 \(\displaystyle \mathcal Ux=\mathcal U\mathcal U^*y=y\)，故 \(\displaystyle \mathcal U\) 满射.
+
+反之，设 \(\displaystyle \mathcal U\) 为满射线性等距. I-04的极化恒等式说明线性等距保持内积，即 \(\displaystyle \langle\mathcal Ux,\mathcal Uy\rangle=\langle x,y\rangle\). 由于满射，\(\displaystyle \mathcal U^{-1}\) 在 \(\displaystyle H\) 上定义. 对 \(\displaystyle x,z\in H\)，取 \(\displaystyle y=\mathcal U^{-1}z\)，则
+\[
+\langle\mathcal Ux,z\rangle
+=\langle\mathcal Ux,\mathcal Uy\rangle
+=\langle x,y\rangle
+=\langle x,\mathcal U^{-1}z\rangle.
+\]
+由伴随唯一性，\(\displaystyle \mathcal U^*=\mathcal U^{-1}\). 因此 \(\displaystyle \mathcal U^*\mathcal U=\mathcal I=\mathcal U\mathcal U^*\)，故 \(\displaystyle \mathcal U\) 酉.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[等距但非酉且非正规]
+对\autoref{i11:shift-adjoint}的右移，\(\displaystyle \mathcal S^*=\mathcal L\) 且I-05已证明 \(\displaystyle \mathcal L\mathcal S=\mathcal I\). 因而
+\(\displaystyle \mathcal S^*\mathcal S=\mathcal I\).
+设 \(\displaystyle \mathcal P_{\operatorname{span}\{e_1\}}\) 为到 \(\displaystyle \operatorname{span}\{e_1\}\) 的正交投影. 对 \(\displaystyle x=(x_1,x_2,\dots)\)，
+\[
+\mathcal S\mathcal S^*x
+=\mathcal S\mathcal Lx
+=(0,x_2,x_3,\dots)
+=(\mathcal I-\mathcal P_{\operatorname{span}\{e_1\}})x.
+\]
+故
+\(\displaystyle \mathcal S\mathcal S^* =\mathcal I-\mathcal P_{\operatorname{span}\{e_1\}} \neq\mathcal I\).
+所以 \(\displaystyle \mathcal S\) 是等距算子但不是酉算子，并且 \(\displaystyle \mathcal S^*\mathcal S\neq\mathcal S\mathcal S^*\)，故它不正规.
+\end{FAExample}
+
+\begin{FAProposition}[B][正交投影自伴且为正]{i11:projection-positive}
+设 \(\displaystyle M\leqslant H\) 为闭子空间，\(\displaystyle \mathcal P_M\) 为I-04建立的正交投影. 则
+\(\displaystyle \mathcal P_M^*=\mathcal P_M\)
+且 \(\displaystyle \mathcal P_M\) 为正算子.
+\end{FAProposition}
+
+\begin{FAProof}
+对 \(\displaystyle x,y\in H\)，写 \(\displaystyle x=\mathcal P_Mx+x_\perp\)、\(\displaystyle y=\mathcal P_My+y_\perp\)，其中 \(\displaystyle x_\perp,y_\perp\in M^\perp\). 则
+\[
+\langle\mathcal P_Mx,y\rangle
+=\langle\mathcal P_Mx,\mathcal P_My\rangle
+=\langle x,\mathcal P_My\rangle.
+\]
+故由伴随唯一性，\(\displaystyle \mathcal P_M^*=\mathcal P_M\). 又
+\[
+\langle\mathcal P_Mx,x\rangle
+=\langle\mathcal P_Mx,\mathcal P_Mx\rangle
+=\|\mathcal P_Mx\|^2
+\geqslant0,
+\]
+所以 \(\displaystyle \mathcal P_M\) 为正算子.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[\(\displaystyle L^2\)上的Hilbert伴随]\label{i11:mult-hilbert}
+在 \(\displaystyle H=L^2([0,1])\) 上取 \(\displaystyle h\in L^\infty([0,1])\)，定义 \(\displaystyle (\mathcal M_hf)(t)=h(t)f(t)\). 这是I-05乘法算子族的Hilbert空间特化. 对 \(\displaystyle f,g\in L^2([0,1])\)，
+\[
+\begin{aligned}
+\displaystyle \langle\mathcal M_hf,g\rangle
+&\displaystyle =\int_0^1 h(t)f(t)\overline{g(t)}\,\mathrm{d}t\\
+&\displaystyle =\int_0^1 f(t)\overline{\overline{h(t)}g(t)}\,\mathrm{d}t\\
+&\displaystyle =\langle f,\mathcal M_{\overline h}g\rangle.
+\end{aligned}
+\]
+故
+\(\displaystyle \mathcal M_h^*=\mathcal M_{\overline h}\).
+于是 \(\displaystyle \mathcal M_h^*\mathcal M_h=\mathcal M_{|h|^2}=\mathcal M_h\mathcal M_h^*\)，故 \(\displaystyle \mathcal M_h\) 总是正规. 若 \(\displaystyle h\) 几乎处处为实值，则 \(\displaystyle \mathcal M_h\) 自伴；若另有 \(\displaystyle h\geqslant0\) 几乎处处成立，则 \(\displaystyle \langle\mathcal M_hf,f\rangle=\int_0^1h|f|^2\,\mathrm{d}t\geqslant0\)，故为正算子；若 \(\displaystyle |h|=1\) 几乎处处成立，则 \(\displaystyle \mathcal M_h^*\mathcal M_h=\mathcal M_h\mathcal M_h^*=\mathcal I\)，故为酉算子. 本例只陈述这些充分方向.
+\end{FAExample}
+
+\section{强算子拓扑与弱算子拓扑}\label{sec:i11-operator-topologies}
+\index{strong operator topology@强算子拓扑}\index{weak operator topology@弱算子拓扑}
+
+\begin{FADefinition}[B][强/弱算子拓扑]{fa:OTOP-B01}
+设 \(\displaystyle X,Y\) 为赋范空间. 在 \(\displaystyle \mathcal B(X,Y)\) 上，对每个 \(\displaystyle x\in X\) 定义半范数
+\(\displaystyle p_x(\mathcal T)=\|\mathcal T x\|_Y\).
+由族 \(\displaystyle \{p_x:x\in X\}\) 生成的拓扑称为强算子拓扑，简称SOT. 对每个 \(\displaystyle x\in X\)、\(\displaystyle y^*\in Y^*\)，定义
+\(\displaystyle p_{x,y^*}(\mathcal T)=|y^*(\mathcal T x)|\).
+由族 \(\displaystyle \{p_{x,y^*}:x\in X,\ y^*\in Y^*\}\) 生成的拓扑称为弱算子拓扑，简称WOT. 本章只使用这两个具体半范数族及其有限交邻域，不发展一般局部凸空间理论.
+\end{FADefinition}
+
+\begin{FAProposition}[B][强算子拓扑与弱算子拓扑的网刻画与比较]{i11:otop-characterization}
+对网 \(\displaystyle (\mathcal T_\alpha)\subseteq\mathcal B(X,Y)\)，有
+\[
+\mathcal T_\alpha\overset{\mathrm{SOT}}{\longrightarrow}\mathcal T
+\iff
+\forall\,x\in X,\ \|\mathcal T_\alpha x-\mathcal T x\|\to0,
+\]
+以及
+\[
+\mathcal T_\alpha\overset{\mathrm{WOT}}{\longrightarrow}\mathcal T
+\iff
+\forall\,x\in X,\ \forall\,y^*\in Y^*,\ y^*(\mathcal T_\alpha x)\to y^*(\mathcal T x).
+\]
+两种拓扑均Hausdorff，并且
+\[
+\|\mathcal T_\alpha-\mathcal T\|\to0
+\Longrightarrow
+\mathcal T_\alpha\overset{\mathrm{SOT}}{\longrightarrow}\mathcal T
+\Longrightarrow
+\mathcal T_\alpha\overset{\mathrm{WOT}}{\longrightarrow}\mathcal T.
+\]
+若 \(\displaystyle X,Y\) 为Hilbert空间，则WOT收敛等价于对全部 \(\displaystyle x\in X,y\in Y\) 有 \(\displaystyle \langle\mathcal T_\alpha x,y\rangle\to\langle\mathcal T x,y\rangle\).
+\end{FAProposition}
+
+\begin{FAProof}
+半范数族生成拓扑的收敛定义正是每个生成半范数上的差趋于零，故前两个等价式直接成立. Hilbert情形中，I-04的Riesz表示说明每个 \(\displaystyle y^*\in Y^*\) 唯一写成 \(\displaystyle y^*(z)=\langle z,y\rangle\)，故WOT刻画等价于内积版本.
+
+若 \(\displaystyle \mathcal T\neq\mathcal S\)，存在 \(\displaystyle x\in X\) 使 \(\displaystyle (\mathcal T-\mathcal S)x\neq0\)，从而 \(\displaystyle p_x(\mathcal T-\mathcal S)>0\)，故SOT可分离不同算子. 对WOT，I-06的连续对偶分离点性质给出某个 \(\displaystyle y^*\in Y^*\)，使
+\(\displaystyle y^*((\mathcal T-\mathcal S)x)\neq0\).
+于是 \(\displaystyle p_{x,y^*}(\mathcal T-\mathcal S)>0\)，故WOT也Hausdorff.
+
+若 \(\displaystyle \|\mathcal T_\alpha-\mathcal T\|\to0\)，则对固定 \(\displaystyle x\in X\)，
+\(\displaystyle \|\mathcal T_\alpha x-\mathcal T x\| \leqslant\|\mathcal T_\alpha-\mathcal T\|\|x\| \to0\)，
+故得到SOT收敛. 若有SOT收敛，则对固定 \(\displaystyle x\in X\)、\(\displaystyle y^*\in Y^*\)，
+\(\displaystyle |y^*(\mathcal T_\alpha x-\mathcal T x)| \leqslant\|y^*\|\|\mathcal T_\alpha x-\mathcal T x\| \to0\)，
+故得到WOT收敛. 反向蕴含一般均不成立，下面分别给出反例.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[强算子拓扑收敛不推出算子范数收敛]\label{i11:sot-not-norm}
+在 \(\displaystyle \ell^2\) 上复用I-08的部分坐标投影
+\(\displaystyle \mathcal P_nx=(x_1,\dots,x_n,0,\dots)\).
+对每个固定 \(\displaystyle x\in\ell^2\)，
+\[
+\|\mathcal P_nx-x\|_2^2
+=\sum_{k=n+1}^{\infty}|x_k|^2
+\longrightarrow0,
+\]
+故 \(\displaystyle \mathcal P_n\overset{\mathrm{SOT}}{\longrightarrow}\mathcal I\). 另一方面，I-08已算得 \(\displaystyle \|\mathcal I-\mathcal P_n\|=1\) 对全部 \(\displaystyle n\) 成立，故没有算子范数收敛. 因而强算子拓扑中的“强”并不等于算子范数拓扑.
+\end{FACounterexample}
+
+\begin{FACounterexample}[弱算子拓扑收敛不推出强算子拓扑收敛]\label{i11:wot-not-sot}
+在 \(\displaystyle \ell^2\) 上复用右移 \(\displaystyle \mathcal S\). 因 \(\displaystyle \mathcal S\) 等距，对任意非零 \(\displaystyle x\) 与全部 \(\displaystyle n\) 有
+\(\displaystyle \|\mathcal S^nx\|=\|x\|>0\)，
+故 \(\displaystyle \mathcal S^n\) 不在SOT中趋于零. 另一方面，\(\displaystyle (\mathcal S^*)^n=\mathcal L^n\)，且对每个 \(\displaystyle y=(y_k)\in\ell^2\)，
+\[
+\|\mathcal L^ny\|_2^2
+=\sum_{k=n+1}^{\infty}|y_k|^2
+\longrightarrow0.
+\]
+因此对任意 \(\displaystyle x,y\in\ell^2\)，
+\[
+|\langle\mathcal S^nx,y\rangle|
+=|\langle x,\mathcal L^ny\rangle|
+\leqslant\|x\|\|\mathcal L^ny\|
+\longrightarrow0.
+\]
+故 \(\displaystyle \mathcal S^n\overset{\mathrm{WOT}}{\longrightarrow}0\)，但不SOT收敛到零. 该反例只使用移位、伴随与尾范数，不使用谱论.
+\end{FACounterexample}
+
+\begin{FAWarning}[弱算子拓扑不是一般的Banach空间弱拓扑]
+WOT由秩一型取值泛函 \(\displaystyle \mathcal T\mapsto y^*(\mathcal T x)\) 生成. 一般不能把它直接认作Banach空间 \(\displaystyle \mathcal B(X,Y)\) 自身的弱拓扑 \(\displaystyle \sigma(\mathcal B(X,Y),\mathcal B(X,Y)^*)\). 本章不假设两者相同.
+\end{FAWarning}
+
+\begin{FAProposition}[C][算子拓扑收敛工具]{fa:OTOP-C01}
+以下结论成立.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 设 \(\displaystyle \mathcal R\in\mathcal B(W,X)\)、\(\displaystyle \mathcal S\in\mathcal B(Y,Z)\) 固定. 若 \(\displaystyle \mathcal T_\alpha\to\mathcal T\) 于SOT，则 \(\displaystyle \mathcal S\mathcal T_\alpha\mathcal R\to\mathcal S\mathcal T\mathcal R\) 于SOT；若原收敛为WOT，则结论也为WOT.
+\item 在Hilbert空间之间，\(\displaystyle \mathcal T_\alpha\overset{\mathrm{WOT}}{\longrightarrow}\mathcal T\) 当且仅当 \(\displaystyle \mathcal T_\alpha^*\overset{\mathrm{WOT}}{\longrightarrow}\mathcal T^*\).
+\item 若 \(\displaystyle X\) 为Banach空间、\(\displaystyle Y\) 为赋范空间，且序列 \(\displaystyle \mathcal T_n\overset{\mathrm{SOT}}{\longrightarrow}\mathcal T\)，则 \(\displaystyle \sup_n\|\mathcal T_n\|<\infty\).
+\item 若 \(\displaystyle X\) 为Banach空间、\(\displaystyle Y\) 为赋范空间，且序列 \(\displaystyle \mathcal T_n\overset{\mathrm{WOT}}{\longrightarrow}\mathcal T\)，则 \(\displaystyle \sup_n\|\mathcal T_n\|<\infty\). 陪域 \(\displaystyle Y\) 不要求完备.
+\end{enumerate}
+这些序列有界性结论不扩张为任意SOT/WOT收敛网的整个取值族算子范数有界.
+\end{FAProposition}
+
+\begin{FAProof}
+先证（i）. 若 \(\displaystyle \mathcal T_\alpha\to\mathcal T\) 于SOT，则对固定 \(\displaystyle w\in W\)，
+\[
+\begin{aligned}
+\displaystyle \|\mathcal S\mathcal T_\alpha\mathcal Rw-\mathcal S\mathcal T\mathcal Rw\|
+&\displaystyle \leqslant\|\mathcal S\|\|\mathcal T_\alpha(\mathcal Rw)-\mathcal T(\mathcal Rw)\|\\
+&\displaystyle \longrightarrow0.
+\end{aligned}
+\]
+故复合后仍SOT收敛. 若原收敛为WOT，固定 \(\displaystyle w\in W\)、\(\displaystyle z^*\in Z^*\)，利用Banach对偶算子有
+\[
+z^*(\mathcal S\mathcal T_\alpha\mathcal Rw)
+=(\mathcal S'z^*)(\mathcal T_\alpha\mathcal Rw)
+\longrightarrow
+(\mathcal S'z^*)(\mathcal T\mathcal Rw),
+\]
+故复合后仍WOT收敛.
+
+对（ii），若 \(\displaystyle \mathcal T_\alpha\to\mathcal T\) 于WOT，则对全部 \(\displaystyle x\in H\)、\(\displaystyle y\in K\)，先由伴随恒等式得到
+\[
+\langle x,\mathcal T_\alpha^*y\rangle_H
+=\langle\mathcal T_\alpha x,y\rangle_K
+\longrightarrow
+\langle\mathcal T x,y\rangle_K
+=\langle x,\mathcal T^*y\rangle_H.
+\]
+由于当前内积第一变量线性，WOT对 \(\displaystyle \mathcal T_\alpha^*:K\to H\) 的直接测试量是 \(\displaystyle \langle\mathcal T_\alpha^*y,x\rangle_H\). 对上式取复共轭并用共轭对称性，得到
+\(\displaystyle \langle\mathcal T_\alpha^*y,x\rangle_H \longrightarrow \langle\mathcal T^*y,x\rangle_H\).
+故 \(\displaystyle \mathcal T_\alpha^*\to\mathcal T^*\) 于WOT. 反向对伴随网再次使用同一结论，并由 \(\displaystyle (\mathcal T_\alpha^*)^*=\mathcal T_\alpha\)、\(\displaystyle (\mathcal T^*)^*=\mathcal T\) 即得.
+
+对（iii），固定 \(\displaystyle x\in X\). 因 \(\displaystyle \mathcal T_nx\to\mathcal T x\) 于 \(\displaystyle Y\) 的范数，所以序列 \(\displaystyle (\mathcal T_nx)\) 有界，即 \(\displaystyle \sup_n\|\mathcal T_nx\|<\infty\). 因而 \(\displaystyle \{\mathcal T_n:n\in\mathbb N\}\subseteq\mathcal B(X,Y)\) 在Banach定义域 \(\displaystyle X\) 上逐点有界. I-08的一致有界性原理\autoref{fa:UBP-A01}给出 \(\displaystyle \sup_n\|\mathcal T_n\|<\infty\).
+
+对（iv），固定 \(\displaystyle x\in X\). WOT收敛说明 \(\displaystyle \mathcal T_nx\rightharpoonup\mathcal T x\) 于 \(\displaystyle Y\). 由I-08的弱收敛序列范数有界定理\autoref{fa:UBP-B01}，\(\displaystyle \sup_n\|\mathcal T_nx\|<\infty\). 再对定义在Banach空间 \(\displaystyle X\) 上的算子族 \(\displaystyle \{\mathcal T_n\}\) 使用\autoref{fa:UBP-A01}，得到 \(\displaystyle \sup_n\|\mathcal T_n\|<\infty\). 第一层弱序列有界不要求 \(\displaystyle Y\) 完备；第二层一致有界只要求定义域 \(\displaystyle X\) 完备.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[伴随运算一般不关于强算子拓扑连续]\label{i11:adjoint-not-sot}
+由\autoref{i11:shift-adjoint}，\(\displaystyle \mathcal L^*=\mathcal S\). 对每个 \(\displaystyle x\in\ell^2\)，尾范数给出 \(\displaystyle \|\mathcal L^nx\|\to0\)，故 \(\displaystyle \mathcal L^n\overset{\mathrm{SOT}}{\longrightarrow}0\). 但
+\(\displaystyle (\mathcal L^n)^*=\mathcal S^n\)，
+而\autoref{i11:wot-not-sot}已证明 \(\displaystyle \mathcal S^n\) 不SOT收敛到零. 因而伴随映射在SOT下通常不连续. 与此相对，\autoref{fa:OTOP-C01}的（ii）已经证明伴随对WOT连续.
+\end{FACounterexample}
+
+\begin{FACounterexample}[不完备定义域上的算子范数失控]\label{i11:incomplete-domain}
+令
+\(\displaystyle X=c_{00}, \; \|x\|_\infty=\sup_k|x_k|\).
+定义 \(\displaystyle \mathcal T_n:X\to\mathbb K\) 为
+\(\displaystyle \mathcal T_nx=nx_n\).
+对每个固定 \(\displaystyle x\in c_{00}\)，存在 \(\displaystyle N\) 使 \(\displaystyle x_n=0\) 对全部 \(\displaystyle n\geqslant N\) 成立，故 \(\displaystyle \mathcal T_nx=0\) 最终成立. 因而 \(\displaystyle \mathcal T_n\overset{\mathrm{SOT}}{\longrightarrow}0\)，并且由于陪域为标量域，也有WOT收敛到零. 对标准基向量 \(\displaystyle e_n\)，
+\(\displaystyle |\mathcal T_ne_n|=n, \; \|e_n\|_\infty=1\)，
+而对任意 \(\displaystyle x\in c_{00}\)，\(\displaystyle |\mathcal T_nx|=n|x_n|\leqslant n\|x\|_\infty\). 故
+\(\displaystyle \|\mathcal T_n\|=n\longrightarrow\infty\).
+这说明\autoref{fa:OTOP-C01}的序列一致有界结论确实需要定义域为Banach空间.
+\end{FACounterexample}
+
+\begin{FAWarning}[序列与任意网的边界]
+\autoref{fa:OTOP-C01}的（iii）与（iv）只断言SOT/WOT收敛序列的算子范数一致有界. I-08已经给出收敛网整个取值范围可以无界的机制；因此本章不从任意SOT或WOT收敛网推出 \(\displaystyle \sup_\alpha\|\mathcal T_\alpha\|<\infty\).
+\end{FAWarning}
+
+\begin{FARemark}[后续章节边界]
+单边移位将在I-12再次出现，用于区分谱与特征值；本章尚未定义谱，因此此处不建立该反例. I-12负责预解集、谱、谱半径与Neumann级数的规范建立；I-13负责紧算子、Riesz--Schauder与Fredholm择一原理；I-14负责紧自伴谱定理；II-03再建立有界正规/\(\displaystyle C^*\)谱定理；II-05才进入无界算子、定义域与无界伴随. 迹类只在此作D级预告，不作定义或使用.
+\end{FARemark}
+
+\subsection{本章习题}\label{sec:i11-exercises}
+
+\begin{FAExercise}[对偶算子的良定义]{ex:i11-01}
+设 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\). 从 \(\displaystyle |y^*(\mathcal T x)|\leqslant\|y^*\|\|\mathcal T\|\|x\|\) 出发，逐项证明 \(\displaystyle \mathcal T'y^*\in X^*\) 与 \(\displaystyle \mathcal T'\) 的线性.
+\end{FAExercise}
+
+\begin{FAExercise}[对偶算子范数等式]{ex:i11-02}
+只使用I-06的对偶范数表示，重建 \(\displaystyle \|\mathcal T'\|=\|\mathcal T\|\). 不得重新证明Hahn--Banach.
+\end{FAExercise}
+
+\begin{FAExercise}[复合反序]{ex:i11-03}
+对 \(\displaystyle \mathcal T:X\to Y\)、\(\displaystyle \mathcal S:Y\to Z\) 逐点证明 \(\displaystyle (\mathcal S\mathcal T)'=\mathcal T'\mathcal S'\)，并解释为什么定义域和值域强制了该顺序.
+\end{FAExercise}
+
+\begin{FAExercise}[弱*连续性]{ex:i11-04}
+设 \(\displaystyle y_\alpha^*\overset{w^*}{\longrightarrow}y^*\) 于 \(\displaystyle Y^*\). 对固定 \(\displaystyle x\in X\) 证明 \(\displaystyle (\mathcal T'y_\alpha^*)(x)\to(\mathcal T'y^*)(x)\)，并把该陈述翻译成拓扑连续性.
+\end{FAExercise}
+
+\begin{FAExercise}[稠密值域与单射对偶]{ex:i11-05}
+证明 \(\displaystyle \mathcal T'\) 单射当且仅当 \(\displaystyle \overline{\operatorname{Ran}\mathcal T}=Y\). 反向必须明确指出I-06分离定理作用于哪个闭子空间.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle c_0\)右移的对偶]{ex:i11-06}
+在I-07的 \(\displaystyle (c_0)^*\cong\ell^1\) 识别下重新计算右移的Banach对偶，并证明结果是 \(\displaystyle \ell^1\) 上的左移.
+\end{FAExercise}
+
+\begin{FAExercise}[伴随的Riesz构造]{ex:i11-07}
+固定 \(\displaystyle y\in K\)，从 \(\displaystyle f_y(x)=\langle\mathcal T x,y\rangle\) 出发完整重建\autoref{fa:ADJ-A02}的存在性部分，并标记唯一使用Hilbert完备性的节点.
+\end{FAExercise}
+
+\begin{FAExercise}[第一变量线性专项]{ex:i11-08}
+在复Hilbert空间中逐行验证 \(\displaystyle \mathcal T^*(\alpha y_1+\beta y_2)=\alpha\mathcal T^*y_1+\beta\mathcal T^*y_2\). 不得把第二变量误作线性变量.
+\end{FAExercise}
+
+\begin{FAExercise}[伴随范数等式]{ex:i11-09}
+从 \(\displaystyle \|\mathcal T^*\|\leqslant\|\mathcal T\|\) 与 \(\displaystyle \|\mathcal T x\|=\sup_{\|y\|\leqslant1}|\langle\mathcal T x,y\rangle|\) 推出 \(\displaystyle \|\mathcal T^*\|=\|\mathcal T\|\).
+\end{FAExercise}
+
+\begin{FAExercise}[标量共轭]{ex:i11-10}
+在当前内积约定下证明 \(\displaystyle (\alpha\mathcal T)^*=\overline\alpha\mathcal T^*\)，并指出为什么 \(\displaystyle \alpha\mathcal T^*\) 在复数域一般错误.
+\end{FAExercise}
+
+\begin{FAExercise}[Riesz桥梁]{ex:i11-11}
+证明 \(\displaystyle \mathcal R_H\) 共轭线性，并证明 \(\displaystyle \mathcal T'\mathcal R_K=\mathcal R_H\mathcal T^*\). 解释为什么该等式不允许把 \(\displaystyle \mathcal T'\) 与 \(\displaystyle \mathcal T^*\) 直接记成同一对象.
+\end{FAExercise}
+
+\begin{FAExercise}[核与值域正交]{ex:i11-12}
+重建\autoref{fa:ADJ-B01}，特别说明从正交补恒等式得到值域结论时为什么必须保留闭包.
+\end{FAExercise}
+
+\begin{FAExercise}[移位伴随]{ex:i11-13}
+用 \(\displaystyle \ell^2\) 内积逐项计算 \(\displaystyle \mathcal S^*=\mathcal L\)，再用双伴随得到 \(\displaystyle \mathcal L^*=\mathcal S\).
+\end{FAExercise}
+
+\begin{FAExercise}[正交投影]{ex:i11-14}
+设 \(\displaystyle M\leqslant H\) 闭. 用 \(\displaystyle H=M\oplus M^\perp\) 证明 \(\displaystyle \mathcal P_M^*=\mathcal P_M\) 与 \(\displaystyle \langle\mathcal P_Mx,x\rangle=\|\mathcal P_Mx\|^2\).
+\end{FAExercise}
+
+\begin{FAExercise}[乘法算子的伴随]{ex:i11-15}
+对 \(\displaystyle h\in L^\infty([0,1])\) 证明 \(\displaystyle \mathcal M_h^*=\mathcal M_{\overline h}\)，并由此证明其正规性. 再分别给出自伴、正、酉的充分条件.
+\end{FAExercise}
+
+\begin{FAExercise}[酉与满射等距]{ex:i11-16}
+重建\autoref{i11:unitary-surjective-isometry}. 反向证明中只允许调用I-04的极化恒等式与本章伴随唯一性.
+\end{FAExercise}
+
+\begin{FAExercise}[强算子拓扑与弱算子拓扑的定义]{ex:i11-17}
+从半范数族写出 \(\displaystyle0\) 的一个一般SOT基本邻域与一个一般WOT基本邻域，并据此重新推出两个网收敛刻画.
+\end{FAExercise}
+
+\begin{FAExercise}[范数拓扑、强算子拓扑与弱算子拓扑]{ex:i11-18}
+证明算子范数收敛推出SOT收敛，SOT收敛推出WOT收敛. 每一步写出控制差的具体不等式.
+\end{FAExercise}
+
+\begin{FAExercise}[强算子拓扑严格弱于范数拓扑]{ex:i11-19}
+在 \(\displaystyle \ell^2\) 上用部分坐标投影 \(\displaystyle \mathcal P_n\) 证明 \(\displaystyle \mathcal P_n\to\mathcal I\) 于SOT但不在算子范数中收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[弱算子拓扑严格弱于强算子拓扑]{ex:i11-20}
+用右移幂 \(\displaystyle \mathcal S^n\) 证明WOT收敛到零但不SOT收敛到零. 证明必须经过 \(\displaystyle \mathcal L^ny\to0\) 的尾范数计算.
+\end{FAExercise}
+
+\begin{FAExercise}[伴随在两种算子拓扑下的差异]{ex:i11-21}
+先证明伴随对WOT连续，再用 \(\displaystyle \mathcal L^n\overset{\mathrm{SOT}}{\longrightarrow}0\) 而 \(\displaystyle (\mathcal L^n)^*=\mathcal S^n\) 不SOT趋零，说明伴随一般不SOT连续.
+\end{FAExercise}
+
+\begin{FAExercise}[一致有界边界与禁止前向调用]{ex:i11-22}
+设 \(\displaystyle X\) 为Banach空间，分别证明SOT与WOT收敛算子序列的算子范数一致有界；再用\autoref{i11:incomplete-domain}说明定义域完备性不可删除. 最后判断下列做法为何不属于本章：把任意收敛网的整个算子族宣称范数有界；定义谱或预解集；用移位正式证明“谱含非特征值”.
+\end{FAExercise}

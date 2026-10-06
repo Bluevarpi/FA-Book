@@ -1,0 +1,573 @@
+\chapter{单调算子初步}\label{chap:III-05}
+\FAChapterOpening
+{建立实 Banach 空间中的单调/极大单调算子、Minty 识别与 Browder--Minty 满射方法，形成一条不经过能量极小化的非线性椭圆存在性路线；最后在 \(\displaystyle W_0^{1,p}\) 上完整验证 \(\displaystyle p\)-Laplacian 并得到唯一弱解.}
+{I-07 的自然嵌入与弱/弱*拓扑\autoref{fa:DUAL-A01}、\autoref{fa:WT-A01}；I-10 的自反弱紧\autoref{fa:REF-A01}；II-13 的 Sobolev 自反性、\(\displaystyle W_0^{1,p}\) 与 Poincaré \autoref{fa:SOB-A01}、\autoref{fa:SOB-B01}、\autoref{ii13:gradient-norm-equivalence}；III-03 的 Brouwer 不动点定理\autoref{fa:BROUWER-A01}.}
+{\begin{center}
+\begin{tikzpicture}[x=0.91cm,y=0.90cm]
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (dual) at (0,2.4) {自然嵌入/自反性};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (wt) at (2.6,2.4) {弱/弱*拓扑};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (ref) at (7.4,2.4) {自反球弱紧};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (brouwer) at (10.2,2.4) {Brouwer不动点};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (mona) at (1.3,1.15) {单调/极大单调};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (monb) at (4.2,1.15) {Minty识别};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (gal) at (8.9,1.15) {有限维 Galerkin};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (monc) at (1.3,-0.15) {单调闭合工具};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (monb2) at (4.2,-0.15) {强单调稳定性};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (mona2) at (7.4,-0.15) {Browder--Minty定理};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (sob) at (4.7,-1.5) {II-13};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (plap) at (7.4,-1.5) {\(\displaystyle p\)-Laplacian模型};
+\draw[fa/arrow] (dual) -- (mona);
+\draw[fa/arrow] (wt) -- (mona);
+\draw[fa/arrow] (mona) -- (monb);
+\draw[fa/arrow] (mona) -- (monc);
+\draw[fa/arrow] (mona.south east) -- (monb2.north west);
+\draw[fa/arrow] (monc) -- (monb2);
+\draw[fa/arrow] (monb) -- (mona2);
+\draw[fa/arrow] (ref) -- (mona2);
+\draw[fa/arrow] (mona.north) -- ++(0,0.48) -| (mona2.north);
+\draw[fa/arrow,dashed] (brouwer) -- (gal);
+\draw[fa/arrow] (gal) -- (mona2);
+\draw[fa/arrow] (sob) -- (plap);
+\draw[fa/arrow] (mona2) -- (plap);
+\end{tikzpicture}
+\end{center}}
+
+本章全部 Banach 空间单调性建立在实标量域上. 对偶不等式统一写在 \(\displaystyle X^*\times X\) 配对中，不把 \(\displaystyle X\) 与 \(\displaystyle X^*\) 通过 Hilbert Riesz 表示隐式识别. 若未来需要处理复空间，应先实化或在另行建立的复理论中取实部；本章不建立复单调理论.
+
+\section{单调性}\label{sec:iii05-monotonicity}
+\index{monotone operator@单调算子}\index{maximal monotone operator@极大单调算子}\index{duality pairing@对偶配对!单调算子}
+
+\begin{FADefinition}[A][单调性与极大单调性的规范定义]{fa:MON-A01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle X^*\) 为连续对偶，\(\displaystyle A\subseteq X\times X^*\) 为关系. 定义
+\(\displaystyle G(A):=A, D(A):=\{x\in X:\exists\,x^*\in X^*\text{ 使 }(x,x^*)\in G(A)\},\)
+以及
+\(\displaystyle A(x):=\{x^*\in X^*:(x,x^*)\in G(A)\}.\)
+若对任意 \(\displaystyle(u,u^*),(v,v^*)\in G(A)\) 都有
+\(\displaystyle \langle u^*-v^*,u-v\rangle_{X^*,X}\geqslant0,\)
+则称 \(\displaystyle A\) 单调. 若进一步当 \(\displaystyle u\neq v\) 时严格有
+\(\displaystyle \langle u^*-v^*,u-v\rangle_{X^*,X}>0,\)
+则称 \(\displaystyle A\) 严格单调. 若 \(\displaystyle A\) 单调，且不存在满足 \(\displaystyle G(A)\subsetneq G(B)\) 的单调关系 \(\displaystyle B\subseteq X\times X^*\)，则称 \(\displaystyle A\) 极大单调.
+
+对单值映射 \(\displaystyle A:X\to X^*\)，若存在 \(\displaystyle m>0\) 使对全部 \(\displaystyle u,v\in X\)，
+\(\displaystyle \langle Au-Av,u-v\rangle_{X^*,X} \geqslant m\|u-v\|^2,\)
+则称 \(\displaystyle A\) 强单调且常数为 \(\displaystyle m\). 若对任意 \(\displaystyle u,v,w\in X\)，函数
+\(\displaystyle t\longmapsto\langle A(u+tv),w\rangle_{X^*,X}\)
+在 \(\displaystyle\mathbb R\) 上连续，则称 \(\displaystyle A\) 半连续型. 若每个有界集合 \(\displaystyle B\subseteq X\) 的像 \(\displaystyle A(B)\) 在 \(\displaystyle X^*\) 中有界，则称 \(\displaystyle A\) 有界集上映为有界集. 若
+\[
+\frac{\langle Au,u\rangle_{X^*,X}}{\|u\|}
+\longrightarrow+\infty
+\quad\text{当 }\|u\|\longrightarrow\infty,
+\]
+则称 \(\displaystyle A\) 强制.
+\end{FADefinition}
+
+\begin{FARemark}[极大单调性的含义]
+极大单调性是图包含意义下的极大性，不等于严格单调性，不等于强单调性，也不等于 \(\displaystyle D(A)=X\). 它首先是一个关系论概念；满定义只有在额外假设下才会导出极大性.
+\end{FARemark}
+
+\begin{FACounterexample}[单调不自动极大单调]
+取 \(\displaystyle X=\mathbb R\)，并令 \(\displaystyle G(A)=\{(0,0)\}\). 任意两点都只能是同一点，因此单调性不等式为 \(\displaystyle0\geqslant0\)，故 \(\displaystyle A\) 单调. 再定义 \(\displaystyle B(x)=0\) 对全部 \(\displaystyle x\in\mathbb R\). 则 \(\displaystyle G(A)\subsetneq G(B)\)，且
+\(\displaystyle (Bu-Bv)(u-v)=0\)
+对全部 \(\displaystyle u,v\in\mathbb R\) 成立，所以 \(\displaystyle B\) 仍单调. 因而 \(\displaystyle A\) 不是极大单调. 该例只否定“单调自动极大单调”；它没有满定义，也不与后面的满定义半连续型极大性推论冲突.
+\end{FACounterexample}
+
+\section{Minty 技巧}\label{sec:iii05-minty}
+\index{Minty trick@Minty技巧}
+
+\begin{FALemma}[B][Minty 识别]{fa:MON-B01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle A:X\to X^*\) 单调且半连续型. 若 \(\displaystyle u\in X\)、\(\displaystyle f\in X^*\) 满足
+\(\displaystyle \langle f-Av,u-v\rangle_{X^*,X}\geqslant0 \;\forall\,v\in X,\)
+则 \(\displaystyle f=Au\).
+\end{FALemma}
+
+\begin{FAProof}
+固定任意 \(\displaystyle w\in X\). 对 \(\displaystyle t>0\) 取 \(\displaystyle v=u+tw\). 假设给出
+\(\displaystyle \langle f-A(u+tw),-tw\rangle_{X^*,X}\geqslant0,\)
+故
+\(\displaystyle \langle f-A(u+tw),w\rangle_{X^*,X}\leqslant0.\)
+令 \(\displaystyle t\downarrow0\)，半连续型条件给
+\(\displaystyle \langle f-Au,w\rangle_{X^*,X}\leqslant0.\)
+再对 \(\displaystyle t>0\) 取 \(\displaystyle v=u-tw\). 此时
+\(\displaystyle \langle f-A(u-tw),tw\rangle_{X^*,X}\geqslant0,\)
+从而
+\(\displaystyle \langle f-A(u-tw),w\rangle_{X^*,X}\geqslant0.\)
+令 \(\displaystyle t\downarrow0\)，得到 \(\displaystyle\langle f-Au,w\rangle_{X^*,X}\geqslant0\). 因 \(\displaystyle w\) 任意，故对全部 \(\displaystyle w\in X\) 都有 \(\displaystyle\langle f-Au,w\rangle_{X^*,X}=0\). 连续线性泛函 \(\displaystyle f-Au\) 因而为零，即 \(\displaystyle f=Au\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][满定义半连续型单调映射的极大性]{iii05:full-domain-maximality}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle A:X\to X^*\) 满定义、单调且半连续型. 则 \(\displaystyle A\) 是极大单调关系.
+\end{FACorollary}
+
+\begin{FAProof}
+设 \(\displaystyle(u,f)\in X\times X^*\) 与 \(\displaystyle G(A)\) 单调相关，即
+\(\displaystyle \langle f-Av,u-v\rangle_{X^*,X}\geqslant0 \;\forall\,v\in X.\)
+由\autoref{fa:MON-B01}得 \(\displaystyle f=Au\)，故 \(\displaystyle(u,f)\in G(A)\). 因此任何包含 \(\displaystyle G(A)\) 的单调图都不能加入新的图点；所以不存在单调图真扩张，\(\displaystyle A\) 极大单调.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[C][单调性闭合工具与有限维限制连续性]{fa:MON-C01}
+设 \(\displaystyle X\) 为实 Banach 空间.
+\begin{enumerate}
+\item 若 \(\displaystyle A:X\to X^*\) 单调且 \(\displaystyle c>0\)，则 \(\displaystyle cA\) 单调.
+\item 若 \(\displaystyle A,B:X\to X^*\) 满定义且单调，则 \(\displaystyle A+B\) 单调.
+\item 强单调性蕴含严格单调性，严格单调性蕴含单调性.
+\item 若 \(\displaystyle A:X\to X^*\) 强单调且常数为 \(\displaystyle m>0\)，且 \(\displaystyle Au=f\)、\(\displaystyle Av=g\)，则
+\(\displaystyle m\|u-v\|^2 \leqslant \|f-g\|_{X^*}\|u-v\|.\)
+若 \(\displaystyle u\neq v\)，则还可合法约去 \(\displaystyle\|u-v\|>0\)，从而
+\(\displaystyle \|u-v\| \leqslant m^{-1}\|f-g\|_{X^*}.\)
+\item 若 \(\displaystyle A:X\to X^*\) 单调、半连续型且有界集上映为有界集，\(\displaystyle F\subseteq X\) 有限维，并以
+\(\displaystyle \langle A_Fu,v\rangle_{F^*,F} := \langle Au,v\rangle_{X^*,X} \; u,v\in F\)
+定义 \(\displaystyle A_F:F\to F^*\)，则 \(\displaystyle A_F\) 范数连续.
+\end{enumerate}
+\end{FALemma}
+
+\begin{FAProof}
+第一项由
+\(\displaystyle \langle cAu-cAv,u-v\rangle = c\langle Au-Av,u-v\rangle \geqslant0\)
+直接得到. 第二项由
+\[
+\langle(A+B)u-(A+B)v,u-v\rangle
+=
+\langle Au-Av,u-v\rangle
++
+\langle Bu-Bv,u-v\rangle
+\geqslant0
+\]
+得到. 第三项中，若 \(\displaystyle u\neq v\)，强单调性给 \(\displaystyle\langle Au-Av,u-v\rangle\geqslant m\|u-v\|^2>0\)，故强蕴含严格；严格的定义立即包含单调性.
+
+第四项由强单调性与对偶范数估计得
+\[
+m\|u-v\|^2
+\leqslant
+\langle f-g,u-v\rangle
+\leqslant
+\|f-g\|_{X^*}\|u-v\|.
+\]
+若 \(\displaystyle u\neq v\)，则 \(\displaystyle\|u-v\|>0\)，故可合法约去一个因子并得到 \(\displaystyle\|u-v\|\leqslant m^{-1}\|f-g\|_{X^*}\)；若 \(\displaystyle u=v\)，不作除法.
+
+最后证明第五项. 先注意 \(\displaystyle A_F\) 单调；且对 \(\displaystyle a,b,c\in F\)，函数 \(\displaystyle t\mapsto\langle A_F(a+tb),c\rangle=\langle A(a+tb),c\rangle\) 连续，所以 \(\displaystyle A_F\) 半连续型. 设 \(\displaystyle u_n\to u\) 于 \(\displaystyle F\). 序列 \(\displaystyle(u_n)\) 在 \(\displaystyle X\) 中有界，有界集上映为有界集因而给 \(\displaystyle(Au_n)\) 在 \(\displaystyle X^*\) 中有界；限制进一步给 \(\displaystyle(A_Fu_n)\) 在有限维 \(\displaystyle F^*\) 中有界.
+
+任取 \(\displaystyle(A_Fu_n)\) 的收敛子序列，记其极限为 \(\displaystyle\varphi\in F^*\). 仍用 \(\displaystyle n\) 表示该子序列. 对任意固定 \(\displaystyle v\in F\)，单调性给
+\(\displaystyle \langle A_Fu_n-A_Fv,u_n-v\rangle_{F^*,F}\geqslant0.\)
+令 \(\displaystyle n\to\infty\)，由 \(\displaystyle u_n\to u\) 与 \(\displaystyle A_Fu_n\to\varphi\) 得
+\(\displaystyle \langle\varphi-A_Fv,u-v\rangle_{F^*,F}\geqslant0 \;\forall\,v\in F.\)
+把\autoref{fa:MON-B01}应用于有限维实 Banach 空间 \(\displaystyle F\) 与半连续型映射 \(\displaystyle A_F\)，得到 \(\displaystyle\varphi=A_Fu\). 因而 \(\displaystyle(A_Fu_n)\) 的每个收敛子序列都只能收敛到 \(\displaystyle A_Fu\).
+
+若整个序列不收敛到 \(\displaystyle A_Fu\)，则存在 \(\displaystyle\varepsilon>0\) 与子序列满足 \(\displaystyle\|A_Fu_{n_k}-A_Fu\|\geqslant\varepsilon\). 该子序列有界，在有限维 \(\displaystyle F^*\) 中含收敛子子序列；上一段说明其极限必须是 \(\displaystyle A_Fu\)，矛盾. 故 \(\displaystyle A_Fu_n\to A_Fu\)，即 \(\displaystyle A_F\) 连续.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][强单调算子的唯一性与稳定性]{fa:MON-B02}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle A:X\to X^*\) 强单调且常数为 \(\displaystyle m>0\). 若 \(\displaystyle Au=f\)、\(\displaystyle Av=g\)，则
+\(\displaystyle \|u-v\| \leqslant m^{-1}\|f-g\|_{X^*}.\)
+特别地，\(\displaystyle A\) 单射；同一右端至多有一个解.
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle u=v\)，所需估计为 \(\displaystyle0\leqslant m^{-1}\|f-g\|\)，直接成立，不作任何除法. 若 \(\displaystyle u\neq v\)，\autoref{fa:MON-C01}第四项已经在 \(\displaystyle\|u-v\|>0\) 的条件下合法约去该因子，直接得到所需估计.
+若 \(\displaystyle Au=Av\)，则 \(\displaystyle f=g\)，右侧为零，因此 \(\displaystyle u=v\). 这证明单射性与同一右端的唯一性.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{Browder--Minty定理}\label{sec:iii05-browder-minty}
+\index{Browder--Minty theorem@Browder--Minty定理}\index{Galerkin method@Galerkin方法!有限维有向网}
+
+\begin{FATheorem}[A][Browder--Minty 满射定理（选定版）]{fa:MON-A02}
+设 \(\displaystyle X\) 为实自反 Banach 空间，\(\displaystyle A:X\to X^*\) 满定义、单调、半连续型、有界集上映为有界集且强制. 则
+\(\displaystyle \operatorname{Ran}A=X^*.\)
+亦即，对每个 \(\displaystyle f\in X^*\)，存在 \(\displaystyle u\in X\) 使 \(\displaystyle Au=f\). 若 \(\displaystyle A\) 严格单调，则该解唯一；若 \(\displaystyle A\) 强单调且常数为 \(\displaystyle m>0\)，则对 \(\displaystyle Au=f\)、\(\displaystyle Av=g\) 还有
+\(\displaystyle \|u-v\| \leqslant m^{-1}\|f-g\|_{X^*}.\)
+\end{FATheorem}
+
+\begin{FAProof}
+固定 \(\displaystyle f\in X^*\). 证明分为有限维 Galerkin 存在性、一致有界估计、自反弱收敛子网与 Minty 极限识别四步.
+
+\textbf{第一步：有限维 Galerkin 方程.} 令 \(\displaystyle\mathfrak F\) 为 \(\displaystyle X\) 的全部有限维线性子空间，按包含关系排序. 对任意 \(\displaystyle F_1,F_2\in\mathfrak F\)，有 \(\displaystyle F_1+F_2\in\mathfrak F\) 且包含二者，所以 \(\displaystyle\mathfrak F\) 是有向集.
+
+固定 \(\displaystyle F\in\mathfrak F\). 定义
+\(\displaystyle A_F:F\to F^*, \langle A_Fu,v\rangle_{F^*,F} = \langle Au,v\rangle_{X^*,X},\)
+并令 \(\displaystyle f_F=f|_F\). 由\autoref{fa:MON-C01}，\(\displaystyle A_F\) 范数连续. 若 \(\displaystyle F=\{0\}\)，取 \(\displaystyle u_F=0\) 即满足所需方程. 以下设 \(\displaystyle\dim F\geqslant1\).
+
+在 \(\displaystyle F\) 上任取辅助欧氏内积 \(\displaystyle(\cdot,\cdot)_F\)，记其范数为 \(\displaystyle\|\cdot\|_F\)，并令 Riesz 同构 \(\displaystyle R_F:F\to F^*\) 由
+\(\displaystyle \langle R_Fz,v\rangle_{F^*,F} = (z,v)_F\)
+定义. 令
+\(\displaystyle G_F := R_F^{-1}(A_F-f_F):F\to F.\)
+由于 \(\displaystyle A_F\) 连续，\(\displaystyle G_F\) 连续. 强制性给
+\[
+\frac{\langle Au-f,u\rangle}{\|u\|}
+=
+\frac{\langle Au,u\rangle}{\|u\|}
+-
+\frac{\langle f,u\rangle}{\|u\|}
+\geqslant
+\frac{\langle Au,u\rangle}{\|u\|}
+-
+\|f\|_{X^*}
+\longrightarrow+\infty
+\]
+当 \(\displaystyle\|u\|\to\infty\). 在固定有限维 \(\displaystyle F\) 上 \(\displaystyle\|\cdot\|_F\) 与 \(\displaystyle\|\cdot\|\) 等价，因此可取 \(\displaystyle r_F>0\)，使 \(\displaystyle\|u\|_F=r_F\) 时
+\(\displaystyle (G_F(u),u)_F = \langle A_Fu-f_F,u\rangle = \langle Au-f,u\rangle >0.\)
+
+若 \(\displaystyle G_F\) 在闭欧氏球 \(\displaystyle\overline B_F(0,r_F)\) 上无零点，则
+\(\displaystyle H_F(u) := -r_F\frac{G_F(u)}{\|G_F(u)\|_F}\)
+定义一个连续自映射 \(\displaystyle H_F:\overline B_F(0,r_F)\to\overline B_F(0,r_F)\)，其像实际落在边界球面. 由 III-03 的 Brouwer 不动点定理\autoref{fa:BROUWER-A01}，存在 \(\displaystyle u\) 使 \(\displaystyle H_F(u)=u\). 此时 \(\displaystyle\|u\|_F=r_F\)，且
+\(\displaystyle (G_F(u),u)_F = -r_F\|G_F(u)\|_F <0,\)
+与边界正性矛盾. 故 \(\displaystyle G_F\) 必有零点 \(\displaystyle u_F\in F\). 于是
+\(\displaystyle A_Fu_F=f_F,\)
+也就是
+\(\displaystyle \langle Au_F-f,v\rangle_{X^*,X}=0 \;\forall\,v\in F.\)
+这里对\autoref{fa:BROUWER-A01}的调用只解决固定有限维 Galerkin 方程，是局部支撑；它不改变 \(\displaystyle\text{Browder--Minty 满射定理（选定版）}\) 的规范登记体系依赖，也没有使用无限维拓扑度.
+
+\textbf{第二步：Galerkin 解的一致有界估计.} 在 Galerkin 恒等式中取 \(\displaystyle v=u_F\)，得到
+\(\displaystyle \langle Au_F,u_F\rangle = \langle f,u_F\rangle.\)
+若 \(\displaystyle u_F\neq0\)，则
+\[
+\frac{\langle Au_F,u_F\rangle}{\|u_F\|}
+=
+\frac{\langle f,u_F\rangle}{\|u_F\|}
+\leqslant
+\|f\|_{X^*}.
+\]
+由强制性，存在 \(\displaystyle R>0\) 使所有满足 \(\displaystyle\|u\|\geqslant R\) 的 \(\displaystyle u\) 都有
+\(\displaystyle \frac{\langle Au,u\rangle}{\|u\|} > \|f\|_{X^*}+1.\)
+因此不可能出现 \(\displaystyle\|u_F\|\geqslant R\). 对 \(\displaystyle u_F=0\) 结论也成立，故
+\[
+\sup_{F\in\mathfrak F}\|u_F\|
+\leqslant
+R.
+\]
+这给出与 \(\displaystyle F\) 无关的全局 Galerkin 有界估计.
+
+\textbf{第三步：自反弱紧性与合法子网.} 由\autoref{fa:REF-A01}，自反空间 \(\displaystyle X\) 的闭单位球弱紧；标量乘法 \(\displaystyle x\mapsto Rx\) 是弱同胚，所以 \(\displaystyle R\overline B_X\) 弱紧. 网 \(\displaystyle(u_F)_{F\in\mathfrak F}\) 全部落在该弱紧集合中，因此存在子网
+\(\displaystyle u_{F_\beta}\rightharpoonup u \;\text{于 }X.\)
+子网的指标映射对原有向集共尾：对每个固定 \(\displaystyle F_0\in\mathfrak F\)，最终都有 \(\displaystyle F_\beta\supseteq F_0\). 这是下面把任意固定测试向量放入 Galerkin 空间的关键，不能用任意抽取的子网替代.
+
+固定 \(\displaystyle v\in X\)，并令 \(\displaystyle F_0=\operatorname{span}\{v\}\). 由上述共尾性，最终 \(\displaystyle v\in F_\beta\)，所以 Galerkin 恒等式最终精确给出
+\(\displaystyle \langle Au_{F_\beta},v\rangle = \langle f,v\rangle.\)
+于是
+\(\displaystyle Au_{F_\beta} \longrightarrow f \;\text{于 }\sigma(X^*,X).\)
+依\autoref{fa:WT-A01}，\(\displaystyle\sigma(X^*,X)\) 是以 \(\displaystyle X\) 为预对偶时 \(\displaystyle X^*\) 上的弱* 拓扑. 因 \(\displaystyle X\) 自反，它也与 \(\displaystyle X^*\) 的 Banach 空间弱拓扑一致，但本证明只使用 \(\displaystyle\sigma(X^*,X)\) 在 \(\displaystyle X\) 上的逐点收敛，不把弱与弱* 在一般空间中混同.
+
+另外，因 \(\displaystyle u_{F_\beta}\in F_\beta\)，Galerkin 恒等式可取测试向量 \(\displaystyle u_{F_\beta}\)，从而
+\[
+\langle Au_{F_\beta},u_{F_\beta}\rangle
+=
+\langle f,u_{F_\beta}\rangle
+\longrightarrow
+\langle f,u\rangle,
+\]
+最后一步来自 \(\displaystyle u_{F_\beta}\rightharpoonup u\) 与固定 \(\displaystyle f\in X^*\).
+
+\textbf{第四步：Minty 极限识别.} 固定任意 \(\displaystyle v\in X\). 单调性给出
+\(\displaystyle \langle Au_{F_\beta}-Av,u_{F_\beta}-v\rangle \geqslant0.\)
+逐项展开为
+\[
+\langle Au_{F_\beta},u_{F_\beta}\rangle
+-
+\langle Au_{F_\beta},v\rangle
+-
+\langle Av,u_{F_\beta}\rangle
++
+\langle Av,v\rangle
+\geqslant0.
+\]
+四项分别有如下极限：第一项由上一段趋于 \(\displaystyle\langle f,u\rangle\)；第二项最终恒等于 \(\displaystyle\langle f,v\rangle\)；第三项因 \(\displaystyle Av\in X^*\) 与弱收敛而趋于 \(\displaystyle\langle Av,u\rangle\)；第四项固定不变. 因此取极限得到
+\[
+\langle f,u\rangle
+-
+\langle f,v\rangle
+-
+\langle Av,u\rangle
++
+\langle Av,v\rangle
+\geqslant0,
+\]
+亦即
+\(\displaystyle \langle f-Av,u-v\rangle_{X^*,X} \geqslant0 \;\forall\,v\in X.\)
+由 Minty 识别\autoref{fa:MON-B01}，\(\displaystyle f=Au\). 因 \(\displaystyle f\in X^*\) 任意，故 \(\displaystyle\operatorname{Ran}A=X^*\).
+
+若 \(\displaystyle A\) 严格单调且 \(\displaystyle Au=Av=f\)，则 \(\displaystyle u\neq v\) 会给 \(\displaystyle0=\langle Au-Av,u-v\rangle>0\)，矛盾，所以解唯一. 若 \(\displaystyle A\) 强单调，则定量稳定性正是\autoref{fa:MON-B02}.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[极大性不是额外假设]
+\autoref{fa:MON-A02}没有把极大单调性作为假设. 事实上定理假设中的满定义、单调与半连续型已由\autoref{iii05:full-domain-maximality}推出极大性；满射证明仍直接经过有限维 Galerkin、弱紧性与 Minty 识别，而不是把极大性当作一个未解释的黑箱.
+\end{FARemark}
+
+\begin{FARemark}[非变分路线]
+上述证明没有构造能量泛函，也没有调用弱下半连续性、直接法、Ekeland 原理或伪单调定理. 本章的存在性机制是算子方程本身的单调性/强制性加有限维逼近；未来变分章节会给出另一条路线，但不作为这里的前置结果.
+\end{FARemark}
+
+\section{偏微分方程应用}\label{sec:iii05-pde}
+\index{p-Laplacian@p-Laplacian}\index{weak solution@弱解!p-Laplacian}
+
+\begin{FAApplication}[Dirichlet \(\displaystyle p\)-Laplacian]
+固定 \(\displaystyle d\in\mathbb N\)、\(\displaystyle1<p<\infty\)、\(\displaystyle p'=\frac{p}{p-1}\)，并设 \(\displaystyle\Omega\subset\mathbb R^d\) 为非空有界 Lipschitz 区域. 令
+\(\displaystyle X=W_0^{1,p}(\Omega;\mathbb R), \|u\|_X := \|\nabla u\|_{L^p(\Omega)}.\)
+由 II-13 的 Poincaré 不等式\autoref{fa:SOB-B01}与梯度范数等价性\autoref{ii13:gradient-norm-equivalence}，这是 \(\displaystyle W_0^{1,p}\) 上的等价范数. 又由\autoref{fa:SOB-A01}及闭子空间自反性接口，\(\displaystyle X\) 是实自反 Banach 空间.
+
+定义 \(\displaystyle A:X\to X^*\) 由
+\[
+\langle Au,v\rangle_{X^*,X}
+=
+\int_\Omega
+|\nabla u|^{p-2}\nabla u\cdot\nabla v
+\,\mathrm{d}x,
+u,v\in X.
+\]
+约定 \(\displaystyle|0|^{p-2}0=0\). 下述计算证明 \(\displaystyle A\) 满定义、有界集上映为有界集、半连续型、单调、严格单调且强制；于是\autoref{fa:MON-A02}可直接应用.
+\end{FAApplication}
+
+\begin{FAProposition}[B][\(\displaystyle p\)-Laplacian 算子性质]{iii05:plaplace-properties}
+上述 \(\displaystyle A:X\to X^*\) 满足：
+\begin{enumerate}
+\item 对全部 \(\displaystyle u,v\in X\)，
+\(\displaystyle |\langle Au,v\rangle| \leqslant \|\nabla u\|_{L^p}^{p-1} \|\nabla v\|_{L^p},\)
+故 \(\displaystyle\|Au\|_{X^*}\leqslant\|u\|_X^{p-1}\)，特别地 \(\displaystyle A\) 有界集上映为有界集.
+\item \(\displaystyle A\) 半连续型.
+\item \(\displaystyle A\) 严格单调.
+\item \(\displaystyle\langle Au,u\rangle=\|u\|_X^p\)，故 \(\displaystyle A\) 强制.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+先证良定义性与有界集上映为有界集. 对 \(\displaystyle u\in X\)，向量场
+\(\displaystyle a(\nabla u) := |\nabla u|^{p-2}\nabla u\)
+满足
+\(\displaystyle |a(\nabla u)|^{p'} = |\nabla u|^{(p-1)p'} = |\nabla u|^p,\)
+故 \(\displaystyle a(\nabla u)\in L^{p'}(\Omega;\mathbb R^d)\). Hölder 不等式因而给
+\[
+|\langle Au,v\rangle|
+\leqslant
+\|a(\nabla u)\|_{L^{p'}}
+\|\nabla v\|_{L^p}
+=
+\|\nabla u\|_{L^p}^{p-1}
+\|\nabla v\|_{L^p}.
+\]
+所以 \(\displaystyle Au\) 是 \(\displaystyle X\) 上连续线性泛函，且
+\(\displaystyle \|Au\|_{X^*} \leqslant \|u\|_X^{p-1}.\)
+若 \(\displaystyle\|u\|_X\leqslant R\)，则 \(\displaystyle\|Au\|_{X^*}\leqslant R^{p-1}\)，故 \(\displaystyle A\) 有界集上映为有界集.
+
+再证半连续型条件. 固定 \(\displaystyle u,v,w\in X\)，并令 \(\displaystyle t_n\to t\). 取包含 \(\displaystyle t\) 与全部充分大 \(\displaystyle t_n\) 的紧区间 \(\displaystyle K\)，并记 \(\displaystyle M_K=\sup_{s\in K}|s|\). 对 几乎处处 \(\displaystyle x\)，连续函数 \(\displaystyle a(\xi)=|\xi|^{p-2}\xi\) 给
+\[
+a\bigl(\nabla u+t_n\nabla v\bigr)\cdot\nabla w
+\longrightarrow
+a\bigl(\nabla u+t\nabla v\bigr)\cdot\nabla w.
+\]
+同时存在只依赖 \(\displaystyle p\) 与 \(\displaystyle K\) 的常数 \(\displaystyle C_K>0\)，使
+\[
+\left|
+a\bigl(\nabla u+t_n\nabla v\bigr)\cdot\nabla w
+\right|
+\leqslant
+C_K
+\bigl(|\nabla u|+|\nabla v|\bigr)^{p-1}
+|\nabla w|.
+\]
+右端可积：\(\displaystyle(|\nabla u|+|\nabla v|)^{p-1}\in L^{p'}\)，再与 \(\displaystyle|\nabla w|\in L^p\) 用 Hölder 即得. 因此标量控制收敛定理给
+\(\displaystyle \langle A(u+t_nv),w\rangle \longrightarrow \langle A(u+tv),w\rangle.\)
+所以 \(\displaystyle A\) 半连续型.
+
+下面证明逐点单调性，并同时审计等号情形. 对 \(\displaystyle\xi,\eta\in\mathbb R^d\)，令 \(\displaystyle a(\xi)=|\xi|^{p-2}\xi\). Cauchy 不等式与 Young 不等式分别给
+\[
+a(\xi)\cdot\eta
+\leqslant
+|\xi|^{p-1}|\eta|
+\leqslant
+\frac{p-1}{p}|\xi|^p
++
+\frac{1}{p}|\eta|^p,
+\]
+以及
+\[
+a(\eta)\cdot\xi
+\leqslant
+|\eta|^{p-1}|\xi|
+\leqslant
+\frac{p-1}{p}|\eta|^p
++
+\frac{1}{p}|\xi|^p.
+\]
+两式相加得到
+\(\displaystyle a(\xi)\cdot\eta+a(\eta)\cdot\xi \leqslant |\xi|^p+|\eta|^p.\)
+因而
+\(\displaystyle \bigl(a(\xi)-a(\eta)\bigr)\cdot(\xi-\eta) \geqslant0.\)
+若等号成立，则上述两次 Cauchy 与两次 Young 的松弛量之和必须全为零. Young 等号给 \(\displaystyle|\xi|=|\eta|\)；Cauchy 等号给 \(\displaystyle\xi\cdot\eta=|\xi||\eta|\). 因此 \(\displaystyle\xi\) 与 \(\displaystyle\eta\) 同向且等长，故 \(\displaystyle\xi=\eta\)，零向量情形也包含在内. 所以当 \(\displaystyle\xi\neq\eta\) 时严格有
+\(\displaystyle \bigl(a(\xi)-a(\eta)\bigr)\cdot(\xi-\eta)>0.\)
+
+现在对 \(\displaystyle u,v\in X\) 积分，得到
+\[
+\langle Au-Av,u-v\rangle
+=
+\int_\Omega
+\bigl(a(\nabla u)-a(\nabla v)\bigr)
+\cdot
+(\nabla u-\nabla v)
+\,\mathrm{d}x
+\geqslant0.
+\]
+故 \(\displaystyle A\) 单调. 若该配对等于零，非负被积函数的积分为零，所以被积函数 几乎处处 等于零；逐点严格性给 \(\displaystyle\nabla u=\nabla v\) 几乎处处 于是 \(\displaystyle u-v\in W_0^{1,p}(\Omega)\) 且梯度为零. Poincaré 不等式\autoref{fa:SOB-B01}给 \(\displaystyle\|u-v\|_{L^p}=0\)，故 \(\displaystyle u=v\). 因而 \(\displaystyle A\) 严格单调.
+
+最后
+\[
+\langle Au,u\rangle
+=
+\int_\Omega|\nabla u|^p\,\mathrm{d}x
+=
+\|u\|_X^p.
+\]
+对 \(\displaystyle u\neq0\)，
+\[
+\frac{\langle Au,u\rangle}{\|u\|_X}
+=
+\|u\|_X^{p-1}
+\longrightarrow+\infty
+\]
+当 \(\displaystyle\|u\|_X\to\infty\). 因而 \(\displaystyle A\) 强制.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][Dirichlet \(\displaystyle p\)-Laplacian的弱存在与唯一性]{iii05:plaplace-weak-solution}
+在上述假设下，对每个 \(\displaystyle F\in X^*\)，存在唯一 \(\displaystyle u\in X\) 使
+\[
+\int_\Omega
+|\nabla u|^{p-2}\nabla u\cdot\nabla v
+\,\mathrm{d}x
+=
+\langle F,v\rangle_{X^*,X}
+\quad\forall\,v\in X.
+\]
+特别地，若 \(\displaystyle f\in L^{p'}(\Omega)\)，则存在唯一 \(\displaystyle u\in W_0^{1,p}(\Omega)\) 满足
+\[
+\int_\Omega
+|\nabla u|^{p-2}\nabla u\cdot\nabla v
+\,\mathrm{d}x
+=
+\int_\Omega fv\,\mathrm{d}x
+\quad\forall\,v\in W_0^{1,p}(\Omega).
+\]
+这就是 \(\displaystyle-\Delta_pu=f\)、零 Dirichlet 边界条件的唯一弱解；本结论不声称经典正则性.
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{iii05:plaplace-properties}，\(\displaystyle A:X\to X^*\) 满定义、单调、半连续型、有界集上映为有界集、强制；\(\displaystyle X\) 又自反. 因而\autoref{fa:MON-A02}给每个 \(\displaystyle F\in X^*\) 至少一个 \(\displaystyle u\in X\) 使 \(\displaystyle Au=F\). 同一命题已证明 \(\displaystyle A\) 严格单调，所以\autoref{fa:MON-A02}的唯一性部分给解唯一.
+
+若 \(\displaystyle f\in L^{p'}(\Omega)\)，定义
+\[
+F_f(v)
+:=
+\int_\Omega fv\,\mathrm{d}x.
+\]
+由 Hölder 与 Poincaré，
+\[
+|F_f(v)|
+\leqslant
+\|f\|_{L^{p'}}\|v\|_{L^p}
+\leqslant
+C_{\Omega,p}\|f\|_{L^{p'}}\|\nabla v\|_{L^p}
+=
+C_{\Omega,p}\|f\|_{L^{p'}}\|v\|_X.
+\]
+故 \(\displaystyle F_f\in X^*\). 把 \(\displaystyle F=F_f\) 代入前一段，即得到上述弱表述与唯一性. 该表述只在 \(\displaystyle W_0^{1,p}\) 测试空间中解释方程与边界条件，不推出 \(\displaystyle u\) 的经典可微性.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[D 级延后结果]
+伪单调算子与非线性半群理论在本章只作为面向读者的延后结果. 这里既不建立伪单调定理，也不调用非线性半群生成；它们不能替代\autoref{fa:MON-A02}的任何证明步骤.
+\end{FARemark}
+
+\begin{FARemark}[与未来变分路线的边界]
+本节的 \(\displaystyle p\)-Laplacian 存在性完全来自 Browder--Minty 算子路线. 后续章节会研究弱下半连续性、强制泛函与极小化，从而给某些椭圆问题建立变分路线；这些未来结论在本章没有被调用，也不属于本章习题的可用前置结果.
+\end{FARemark}
+
+\subsection{习题}
+
+\begin{FAExercise}[对偶配对单调性]{ex:iii05-01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle A:X\to X^*\). 把单调性完整写成 \(\displaystyle X^*\times X\) 配对，并说明为什么在一般 Banach 空间中不能把该配对改写成未定义的 \(\displaystyle\langle Au-Av,u-v\rangle_X\) Hilbert 内积.
+\end{FAExercise}
+
+\begin{FAExercise}[图、定义域与极大性]{ex:iii05-02}
+给定关系 \(\displaystyle A\subseteq X\times X^*\)，分别计算 \(\displaystyle G(A)\)、\(\displaystyle D(A)\)、\(\displaystyle A(x)\)，并证明极大单调性是图包含下的极大性，而不是定义域极大性、严格性或强单调性的同义词.
+\end{FAExercise}
+
+\begin{FAExercise}[单调但非极大单调反例]{ex:iii05-03}
+对 \(\displaystyle X=\mathbb R\)、\(\displaystyle G(A)=\{(0,0)\}\)，独立验证单调性，并构造单调真扩张. 再说明为什么该例不反驳\autoref{iii05:full-domain-maximality}.
+\end{FAExercise}
+
+\begin{FAExercise}[正倍数缩放与求和]{ex:iii05-04}
+设 \(\displaystyle A,B:X\to X^*\) 满定义且单调，\(\displaystyle c>0\). 不引用\autoref{fa:MON-C01}的证明，直接证明 \(\displaystyle cA\) 与 \(\displaystyle A+B\) 单调，并指出 \(\displaystyle c<0\) 时第一结论为何一般失败.
+\end{FAExercise}
+
+\begin{FAExercise}[强单调性]{ex:iii05-05}
+证明强单调性蕴含严格单调性，严格单调性蕴含单调性. 给出一个单调但不严格单调的满定义映射定义在 \(\displaystyle\mathbb R\).
+\end{FAExercise}
+
+\begin{FAExercise}[强单调算子的稳定性]{ex:iii05-06}
+从强单调性与对偶范数不等式推导 \(\displaystyle m\|u-v\|^2\leqslant\|f-g\|\|u-v\|\). 分别处理 \(\displaystyle u=v\) 与 \(\displaystyle u\neq v\)，再推出单射性、同一右端唯一性与 Lipschitz 稳定性.
+\end{FAExercise}
+
+\begin{FAExercise}[半连续型条件]{ex:iii05-07}
+把半连续型条件的量词完整写出. 对有界线性算子 \(\displaystyle A:X\to X^*\) 证明半连续型条件；再解释半连续型条件为什么只控制一维仿射直线上的标量配对，而不能未经证明替代范数连续性.
+\end{FAExercise}
+
+\begin{FAExercise}[Minty 引理]{ex:iii05-08}
+从假设 \(\displaystyle\langle f-Av,u-v\rangle\geqslant0\) 出发，分别取 \(\displaystyle v=u+tw\) 与 \(\displaystyle v=u-tw\)，完整执行 \(\displaystyle t\downarrow0\) 的两侧论证，重建\autoref{fa:MON-B01}.
+\end{FAExercise}
+
+\begin{FAExercise}[满定义极大性]{ex:iii05-09}
+设 \(\displaystyle A:X\to X^*\) 满定义、单调、半连续型. 若 \(\displaystyle B\) 为单调关系且 \(\displaystyle G(A)\subseteq G(B)\)，证明每个 \(\displaystyle(u,f)\in G(B)\) 都满足 Minty 不等式，并由此证明 \(\displaystyle B=A\).
+\end{FAExercise}
+
+\begin{FAExercise}[有限维限制连续性]{ex:iii05-10}
+设 \(\displaystyle A\) 单调、半连续型、有界集上映为有界集，\(\displaystyle F\subseteq X\) 有限维. 对任意 \(\displaystyle u_n\to u\) 于 \(\displaystyle F\)，证明 \(\displaystyle(A_Fu_n)\) 有界；取收敛子子序列，用单调性与 Minty 识别识别其极限，最后用反证证明整个 \(\displaystyle A_Fu_n\to A_Fu\).
+\end{FAExercise}
+
+\begin{FAExercise}[强制性 Galerkin 零点]{ex:iii05-11}
+固定有限维 \(\displaystyle F\)，选择辅助欧氏内积与 Riesz 同构，定义 \(\displaystyle G_F=R_F^{-1}(A_F-f_F)\). 从强制性推出充分大的球面上 \(\displaystyle(G_F(u),u)_F>0\)，并用\autoref{fa:BROUWER-A01}的反证论证证明 \(\displaystyle G_F\) 有零点.
+\end{FAExercise}
+
+\begin{FAExercise}[Galerkin 一致有界估计]{ex:iii05-12}
+从 \(\displaystyle\langle Au_F,u_F\rangle=\langle f,u_F\rangle\) 与强制性出发，给出一个与有限维子空间 \(\displaystyle F\) 无关的半径 \(\displaystyle R\)，证明所有 Galerkin 解都落在 \(\displaystyle R\overline B_X\).
+\end{FAExercise}
+
+\begin{FAExercise}[有向网与共尾性]{ex:iii05-13}
+证明全部有限维线性子空间在包含关系下构成有向集. 对其任一子网的共尾性条件作精确定义，并证明对固定 \(\displaystyle v\in X\)，最终有 \(\displaystyle v\in F_\beta\).
+\end{FAExercise}
+
+\begin{FAExercise}[自反弱收敛子网]{ex:iii05-14}
+设 \(\displaystyle X\) 自反，\(\displaystyle(u_F)\) 一致有界. 由\autoref{fa:REF-A01}与弱紧性得到弱收敛子网. 说明为什么在没有额外序列紧性接口时，不能把这里的网/子网自动替换成序列/子序列.
+\end{FAExercise}
+
+\begin{FAExercise}[完整 Browder--Minty 极限过程]{ex:iii05-15}
+固定 \(\displaystyle v\in X\)，逐项证明 \(\displaystyle\langle Au_{F_\beta},u_{F_\beta}\rangle\)、\(\displaystyle\langle Au_{F_\beta},v\rangle\)、\(\displaystyle\langle Av,u_{F_\beta}\rangle\) 的极限；从单调性展开式推出 \(\displaystyle\langle f-Av,u-v\rangle\geqslant0\)，再由 Minty 识别得 \(\displaystyle f=Au\).
+\end{FAExercise}
+
+\begin{FAExercise}[满射性与唯一性]{ex:iii05-16}
+在\autoref{fa:MON-A02}的全部假设下重建 \(\displaystyle\operatorname{Ran}A=X^*\). 若再假设严格单调性，证明唯一性；若改为强单调性，写出\autoref{fa:MON-B02}给出的定量稳定性.
+\end{FAExercise}
+
+\begin{FAExercise}[p-Laplacian 良定义性]{ex:iii05-17}
+令 \(\displaystyle X=W_0^{1,p}(\Omega)\). 证明 \(\displaystyle|\nabla u|^{p-2}\nabla u\in L^{p'}\)，并用 Hölder 推导 \(\displaystyle|\langle Au,v\rangle|\leqslant\|u\|_X^{p-1}\|v\|_X\). 由此证明 \(\displaystyle A:X\to X^*\) 良定义且有界集上映为有界集.
+\end{FAExercise}
+
+\begin{FAExercise}[p-Laplacian 半连续型条件]{ex:iii05-18}
+对 \(\displaystyle t_n\to t\)，在包含这些参数的紧区间上构造 \(\displaystyle C(|\nabla u|+|\nabla v|)^{p-1}|\nabla w|\) 型可积控制函数，并只用标量控制收敛定理证明半连续型条件.
+\end{FAExercise}
+
+\begin{FAExercise}[逐点单调性]{ex:iii05-19}
+对 \(\displaystyle a(\xi)=|\xi|^{p-2}\xi\)，用 Cauchy 与 Young 不等式证明 \(\displaystyle(a(\xi)-a(\eta))\cdot(\xi-\eta)\geqslant0\). 逐一分析等号条件，证明等号当且仅当 \(\displaystyle\xi=\eta\).
+\end{FAExercise}
+
+\begin{FAExercise}[严格单调性与强制性]{ex:iii05-20}
+把上一题逐点不等式积分，证明 \(\displaystyle p\)-Laplacian 算子单调. 若配对差为零，用非负被积函数论证与 Poincaré 证明 \(\displaystyle u=v\)；再计算 \(\displaystyle\frac{\langle Au,u\rangle}{\|u\|_X}\) 并证明强制性.
+\end{FAExercise}
+
+\begin{FAExercise}[弱 p-Laplacian 存在唯一性]{ex:iii05-21}
+设 \(\displaystyle F\in X^*\). 逐项核对\autoref{fa:MON-A02}的自反性、满定义性、单调性、半连续型条件、有界集上映为有界集与强制性假设，推出弱解存在性，再由严格单调性推出唯一性. 对 \(\displaystyle f\in L^{p'}(\Omega)\)，另证 \(\displaystyle v\mapsto\int_\Omega fv\,\mathrm{d}x\) 属 \(\displaystyle X^*\).
+\end{FAExercise}
+
+\begin{FAExercise}[非变分/变分边界]{ex:iii05-22}
+只依据本章已经建立的算子结果，写出 \(\displaystyle p\)-Laplacian 存在性证明的依赖链. 然后列出未来变分路线至少需要额外建立的对象或性质，并解释为什么在它们尚未建立时不能用“能量极小化”替代本章的 Browder--Minty 证明. 本题不得调用 III-06 或 III-07 的定理.
+\end{FAExercise}

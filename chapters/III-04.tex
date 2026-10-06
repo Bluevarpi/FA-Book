@@ -1,0 +1,717 @@
+\chapter{Brouwer 度与 Leray--Schauder 度/延拓}\label{chap:III-04}
+\FAChapterOpening
+{先在有限维实空间中从定向单纯形/分片仿射带符号计数构造 Brouwer 度，闭合细分、同伦、切除性与连续逼近的选择无关性；再把恒等映射的紧扰动通过有限维逼近归约为 Brouwer 度，建立 Leray--Schauder 度、延拓与先验界方法，并用于一个非线性 Dirichlet 边值问题.}
+{III-03 的 Sperner 引理\autoref{fa:SPERNER-B01}、Brouwer 不动点定理\autoref{fa:BROUWER-A01}、紧像的有限维逼近\autoref{fa:COMP-MAP-B01}与 Schauder 不动点定理\autoref{fa:SCHAUDER-A01}；I-13 的紧性接口\autoref{fa:COMP-A01}.}
+{\begin{center}
+\begin{tikzpicture}[x=1.08cm,y=0.92cm]
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (sperner) at (0,2.0) {Sperner引理};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (degb) at (3.2,2.0) {Brouwer度构造};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (brouwer) at (0,0.8) {Brouwer不动点};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (dega) at (3.2,0.8) {Brouwer度性质};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (comp) at (0,-0.4) {紧算子};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (approx) at (3.2,-0.4) {紧像有限维逼近};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (lsc) at (6.4,-0.4) {边界间隙/逼近};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (lsb) at (6.4,0.8) {有限维归约};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (schauder) at (6.4,2.0) {Schauder不动点};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (lsa) at (9.6,0.8) {Leray--Schauder度};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (cont) at (9.6,-0.4) {延拓/边值问题};
+\draw[fa/arrow] (sperner) -- (degb);
+\draw[fa/arrow] (degb) -- (dega);
+\draw[fa/arrow] (brouwer) -- (dega);
+\draw[fa/arrow] (comp.south) -- ++(0,-0.34) -| (lsc.south);
+\draw[fa/arrow] (approx) -- (lsc);
+\draw[fa/arrow] (dega) -- (lsb);
+\draw[fa/arrow] (lsc) -- (lsb);
+\draw[fa/arrow] (dega.north) -- ++(0,0.42) -| (lsa.north);
+\draw[fa/arrow] (lsb) -- (lsa);
+\draw[fa/arrow] (schauder) -- (lsa);
+\draw[fa/arrow] (lsa) -- (cont);
+\end{tikzpicture}
+\end{center}}
+
+本章的度全部建立在实标量域上. 有限维部分统一使用有限维实赋范空间；无限维部分统一使用实 Banach 空间. 若以后在复 Banach 空间中调用本章，只允许忘掉复结构后在其底层实空间上应用这些结论；本章不建立独立的复度. 度只对带明确边界排除条件的可容许数据定义；延拓也要求整个参数区间上的紧同伦都可容许，而非只检查两个端点.
+
+\section{Brouwer 度}\label{sec:iii04-brouwer-degree}
+\index{Brouwer degree@Brouwer度}\index{orientation@定向!单纯形度}
+
+\begin{FADefinition}[B][可容许三元组与定向约定]{iii04:admissible-triple}
+设 \(\displaystyle n\geqslant1\)，\(\displaystyle \Omega\subset\mathbb R^n\) 有界开，\(\displaystyle f:\overline\Omega\to\mathbb R^n\) 连续，\(\displaystyle y\in\mathbb R^n\). 若
+\(\displaystyle y\notin f(\partial\Omega),\)
+则称 \(\displaystyle(f,\Omega,y)\) 为可容许三元组. Brouwer 度只对可容许三元组定义.
+
+一个定向的 \(\displaystyle n\)-单纯形是带有顶点次序的非退化仿射单纯形，两个次序相差偶置换时给出相同定向. 若 \(\displaystyle \sigma=[v_0,\dots,v_n]\)，其仿射坐标图把标准单纯形送到 \(\displaystyle\sigma\)；该坐标图线性部分的行列式为正时称保定向，为负时称反定向. 对相邻定向的 \(\displaystyle n\)-单纯形，要求它们在公共 \(\displaystyle(n-1)\)-面上诱导相反定向；满足此要求的有限三角剖分称为定向有限三角剖分. 一个映射在每个单纯形上仿射且在整个多面体上连续时称为分片仿射，简称 PL 映射.
+\end{FADefinition}
+
+\begin{FALemma}[C][边界间隙与多面体局部化]{iii04:boundary-clearance}
+对任意可容许三元组 \(\displaystyle(f,\Omega,y)\)，有
+\(\displaystyle \delta_{\partial} := \operatorname{dist}\bigl(y,f(\partial\Omega)\bigr)>0.\)
+令 \(\displaystyle Z=f^{-1}(y)\). 则 \(\displaystyle Z\) 紧且 \(\displaystyle Z\subset\Omega\). 若 \(\displaystyle Z\neq\varnothing\)，存在有限多面体 \(\displaystyle P\) 使
+\(\displaystyle Z\subset\operatorname{int}P\subset P\subset\Omega, \; y\notin f(\partial P).\)
+\end{FALemma}
+
+\begin{FAProof}
+因为 \(\displaystyle\Omega\) 有界，\(\displaystyle\overline\Omega\) 在有限维中紧，故 \(\displaystyle\partial\Omega\) 紧. 连续像 \(\displaystyle f(\partial\Omega)\) 紧，因此闭. 可容许性给出 \(\displaystyle y\notin f(\partial\Omega)\)，所以点到该闭集合的距离严格为正，即 \(\displaystyle\delta_{\partial}>0\).
+
+集合 \(\displaystyle Z=f^{-1}(\{y\})\) 在紧集合 \(\displaystyle\overline\Omega\) 中闭，故紧；可容许性又排除 \(\displaystyle Z\cap\partial\Omega\)，所以 \(\displaystyle Z\subset\Omega\). 若 \(\displaystyle Z\neq\varnothing\)，紧性给出
+\(\displaystyle \rho:=\operatorname{dist}(Z,\mathbb R^n\setminus\Omega)>0.\)
+取边长 \(\displaystyle a>0\) 的立方网格，使每个网格立方体的直径 \(\displaystyle\sqrt n\,a<\frac{\rho}{3}\)，并令 \(\displaystyle P\) 为所有与 \(\displaystyle Z\) 相交的闭网格立方体之并. 由于 \(\displaystyle Z\) 紧，只有有限多个这样的立方体. 若 \(\displaystyle x\in P\)，则存在 \(\displaystyle z\in Z\) 与 \(\displaystyle x\) 同属某个被选中的闭立方体，因此 \(\displaystyle\|x-z\|<\rho\)，从而 \(\displaystyle x\in\Omega\). 对任意 \(\displaystyle z\in Z\)，所有包含 \(\displaystyle z\) 的相邻闭网格立方体都与 \(\displaystyle Z\) 相交，因而全部包含在 \(\displaystyle P\) 中；这些相邻立方体之并含有 \(\displaystyle z\) 的一个开邻域，所以 \(\displaystyle z\in\operatorname{int}P\). 因此 \(\displaystyle Z\subset\operatorname{int}P\) 且 \(\displaystyle Z\cap\partial P=\varnothing\). 于是 \(\displaystyle f(x)=y\) 在 \(\displaystyle\partial P\) 上不可能成立，即 \(\displaystyle y\notin f(\partial P)\). 把每个立方体按固定方案三角剖分后，\(\displaystyle P\) 成为有限多面体. \hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][Brouwer 度的单纯形/PL 构造与支撑性质]{fa:DEG-B01}
+设 \(\displaystyle E\) 为有限维定向实赋范空间. 对可容许数据可以只使用有限单纯形组合学、PL 逼近与定向带符号计数构造整数度. 该构造满足：
+
+\begin{enumerate}
+\item PL 局部带符号计数对细分不变，并对边界安全 PL 同伦不变；
+\item 连续可容许映射的度与多面体邻域、三角剖分、充分精细的 PL 逼近以及小的一般位置目标点扰动的选择无关；
+\item 度满足切除性、边界安全一致扰动稳定性、可逆仿射局部符号、恒等映射规范化、有限维稳定化与有限维归约.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+我们按构造的逻辑顺序证明.
+
+\textbf{第一步：PL 局部带符号计数.} 先令 \(\displaystyle P\subset E\) 为有限定向的 \(\displaystyle n\)-维三角剖分多面体，\(\displaystyle g:P\to E\) 为 PL 映射. 固定目标点 \(\displaystyle y\)，并暂时假设 \(\displaystyle y\notin g(\partial P)\)，且 \(\displaystyle y\) 避开三角剖分的 \(\displaystyle(n-1)\)-骨架像. 对每个定向的 \(\displaystyle n\)-单纯形 \(\displaystyle\sigma\)，写
+\(\displaystyle g|_{\sigma}(x)=A_{\sigma}x+b_{\sigma}\)
+于任意保定向仿射坐标中. 若 \(\displaystyle A_{\sigma}\) 非奇异且 \(\displaystyle y\in g(\operatorname{int}\sigma)\)，定义局部贡献为 \(\displaystyle\operatorname{sgn}\det A_{\sigma}\)；否则贡献为 \(\displaystyle0\). 定义
+\[
+\deg_{\mathrm{PL}}(g,\operatorname{int}P,y)
+:=
+\sum_{\sigma\in\mathcal T^{(n)}}
+\iota_{\sigma}(g,y).
+\]
+三角剖分只有有限多个 \(\displaystyle n\)-单纯形，所以该和是有限和. 由于 \(\displaystyle y\) 避开骨架像，一个原像不可能同时位于两个单纯形的内部；而在非奇异仿射单纯形内原像至多一个，因此每项与总和均良定义. 同时对定义域与陪域作保定向坐标变换时，行列式符号不变. 若二者同时作反定向坐标变换，两个定向符号同时翻转，其比值仍不变，所以自空间度不依赖这种同步换坐标.
+
+\textbf{第二步：定向面抵消.} 给每个定向的 \(\displaystyle n\)-单纯形的余维一面赋诱导定向. 两个相邻 \(\displaystyle n\)-单纯形在公共内部面上的外法向优先约定恰好给出相反定向. 因而对任意内部面 \(\displaystyle\tau\)，其两个关联数为 \(\displaystyle+1\) 与 \(\displaystyle-1\)，相加为零；只有属于单个最高维单纯形的边界面没有配对项. 这把 III-03 的有限关联模式和\autoref{fa:SPERNER-B01}中的边界/内部计数提升为带符号关联恒等式：无符号组合计数已由 Sperner 三角剖分框架建立，这里附加定向符号后，内部关联项成对抵消而边界关联项保留. 该抵消是后续细分与棱柱同伦的唯一组合机制，不调用同调.
+
+\textbf{第三步：细分不变性.} 先考虑一个单纯形 \(\displaystyle\sigma\)，并把它作定向的重心剖分. 若 \(\displaystyle A_{\sigma}\) 奇异，则它在每个最高维子单纯形上的线性部分仍由 \(\displaystyle A_{\sigma}\) 限制得到，秩不可能增加到满秩，因此母单纯形与全部子单纯形的局部贡献都为零. 若 \(\displaystyle A_{\sigma}\) 非奇异而 \(\displaystyle y\notin g(\operatorname{int}\sigma)\)，由于第一步已经要求目标点避开 \(\displaystyle g(\partial\sigma)\)，实际上 \(\displaystyle y\notin g(\sigma)\). 紧集 \(\displaystyle g(\sigma)\) 与 \(\displaystyle y\) 有正距离，故充分接近 \(\displaystyle y\) 的一般位置目标点 \(\displaystyle y'\) 仍不属于 \(\displaystyle g(\sigma)\)，细分前后的全部贡献仍为零. 若 \(\displaystyle A_{\sigma}\) 非奇异且 \(\displaystyle y\in g(\operatorname{int}\sigma)\)，则唯一点 \(\displaystyle x=g|_{\sigma}^{-1}(y)\) 位于某个细分后的最高维子单纯形；若恰落在新骨架，就先在不穿越 \(\displaystyle g(\partial\sigma)\) 的小邻域内把目标点扰动到一般位置 \(\displaystyle y'\). 此时唯一原像位于唯一一个子单纯形内部. 在该子单纯形上，仿射映射的线性部分由 \(\displaystyle A_{\sigma}\) 与保定向的定义域坐标限制复合，局部符号与母单纯形相同；其余子单纯形没有原像，贡献为零. 因而子单纯形贡献总和等于母单纯形贡献. 对全部母单纯形求和即得一般位置目标点下的细分不变性；最后用第四步建立的目标点局部常值性，把小扰动严格传回原目标点.
+
+\textbf{第四步：PL 同伦不变性.} 设 \(\displaystyle g_t:P\to E\) 是边界安全 PL 同伦，即在某个棱柱三角剖分上 \(\displaystyle G(x,t)=g_t(x)\) 分片仿射，并且 \(\displaystyle y\notin g_t(\partial P)\) 对全部 \(\displaystyle t\in[0,1]\). 对一般位置的 \(\displaystyle y'\) 充分接近 \(\displaystyle y\)，\(\displaystyle G^{-1}(y')\) 避开所有维数至多 \(\displaystyle n-1\) 的棱柱面. 在每个 \(\displaystyle(n+1)\)-单纯形内，方程 \(\displaystyle G(x,t)=y'\) 的解集若非空就是一条仿射线段. 给这些线段由定义域定向与陪域定向诱导方向. 当线段穿过两个相邻 \(\displaystyle(n+1)\)-单纯形的公共 \(\displaystyle n\)-面时，第二步的相反诱导定向使两侧关联符号相反，所以该内部穿越在定向端点计数中抵消. 侧边界 \(\displaystyle\partial P\times[0,1]\) 上没有原像. 因而剩余的定向的端点只能位于 \(\displaystyle P\times\{0\}\) 与 \(\displaystyle P\times\{1\}\)，并且总定向边界计数为零. 底面贡献是 \(\displaystyle-\deg_{\mathrm{PL}}(g_0,\operatorname{int}P,y')\)，顶面贡献是 \(\displaystyle+\deg_{\mathrm{PL}}(g_1,\operatorname{int}P,y')\)，故二者相等. 这就是完全由棱柱三角剖分与定向的面-关联抵消得到的 PL 同伦不变性.
+
+同一论证还给出目标点局部常值性，但这里只使用真正的 PL 目标点同伦. 若 \(\displaystyle y_0,y_1\) 足够接近且闭线段 \(\displaystyle[y_0,y_1]\) 避开 \(\displaystyle g(\partial P)\)，令 \(\displaystyle y_s=(1-s)y_0+sy_1\). 因 \(\displaystyle y_s\) 关于 \(\displaystyle s\) 仿射，\(\displaystyle (x,s)\mapsto g(x)-y_s\) 在任一与 \(\displaystyle g\) 的三角剖分相容的棱柱三角剖分上确为 PL，故第四步给出两个目标点的度相等. 再取 \(\displaystyle E\setminus g(\partial P)\) 的一个连通分支 \(\displaystyle C\). 对固定 \(\displaystyle y_0\in C\)，令 \(\displaystyle R\subseteq C\) 为可由有限折线路径留在 \(\displaystyle C\) 内连接到 \(\displaystyle y_0\) 的点集. 因 \(\displaystyle C\) 开，\(\displaystyle R\) 与 \(\displaystyle C\setminus R\) 都相对开：每点都有一个包含于 \(\displaystyle C\) 的小球，而球中任意两点由线段相连. 连通性迫使 \(\displaystyle R=C\). 沿该有限折线路径逐段应用前述仿射目标点同伦，度因而在每个连通分支上常值. 所以若原目标点落在骨架像，只需取同一连通分支中任意充分接近的一般位置 \(\displaystyle y'\)，以 \(\displaystyle y'\) 定义带符号计数；结果与一般位置扰动的选择无关.
+
+\textbf{第五步：连续映射的 PL 逼近.} 回到可容许 \(\displaystyle(f,\Omega,y)\). 若 \(\displaystyle Z=f^{-1}(y)=\varnothing\)，定义度为 \(\displaystyle0\). 若 \(\displaystyle Z\neq\varnothing\)，由\autoref{iii04:boundary-clearance}取有限多面体邻域 \(\displaystyle P\) 使 \(\displaystyle Z\subset\operatorname{int}P\subset P\subset\Omega\) 且 \(\displaystyle y\notin f(\partial P)\). 因 \(\displaystyle\partial P\) 紧，令
+\(\displaystyle \delta_P := \operatorname{dist}\bigl(y,f(\partial P)\bigr)>0.\)
+\(\displaystyle f|_P\) 的一致连续性保证存在充分精细的三角剖分，使每个单纯形上 \(\displaystyle f\) 的振幅小于 \(\displaystyle\frac{\delta_P}{3}\). 在三角剖分顶点上令 \(\displaystyle g=f\)，并在每个单纯形上作仿射插值. 任取 \(\displaystyle x\in P\)，写成所属单纯形顶点的重心组合，便有
+\[
+\|g(x)-f(x)\|
+\leqslant
+\max_{v\text{ 该单纯形的顶点}}\|f(v)-f(x)\|
+<
+\frac{\delta_P}{3}.
+\]
+特别地，\(\displaystyle y\notin g(\partial P)\). 定义
+\(\displaystyle \deg(f,\Omega,y) := \deg_{\mathrm{PL}}(g,\operatorname{int}P,y),\)
+其中若 \(\displaystyle y\) 命中 PL 骨架像，就按第四步作小的一般位置目标点扰动.
+
+\textbf{第六步：选择无关性.} 先固定 \(\displaystyle P\). 两个充分精细的 PL 逼近 \(\displaystyle g_0,g_1\) 都满足 \(\displaystyle\sup_P\|g_i-f\|<\frac{\delta_P}{3}\). 先取 \(\displaystyle P\) 上使 \(\displaystyle g_0,g_1\) 都分片仿射的公共有限细分. 连续直线同伦
+\(\displaystyle H(x,t):=(1-t)g_0(x)+tg_1(x)\)
+一般并不因此自动成为 PL 映射；这里只把它作为要逼近的连续映射. 对 \(\displaystyle x\in\partial P\) 有
+\[
+\|H(x,t)-f(x)\|
+\leqslant
+(1-t)\|g_0(x)-f(x)\|+t\|g_1(x)-f(x)\|
+<
+\frac{\delta_P}{3},
+\]
+所以 \(\displaystyle\|H(x,t)-y\|>\frac{2\delta_P}{3}\) 于全部侧边界 \(\displaystyle\partial P\times[0,1]\).
+
+紧棱柱 \(\displaystyle P\times[0,1]\) 上的 \(\displaystyle H\) 一致地连续. 取一个足够细的有限三角剖分，使其在 \(\displaystyle t=0,1\) 两个端面上都是上述公共细分的细分，并使每个单纯形上 \(\displaystyle H\) 的振幅小于 \(\displaystyle\frac{\delta_P}{6}\). 在所有棱柱顶点上令 \(\displaystyle G=H\)，并在每个单纯形上作仿射插值. 与第五步相同的重心估计给
+\[
+\sup_{P\times[0,1]}\|G-H\|<\frac{\delta_P}{6}.
+\]
+由于端面上的 \(\displaystyle H(\cdot,0)=g_0\)、\(\displaystyle H(\cdot,1)=g_1\) 已在公共细分上仿射，端面插值严格保持这些值，故
+\(\displaystyle G(\cdot,0)=g_0,\; G(\cdot,1)=g_1.\)
+同时侧边界上 \(\displaystyle\|G(x,t)-y\|>\frac{\delta_P}{2}\)，所以 \(\displaystyle G\) 是真正边界安全的 PL 棱柱同伦.
+
+若 \(\displaystyle y\) 对 \(\displaystyle G\) 的棱柱三角剖分不是一般位置目标点，取一般位置的 \(\displaystyle y'\) 满足 \(\displaystyle\|y'-y\|<\frac{\delta_P}{6}\). 于是 \(\displaystyle y'\) 仍避开 \(\displaystyle G(\partial P\times[0,1])\)，而从 \(\displaystyle y\) 到 \(\displaystyle y'\) 的直线段也分别避开 \(\displaystyle g_0(\partial P)\) 与 \(\displaystyle g_1(\partial P)\). 第四步的 PL-棱柱不变性给
+\[
+\deg_{\mathrm{PL}}(g_0,\operatorname{int}P,y')
+=
+\deg_{\mathrm{PL}}(g_1,\operatorname{int}P,y'),
+\]
+前一步的目标点局部常值性再把 \(\displaystyle y'\) 严格传回 \(\displaystyle y\). 因而逼近选择无关性成立；三角剖分选择无关性再由公共细分与第三步得到. 这里一致逼近、端点保持、边界安全性与一般位置目标点过渡都已显式闭合，没有把连续直线同伦误称为 PL.
+
+若 \(\displaystyle P_0,P_1\) 是两个合法多面体邻域，令 \(\displaystyle P=P_0\cap P_1\) 附近取一个更小有限多面体邻域 \(\displaystyle Q\) 满足 \(\displaystyle Z\subset\operatorname{int}Q\subset Q\subset\operatorname{int}P_0\cap\operatorname{int}P_1\). 在 \(\displaystyle P_i\setminus\operatorname{int}Q\) 上没有 \(\displaystyle f(x)=y\). 对充分接近 PL 逼近，同样可保持该环状区域无目标点原像. 因局部带符号计数只来自含原像的单纯形，删除这些零贡献单纯形不改变总和，于是
+\[
+\deg(f,\operatorname{int}P_i,y)
+=
+\deg(f,\operatorname{int}Q,y),
+\quad i=0,1.
+\]
+这就是切除性/局部化，也证明多面体邻域的选择无关. 一般位置目标点的选择无关性已由第四步的目标点局部常值性得到. 至此连续度良定义.
+
+\textbf{第七步：边界扰动与局部符号.} 若连续映射 \(\displaystyle f,g:\overline\Omega\to E\) 满足直线同伦 \(\displaystyle H_t=(1-t)f+tg\) 对边界始终避开 \(\displaystyle y\)，则先在紧零点集合附近作多面体局部化，再对 \(\displaystyle H\) 作共同的充分精细的棱柱逼近，第四步给出度相等. 特别地，若
+\[
+\eta
+:=
+\inf_{x\in\partial\Omega}\|f(x)-y\|>0,
+\quad
+\sup_{x\in\partial\Omega}\|f(x)-g(x)\|<\eta,
+\]
+则
+\(\displaystyle \|H_t(x)-y\| \geqslant \|f(x)-y\|-t\|g(x)-f(x)\|>0,\)
+所以度稳定. 若 \(\displaystyle f=g\) 在 \(\displaystyle\partial\Omega\) 上，则边界上 \(\displaystyle H_t=f=g\)，因此可容许性自动保持.
+
+若 \(\displaystyle A:E\to E\) 可逆线性，\(\displaystyle0\in\Omega\)，且 \(\displaystyle0\notin A(\partial\Omega)\)，切除性允许把 \(\displaystyle\Omega\) 缩到一个含 \(\displaystyle0\) 的定向单纯形；在该单纯形上只有 \(\displaystyle0\) 的一个原像，局部带符号计数直接给出
+\(\displaystyle \deg(A,\Omega,0)=\operatorname{sgn}\det A.\)
+取 \(\displaystyle A=I_E\) 得恒等映射规范化依据.
+
+\textbf{第八步：稳定化.} 设 \(\displaystyle E,F\) 为有限维定向实空间，\(\displaystyle\Omega\subset E\) 有界开，\(\displaystyle g:\overline\Omega\to E\) 连续且 \(\displaystyle0\notin g(\partial\Omega)\)，并取含 \(\displaystyle0\) 的有界开球 \(\displaystyle B_F\subset F\). 在乘积定向下，\(\displaystyle(g\oplus I_F)(x,z)=(g(x),z)\). 若 \(\displaystyle(x,z)\in\partial(\Omega\times B_F)\)，则要么 \(\displaystyle x\in\partial\Omega\)，从而 \(\displaystyle g(x)\neq0\)，要么 \(\displaystyle z\in\partial B_F\)，从而 \(\displaystyle z\neq0\). 因此乘积三元组可容许，而且其零点恰为 \(\displaystyle(g^{-1}(0)\cap\Omega)\times\{0\}\). 对 PL \(\displaystyle g\) 的一般位置情形，每个零点的局部贡献与 \(\displaystyle I_F\) 在 \(\displaystyle0\) 的唯一局部贡献配对，分块行列式满足 \(\displaystyle\det\operatorname{diag}(A_{\sigma},I_F)=\det A_{\sigma}\)，故带符号计数不变，即
+\(\displaystyle \deg(g\oplus I_F,\Omega\times B_F,0) = \deg(g,\Omega,0).\)
+一般连续 \(\displaystyle g\) 的情形，取同时保持两侧边界排除的充分精细 PL 逼近；第五、六步的逼近与选择无关性把同一等式传回连续映射. 这给出有限维稳定化.
+
+\textbf{第九步：有限维归约.} 设 \(\displaystyle E\subset F\) 为有限维定向子空间，选择补空间 \(\displaystyle G\) 使 \(\displaystyle F=E\oplus G\)，并给 \(\displaystyle F\) 乘积定向. 设 \(\displaystyle U\subset F\) 有界开，\(\displaystyle K:\overline U\to E\) 连续，且 \(\displaystyle x-Kx\neq0\) 在 \(\displaystyle\partial_FU\) 上. 任一零点满足 \(\displaystyle x=Kx\in E\)，故零点集合包含于 \(\displaystyle E\). 由有限维中 \(\displaystyle\overline U\) 的紧性，零点集合紧. 由于零点集合是 \(\displaystyle U\cap E\) 内的紧集，可取有界开 \(\displaystyle V\Subset U\cap E\) 包含全部零点；于是 \(\displaystyle e-Ke\neq0\) 在 \(\displaystyle\partial_EV\) 上. 紧集 \(\displaystyle\overline V\) 到闭集 \(\displaystyle F\setminus U\) 的距离为正，因此可再取 \(\displaystyle r>0\) 足够小，使 \(\displaystyle\overline V+B_G(0,r)\subset U\). 切除性把环境空间中的度缩到 \(\displaystyle V\times B_G(0,r)\).
+
+在该乘积邻域上写 \(\displaystyle x=e+z\)，并定义
+\(\displaystyle \Phi_t(e,z) := \bigl(e-K(e+tz),z\bigr), \; 0\leqslant t\leqslant1.\)
+若 \(\displaystyle z\neq0\)，第二分量已经非零；若 \(\displaystyle z=0\) 且 \(\displaystyle e\in\partial_EV\)，第一分量 \(\displaystyle e-Ke\neq0\). 因而同伦在整个乘积边界上安全. 在 \(\displaystyle t=1\) 得 \(\displaystyle I_F-K\)，在 \(\displaystyle t=0\) 得 \(\displaystyle(I_E-K|_E)\oplus I_G\). 由环境空间中的切除性、同伦不变性与稳定化，
+\(\displaystyle \deg_F(I_F-K,U,0) = \deg_E(I_E-K|_E,V,0).\)
+另一方面，\(\displaystyle U\cap E\) 中的全部零点已经包含于 \(\displaystyle V\)，故 \(\displaystyle E\) 中的切除性给出
+\(\displaystyle \deg_E(I_E-K|_E,V,0) = \deg_E(I_E-K|_E,U\cap E,0).\)
+合并两式即得有限维归约公式.
+这给出了后续 Leray--Schauder 构造真正需要的归约接口，而不是只把有限维子空间选择无关性当作名称. \hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][Brouwer 度的规范性质]{fa:DEG-A01}
+设 \(\displaystyle\Omega\subset\mathbb R^n\) 有界开，\(\displaystyle f:\overline\Omega\to\mathbb R^n\) 连续，且 \(\displaystyle y\notin f(\partial\Omega)\). 则\autoref{fa:DEG-B01}构造出唯一的整数
+\(\displaystyle \deg(f,\Omega,y)\in\mathbb Z\)
+并满足下列性质.
+
+\begin{enumerate}
+\item \textbf{规范化.} 若 \(\displaystyle y\in\Omega\)，则 \(\displaystyle\deg(I,\Omega,y)=1\)；若 \(\displaystyle y\notin\overline\Omega\)，则 \(\displaystyle\deg(I,\Omega,y)=0\).
+\item \textbf{可加性.} 若 \(\displaystyle\Omega_1,\dots,\Omega_m\subset\Omega\) 两两不交开，\(\displaystyle\overline{\Omega_j}\subset\Omega\)，且 \(\displaystyle f^{-1}(y)\subset\bigcup_{j=1}^m\Omega_j\)，则
+\[
+\deg(f,\Omega,y)
+=
+\sum_{j=1}^m\deg(f,\Omega_j,y).
+\]
+\item \textbf{同伦不变性.} 若 \(\displaystyle H:\overline\Omega\times[0,1]\to\mathbb R^n\) 连续且 \(\displaystyle y\notin H(\partial\Omega,t)\) 对每个 \(\displaystyle t\in[0,1]\)，则
+\(\displaystyle \deg(H(\cdot,0),\Omega,y) = \deg(H(\cdot,1),\Omega,y).\)
+\item \textbf{存在性.} 若 \(\displaystyle\deg(f,\Omega,y)\neq0\)，则存在 \(\displaystyle x\in\Omega\) 使 \(\displaystyle f(x)=y\).
+\end{enumerate}
+此外，\(\displaystyle y\mapsto\deg(f,\Omega,y)\) 在 \(\displaystyle\mathbb R^n\setminus f(\partial\Omega)\) 的每个连通分支上常值.
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle y\in\Omega\)，恒等映射的唯一原像是 \(\displaystyle y\)，切除性把定义域缩到 \(\displaystyle y\) 的一个小定向单纯形；局部线性部分为 \(\displaystyle I\)，由\autoref{fa:DEG-B01}的仿射符号得度 \(\displaystyle1\). 若 \(\displaystyle y\notin\overline\Omega\)，原像为空，构造定义度为 \(\displaystyle0\). 这证明规范化.
+
+先证两集合可加性. 设 \(\displaystyle\Omega_1,\Omega_2\) 不交，且包含全部原像. 因零点集合紧，可在每个 \(\displaystyle\Omega_j\) 内选有限多面体邻域 \(\displaystyle P_j\) 覆盖相应原像，并令 \(\displaystyle P_1\cap P_2=\varnothing\). 切除性把 \(\displaystyle\Omega\) 缩到 \(\displaystyle\operatorname{int}P_1\cup\operatorname{int}P_2\). 在共同三角剖分上，局部带符号计数是最高维单纯形贡献的有限和，而两个多面体不交，所以该和分裂为两部分，恰是两个度之和. 对有限个集合归纳即得一般式.
+
+对连续同伦 \(\displaystyle H\)，若边界安全条件成立，则反证可得一致边界间隙. 若不存在一致正间隙，可取 \(\displaystyle x_k\in\partial\Omega\)、\(\displaystyle t_k\in[0,1]\) 使 \(\displaystyle\|H(x_k,t_k)-y\|\to0\). 有限维有界性使 \(\displaystyle(x_k)\) 有收敛子列，\(\displaystyle[0,1]\) 紧使 \(\displaystyle(t_k)\) 同时有收敛子列；极限 \(\displaystyle(x,t)\in\partial\Omega\times[0,1]\) 与连续性给出 \(\displaystyle H(x,t)=y\)，矛盾. 因而可以在整个棱柱上作充分精细的 PL 逼近，同时保持边界排除条件；\autoref{fa:DEG-B01}的 PL 棱柱同伦不变性便给端点度相等.
+
+若没有 \(\displaystyle x\in\Omega\) 满足 \(\displaystyle f(x)=y\)，可容许性同时排除边界原像，所以 \(\displaystyle f^{-1}(y)=\varnothing\). 按\autoref{fa:DEG-B01}的构造，度为 \(\displaystyle0\). 其逆否命题就是存在性性质. 最后，把连通分支内任意路径分段为有限条短线段，并对 \(\displaystyle f(x)-y(t)\) 使用同一边界安全同伦，即得目标点局部常值性.
+
+III-03 的\autoref{fa:BROUWER-A01}已由\autoref{fa:SPERNER-B01}独立证明，因此本定理所需的有限维不动点前驱结果已经存在，不依赖度. 本章只在度构造完成后把它作为一致性框架复用：对紧凸有限维集合上的连续自映射，\autoref{fa:BROUWER-A01}已直接保证不动点；任何随后用非零度再推出的 Brouwer 不动点推论都只是第二条证明路线，不改变依赖方向. \hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[Brouwer 不动点一致性]
+本章不以\autoref{fa:DEG-A01}反向证明 III-03 的\autoref{fa:BROUWER-A01}. 已冻结的 Brouwer 证明基于 Sperner 引理. 度可以在事后把某些不动点问题写成 \(\displaystyle I-T\) 的零点问题，这是一致性检查，而不是前置结果替换.
+\end{FARemark}
+
+\section{同伦}\label{sec:iii04-homotopy}
+\index{homotopy@同伦!可容许}\index{degree@度!同伦不变性}
+
+\begin{FADefinition}[B][可容许同伦]{iii04:admissible-homotopy}
+设 \(\displaystyle\Omega\subset\mathbb R^n\) 有界开，\(\displaystyle H:\overline\Omega\times[0,1]\to\mathbb R^n\) 连续，目标点 \(\displaystyle y\in\mathbb R^n\) 固定. 若
+\(\displaystyle y\notin H(\partial\Omega,t), \; 0\leqslant t\leqslant1,\)
+则称 \(\displaystyle H\) 为关于\(\displaystyle y\) 的可容许同伦. 若目标点随参数移动为连续路径 \(\displaystyle y(t)\)，只把它改写成目标点 \(\displaystyle0\) 的映射 \(\displaystyle H(x,t)-y(t)\) 后使用度.
+\end{FADefinition}
+
+\begin{FAProposition}[B][度守恒与扰动稳定性]{iii04:degree-conservation}
+在\autoref{iii04:admissible-homotopy}的假设下，\(\displaystyle\deg(H(\cdot,t),\Omega,y)\) 与 \(\displaystyle t\) 无关. 特别地，若 \(\displaystyle f,g:\overline\Omega\to\mathbb R^n\) 连续，\(\displaystyle(f,\Omega,y)\) 可容许，且
+\[
+\sup_{x\in\partial\Omega}\|f(x)-g(x)\|
+<
+\operatorname{dist}\bigl(y,f(\partial\Omega)\bigr),
+\]
+则直线同伦边界安全，从而 \(\displaystyle\deg(f,\Omega,y)=\deg(g,\Omega,y)\). 若 \(\displaystyle f=g\) 在 \(\displaystyle\partial\Omega\) 上，同一结论成立.
+\end{FAProposition}
+
+\begin{FAProof}
+第一条就是\autoref{fa:DEG-A01}的同伦不变性. 对扰动陈述，令 \(\displaystyle\eta=\operatorname{dist}(y,f(\partial\Omega))\). 对 \(\displaystyle H_t=(1-t)f+tg\) 与边界点 \(\displaystyle x\)，三角不等式给出
+\(\displaystyle \|H_t(x)-y\| \geqslant \|f(x)-y\|-t\|g(x)-f(x)\| > \eta-\eta=0.\)
+所以同伦对整个 \(\displaystyle t\in[0,1]\) 可容许，再用\autoref{fa:DEG-A01}. 若 \(\displaystyle f=g\) 在边界上，\(\displaystyle H_t|_{\partial\Omega}=f|_{\partial\Omega}\)，因此更直接. \hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[度的延拓不等于连续解支]
+同伦不变性只保存一个整数不变量. 若度非零，它迫使每个可容许参数切片至少有一个零点；它并不声称存在单值连续路径 \(\displaystyle t\mapsto x(t)\) 跟踪某个指定解，也不排除解支合并、分叉或交换. 后续 Leray--Schauder 延拓使用的正是度守恒加存在性，而不是虚构的全局连续解支定理.
+\end{FARemark}
+
+\begin{FARemark}[切除性与目标点局部常值性]
+若零点集合被开子集 \(\displaystyle U\Subset\Omega\) 包含，则\autoref{fa:DEG-B01}的局部化给出 \(\displaystyle\deg(f,\Omega,y)=\deg(f,U,y)\). 若目标点在同一个连通分支 \(\displaystyle\mathbb R^n\setminus f(\partial\Omega)\) 内移动，\autoref{fa:DEG-A01}的局部常值性保证度不变. 这两条性质共同允许后续把无限维不动点问题先局部化，再搬到公共有限维子空间.
+\end{FARemark}
+
+\section{紧扰动}\label{sec:iii04-compact-perturbations}
+\index{compact perturbation@紧扰动!恒等映射减紧映射}\index{boundary exclusion@边界排除}
+
+以下令 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Omega\subset X\) 有界开，\(\displaystyle\mathcal K:\overline\Omega\to X\) 连续紧. 研究的映射是
+\(\displaystyle \mathcal F := \mathcal I-\mathcal K.\)
+必须区分：\(\displaystyle\mathcal K\) 紧，并不意味着 \(\displaystyle\mathcal F\) 紧；\(\displaystyle\mathcal F\) 通常只是恒等映射减紧映射. 方程 \(\displaystyle\mathcal F(x)=0\) 与不动点方程 \(\displaystyle x=\mathcal Kx\) 完全等价. I-13 的\autoref{fa:COMP-A01}提供范数相对紧性的先行接口，III-03 已把相同紧像机制扩展到非线性映射；本节只使用这个紧性机制，不把非线性 \(\displaystyle\mathcal K\) 错当线性紧算子.
+
+\begin{FAProposition}[C][紧扰动恒等映射的边界间隙与有限维逼近工具]{fa:LS-C01}
+在上述设定中成立以下三项.
+
+\begin{enumerate}
+\item 若 \(\displaystyle x\neq\mathcal Kx\) 对全部 \(\displaystyle x\in\partial\Omega\)，则存在 \(\displaystyle\delta>0\) 使
+\(\displaystyle \|x-\mathcal Kx\|\geqslant\delta, \; x\in\partial\Omega.\)
+\item 令 \(\displaystyle K_0=\overline{\mathcal K(\overline\Omega)}\). 对任意充分小 \(\displaystyle\varepsilon>0\)，存在连续有限维值域映射 \(\displaystyle\mathcal K_{\varepsilon}:\overline\Omega\to X\) 满足
+\[
+\sup_{x\in\overline\Omega}
+\|\mathcal K_{\varepsilon}x-\mathcal Kx\|<\varepsilon.
+\]
+若 \(\displaystyle\varepsilon<\frac{\delta}{3}\)，则 \(\displaystyle x\neq\mathcal K_{\varepsilon}x\) 在 \(\displaystyle\partial\Omega\) 上.
+\item 若 \(\displaystyle\mathcal H:\overline\Omega\times[0,1]\to X\) 连续，整体像相对紧，并且 \(\displaystyle x\neq\mathcal H(x,t)\) 对全部 \(\displaystyle(x,t)\in\partial\Omega\times[0,1]\)，则存在一致 \(\displaystyle\delta_H>0\) 使
+\(\displaystyle \|x-\mathcal H(x,t)\|\geqslant\delta_H\)
+对全部边界点与参数成立.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+先证第一项. 无限维中的 \(\displaystyle\partial\Omega\) 一般不紧，所以不能写“连续函数在紧边界上取最小值”. 假设不存在正间隙，则可取 \(\displaystyle x_n\in\partial\Omega\) 使
+\(\displaystyle \|x_n-\mathcal Kx_n\|\longrightarrow0.\)
+因为 \(\displaystyle\Omega\) 有界，\(\displaystyle(x_n)\) 有界. \(\displaystyle\mathcal K\) 的紧性给出子列，仍记作 \(\displaystyle(x_n)\)，使 \(\displaystyle\mathcal Kx_n\to z\). 于是
+\[
+\|x_n-z\|
+\leqslant
+\|x_n-\mathcal Kx_n\|+
+\|\mathcal Kx_n-z\|
+\longrightarrow0.
+\]
+边界是闭，故 \(\displaystyle z\in\partial\Omega\). 连续性给出 \(\displaystyle\mathcal Kx_n\to\mathcal Kz\)，与已有极限比较得到 \(\displaystyle\mathcal Kz=z\)，矛盾. 因而正间隙存在. 这里使用的是\autoref{fa:COMP-A01}所代表的相对紧性/序列紧性接口，并通过 III-03 的非线性紧映射定义应用于 \(\displaystyle\mathcal K\).
+
+第二项中，\(\displaystyle K_0\) 紧. 把 III-03 的\autoref{fa:COMP-MAP-B01}应用于紧集合 \(\displaystyle K_0\)，得到有限维实子空间 \(\displaystyle E_{\varepsilon}\subset X\) 与连续映射 \(\displaystyle\mathcal P_{\varepsilon}:K_0\to E_{\varepsilon}\) 满足
+\[
+\sup_{z\in K_0}\|\mathcal P_{\varepsilon}z-z\|<\varepsilon.
+\]
+令 \(\displaystyle\mathcal K_{\varepsilon}=\mathcal P_{\varepsilon}\circ\mathcal K\). 则其值域位于 \(\displaystyle E_{\varepsilon}\)，且满足所需一致逼近. 对 \(\displaystyle x\in\partial\Omega\)，
+\[
+\|x-\mathcal K_{\varepsilon}x\|
+\geqslant
+\|x-\mathcal Kx\|-
+\|\mathcal Kx-\mathcal K_{\varepsilon}x\|
+>
+\delta-\frac{\delta}{3}>0.
+\]
+所以边界排除条件保持.
+
+第三项仍不能把 \(\displaystyle\partial\Omega\times[0,1]\) 称为紧. 若一致正间隙不存在，取 \(\displaystyle x_n\in\partial\Omega\)、\(\displaystyle t_n\in[0,1]\) 使 \(\displaystyle\|x_n-\mathcal H(x_n,t_n)\|\to0\). 由总体像相对紧，抽子列使 \(\displaystyle\mathcal H(x_n,t_n)\to z\)；同时再抽子列使 \(\displaystyle t_n\to t\in[0,1]\). 第一条收敛与残差趋于零给 \(\displaystyle x_n\to z\)，故 \(\displaystyle z\in\partial\Omega\). \(\displaystyle\mathcal H\) 的连续性给
+\(\displaystyle \mathcal H(x_n,t_n) \longrightarrow \mathcal H(z,t).\)
+比较极限得 \(\displaystyle z=\mathcal H(z,t)\)，与边界排除条件矛盾. \hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][有限维值域的相对边界与归约]{iii04:finite-reduction}
+设 \(\displaystyle\mathcal K_{\varepsilon}:\overline\Omega\to X\) 连续，值域包含于有限维实子空间 \(\displaystyle E\). 令 \(\displaystyle\Omega_E=\Omega\cap E\). 则 \(\displaystyle\Omega_E\) 是 \(\displaystyle E\) 中有界开集，
+\(\displaystyle \partial_E\Omega_E \subseteq E\cap\partial_X\Omega.\)
+若 \(\displaystyle x-\mathcal K_{\varepsilon}x=0\)，则 \(\displaystyle x\in E\). 因而环境空间中的零点问题完全归约到 \(\displaystyle E\) 中的 \(\displaystyle I_E-\mathcal K_{\varepsilon}|_E\)，且\autoref{fa:DEG-B01}的有限维归约可用于不同有限维超空间的比较.
+\end{FALemma}
+
+\begin{FAProof}
+子空间拓扑使 \(\displaystyle\Omega_E=\Omega\cap E\) 在 \(\displaystyle E\) 中开；它继承 \(\displaystyle\Omega\) 的有界性. 又因为 \(\displaystyle E\) 有限维，所以在 \(\displaystyle X\) 中闭，并且
+\(\displaystyle \overline{\Omega_E}^{\,E} = E\cap\overline\Omega.\)
+因此任取 \(\displaystyle x\in\partial_E\Omega_E\)，有 \(\displaystyle x\in E\cap\overline\Omega\) 且 \(\displaystyle x\notin\Omega\)；于是 \(\displaystyle x\in E\cap\partial_X\Omega\)，即 \(\displaystyle\partial_E\Omega_E\subseteq E\cap\partial_X\Omega\). 若 \(\displaystyle x=\mathcal K_{\varepsilon}x\)，右侧属于 \(\displaystyle E\)，故 \(\displaystyle x\in E\). 注意 \(\displaystyle\Omega_E\) 不必连通，更不必是球；Brouwer 度已经对任意有界开且满足边界排除条件的定义域定义，故不需要附加几何假设. \hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][Leray--Schauder 有限维归约选择无关性与同伦依据]{fa:LS-B01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Omega\subset X\) 有界开，\(\displaystyle\mathcal K:\overline\Omega\to X\) 连续紧，并且 \(\displaystyle x\neq\mathcal Kx\) 在 \(\displaystyle\partial\Omega\) 上. 取\autoref{fa:LS-C01}的边界间隙 \(\displaystyle\delta>0\). 若 \(\displaystyle\mathcal K_0,\mathcal K_1\) 是连续有限维值域映射，满足
+\[
+\sup_{\overline\Omega}\|\mathcal K_i-\mathcal K\|<\frac{\delta}{3},
+\quad i=0,1,
+\]
+其值域分别包含于有限维实子空间 \(\displaystyle E_0,E_1\)，则
+\[
+\deg\bigl(I_{E_0}-\mathcal K_0,\Omega\cap E_0,0\bigr)
+=
+\deg\bigl(I_{E_1}-\mathcal K_1,\Omega\cap E_1,0\bigr).
+\]
+
+更一般地，若 \(\displaystyle\mathcal H:\overline\Omega\times[0,1]\to X\) 是连续紧同伦，整体像相对紧，且 \(\displaystyle x\neq\mathcal H(x,t)\) 对所有边界点与 \(\displaystyle t\in[0,1]\) 成立，则任意充分精确的有限维归约所定义的端点 Brouwer 度相同.
+\end{FATheorem}
+
+\begin{FAProof}
+令 \(\displaystyle F=E_0+E_1\)，这是有限维实子空间. 对每个 \(\displaystyle i\)，把 \(\displaystyle\mathcal K_i\) 限制到 \(\displaystyle\overline\Omega\cap F\). 因值域 \(\displaystyle\mathcal K_i\subseteq E_i\subseteq F\)，任何 \(\displaystyle I_F-\mathcal K_i\) 的零点都位于 \(\displaystyle E_i\). 对 \(\displaystyle x\in\partial_F(\Omega\cap F)\)，由\autoref{iii04:finite-reduction}的边界包含关系有 \(\displaystyle x\in\partial_X\Omega\)，故
+\[
+\|x-\mathcal K_i x\|
+\geqslant
+\|x-\mathcal Kx\|-
+\|\mathcal Kx-\mathcal K_i x\|
+>
+\frac{2\delta}{3}.
+\]
+于是两个有限维\allowbreak\ 三元组 都可容许.\par\noindent\autoref{fa:DEG-B01}的有限维\allowbreak\ 归约/稳定化给
+\[
+\deg\bigl(I_{E_i}-\mathcal K_i,\Omega\cap E_i,0\bigr)
+=
+\deg\bigl(I_F-\mathcal K_i,\Omega\cap F,0\bigr).
+\]
+
+在公共子空间 \(\displaystyle F\) 中定义凸组合同伦
+\(\displaystyle \mathcal K_t :=(1-t)\mathcal K_0+t\mathcal K_1.\)
+对 \(\displaystyle x\in\partial_F(\Omega\cap F)\)，
+\[
+\|\mathcal K_t x-\mathcal Kx\|
+\leqslant
+(1-t)\|\mathcal K_0x-\mathcal Kx\|
++t\|\mathcal K_1x-\mathcal Kx\|
+<
+\frac{\delta}{3},
+\]
+故 \(\displaystyle\|x-\mathcal K_t x\|>\frac{2\delta}{3}\). 因而 \(\displaystyle I_F-\mathcal K_t\) 对整个 \(\displaystyle t\in[0,1]\) 边界安全. 由\autoref{fa:DEG-A01}的同伦不变性，
+\[
+\deg\bigl(I_F-\mathcal K_0,\Omega\cap F,0\bigr)
+=
+\deg\bigl(I_F-\mathcal K_1,\Omega\cap F,0\bigr).
+\]
+与前一式合并，得到逼近与子空间选择无关性.
+
+现在处理紧同伦. 由\autoref{fa:LS-C01}，存在一致边界间隙 \(\displaystyle\delta_H>0\). 令
+\(\displaystyle K_H := \overline{\mathcal H(\overline\Omega\times[0,1])},\)
+它紧. 对 \(\displaystyle\varepsilon<\frac{\delta_H}{3}\)，用\autoref{fa:COMP-MAP-B01}构造连续映射 \(\displaystyle\mathcal P_{\varepsilon}:K_H\to E\)，其中 \(\displaystyle E\) 有限维，且 \(\displaystyle\|\mathcal P_{\varepsilon}z-z\|<\varepsilon\) 对全部 \(\displaystyle z\in K_H\). 令
+\[
+\mathcal H_{\varepsilon}(x,t)
+:=
+\mathcal P_{\varepsilon}\bigl(\mathcal H(x,t)\bigr).
+\]
+则 \(\displaystyle\mathcal H_{\varepsilon}\) 连续，值域包含于 \(\displaystyle E\)，并在整个乘积域上一致逼近 \(\displaystyle\mathcal H\). 对边界点，
+\(\displaystyle \|x-\mathcal H_{\varepsilon}(x,t)\| > \frac{2\delta_H}{3},\)
+所以 \(\displaystyle I_E-\mathcal H_{\varepsilon}(\cdot,t)\) 在 \(\displaystyle\Omega\cap E\) 上构成有限维可容许同伦. 由\autoref{fa:DEG-A01}，两个端点度相同. 若端点另选充分精确的有限维逼近，只需用本证明第一部分分别与 \(\displaystyle\mathcal H_{\varepsilon}(\cdot,0)\) 和 \(\displaystyle\mathcal H_{\varepsilon}(\cdot,1)\) 比较，即得端点相等. 整个证明实际使用紧性/边界间隙、Brouwer 同伦不变性与稳定化/归约；没有把选择无关性当作未证的“标准性质”. \hfill\(\square\)
+\end{FAProof}
+
+\section{Leray--Schauder 度}\label{sec:iii04-ls-degree}
+\index{Leray--Schauder degree@Leray--Schauder度}
+
+\begin{FATheorem}[A][Leray--Schauder 度的定义与规范性质]{fa:LS-A01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Omega\subset X\) 有界开，\(\displaystyle\mathcal K:\overline\Omega\to X\) 连续紧，并且
+\(\displaystyle x\neq\mathcal Kx, \; x\in\partial\Omega.\)
+取任意充分精确的连续有限维值域逼近 \(\displaystyle\mathcal K_{\varepsilon}\)，其值域包含于有限维实子空间 \(\displaystyle E\)，并令 \(\displaystyle\Omega_E=\Omega\cap E\). 定义
+\[
+\deg_{\mathrm{LS}}(I-\mathcal K,\Omega,0)
+:=
+\deg\bigl(I_E-\mathcal K_{\varepsilon},\Omega_E,0\bigr).
+\]
+则该整数与逼近及有限维子空间的选择无关，并满足：
+
+\begin{enumerate}
+\item \textbf{规范化.} 若 \(\displaystyle0\in\Omega\)，则 \(\displaystyle\deg_{\mathrm{LS}}(I,\Omega,0)=1\).
+\item \textbf{可加性/切除性.} 若不动点集被有限个两两不交开子集 \(\displaystyle\Omega_1,\dots,\Omega_m\Subset\Omega\) 覆盖，则
+\[
+\deg_{\mathrm{LS}}(I-\mathcal K,\Omega,0)
+=
+\sum_{j=1}^m
+\deg_{\mathrm{LS}}(I-\mathcal K,\Omega_j,0).
+\]
+\item \textbf{同伦不变性.} 若 \(\displaystyle\mathcal H:\overline\Omega\times[0,1]\to X\) 连续，整体像相对紧，并且 \(\displaystyle x\neq\mathcal H(x,t)\) 对全部 \(\displaystyle x\in\partial\Omega\)、\(\displaystyle t\in[0,1]\) 成立，则
+\[
+\deg_{\mathrm{LS}}(I-\mathcal H_0,\Omega,0)
+=
+\deg_{\mathrm{LS}}(I-\mathcal H_1,\Omega,0).
+\]
+\item \textbf{存在性.} 若 \(\displaystyle\deg_{\mathrm{LS}}(I-\mathcal K,\Omega,0)\neq0\)，则存在 \(\displaystyle x\in\Omega\) 使 \(\displaystyle x=\mathcal Kx\).
+\item \textbf{有限维一致性.} 若 \(\displaystyle X\) 有限维，则 Leray--Schauder 度与 \(\displaystyle I-\mathcal K\) 的 Brouwer 度一致.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+良定义性正是\autoref{fa:LS-B01}的第一部分：任意两个充分精确的有限维逼近先扩大到公共有限维子空间，再由归约、凸组合同伦与 Brouwer 同伦不变性比较，所得整数相同.
+
+规范化中 \(\displaystyle\mathcal K=0\). 取任意有限维实子空间 \(\displaystyle E\) 包含 \(\displaystyle0\). 在 \(\displaystyle\Omega_E\) 上候选度是 \(\displaystyle\deg(I_E,\Omega_E,0)\)，由\autoref{fa:DEG-A01}的规范化等于 \(\displaystyle1\). 若 \(\displaystyle X=\{0\}\)，采用零维度的同一规范化约定，结论仍为 \(\displaystyle1\).
+
+证明可加性. 不动点集
+\(\displaystyle Z := \{x\in\overline\Omega:x=\mathcal Kx\}\)
+是紧：若 \(\displaystyle x_n\in Z\)，则 \(\displaystyle x_n=\mathcal Kx_n\)，\(\displaystyle\mathcal K\) 的紧性给出收敛子列；极限由连续性仍属于 \(\displaystyle Z\). 边界排除条件给 \(\displaystyle Z\subset\Omega\). 取开子集 \(\displaystyle\Omega_j\) 覆盖 \(\displaystyle Z\)，可先缩小它们使闭包仍在原集合内并保持不交. 对充分精确的有限维逼近，所有新增零点都保持在这些邻域中：否则存在逼近误差 \(\displaystyle\varepsilon_k\downarrow0\) 与零点 \(\displaystyle x_k\) 留在补集；紧性反证会给出极限 \(\displaystyle x=\mathcal Kx\) 仍在补空间，与 \(\displaystyle Z\) 已被覆盖矛盾. 因而在一个公共有限维子空间中，\autoref{fa:DEG-A01}的可加性给出有限维 Brouwer 度的分裂，再由良定义性把每一项识别为相应 Leray--Schauder 度. 切除性是 \(\displaystyle m=1\) 的同一论证.
+
+同伦不变性由\autoref{fa:LS-B01}的紧-同伦端点比较直接得到. 关键是边界排除条件对每个参数成立，并由\autoref{fa:LS-C01}产生一致正间隙；只检查端点不足以调用该结论.
+
+证明存在性. 假设 \(\displaystyle\mathcal K\) 在 \(\displaystyle\Omega\) 内无不动点. 连同边界排除条件，\(\displaystyle\overline\Omega\) 上无不动点. 若
+\[
+\inf_{x\in\overline\Omega}\|x-\mathcal Kx\|=0,
+\]
+可取有界序列 \(\displaystyle x_n\in\overline\Omega\) 使残差趋于零. 紧性给出 \(\displaystyle\mathcal Kx_{n_j}\to z\)，于是 \(\displaystyle x_{n_j}\to z\in\overline\Omega\)，连续性给 \(\displaystyle z=\mathcal Kz\)，矛盾. 因而在整个闭包上有正间隙. 选逼近误差小于该间隙的三分之一，则 \(\displaystyle I_E-\mathcal K_{\varepsilon}\) 在 \(\displaystyle\overline\Omega\cap E\) 上没有零点. Brouwer 存在性性质的逆否命题给候选度 \(\displaystyle0\)，所以 Leray--Schauder 度为零. 其逆否命题即所述存在性.
+
+若 \(\displaystyle X\) 有限维，可直接取 \(\displaystyle\mathcal K_{\varepsilon}=\mathcal K\) 与 \(\displaystyle E=X\). 定义立即给
+\(\displaystyle \deg_{\mathrm{LS}}(I-\mathcal K,\Omega,0) = \deg(I-\mathcal K,\Omega,0).\)
+这证明有限维一致性.
+
+最后记录与 III-03 的框架一致性. 若 \(\displaystyle C\) 非空闭有界凸且 \(\displaystyle\mathcal T:C\to C\) 连续紧，\autoref{fa:SCHAUDER-A01}已直接给出不动点. 本章实际复用该前置结果来区分两种存在性框架：Schauder 使用不变凸集；Leray--Schauder 度使用有界开域、紧扰动与可容许边界/同伦.\autoref{fa:SCHAUDER-A01}在这里提供独立不动点框架，而不是替代有限维度构造或\autoref{fa:LS-B01}的良定义性证明. \hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[Schauder 与 Leray--Schauder的互补性]
+Schauder 定理的核心输入是 \(\displaystyle\mathcal T(C)\subseteq C\) 对应一个非空闭有界凸集合. Leray--Schauder 度的核心输入是 \(\displaystyle I-\mathcal K\) 在有界开域边界上满足可容许性，并允许沿紧同伦保持边界排除条件. 二者都利用紧性，但逻辑结构不同；紧性单独既不是不变-集合假设，也不是度边界假设.
+\end{FARemark}
+
+\begin{FACounterexample}[紧性单独不给不动点]\label{iii04:ce-no-apr-bound}
+取 \(\displaystyle X=\mathbb R\)，定义 \(\displaystyle\mathcal T(x)=x+1\). 在有限维中连续映射把有界集合映为有界集合，而有界集合的闭包紧，所以 \(\displaystyle\mathcal T\) 是紧映射. 不动点方程 \(\displaystyle x=\mathcal T(x)=x+1\) 无解.
+
+考虑 Leray--Schauder 同伦方程
+\(\displaystyle x=\lambda\mathcal T(x), \; 0\leqslant\lambda\leqslant1.\)
+当 \(\displaystyle0\leqslant\lambda<1\) 时，唯一解为
+\(\displaystyle x_{\lambda} = \frac{\lambda}{1-\lambda}.\)
+因此 \(\displaystyle x_{\lambda}\to+\infty\) 当 \(\displaystyle\lambda\uparrow1\) 时，不存在统一先验界. 更精确地，给任意 \(\displaystyle R>0\)，取
+\(\displaystyle \lambda_R := \frac{R}{R+1}\in(0,1).\)
+则
+\(\displaystyle \lambda_R\mathcal T(R) = \frac{R}{R+1}(R+1) = R.\)
+所以对候选定义域 \(\displaystyle\Omega=(-R,R)\)，边界点 \(\displaystyle x=R\) 恰好是参数 \(\displaystyle\lambda_R\) 的同伦不动点. 因而每个半径都发生边界排除条件失效. 这不是 Leray--Schauder 定理的反例；缺失的正是整个同伦的先验边界排除条件. 该例同时证明紧性本身不足以保证不动点，且同伦解可以逃向无穷.
+\end{FACounterexample}
+
+\section{延拓}\label{sec:iii04-continuation}
+\index{continuation principle@延拓原理!Leray--Schauder}\index{a priori bound@先验界}
+
+\begin{FATheorem}[A][Leray--Schauder 延拓原理]{iii04:ls-continuation}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Omega\subset X\) 有界开且 \(\displaystyle0\in\Omega\). 设 \(\displaystyle\mathcal H:\overline\Omega\times[0,1]\to X\) 连续，整体像相对紧，并且
+\[
+x\neq\mathcal H(x,\lambda),
+\quad
+x\in\partial\Omega,
+\quad
+0\leqslant\lambda\leqslant1.
+\]
+若起始度非零，即
+\(\displaystyle \deg_{\mathrm{LS}}(I-\mathcal H_0,\Omega,0)\neq0,\)
+则存在 \(\displaystyle x\in\Omega\) 使 \(\displaystyle x=\mathcal H(x,1)\).
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{fa:LS-A01}的同伦不变性，
+\[
+\deg_{\mathrm{LS}}(I-\mathcal H_1,\Omega,0)
+=
+\deg_{\mathrm{LS}}(I-\mathcal H_0,\Omega,0)
+\neq0.
+\]
+再由同一定理的存在性性质，\(\displaystyle I-\mathcal H_1\) 在 \(\displaystyle\Omega\) 内有零点，即存在 \(\displaystyle x\in\Omega\) 满足 \(\displaystyle x=\mathcal H(x,1)\). 整个论证需要每个参数的边界排除条件；仅端点条件不足以保存度. \hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[A][典型 Leray--Schauder 延拓的特殊情形]{iii04:lambda-continuation}
+设 \(\displaystyle\mathcal T:\overline\Omega\to X\) 连续紧，\(\displaystyle0\in\Omega\)，且
+\[
+x\neq\lambda\mathcal T(x),
+\quad
+x\in\partial\Omega,
+\quad
+0\leqslant\lambda\leqslant1.
+\]
+则 \(\displaystyle\mathcal T\) 在 \(\displaystyle\Omega\) 中至少有一个不动点.
+\end{FACorollary}
+
+\begin{FAProof}
+令 \(\displaystyle\mathcal H(x,\lambda)=\lambda\mathcal T(x)\). 其整体像位于 \(\displaystyle\{\lambda z:0\leqslant\lambda\leqslant1,\ z\in\overline{\mathcal T(\overline\Omega)}\}\) 的紧闭包中，所以是紧同伦. 当 \(\displaystyle\lambda=0\) 时，\(\displaystyle\mathcal H_0=0\)，由\autoref{fa:LS-A01}规范化，
+\(\displaystyle \deg_{\mathrm{LS}}(I,\Omega,0)=1.\)
+应用\autoref{iii04:ls-continuation}即得到 \(\displaystyle\lambda=1\) 的不动点. \hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[A][先验界表述]{iii04:apriori-continuation}
+设 \(\displaystyle\mathcal T:X\to X\) 连续紧. 若存在 \(\displaystyle R>0\)，使所有满足
+\(\displaystyle x=\lambda\mathcal T(x), \; 0\leqslant\lambda\leqslant1\)
+的解都满足 \(\displaystyle\|x\|<R\)，则 \(\displaystyle\mathcal T\) 至少有一个不动点.
+\end{FACorollary}
+
+\begin{FAProof}
+取 \(\displaystyle\Omega=B_X(0,R)\). 若存在边界点 \(\displaystyle x\) 与参数 \(\displaystyle\lambda\in[0,1]\) 满足 \(\displaystyle x=\lambda\mathcal T(x)\)，则 \(\displaystyle\|x\|=R\)，与假设的严格先验界矛盾. 因而\autoref{iii04:lambda-continuation}的边界排除条件对整个参数区间成立，故 \(\displaystyle\mathcal T\) 有不动点. 注意估计必须针对完整同伦方程 \(\displaystyle x=\lambda\mathcal T(x)\)；只估计 \(\displaystyle\lambda=1\) 的解不能排除中间参数上的边界不动点. \hfill\(\square\)
+\end{FAProof}
+
+\subsection{一个非线性 Dirichlet 边值问题}
+\index{Dirichlet problem@Dirichlet边值问题!Leray--Schauder}\index{Green kernel@Green核}
+
+设 \(\displaystyle f\in C([0,1]\times\mathbb R;\mathbb R)\)，并假设存在 \(\displaystyle M>0\) 使
+\(\displaystyle |f(x,s)|\leqslant M, \; (x,s)\in[0,1]\times\mathbb R.\)
+考虑
+\(\displaystyle -u''(x)=f(x,u(x)), \; u(0)=u(1)=0.\)
+工作空间取 \(\displaystyle X=C([0,1];\mathbb R)\)，赋上确界范数. 定义 Green 核
+\[
+G(x,t)
+=
+\begin{cases}
+t(1-x),&0\leqslant t\leqslant x\leqslant1,\\
+x(1-t),&0\leqslant x\leqslant t\leqslant1,
+\end{cases}
+\]
+以及算子
+\[
+(\mathcal Ku)(x)
+:=
+\int_0^1G(x,t)f(t,u(t))\,\mathrm{d}t.
+\]
+
+\begin{FATheorem}[A][有界非线性项的经典 Dirichlet 解]{iii04:bvp-existence}
+在上述假设下，\(\displaystyle\mathcal K:X\to X\) 连续紧，且每个不动点 \(\displaystyle u=\mathcal Ku\) 恰给出经典解 \(\displaystyle u\in C^2([0,1])\) 对应 Dirichlet 边值问题. 对同伦 \(\displaystyle u=\lambda\mathcal Ku\)，所有解满足
+\(\displaystyle \|u\|_{\infty} \leqslant \frac{M}{8}.\)
+因此任取 \(\displaystyle R>\frac{M}{8}\)，有
+\(\displaystyle \deg_{\mathrm{LS}}(I-\mathcal K,B_X(0,R),0)=1,\)
+从而该非线性边值问题至少有一个经典解.
+\end{FATheorem}
+
+\begin{FAProof}
+先证 \(\displaystyle\mathcal K\) 良定义. 对任意 \(\displaystyle u\in X\)，函数 \(\displaystyle h_u(t)=f(t,u(t))\) 连续. 核 \(\displaystyle G\) 在 \(\displaystyle[0,1]^2\) 上连续，因此该积分定义关于 \(\displaystyle x\) 的连续函数，即 \(\displaystyle\mathcal Ku\in X\). 由 \(\displaystyle G\geqslant0\) 与 \(\displaystyle|h_u|\leqslant M\)，
+\[
+|\mathcal Ku(x)|
+\leqslant
+M\int_0^1G(x,t)\,\mathrm{d}t.
+\]
+直接计算
+\[
+\int_0^1G(x,t)\,\mathrm{d}t
+=
+(1-x)\int_0^x t\,\mathrm{d}t
++x\int_x^1(1-t)\,\mathrm{d}t
+=
+\frac{x(1-x)}{2}
+\leqslant
+\frac{1}{8}.
+\]
+因此
+\(\displaystyle \|\mathcal Ku\|_{\infty} \leqslant \frac{M}{8}.\)
+
+证明连续性. 若 \(\displaystyle u_n\to u\) 一致地，则存在 \(\displaystyle A>0\) 使 \(\displaystyle|u_n(t)|,|u(t)|\leqslant A\) 对所有充分大 \(\displaystyle n\) 与 \(\displaystyle t\in[0,1]\) 成立. 连续函数 \(\displaystyle f\) 在紧矩形 \(\displaystyle[0,1]\times[-A,A]\) 上一致地连续，因此
+\[
+\sup_{t\in[0,1]}
+|f(t,u_n(t))-f(t,u(t))|
+\longrightarrow0.
+\]
+于是
+\[
+\|\mathcal Ku_n-\mathcal Ku\|_{\infty}
+\leqslant
+\frac{1}{8}
+\sup_{t\in[0,1]}
+|f(t,u_n(t))-f(t,u(t))|
+\longrightarrow0.
+\]
+所以 \(\displaystyle\mathcal K\) 连续.
+
+证明紧性. 对任意有界集合 \(\displaystyle B\subset X\)，事实上全体 \(\displaystyle\mathcal K(B)\) 都由前式一致有界于 \(\displaystyle \frac{M}{8}\). 令 \(\displaystyle v=\mathcal Ku\). 把 Green 表示写成
+\[
+v(x)
+=
+(1-x)\int_0^x t h_u(t)\,\mathrm{d}t
++x\int_x^1(1-t)h_u(t)\,\mathrm{d}t.
+\]
+Leibniz 求导公式给
+\[
+v'(x)
+=
+-\int_0^x t h_u(t)\,\mathrm{d}t
++
+\int_x^1(1-t)h_u(t)\,\mathrm{d}t,
+\]
+所以
+\[
+|v'(x)|
+\leqslant
+M\left(
+\int_0^x t\,\mathrm{d}t+
+\int_x^1(1-t)\,\mathrm{d}t
+\right)
+\leqslant
+\frac{M}{2}.
+\]
+因此 \(\displaystyle\mathcal K(B)\) 具有统一的 Lipschitz 常数，故等度连续. 由 I-02 的 Arzelà--Ascoli 定理\autoref{fa:FND-B04}，\(\displaystyle\mathcal K(B)\) 在上确界范数下相对紧. 因而 \(\displaystyle\mathcal K\) 紧. 这里没有使用 Sobolev 弱解理论.
+
+再证不动点等价性. 对连续 \(\displaystyle h=h_u\)，上式给 \(\displaystyle v\in C^1\)，且再微分得到
+\(\displaystyle v''(x) = -xh(x)-(1-x)h(x) = -h(x).\)
+故 \(\displaystyle v\in C^2([0,1])\)，并且从 Green 表示直接有 \(\displaystyle v(0)=v(1)=0\). 若 \(\displaystyle u=\mathcal Ku=v\)，则
+\(\displaystyle -u''(x) = h_u(x) = f(x,u(x)),\)
+且端点值为零，所以 \(\displaystyle u\) 是经典解. 反之，若 \(\displaystyle u\in C^2\) 满足该边值问题，令 \(\displaystyle w=u-\mathcal Ku\). 则 \(\displaystyle w''=0\) 且 \(\displaystyle w(0)=w(1)=0\)，所以仿射函数 \(\displaystyle w\) 恒等于零，亦即 \(\displaystyle u=\mathcal Ku\).
+
+最后处理同伦. 若 \(\displaystyle u=\lambda\mathcal Ku\) 且 \(\displaystyle0\leqslant\lambda\leqslant1\)，则
+\(\displaystyle \|u\|_{\infty} = \lambda\|\mathcal Ku\|_{\infty} \leqslant \frac{M}{8}.\)
+取任意 \(\displaystyle R>\frac{M}{8}\)，便没有同伦方程的解落在 \(\displaystyle\partial B_X(0,R)\). 对 \(\displaystyle\mathcal H(u,\lambda)=\lambda\mathcal Ku\)，\(\displaystyle\lambda=0\) 时起始度由规范化等于 \(\displaystyle1\)，故同伦不变性给
+\(\displaystyle \deg_{\mathrm{LS}}(I-\mathcal K,B_X(0,R),0) = 1.\)
+由存在性性质得不动点，从而得到至少一个经典解. 本论证没有给出唯一性；有界非线性项也不足以推出唯一性. \hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[为什么仍用这一边值问题 展示延拓]
+这个有界非线性项例也可以通过不变球与\autoref{fa:SCHAUDER-A01}求解，因此延拓不是它唯一的证明方法. 这里选择它，是为了把先验估计的逻辑结构完全显式化：Schauder 路线直接构造不变凸集；Leray--Schauder 路线只要求完整同伦 \(\displaystyle u=\lambda\mathcal Ku\) 上排除边界解. 在更复杂问题中，先验估计往往正是延拓的主要输入.
+\end{FARemark}
+
+\begin{FARemark}[一般度理论的延后边界]
+本章只建立 Brouwer 度与恒等映射的紧扰动的 Leray--Schauder 度. 流形上的度、Fredholm 度、重合度、等变度以及针对非紧映射的更一般无限维度理论都属于后续高级主题；这里不建立这些理论，也不调用它们. 后续非线性存在性方法与本章的延拓构成并列工具线；特别地，极小极大/山路定理结论不会由本章的度自动推出.
+\end{FARemark}
+
+\subsection{习题}
+
+\begin{FAExercise}[有限维边界间隙]{ex:iii04-01}
+设 \(\displaystyle(f,\Omega,y)\) 可容许. 不引用\autoref{iii04:boundary-clearance}的证明，独立证明 \(\displaystyle\operatorname{dist}(y,f(\partial\Omega))>0\)，并指出该论证在哪一步使用有限维性.
+\end{FAExercise}
+
+\begin{FAExercise}[定向符号]{ex:iii04-02}
+对一个定向的 \(\displaystyle n\)-单纯形与非奇异仿射映射，证明局部符号在保定向坐标下不变，并分析只反转定义域定向或只反转陪域定向时符号如何变化.
+\end{FAExercise}
+
+\begin{FAExercise}[仿射度]{ex:iii04-03}
+设 \(\displaystyle A\in GL(n,\mathbb R)\)、\(\displaystyle0\in\Omega\). 由局部带符号计数与切除性完整证明 \(\displaystyle\deg(A,\Omega,0)=\operatorname{sgn}\det A\).
+\end{FAExercise}
+
+\begin{FAExercise}[内部面的抵消]{ex:iii04-04}
+对两个共享余维一面的定向的 \(\displaystyle n\)-单纯形，写出诱导定向的顶点次序约定，并直接验证两个关联符号相反.
+\end{FAExercise}
+
+\begin{FAExercise}[细分不变性]{ex:iii04-05}
+对一个非奇异仿射单纯形映射完整证明重心剖分后局部带符号贡献的总和保持不变，并处理原像落在新骨架上时的一般位置目标点步骤.
+\end{FAExercise}
+
+\begin{FAExercise}[PL 同伦]{ex:iii04-06}
+把 \(\displaystyle P\times[0,1]\) 作棱柱三角剖分，按定向的一维原像链重建\autoref{fa:DEG-B01}的 PL 同伦不变性，并明确侧边界为什么没有端点.
+\end{FAExercise}
+
+\begin{FAExercise}[连续 PL 逼近]{ex:iii04-07}
+设 \(\displaystyle P\) 有限多面体，\(\displaystyle f:P\to\mathbb R^n\) 连续. 用一致连续性与顶点插值证明充分精细的三角剖分上存在 PL 映射 \(\displaystyle g\) 使 \(\displaystyle\sup_P\|f-g\|<\varepsilon\).
+\end{FAExercise}
+
+\begin{FAExercise}[度的良定义性]{ex:iii04-08}
+从公共细分、直线同伦、切除性与目标点局部常值性四个接口出发，重建连续 Brouwer 度对多面体邻域、三角剖分、PL 逼近与一般位置目标点扰动的全部选择无关性.
+\end{FAExercise}
+
+\begin{FAExercise}[规范化]{ex:iii04-09}
+分别证明 \(\displaystyle y\in\Omega\) 与 \(\displaystyle y\notin\overline\Omega\) 时恒等映射的度结论，并说明为什么第二种情形不需要定向计算.
+\end{FAExercise}
+
+\begin{FAExercise}[可加性与切除性]{ex:iii04-10}
+先证明两集合可加性，再用归纳得有限可加性；随后把切除性写成可加性的特殊的局部化推论.
+\end{FAExercise}
+
+\begin{FAExercise}[同伦不变性]{ex:iii04-11}
+对有限维连续可容许同伦，先证明一致边界间隙，再完成共同的 PL 棱柱逼近，最终得到端点度相等.
+\end{FAExercise}
+
+\begin{FAExercise}[非零度蕴含解的存在]{ex:iii04-12}
+只使用度构造与切除性，证明若 \(\displaystyle f^{-1}(y)=\varnothing\)，则度为零，并写出其逆否命题.
+\end{FAExercise}
+
+\begin{FAExercise}[紧扰动边界间隙]{ex:iii04-13}
+在无限维 Banach 空间中重建\autoref{fa:LS-C01}第一项. 证明中必须明确指出 \(\displaystyle\partial\Omega\) 不被假设紧，并逐步写出紧性反证的子列.
+\end{FAExercise}
+
+\begin{FAExercise}[有限维紧映射逼近]{ex:iii04-14}
+从 \(\displaystyle K_0=\overline{\mathcal K(\overline\Omega)}\) 的紧性与\autoref{fa:COMP-MAP-B01}出发，构造 \(\displaystyle\mathcal K_{\varepsilon}\) 并证明误差小于边界间隙的三分之一时边界排除条件保持.
+\end{FAExercise}
+
+\begin{FAExercise}[稳定化与归约]{ex:iii04-15}
+证明 \(\displaystyle\deg(g\oplus I_F,\Omega\times B_F,0)=\deg(g,\Omega,0)\)，再对值域受限映射 \(\displaystyle K:U\to E\subset F\) 用补空间同伦 \(\displaystyle(e,z)\mapsto(e-K(e+tz),z)\) 完成有限维归约.
+\end{FAExercise}
+
+\begin{FAExercise}[LS 逼近选择无关性]{ex:iii04-16}
+给定两个充分接近有限维值域逼近，令 \(\displaystyle F=E_0+E_1\)，完整执行扩张子空间、归约、凸组合同伦与 Brouwer 同伦不变性四步比较.
+\end{FAExercise}
+
+\begin{FAExercise}[LS 同伦不变性]{ex:iii04-17}
+对紧同伦先证明一致边界间隙，再对整个同伦像作一次有限维逼近，证明端点 Leray--Schauder 度相同.
+\end{FAExercise}
+
+\begin{FAExercise}[延拓原理]{ex:iii04-18}
+重建\autoref{iii04:ls-continuation}，并给出一个例子说明只验证 \(\displaystyle\lambda=0,1\) 两个端点的边界排除条件不能替代完整参数假设.
+\end{FAExercise}
+
+\begin{FAExercise}[先验界准则]{ex:iii04-19}
+设 \(\displaystyle\mathcal T:X\to X\) 连续紧. 假设所有 \(\displaystyle x=\lambda\mathcal T(x)\) 的解满足 \(\displaystyle\|x\|\leqslant C\). 说明为什么选择任意 \(\displaystyle R>C\) 而不是 \(\displaystyle R=C\)，并推出不动点存在性.
+\end{FAExercise}
+
+\begin{FAExercise}[缺少先验界时紧性不足的反例]{ex:iii04-20}
+对 \(\displaystyle\mathcal T(x)=x+1\) 重新求解 \(\displaystyle x=\lambda\mathcal T(x)\)，证明对每个 \(\displaystyle R>0\) 都存在参数使 \(\displaystyle x=R\) 成为同伦解，并解释这为何只否定缺少先验界的错误推理.
+\end{FAExercise}
+
+\begin{FAExercise}[Green 算子紧性与 \(\displaystyle \frac{M}{8}\) 估计]{ex:iii04-21}
+对本节 Green 算子独立证明连续性、一致有界性、等度连续性与紧性，并逐步计算 \(\displaystyle\int_0^1G(x,t)\,\mathrm{d}t=\frac{x(1-x)}{2}\leqslant\frac{1}{8}\).
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建非线性边值问题的延拓]{ex:iii04-22}
+从不动点表述开始，证明 Green 表示的 \(\displaystyle C^2\) 正则性与微分方程等价性；再对 \(\displaystyle u=\lambda\mathcal Ku\) 建立一致的 \(\displaystyle \frac{M}{8}\) 界，选 \(\displaystyle R>\frac{M}{8}\)，用起始度 \(\displaystyle1\)、同伦不变性与存在性性质推出经典解. 最后说明流形上的度、Fredholm 度、重合度与极小极大方法为什么都不是本题允许调用的前置结果.
+\end{FAExercise}

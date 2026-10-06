@@ -1,0 +1,487 @@
+\chapter{赋范空间与Banach空间}\label{chap:I-03}
+\FAChapterOpening
+{建立赋范空间与 Banach 空间的基本语言；证明有限维范数等价，建立闭子空间、商 Banach 空间与 Riesz 引理；建立 \(\displaystyle L^p\)、\(\displaystyle \ell^p\)、\(\displaystyle c_0\)、\(\displaystyle C(K;\mathbb K)\) 四类标准 Banach 空间模板.}
+{I-01 的向量空间、商空间与测度积分接口，特别是\autoref{fa:FND-A01}；I-02 的完备性、完备化与度量紧性接口，特别是\autoref{fa:FND-A02}、\autoref{fa:FND-B03}.}
+{\centering
+\begin{tikzpicture}
+\node[fa/node] (f1) at (0,0) {度量/完备/紧性};
+\node[fa/node] (f2) at (0,-1.2) {完备化定理};
+\node[fa/node] (a1) at (3,-0.6) {赋范/Banach空间};
+\node[fa/node] (c1) at (3,-2.2) {等价范数};
+\node[fa/node] (b1) at (6,-2.2) {闭子空间完备性};
+\node[fa/node] (b2) at (9,-2.2) {商Banach完备性};
+\node[fa/node] (fd) at (6,-0.6) {有限维子空间闭};
+\node[fa/node] (a2) at (9,-0.6) {Riesz引理};
+\draw[fa/arrow] (f1) -- (a1);
+\draw[fa/arrow] (f2) -- (a1);
+\draw[fa/arrow] (c1) -- (b1);
+\draw[fa/arrow] (b1) -- (b2);
+\draw[fa/arrow] (b1) -- (fd);
+\draw[fa/arrow] (a1.north) -- (3,0) -- (9,0) -- (a2.north);
+\draw[fa/arrow] (fd) -- (a2);
+\end{tikzpicture}}
+
+本章固定标量域 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). I-01 已建立线性商空间，I-02 已建立度量完备性与紧性的可调用接口；本章只增加范数结构及其直接后果，不提前进入有界线性算子、对偶空间或 Hilbert 空间理论.
+
+\section{赋范线性空间}\label{sec:i03-normed}
+\index{norm@范数}\index{Banach space@Banach空间}\index{equivalent norms@等价范数}
+
+\subsection{范数与Banach空间}
+
+\begin{FADefinition}[A][赋范空间与Banach空间]{fa:BAN-A01}
+设 \(\displaystyle X\) 为 \(\displaystyle \mathbb K\) 上线性空间. 映射 \(\displaystyle \|\cdot\|:X\to[0,\infty)\) 称为范数，若对任意 \(\displaystyle x,y\in X\) 与 \(\displaystyle \alpha\in\mathbb K\) 有
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(\displaystyle \|x\|=0\Longleftrightarrow x=0\)；
+\item \(\displaystyle \|\alpha x\|=|\alpha|\|x\|\)；
+\item \(\displaystyle \|x+y\|\leqslant\|x\|+\|y\|\).
+\end{enumerate}
+称 \(\displaystyle (X,\|\cdot\|)\) 为赋范线性空间. 范数诱导距离 \(\displaystyle d(x,y)=\|x-y\|\).
+若该度量空间完备，则称 \(\displaystyle X\) 为 Banach 空间.
+\end{FADefinition}
+
+由三角不等式，\(\displaystyle |\|x\|-\|y\||\leqslant\|x-y\|\)，故范数函数关于自身诱导的度量连续. 本章凡涉及收敛、Cauchy、开集与闭集，均指该范数诱导的度量拓扑；I-01/I-02 的度量基础不再重证.
+
+\begin{FAExample}[有限维标准范数]
+对 \(\displaystyle x=(x_1,\dots,x_n)\in\mathbb K^n\)，
+\[
+\|x\|_1=\sum_{j=1}^{n}|x_j|,
+\quad
+\|x\|_2=\left(\sum_{j=1}^{n}|x_j|^2\right)^{\frac{1}{2}},
+\quad
+\|x\|_\infty=\max_{1\leqslant j\leqslant n}|x_j|
+\]
+均为范数. 有限维情形中这些范数给出同一拓扑；严格证明见\autoref{fa:BAN-C01}.
+\end{FAExample}
+
+\begin{FACounterexample}[正定性与完备性均不可省略]
+在 \(\displaystyle \mathbb R^2\) 上令 \(\displaystyle p(x_1,x_2)=|x_1|\). 它满足绝对齐次与三角不等式，但 \(\displaystyle p(0,1)=0\)，故不是范数.
+
+再令 \(\displaystyle c_{00}\) 为所有有限支撑标量序列组成的线性空间，并置 \(\displaystyle \|x\|_1=\sum_{n=1}^{\infty}|x_n|\)，其中该和对 \(\displaystyle x\in c_{00}\) 实际有限. 序列 \(\displaystyle x^{(N)}=(2^{-1},2^{-2},\dots,2^{-N},0,0,\dots)\)
+满足 \(\displaystyle M>N\Rightarrow\|x^{(M)}-x^{(N)}\|_1<2^{-N}\)，故为 Cauchy 列. 若它在 \(\displaystyle c_{00}\) 中收敛到 \(\displaystyle x\)，则对每个固定 \(\displaystyle n\)，由 \(\displaystyle |x_n-x_n^{(N)}|\leqslant\|x-x^{(N)}\|_1\) 得 \(\displaystyle x_n=2^{-n}\)，与 \(\displaystyle x\) 有限支撑矛盾. 因而赋范空间不自动完备.
+\end{FACounterexample}
+
+\subsection{球、有界集与诱导范数}
+
+对 \(\displaystyle x\in X\)、\(\displaystyle r>0\)，记 \(\displaystyle B_X(x,r)=\{y\in X:\|y-x\|<r\}, \; \overline B_X(x,r)=\{y\in X:\|y-x\|\leqslant r\}\).
+单位球与单位球面分别记为 \(\displaystyle B_X=B_X(0,1)\)、\(\displaystyle \overline B_X=\overline B_X(0,1)\) 与 \(\displaystyle S_X=\{x\in X:\|x\|=1\}\). 集合 \(\displaystyle A\subseteq X\) 称为有界，若 \(\displaystyle \exists\,R>0\ \forall\,a\in A,\ \|a\|\leqslant R\). 若 \(\displaystyle M\leqslant X\) 为线性子空间，则 \(\displaystyle \|m\|_M:=\|m\|_X\) 给出诱导范数.
+
+\begin{FADefinition}[C][等价范数]{i03:equivalent-norms-definition}
+设 \(\displaystyle \|\cdot\|_a\)、\(\displaystyle \|\cdot\|_b\) 是同一线性空间 \(\displaystyle X\) 上的范数. 若 \(\displaystyle \exists\,c,C>0\ \forall\,x\in X,\; c\|x\|_a\leqslant\|x\|_b\leqslant C\|x\|_a\)，
+则称二者等价.
+\end{FADefinition}
+
+\subsection{等价范数与有限维闭环}
+
+\begin{FAProposition}[C][等价范数工具与有限维范数等价]{fa:BAN-C01}
+设 \(\displaystyle X\) 为 \(\displaystyle \mathbb K\) 上线性空间.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 若范数 \(\displaystyle \|\cdot\|_a\)、\(\displaystyle \|\cdot\|_b\) 满足存在 \(\displaystyle c,C>0\) 使 \(\displaystyle c\|x\|_a\leqslant\|x\|_b\leqslant C\|x\|_a\) 对全部 \(\displaystyle x\in X\) 成立，则二者具有相同收敛序列、相同 Cauchy 列、相同开集，并且 \(\displaystyle (X,\|\cdot\|_a)\) 完备当且仅当 \(\displaystyle (X,\|\cdot\|_b)\) 完备.
+\item 若 \(\displaystyle \dim X<\infty\)，则 \(\displaystyle X\) 上任意两个范数等价；特别地，任意有限维赋范空间都是 Banach 空间.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+先证（i）. 若 \(\displaystyle x_n\to x\) 于 \(\displaystyle \|\cdot\|_a\)，则 \(\displaystyle \|x_n-x\|_b\leqslant C\|x_n-x\|_a\to0\)；反向由 \(\displaystyle \|x_n-x\|_a\leqslant c^{-1}\|x_n-x\|_b\) 得到. 对 Cauchy 列同理：给定 \(\displaystyle \varepsilon>0\)，若 \(\displaystyle \|\cdot\|_a\)-Cauchy，则充分大的 \(\displaystyle m,n\) 满足 \(\displaystyle \|x_m-x_n\|_a<\frac{\varepsilon}{C}\)，从而 \(\displaystyle \|x_m-x_n\|_b<\varepsilon\)；反向以 \(\displaystyle c\varepsilon\) 代替阈值.
+
+再比较拓扑. 对任意 \(\displaystyle x\in X\)、\(\displaystyle r>0\)，有 \(\displaystyle B_a(x,\frac{r}{C})\subseteq B_b(x,r), \; B_b(x,cr)\subseteq B_a(x,r)\).
+故一个集合关于 \(\displaystyle \|\cdot\|_a\) 开当且仅当关于 \(\displaystyle \|\cdot\|_b\) 开. 两种范数的 Cauchy 列相同、收敛序列相同，故其中一个范数下每个 Cauchy 列有极限，当且仅当另一个范数下同一 Cauchy 列有同一极限. 完备性等价.
+
+现证（ii）. \(\displaystyle X=\{0\}\) 时任意两个范数都只在零向量处取值零，故彼此等价. 设 \(\displaystyle n=\dim X\geqslant1\)，固定基 \(\displaystyle e_1,\dots,e_n\)，定义线性双射 \(\displaystyle T:\mathbb K^n\to X, \; T(a_1,\dots,a_n)=\sum_{j=1}^{n}a_je_j\).
+固定 \(\displaystyle X\) 上任意范数 \(\displaystyle \|\cdot\|\)，并在 \(\displaystyle \mathbb K^n\) 上取最大范数. 置 \(\displaystyle A=\sum_{j=1}^{n}\|e_j\|>0\). 则 \(\displaystyle \|Ta\| \leqslant\sum_{j=1}^{n}|a_j|\|e_j\| \leqslant A\|a\|_\infty\).
+由反三角不等式，函数 \(\displaystyle F(a)=\|Ta\|\) 满足 \(\displaystyle |F(a)-F(b)|\leqslant\|T(a-b)\|\leqslant A\|a-b\|_\infty\)，
+故 \(\displaystyle F\) 关于最大范数连续. 集合 \(\displaystyle S=\{a\in\mathbb K^n:\|a\|_\infty=1\}\) 在 \(\displaystyle \mathbb K^n\cong\mathbb R^n\) 或 \(\displaystyle \mathbb R^{2n}\) 中闭且有界，由本科 Heine--Borel 定理紧. 因 \(\displaystyle T\) 单射，\(\displaystyle F(a)>0\) 对全部 \(\displaystyle a\in S\) 成立. 连续函数 \(\displaystyle F|_S\) 取得最小值 \(\displaystyle c>0\). 对任意 \(\displaystyle a\neq0\)，\(\displaystyle \frac{a}{\|a\|_\infty}\in S\)，故
+\(\displaystyle c\|a\|_\infty\leqslant\|Ta\|\leqslant A\|a\|_\infty\).
+对 \(\displaystyle a=0\) 同样成立. 因而任意给定范数均与坐标最大范数等价，从而有限维空间上的任意两个范数等价.
+
+最后证明有限维完备性而不循环使用闭子空间结论. 若 \(\displaystyle (a^{(k)})\) 是 \(\displaystyle (\mathbb K^n,\|\cdot\|_\infty)\) 中 Cauchy 列，则每个坐标 \(\displaystyle (a_j^{(k)})\) 在完备标量域 \(\displaystyle \mathbb K\) 中为 Cauchy 列，故存在 \(\displaystyle a_j\in\mathbb K\) 使 \(\displaystyle a_j^{(k)}\to a_j\). 因坐标数有限，\(\displaystyle \max_{1\leqslant j\leqslant n}|a_j^{(k)}-a_j|\to0\)，所以 \(\displaystyle \mathbb K^n\) 在最大范数下完备. 由上面的范数等价与（i），任意有限维赋范空间完备.
+最后一个结论与前述各步共同闭合有限维范数等价路线.\hfill\(\square\)
+\end{FAProof}
+
+\section{Banach与闭子空间}\label{sec:i03-closed-subspaces}
+\index{closed subspace@闭子空间}
+
+\subsection{闭性与完备性的等价方向}
+
+\begin{FATheorem}[B][闭子空间与完备性]{fa:BAN-B01}
+设 \(\displaystyle M\) 为赋范空间 \(\displaystyle X\) 的线性子空间，并取诱导范数.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 若 \(\displaystyle M\) 完备，则 \(\displaystyle M\) 在 \(\displaystyle X\) 中闭.
+\item 若 \(\displaystyle X\) 为 Banach 空间且 \(\displaystyle M\) 在 \(\displaystyle X\) 中闭，则 \(\displaystyle M\) 为 Banach 空间.
+\end{enumerate}
+因此当 \(\displaystyle X\) 为 Banach 空间时，\(\displaystyle M\) 为 Banach 空间当且仅当 \(\displaystyle M\) 闭.
+\end{FATheorem}
+
+\begin{FAProof}
+先证（i）. 任取 \(\displaystyle x\in\overline M\). 若 \(\displaystyle M=\varnothing\) 不可能，因为线性子空间含零元. 对每个 \(\displaystyle n\in\mathbb N\)，由 \(\displaystyle x\in\overline M\) 取 \(\displaystyle m_n\in M\) 使 \(\displaystyle \|m_n-x\|<\frac{1}{n}\). 则 \(\displaystyle m_n\to x\) 于 \(\displaystyle X\)，故 \(\displaystyle (m_n)\) 为 Cauchy 列. 由 \(\displaystyle M\) 完备，存在 \(\displaystyle m\in M\) 使 \(\displaystyle m_n\to m\) 于诱导范数. 两个极限都在同一度量空间 \(\displaystyle X\) 中，极限唯一，故 \(\displaystyle x=m\in M\). 因而 \(\displaystyle \overline M=M\)，即 \(\displaystyle M\) 闭.
+
+再证（ii）. 设 \(\displaystyle (m_n)\subseteq M\) 为 Cauchy 列. 诱导范数与 \(\displaystyle X\) 的范数相同，所以 \(\displaystyle (m_n)\) 也是 \(\displaystyle X\) 中 Cauchy 列. 由 \(\displaystyle X\) 完备，存在 \(\displaystyle x\in X\) 使 \(\displaystyle m_n\to x\). 因 \(\displaystyle M\) 闭且所有 \(\displaystyle m_n\in M\)，有 \(\displaystyle x\in M\). 因而 \(\displaystyle M\) 中每个 Cauchy 列均在 \(\displaystyle M\) 中收敛，故 \(\displaystyle M\) 完备. 两方向均得证.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][有限维子空间闭]{i03:finite-dimensional-subspace-closed}
+任意赋范空间 \(\displaystyle X\) 的有限维线性子空间 \(\displaystyle M\) 都在 \(\displaystyle X\) 中闭.
+\end{FACorollary}
+
+\begin{FAProof}
+由\autoref{fa:BAN-C01}，有限维赋范空间 \(\displaystyle M\) 在诱导范数下完备. 再由\autoref{fa:BAN-B01}（i），\(\displaystyle M\) 在 \(\displaystyle X\) 中闭.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[标准闭子空间预告]
+第\ref{sec:i03-standard-spaces}节将证明 \(\displaystyle c_0\) 是 \(\displaystyle \ell^\infty\) 的闭线性子空间，并由\autoref{fa:BAN-B01}推出其 Banach 性. 此处不提前使用该结论.
+\end{FARemark}
+
+\section{商空间}\label{sec:i03-quotients}
+\index{quotient norm@商范数}\index{seminorm@半范数}
+
+I-01 已建立线性商空间 \(\displaystyle X/M\) 的陪集与线性运算. 本节只研究由 \(\displaystyle X\) 的范数诱导的商结构.
+
+\subsection{商半范数与闭性判据}
+
+\begin{FAProposition}[B][商半范数及其正定性]{i03:quotient-seminorm}
+设 \(\displaystyle X\) 为赋范空间，\(\displaystyle M\leqslant X\) 为线性子空间. 对 \(\displaystyle x+M\in X/M\) 定义 \(\displaystyle q(x+M)=\inf_{m\in M}\|x+m\|=\operatorname{dist}(x,M)\).
+则 \(\displaystyle q\) 与代表元无关，并满足非负性、绝对齐次性与三角不等式. 此外，\(\displaystyle q\) 是 \(\displaystyle X/M\) 上的范数当且仅当 \(\displaystyle M\) 在 \(\displaystyle X\) 中闭.
+\end{FAProposition}
+
+\begin{FAProof}
+先证代表元独立. 若 \(\displaystyle x'=x+m_0\) 且 \(\displaystyle m_0\in M\)，则由 \(\displaystyle m_0+M=M\) 有 \(\displaystyle \inf_{m\in M}\|x'+m\| =\inf_{m\in M}\|x+m_0+m\| =\inf_{u\in M}\|x+u\|\).
+故 \(\displaystyle q\) 良定义；又因范数非负，\(\displaystyle q\geqslant0\).
+
+对绝对齐次性，若 \(\displaystyle \alpha=0\)，两边均为零. 若 \(\displaystyle \alpha\neq0\)，利用 \(\displaystyle \alpha M=M\) 得 \(\displaystyle q(\alpha x+M) =\inf_{m\in M}\|\alpha x+m\| =|\alpha|\inf_{u\in M}\|x+u\| =|\alpha|q(x+M)\).
+对三角不等式，给定 \(\displaystyle \varepsilon>0\)，按下确界定义分别取 \(\displaystyle m_1,m_2\in M\) 使
+\[
+\|x+m_1\|<q(x+M)+\frac{\varepsilon}{2},
+\quad
+\|y+m_2\|<q(y+M)+\frac{\varepsilon}{2}.
+\]
+于是 \(\displaystyle q(x+y+M) \leqslant\|x+y+m_1+m_2\| \leqslant\|x+m_1\|+\|y+m_2\| <q(x+M)+q(y+M)+\varepsilon\).
+令 \(\displaystyle \varepsilon\downarrow0\) 得三角不等式.
+
+由于 \(\displaystyle -M=M\)，有 \(\displaystyle q(x+M)=\inf_{m\in M}\|x+m\| =\inf_{m\in M}\|x-m\| =\operatorname{dist}(x,M)\).
+因此 \(\displaystyle q(x+M)=0\) 当且仅当 \(\displaystyle \operatorname{dist}(x,M)=0\)，即当且仅当 \(\displaystyle x\in\overline M\). 若 \(\displaystyle M\) 闭，则 \(\displaystyle \overline M=M\)，故 \(\displaystyle q(x+M)=0\Rightarrow x+M=M\)，正定性成立. 反之，若 \(\displaystyle q\) 为范数且 \(\displaystyle x\in\overline M\)，则 \(\displaystyle q(x+M)=0\)，正定性给出 \(\displaystyle x+M=M\)，故 \(\displaystyle x\in M\). 因而 \(\displaystyle \overline M\subseteq M\)，所以 \(\displaystyle M\) 闭. 若 \(\displaystyle M\) 不闭，则 \(\displaystyle q\) 只能称为商半范数，不能称为商范数.\hfill\(\square\)
+\end{FAProof}
+
+当 \(\displaystyle M\) 闭时，以下统一记 \(\displaystyle \|x+M\|_{X/M}=\inf_{m\in M}\|x+m\|\).
+
+\begin{FAExample}[二维商空间的距离解释]
+在 \(\displaystyle X=\mathbb R^2\) 上取标准内积诱导范数，并令 \(\displaystyle M=\operatorname{span}\{(1,0)\}\). 对 \(\displaystyle x=(a,b)\)， \(\displaystyle \|x+M\|_{X/M} =\inf_{t\in\mathbb R}\sqrt{(a+t)^2+b^2} =|b|\).
+因此商范数只记录陪集到子空间 \(\displaystyle M\) 的距离；这里不使用正交投影理论.
+\end{FAExample}
+
+\clearpage
+\subsection{商Banach空间完备性}
+
+\begin{FATheorem}[B][商Banach空间完备性]{fa:BAN-B02}
+若 \(\displaystyle X\) 为 Banach 空间，\(\displaystyle M\) 为 \(\displaystyle X\) 的闭线性子空间，则 \(\displaystyle X/M\) 配商范数是 Banach 空间.
+\end{FATheorem}
+
+\begin{FAProof}
+由命题\ref{i03:quotient-seminorm}，商范数已经良定义. 设 \(\displaystyle (\xi_n)\) 是 \(\displaystyle X/M\) 中 Cauchy 列. 对每个 \(\displaystyle k\in\mathbb N\)，取 \(\displaystyle N_k\) 使 \(\displaystyle m,n\geqslant N_k\Longrightarrow \|\xi_m-\xi_n\|_{X/M}<2^{-(k+2)}\).
+递归选择严格递增指标：先取 \(\displaystyle n_1\geqslant N_1\)，已取 \(\displaystyle n_k\) 后取 \(\displaystyle n_{k+1}>n_k\) 且 \(\displaystyle n_{k+1}\geqslant\max\{N_k,N_{k+1}\}\). 由归纳有 \(\displaystyle n_k\geqslant N_k\)，且 \(\displaystyle n_{k+1}>n_k\geqslant N_k\)，故 \(\displaystyle \|\xi_{n_{k+1}}-\xi_{n_k}\|_{X/M}<2^{-(k+2)}\).
+
+任取 \(\displaystyle y_1\in X\) 使 \(\displaystyle y_1+M=\xi_{n_1}\). 已取 \(\displaystyle y_k\) 后，令 \(\displaystyle \delta_k=\xi_{n_{k+1}}-\xi_{n_k}\). 由商范数是代表元范数的下确界，可取代表元 \(\displaystyle v_k\in X\) 满足 \(\displaystyle v_k+M=\delta_k\) 且
+\(\displaystyle \|v_k\|<\|\delta_k\|_{X/M}+2^{-(k+2)}<2^{-(k+1)}\).
+定义 \(\displaystyle y_{k+1}=y_k+v_k\). 则 \(\displaystyle y_{k+1}+M =(y_k+M)+(v_k+M) =\xi_{n_k}+\delta_k =\xi_{n_{k+1}}\).
+若 \(\displaystyle r>s\)，则 \(\displaystyle \|y_r-y_s\| \leqslant\sum_{k=s}^{r-1}\|v_k\| <\sum_{k=s}^{\infty}2^{-(k+1)} =2^{-s}\).
+故 \(\displaystyle (y_k)\) 是 \(\displaystyle X\) 中 Cauchy 列. 由 \(\displaystyle X\) 完备，存在 \(\displaystyle y\in X\) 使 \(\displaystyle y_k\to y\). 又因商范数定义中可取 \(\displaystyle m=0\)， \(\displaystyle \|(y_k+M)-(y+M)\|_{X/M} \leqslant\|y_k-y\|\longrightarrow0\).
+因此子序列 \(\displaystyle \xi_{n_k}\to y+M\).
+
+最后由原序列 Cauchy 性推出整列收敛. 给定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle N\) 使 \(\displaystyle m,n\geqslant N\Rightarrow\|\xi_m-\xi_n\|_{X/M}<\frac{\varepsilon}{2}\)，再取 \(\displaystyle k\) 使 \(\displaystyle n_k\geqslant N\) 且 \(\displaystyle \|\xi_{n_k}-(y+M)\|_{X/M}<\frac{\varepsilon}{2}\). 对任意 \(\displaystyle n\geqslant N\)，
+\[
+\|\xi_n-(y+M)\|_{X/M}
+\leqslant\|\xi_n-\xi_{n_k}\|_{X/M}+\|\xi_{n_k}-(y+M)\|_{X/M}<\varepsilon.
+\]
+故 \(\displaystyle \xi_n\to y+M\)，商空间完备.\hfill\(\square\)
+\end{FAProof}
+
+\section{Riesz引理}\label{sec:i03-riesz}
+\index{Riesz lemma@Riesz引理}\index{noncompact unit ball@非紧单位球}
+
+\subsection{Riesz分离与无限维非紧性}
+
+\begin{FATheorem}[A][Riesz引理与无限维闭单位球非紧]{fa:BAN-A02}
+设 \(\displaystyle X\) 为赋范空间.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 若 \(\displaystyle M\subsetneq X\) 为闭线性子空间且 \(\displaystyle 0<\theta<1\)，则存在 \(\displaystyle x\in X\) 使 \(\displaystyle \|x\|=1\) 且 \(\displaystyle \operatorname{dist}(x,M)>\theta\).
+\item 若 \(\displaystyle X\) 无限维，则闭单位球 \(\displaystyle \overline B_X\) 不紧.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+先证（i）. 取 \(\displaystyle z\in X\setminus M\)，并令 \(\displaystyle d=\operatorname{dist}(z,M)\). 因 \(\displaystyle M\) 闭且 \(\displaystyle z\notin M\)，有 \(\displaystyle d>0\). 若 \(\displaystyle d=0\)，则对每个 \(\displaystyle n\in\mathbb N\) 可由下确界定义取 \(\displaystyle m_n\in M\) 使 \(\displaystyle \|z-m_n\|<\frac{1}{n}\)，从而 \(\displaystyle z\in\overline M=M\)，矛盾. 又因 \(\displaystyle 0<\theta<1\)，有 \(\displaystyle d<\frac{d}{\theta}\). 由 \(\displaystyle d=\inf_{m\in M}\|z-m\|\) 的定义，可取 \(\displaystyle m_0\in M\) 使
+\(\displaystyle \|z-m_0\|<\frac{d}{\theta}\).
+置 \(\displaystyle x=\frac{z-m_0}{\|z-m_0\|}\). 则 \(\displaystyle \|x\|=1\). 对任意 \(\displaystyle m\in M\)，因 \(\displaystyle m_0+\|z-m_0\|m\in M\)，有
+\[
+\|x-m\| =\frac{\|z-m_0-\|z-m_0\|m\|}{\|z-m_0\|} \geqslant\frac{d}{\|z-m_0\|} >\theta.
+\]
+对全部 \(\displaystyle m\in M\) 取下确界，得到 \(\displaystyle \operatorname{dist}(x,M)>\theta\).
+
+再证（ii）. 固定 \(\displaystyle 0<\theta<1\). 取任意 \(\displaystyle x_1\in X\) 满足 \(\displaystyle \|x_1\|=1\). 若已构造 \(\displaystyle x_1,\dots,x_n\)，令
+\(\displaystyle M_n=\operatorname{span}\{x_1,\dots,x_n\}\).
+该子空间有限维，由推论\ref{i03:finite-dimensional-subspace-closed}闭；又因 \(\displaystyle X\) 无限维，\(\displaystyle M_n\subsetneq X\). 由（i），存在 \(\displaystyle x_{n+1}\in X\) 满足 \(\displaystyle \|x_{n+1}\|=1\) 且 \(\displaystyle \operatorname{dist}(x_{n+1},M_n)>\theta\). 由递归原理得到序列 \(\displaystyle (x_n)\subseteq\overline B_X\).
+
+若 \(\displaystyle m<n\)，则 \(\displaystyle x_m\in M_{n-1}\)，所以
+\(\displaystyle \|x_n-x_m\|\geqslant\operatorname{dist}(x_n,M_{n-1})>\theta\).
+因此任意子序列仍是 \(\displaystyle \theta\)-分离的，不可能为 Cauchy 列，从而不可能收敛. 若 \(\displaystyle \overline B_X\) 紧，则由\autoref{fa:FND-B03}它列紧，每个序列都应有收敛子序列，矛盾. 故 \(\displaystyle \overline B_X\) 不紧.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[闭且有界不蕴含紧]
+任意无限维 Banach 空间 \(\displaystyle X\) 的闭单位球 \(\displaystyle \overline B_X\) 都闭且有界，但由\autoref{fa:BAN-A02}不紧. 因而有限维标准内积空间中的“闭且有界 \(\displaystyle \Rightarrow\) 紧”不能直接推广到无限维赋范空间；这不否定有限维 Heine--Borel 定理.
+\end{FACounterexample}
+
+\subsection{有限维闭有界集与单位球判据}
+
+\begin{FAProposition}[B][有限维Heine--Borel与维数判据]{i03:finite-dimensional-heine-borel}
+设 \(\displaystyle X\) 为赋范空间.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 若 \(\displaystyle \dim X<\infty\)，则 \(\displaystyle X\) 的每个闭有界子集都紧.
+\item \(\displaystyle X\) 有限维，当且仅当其闭单位球 \(\displaystyle \overline B_X\) 紧.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+对（i），固定基并取\autoref{fa:BAN-C01}证明中的坐标双射 \(\displaystyle T:(\mathbb K^n,\|\cdot\|_\infty)\to X\). 该证明给出常数 \(\displaystyle c,C>0\) 使
+\(\displaystyle c\|a\|_\infty\leqslant\|Ta\|\leqslant C\|a\|_\infty\).
+故 \(\displaystyle T\) 与 \(\displaystyle T^{-1}\) 连续. 若 \(\displaystyle A\subseteq X\) 闭且有界，则 \(\displaystyle T^{-1}(A)\) 在 \(\displaystyle \mathbb K^n\) 中闭；若 \(\displaystyle \|x\|\leqslant R\) 对 \(\displaystyle x\in A\) 成立，则 \(\displaystyle a\in T^{-1}(A)\Rightarrow\|a\|_\infty\leqslant \frac{R}{c}\)，故 \(\displaystyle T^{-1}(A)\) 有界. 在 \(\displaystyle \mathbb K^n\cong\mathbb R^n\) 或 \(\displaystyle \mathbb R^{2n}\) 中，由本科 Heine--Borel 定理，\(\displaystyle T^{-1}(A)\) 紧. 连续映射 \(\displaystyle T\) 的像 \(\displaystyle A\) 因而紧.
+
+对（ii），若 \(\displaystyle X\) 有限维，则（i）应用于 \(\displaystyle \overline B_X\) 得其紧. 若 \(\displaystyle X\) 无限维，则\autoref{fa:BAN-A02}（ii）给出 \(\displaystyle \overline B_X\) 不紧. 两方向合并即得等价.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[延后结果：线性不自动连续]
+无限维赋范空间中，线性映射并不自动连续. 线性不蕴含连续这一反例正式建立于 I-05/I-06；本章不构造、不证明，也不创建对应内部标签.
+\end{FAWarning}
+
+\section{标准序列/函数空间}\label{sec:i03-standard-spaces}
+\index{Lp space@Lp空间}\index{ellp space@ell-p空间}\index{c0 space@c0空间}\index{continuous functions@连续函数空间}
+
+本节按依赖顺序建立 \(\displaystyle L^p\Rightarrow\ell^p,\ell^\infty\Rightarrow c_0\)，并独立建立 \(\displaystyle C(K;\mathbb K)\). 所有完备性均在本节证明或由本章已证明结果推出.
+
+\subsection{\texorpdfstring{\(\displaystyle L^p\)}{L^p}空间}
+
+设 \(\displaystyle (\Omega,\Sigma,\mu)\) 为测度空间，几乎处处、Lebesgue 积分、Minkowski 与单调收敛定理沿用 I-01 第\ref{sec:i01-measure}节的冻结接口；不要求 \(\displaystyle \sigma\)-有限性.
+
+\begin{FADefinition}[B][\(\displaystyle L^p\)空间]{i03:Lp-definition}
+对 \(\displaystyle 1\leqslant p<\infty\)，令
+\[
+\mathcal L^p(\Omega)
+=\left\{f:\Omega\to\mathbb K:\ f\text{ 可测且 }\int_\Omega|f|^p\,\mathrm{d}\mu<\infty\right\}.
+\]
+在 \(\displaystyle \mathcal L^p(\Omega)\) 上定义 \(\displaystyle f\sim g\iff f=g\) 几乎处处，并令
+\[
+L^p(\Omega)=\mathcal L^p(\Omega)/\!\sim,
+\quad
+\|[f]\|_p=\left(\int_\Omega|f|^p\,\mathrm{d}\mu\right)^{\frac{1}{p}}.
+\]
+再令 \(\displaystyle \mathcal L^\infty(\Omega)\) 为所有本质有界可测函数，并定义
+\[
+\begin{aligned}
+\|f\|_{\infty,\mu}&=\inf\{M\geqslant0:|f|\leqslant M\text{几乎处处}\},\\
+L^\infty(\Omega)&=\mathcal L^\infty(\Omega)/\!\sim,\quad \|[f]\|_\infty=\|f\|_{\infty,\mu}.
+\end{aligned}
+\]
+后文在不引起歧义时以 \(\displaystyle f\) 同时表示代表元及其几乎处处等价类.
+\end{FADefinition}
+
+\begin{FAProposition}[B][\(\displaystyle L^p\)范数的良定义性]{i03:Lp-norm-well-defined}
+对每个 \(\displaystyle 1\leqslant p\leqslant\infty\)，上述 \(\displaystyle \|\cdot\|_p\) 与代表元无关，并且是 \(\displaystyle L^p(\Omega)\) 上的范数.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle f=g\) 几乎处处，则 \(\displaystyle |f|^p=|g|^p\) 几乎处处，故对 \(\displaystyle p<\infty\) 两个积分相等；对 \(\displaystyle p=\infty\)，条件 \(\displaystyle |f|\leqslant M\) 几乎处处与 \(\displaystyle |g|\leqslant M\) 几乎处处对每个 \(\displaystyle M\geqslant0\) 等价，故本质上确界相等. 因而范数候选与代表元无关.
+
+非负性与绝对齐次性直接由积分及绝对值性质得到. 三角不等式对全部 \(\displaystyle 1\leqslant p\leqslant\infty\) 由 I-01 冻结的 Minkowski 接口给出.
+
+只需验证正定性. 若 \(\displaystyle 1\leqslant p<\infty\) 且 \(\displaystyle \|f\|_p=0\)，则非负可测函数 \(\displaystyle |f|^p\) 的积分为零，由 Lebesgue 积分基本性质有 \(\displaystyle |f|^p=0\) 几乎处处，即 \(\displaystyle f=0\) 几乎处处，故 \(\displaystyle [f]=0\). 若 \(\displaystyle \|f\|_\infty=0\)，则对每个 \(\displaystyle n\in\mathbb N\)，由下确界定义可取 \(\displaystyle M_n<\frac{1}{n}\) 使 \(\displaystyle |f|\leqslant M_n\) 在零测集 \(\displaystyle N_n\) 外成立. 令 \(\displaystyle N=\bigcup_{n=1}^{\infty}N_n\)，则 \(\displaystyle \mu(N)=0\). 对任意 \(\displaystyle \omega\notin N\) 与全部 \(\displaystyle n\)，有 \(\displaystyle |f(\omega)|<\frac{1}{n}\)，故 \(\displaystyle f(\omega)=0\). 因而 \(\displaystyle f=0\) 几乎处处，即 \(\displaystyle [f]=0\). 零等价类可取零函数为代表元，其范数为零，因此正定性成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][Riesz--Fischer型完备性]{i03:Lp-banach}
+对任意测度空间 \(\displaystyle (\Omega,\Sigma,\mu)\) 与任意 \(\displaystyle 1\leqslant p\leqslant\infty\)，\(\displaystyle L^p(\Omega)\) 是 Banach 空间.
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle 1\leqslant p<\infty\)，并令 \(\displaystyle (f_n)\) 为 \(\displaystyle L^p(\Omega)\) 中 Cauchy 列. 抽取严格递增子序列 \(\displaystyle (f_{n_k})\)，使 \(\displaystyle \forall\,k\in\mathbb N,\; \|f_{n_{k+1}}-f_{n_k}\|_p<2^{-k}\).
+为每个等价类选取可测代表元，仍记为 \(\displaystyle f_{n_k}\)，并定义 \(\displaystyle h_k=|f_{n_{k+1}}-f_{n_k}|, \; g_N=\sum_{k=1}^{N}h_k\).
+由 Minkowski， \(\displaystyle \|g_N\|_p \leqslant\sum_{k=1}^{N}\|h_k\|_p <\sum_{k=1}^{\infty}2^{-k}=1\).
+函数列 \(\displaystyle 0\leqslant g_N\uparrow g:=\sum_{k=1}^{\infty}h_k\). 对非负函数 \(\displaystyle g_N^p\uparrow g^p\) 应用单调收敛定理，得到
+\[
+\int_\Omega g^p\,\mathrm{d}\mu
+=\lim_{N\to\infty}\int_\Omega g_N^p\,\mathrm{d}\mu
+\leqslant1.
+\]
+故 \(\displaystyle g\in L^p(\Omega)\)，特别地 \(\displaystyle g<\infty\) 几乎处处. 令 \(\displaystyle N_0=\{\omega:g(\omega)=\infty\}\)，则 \(\displaystyle \mu(N_0)=0\). 对 \(\displaystyle \omega\notin N_0\)，级数 \(\displaystyle \sum_{k=1}^{\infty}|f_{n_{k+1}}(\omega)-f_{n_k}(\omega)|\) 收敛，所以 \(\displaystyle f_{n_k}(\omega)\) 收敛. 在 \(\displaystyle \Omega\setminus N_0\) 上令 \(\displaystyle f(\omega)=\lim_{k\to\infty}f_{n_k}(\omega)\)，并在 \(\displaystyle N_0\) 上令 \(\displaystyle f=0\). 因 \(\displaystyle N_0\) 可测且 \(\displaystyle f\) 在其补集上是可测函数列的逐点极限，故如此定义的 \(\displaystyle f\) 可测.
+
+对固定 \(\displaystyle j\in\mathbb N\)，令 \(\displaystyle t_{j,N}=\sum_{k=j}^{N}h_k, \; t_j=\sum_{k=j}^{\infty}h_k\).
+对每个 \(\displaystyle N\geqslant j\)，Minkowski 给出 \(\displaystyle \|t_{j,N}\|_p\leqslant\sum_{k=j}^{N}\|h_k\|_p<\sum_{k=j}^{\infty}2^{-k}=2^{1-j}\). 又 \(\displaystyle 0\leqslant t_{j,N}\uparrow t_j\)，故单调收敛定理给出 \(\displaystyle \int_\Omega t_j^p\,\mathrm{d}\mu=\lim_{N\to\infty}\|t_{j,N}\|_p^p\leqslant2^{p(1-j)}\). 因而 \(\displaystyle t_j<\infty\) 几乎处处；必要时在零测集上置零后，\(\displaystyle t_j\) 表示一个 \(\displaystyle L^p\) 元且 \(\displaystyle \|t_j\|_p\leqslant2^{1-j}\). 在 \(\displaystyle \Omega\setminus N_0\) 上，望远镜求和给出 \(\displaystyle |f-f_{n_j}|\leqslant t_j\)，故
+\(\displaystyle \|f-f_{n_j}\|_p\leqslant\|t_j\|_p\leqslant2^{1-j}\to0\).
+取 \(\displaystyle j=1\) 可知 \(\displaystyle f-f_{n_1}\in L^p\)，故 \(\displaystyle f\in L^p\). 因而子序列在 \(\displaystyle L^p\) 中收敛到 \(\displaystyle f\). 由原序列 Cauchy 性，给定 \(\displaystyle \varepsilon>0\)，先取尾部使 \(\displaystyle \|f_m-f_n\|_p<\frac{\varepsilon}{2}\)，再取属于该尾部的子序列项 \(\displaystyle f_{n_j}\) 满足 \(\displaystyle \|f_{n_j}-f\|_p<\frac{\varepsilon}{2}\)，即可得 \(\displaystyle \|f_n-f\|_p<\varepsilon\). 故整列收敛.
+
+现处理 \(\displaystyle p=\infty\). 设 \(\displaystyle (f_n)\) 为 \(\displaystyle L^\infty(\Omega)\) 中 Cauchy 列. 抽取严格递增子序列使 \(\displaystyle \|f_{n_{k+1}}-f_{n_k}\|_\infty<2^{-(k+2)}\).
+记 \(\displaystyle q_k=\|f_{n_{k+1}}-f_{n_k}\|_\infty\). 因 \(\displaystyle q_k<2^{-(k+2)}<2^{-(k+1)}\)，由本质上确界的下确界定义，可在可行上界集合中取 \(\displaystyle b_k<2^{-(k+1)}\)，即存在零测集 \(\displaystyle N_k\) 使
+\[
+\forall\,\omega\in\Omega\setminus N_k,\quad |f_{n_{k+1}}(\omega)-f_{n_k}(\omega)|\leqslant b_k.
+\]
+令 \(\displaystyle N=\bigcup_{k=1}^{\infty}N_k\)，则 \(\displaystyle \mu(N)=0\). 将每个代表元在 \(\displaystyle N\) 上改为零不改变其等价类. 对修改后的代表元，任意 \(\displaystyle r>s\) 与任意 \(\displaystyle \omega\in\Omega\) 满足
+\[
+|f_{n_r}(\omega)-f_{n_s}(\omega)|
+\leqslant\sum_{k=s}^{r-1}b_k
+<\sum_{k=s}^{\infty}2^{-(k+1)}
+=2^{-s}.
+\]
+故 \(\displaystyle (f_{n_k})\) 在 \(\displaystyle \Omega\) 上一致 Cauchy. 标量域 \(\displaystyle \mathbb K\) 完备，因此存在逐点极限 \(\displaystyle f\)，且上式令 \(\displaystyle r\to\infty\) 给出
+\(\displaystyle \sup_{\omega\in\Omega}|f(\omega)-f_{n_s}(\omega)|\leqslant2^{-s}\).
+函数 \(\displaystyle f\) 是可测函数列的逐点极限，因此可测；又 \(\displaystyle f_{n_s}\in L^\infty\) 且 \(\displaystyle f-f_{n_s}\) 有界，故 \(\displaystyle f\in L^\infty\). 上式进一步给出 \(\displaystyle \|f-f_{n_s}\|_\infty\leqslant2^{-s}\to0\). 最后仍由原序列 Cauchy 性与收敛子序列推出 \(\displaystyle f_n\to f\) 于 \(\displaystyle L^\infty\). 两种情形均完备.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[标准Banach函数空间模板]
+对任意测度空间与 \(\displaystyle 1\leqslant p\leqslant\infty\)，\autoref{i03:Lp-norm-well-defined}与\autoref{i03:Lp-banach}已建立 \(\displaystyle L^p(\Omega)\) 的范数良定义性和 Banach 性. 对象始终是几乎处处等价类，而不是逐点函数本身.
+\end{FAExample}
+
+\subsection{\texorpdfstring{\(\displaystyle \ell^p\)}{ℓ^p}与\texorpdfstring{\(\displaystyle \ell^\infty\)}{ℓ^∞}}
+
+\begin{FAExample}[序列空间]
+取测度空间 \(\displaystyle (\mathbb N,\mathcal P(\mathbb N),\#)\)，其中 \(\displaystyle \#\) 为计数测度. 其零测集只有空集，所以几乎处处等价就是逐点相等. 因而对 \(\displaystyle 1\leqslant p<\infty\)，
+\[
+\ell^p
+=\left\{x=(x_n):\sum_{n=1}^{\infty}|x_n|^p<\infty\right\},
+\quad
+\|x\|_p=\left(\sum_{n=1}^{\infty}|x_n|^p\right)^{\frac{1}{p}},
+\]
+而
+\[
+\ell^\infty
+=\{x=(x_n):\sup_{n\in\mathbb N}|x_n|<\infty\},
+\quad
+\|x\|_\infty=\sup_{n\in\mathbb N}|x_n|.
+\]
+它们分别就是相应计数测度上的 \(\displaystyle L^p\) 与 \(\displaystyle L^\infty\). 由\autoref{i03:Lp-banach}，所有 \(\displaystyle \ell^p\)、\(\displaystyle \ell^\infty\) 都是 Banach 空间.
+\end{FAExample}
+
+\subsection{\texorpdfstring{\(\displaystyle c_0\)}{c_0}作为闭子空间}
+
+\begin{FAProposition}[B][\(\displaystyle c_0\)的闭性与Banach性]{i03:c0-banach}
+定义 \(\displaystyle c_0=\{x=(x_n)\in\ell^\infty:x_n\to0\}\)
+并取 \(\displaystyle \ell^\infty\) 的上确界范数. 则 \(\displaystyle c_0\) 是 \(\displaystyle \ell^\infty\) 的闭线性子空间，因而是 Banach 空间.
+\end{FAProposition}
+
+\begin{FAProof}
+线性性由极限的线性运算直接得到. 设 \(\displaystyle x^{(k)}\in c_0\) 且 \(\displaystyle \|x^{(k)}-x\|_\infty\to0\) 于 \(\displaystyle \ell^\infty\). 给定 \(\displaystyle \varepsilon>0\)，先取 \(\displaystyle k\) 使 \(\displaystyle \|x^{(k)}-x\|_\infty<\frac{\varepsilon}{2}\). 因 \(\displaystyle x^{(k)}\in c_0\)，存在 \(\displaystyle N\in\mathbb N\) 使 \(\displaystyle n\geqslant N\Rightarrow|x_n^{(k)}|<\frac{\varepsilon}{2}\). 对 \(\displaystyle n\geqslant N\)， \(\displaystyle |x_n| \leqslant|x_n-x_n^{(k)}|+|x_n^{(k)}| <\varepsilon\).
+故 \(\displaystyle x_n\to0\)，即 \(\displaystyle x\in c_0\). 因而 \(\displaystyle c_0\) 在 \(\displaystyle \ell^\infty\) 中闭. 由 \(\displaystyle \ell^p\) 序列空间模型，\(\displaystyle \ell^\infty\) 为 Banach 空间；再由\autoref{fa:BAN-B01}，\(\displaystyle c_0\) 为 Banach 空间.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[标准单位向量]
+对 \(\displaystyle n\in\mathbb N\)，令 \(\displaystyle e_n\in c_0\) 为第 \(\displaystyle n\) 个坐标等于 \(\displaystyle1\)、其余坐标等于 \(\displaystyle0\) 的序列. 则 \(\displaystyle \|e_n\|_\infty=1\)，且对 \(\displaystyle m\neq n\)，
+\(\displaystyle \|e_n-e_m\|_\infty=1\).
+因此 \(\displaystyle (e_n)\) 在 \(\displaystyle c_0\) 的闭单位球中没有 Cauchy 子序列. 由\autoref{fa:FND-B03}，该闭单位球不紧；这是无限维闭有界集非紧性的具体实例.
+\end{FAExample}
+
+\subsection{紧Hausdorff空间上的连续函数}
+
+\begin{FATheorem}[B][\(\displaystyle C(K;\mathbb K)\)的Banach性]{i03:CK-banach}
+设 \(\displaystyle K\) 为非空紧 Hausdorff 空间. 令 \(\displaystyle C(K;\mathbb K)\) 为所有连续函数 \(\displaystyle f:K\to\mathbb K\) 的线性空间，并定义 \(\displaystyle \|f\|_\infty=\sup_{x\in K}|f(x)|\).
+则该上确界有限，\(\displaystyle \|\cdot\|_\infty\) 是范数，且 \(\displaystyle C(K;\mathbb K)\) 是 Banach 空间.
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle f\in C(K;\mathbb K)\)，则由 I-01 的连续像紧性，\(\displaystyle f(K)\) 是 \(\displaystyle \mathbb K\) 中紧集. 在 \(\displaystyle \mathbb R\) 或 \(\displaystyle \mathbb C\cong\mathbb R^2\) 中紧集有界，故 \(\displaystyle \sup_{x\in K}|f(x)|<\infty\). 非负性与绝对齐次性直接成立，且 \(\displaystyle \|f+g\|_\infty =\sup_{x\in K}|f(x)+g(x)| \leqslant\|f\|_\infty+\|g\|_\infty\).
+若 \(\displaystyle \|f\|_\infty=0\)，则 \(\displaystyle |f(x)|=0\) 对全部 \(\displaystyle x\in K\) 成立，故 \(\displaystyle f=0\). 因而它是范数.
+
+设 \(\displaystyle (f_n)\) 为上确界范数下 Cauchy 列. 对每个固定 \(\displaystyle x\in K\)，有 \(\displaystyle |f_m(x)-f_n(x)|\leqslant\|f_m-f_n\|_\infty\)，故 \(\displaystyle (f_n(x))\) 是 \(\displaystyle \mathbb K\) 中 Cauchy 列. 定义 \(\displaystyle f(x)=\lim_{n\to\infty}f_n(x)\). 给定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle N\) 使 \(\displaystyle m,n\geqslant N\Rightarrow\|f_m-f_n\|_\infty<\frac{\varepsilon}{2}\). 固定 \(\displaystyle n\geqslant N\) 并令 \(\displaystyle m\to\infty\)，得到对全部 \(\displaystyle x\in K\)，\(\displaystyle |f_n(x)-f(x)|\leqslant\frac{\varepsilon}{2}\). 因而 \(\displaystyle \|f_n-f\|_\infty\leqslant\frac{\varepsilon}{2}\)，即 \(\displaystyle f_n\to f\) 一致.
+
+只需证明 \(\displaystyle f\) 连续. 固定 \(\displaystyle x_0\in K\) 与 \(\displaystyle \varepsilon>0\). 取 \(\displaystyle n\) 使 \(\displaystyle \|f_n-f\|_\infty<\frac{\varepsilon}{3}\). 因 \(\displaystyle f_n\) 在 \(\displaystyle x_0\) 连续，存在 \(\displaystyle x_0\) 的开邻域 \(\displaystyle U\subseteq K\) 使
+\(\displaystyle y\in U\Rightarrow |f_n(y)-f_n(x_0)|<\frac{\varepsilon}{3}\).
+于是对 \(\displaystyle y\in U\)，
+\(\displaystyle |f(y)-f(x_0)|\leqslant|f(y)-f_n(y)|+|f_n(y)-f_n(x_0)|+|f_n(x_0)-f(x_0)|<\varepsilon\).
+故 \(\displaystyle f\) 在 \(\displaystyle x_0\) 连续；\(\displaystyle x_0\) 任意，故 \(\displaystyle f\in C(K;\mathbb K)\). 因而每个上确界范数Cauchy 列都在该空间中收敛，\(\displaystyle C(K;\mathbb K)\) 完备.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[标准连续函数空间]
+\autoref{i03:CK-banach}对任意非空紧 Hausdorff 空间 \(\displaystyle K\) 建立 \(\displaystyle C(K;\mathbb K)\) 的 Banach 结构. 取 \(\displaystyle K=[a,b]\) 即得经典空间 \(\displaystyle C([a,b];\mathbb K)\) 配上确界范数为 Banach 空间.
+\end{FAExample}
+
+\subsection{本章习题}\label{sec:i03-exercises}
+
+\begin{FAExercise}[范数公理核验]{ex:i03-01}
+在 \(\displaystyle \mathbb R^2\) 上分别研究 \(\displaystyle \|(x,y)\|=|x|+2|y|\)、\(\displaystyle \|(x,y)\|=\max\{|x|,3|y|\}\) 与 \(\displaystyle p(x,y)=|x-y|\). 判断哪些是范数，并对失败者精确指出失败的公理.
+\end{FAExercise}
+
+\begin{FAExercise}[反三角不等式]{ex:i03-02}
+只从范数三角不等式推出 \(\displaystyle |\|x\|-\|y\||\leqslant\|x-y\|\)，并由此证明范数映射 \(\displaystyle x\mapsto\|x\|\) 是 \(\displaystyle1\)-Lipschitz.
+\end{FAExercise}
+
+\begin{FAExercise}[等价范数的定量球包含]{ex:i03-03}
+设 \(\displaystyle c\|x\|_a\leqslant\|x\|_b\leqslant C\|x\|_a\). 对任意 \(\displaystyle x\in X\)、\(\displaystyle r>0\)，写出两个方向的开球包含，并由它们直接证明两范数诱导相同闭集.
+\end{FAExercise}
+
+\begin{FAExercise}[有限维范数等价中的正下界]{ex:i03-04}
+在\autoref{fa:BAN-C01}的证明中，详细证明连续函数 \(\displaystyle F(a)=\|Ta\|\) 在 \(\displaystyle S=\{a:\|a\|_\infty=1\}\) 上的最小值不能等于零，并说明此处紧性不可只替换为有界性.
+\end{FAExercise}
+
+\begin{FAExercise}[有限维完备性的坐标证明]{ex:i03-05}
+不引用“有限维子空间闭”，从 \(\displaystyle \mathbb K\) 完备与有限坐标数出发重新证明 \(\displaystyle (\mathbb K^n,\|\cdot\|_\infty)\) 完备，再用等价范数推出任意有限维赋范空间完备.
+\end{FAExercise}
+
+\begin{FAExercise}[完备子空间必闭]{ex:i03-06}
+设 \(\displaystyle M\leqslant X\) 在诱导范数下完备. 从 \(\displaystyle x\in\overline M\) 出发显式构造 \(\displaystyle m_n\in M\) 使 \(\displaystyle \|m_n-x\|<\frac{1}{n}\)，并完成\autoref{fa:BAN-B01}（i）的证明.
+\end{FAExercise}
+
+\begin{FAExercise}[闭子空间的环境完备性]{ex:i03-07}
+给出一个不完备赋范空间 \(\displaystyle X\) 及其闭线性子空间 \(\displaystyle M=X\)，说明\autoref{fa:BAN-B01}（ii）中环境空间 Banach 假设不能删除.
+\end{FAExercise}
+
+\begin{FAExercise}[商半范数的代表元独立性]{ex:i03-08}
+设 \(\displaystyle x'=x+m_0\)、\(\displaystyle m_0\in M\). 不使用“显然”，通过变量替换 \(\displaystyle u=m_0+m\) 证明 \(\displaystyle \inf_{m\in M}\|x'+m\|=\inf_{u\in M}\|x+u\|\).
+\end{FAExercise}
+
+\begin{FAExercise}[非闭子空间导致正定性失败]{ex:i03-09}
+设 \(\displaystyle M\leqslant X\) 非闭. 取 \(\displaystyle x\in\overline M\setminus M\)，证明 \(\displaystyle x+M\neq M\) 但 \(\displaystyle q(x+M)=0\)，从而商上的自然对象只能是半范数.
+\end{FAExercise}
+
+\begin{FAExercise}[二维商范数]{ex:i03-10}
+在 \(\displaystyle \mathbb R^2\) 上取 \(\displaystyle \ell^1\) 范数与 \(\displaystyle M=\operatorname{span}\{(1,0)\}\). 直接计算 \(\displaystyle \|(a,b)+M\|_{X/M}\)，并与本章标准内积诱导范数的例子比较.
+\end{FAExercise}
+
+\begin{FAExercise}[商Banach证明中的可求和修正]{ex:i03-11}
+重建\autoref{fa:BAN-B02}的代表元调整：从 Cauchy 列 \(\displaystyle (\xi_n)\) 抽取子序列，选择 \(\displaystyle v_k\) 使 \(\displaystyle \sum_k\|v_k\|<\infty\)，并证明递归定义的 \(\displaystyle y_{k+1}=y_k+v_k\) 始终代表正确陪集.
+\end{FAExercise}
+
+\begin{FAExercise}[商映射的基本估计]{ex:i03-12}
+令 \(\displaystyle \pi:X\to X/M\)、\(\displaystyle \pi(x)=x+M\)，其中 \(\displaystyle M\) 闭. 证明 \(\displaystyle \|\pi(x)-\pi(y)\|_{X/M}\leqslant\|x-y\|\)，并解释该估计在\autoref{fa:BAN-B02}中把 \(\displaystyle X\) 的收敛传到商空间的作用.
+\end{FAExercise}
+
+\begin{FAExercise}[Riesz引理的下确界步骤]{ex:i03-13}
+设 \(\displaystyle d=\operatorname{dist}(z,M)>0\) 且 \(\displaystyle 0<\theta<1\). 从下确界定义严格证明存在 \(\displaystyle m_0\in M\) 使 \(\displaystyle \|z-m_0\|<\frac{d}{\theta}\)，并完成归一化后的距离估计.
+\end{FAExercise}
+
+\begin{FAExercise}[分离序列与非紧性]{ex:i03-14}
+设 \(\displaystyle (x_n)\) 满足 \(\displaystyle \|x_n\|=1\) 且 \(\displaystyle m\neq n\Rightarrow\|x_m-x_n\|>\theta>0\). 证明它没有 Cauchy 子序列，再仅用\autoref{fa:FND-B03}推出包含该序列的闭单位球不紧.
+\end{FAExercise}
+
+\begin{FAExercise}[有限维闭有界集紧]{ex:i03-15}
+设 \(\displaystyle X\) 有限维，\(\displaystyle A\subseteq X\) 闭且有界. 写出坐标同构 \(\displaystyle T:\mathbb K^n\to X\) 下 \(\displaystyle T^{-1}(A)\) 的闭性与有界性证明，并明确使用 Heine--Borel 的位置.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^p\)代表元良定义]{ex:i03-16}
+设 \(\displaystyle f=g\) 几乎处处. 分别对 \(\displaystyle 1\leqslant p<\infty\) 与 \(\displaystyle p=\infty\) 证明 \(\displaystyle \|f\|_p=\|g\|_p\). 对 \(\displaystyle p=\infty\) 必须比较定义本质上确界的可行上界集合.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^p\)完备性中的尾和]{ex:i03-17}
+在 \(\displaystyle 1\leqslant p<\infty\) 情形，定义 \(\displaystyle t_j=\sum_{k=j}^{\infty}|f_{n_{k+1}}-f_{n_k}|\). 用有限部分和、Minkowski 与单调收敛定理证明 \(\displaystyle \|t_j\|_p\leqslant\sum_{k=j}^{\infty}2^{-k}\).
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^\infty\)中的共同零测集]{ex:i03-18}
+重做\autoref{i03:Lp-banach}的 \(\displaystyle p=\infty\) 部分：对每个相邻差选取零测例外集 \(\displaystyle N_k\)，证明 \(\displaystyle N=\bigcup_kN_k\) 仍为零测集，并说明为何在 \(\displaystyle N\) 上统一修改代表元后可得到逐点一致 Cauchy 序列.
+\end{FAExercise}
+
+\begin{FAExercise}[计数测度与序列空间]{ex:i03-19}
+证明计数测度下唯一零测集是空集，并由此把 \(\displaystyle L^p(\mathbb N,\mathcal P(\mathbb N),\#)\) 与显式序列定义的 \(\displaystyle \ell^p\) 严格识别.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle c_0\)的闭性]{ex:i03-20}
+设 \(\displaystyle x^{(k)}\in c_0\) 且 \(\displaystyle \|x^{(k)}-x\|_\infty\to0\). 用先固定 \(\displaystyle k\)、再取尾部指标 \(\displaystyle N\) 的顺序证明 \(\displaystyle x_n\to0\)，并指出若交换两个量词会出现什么逻辑缺口.
+\end{FAExercise}
+
+\begin{FAExercise}[连续函数空间的完备性]{ex:i03-21}
+设 \(\displaystyle K\) 为非空紧 Hausdorff 空间. 从上确界范数Cauchy 列出发证明点态极限存在、一致收敛成立，并用开邻域形式而非度量 \(\displaystyle \delta\)-语言证明一致极限连续.
+\end{FAExercise}
+
+\begin{FAExercise}[无限维闭单位球非紧性的具体版本]{ex:i03-22}
+在 \(\displaystyle c_0\) 中使用标准单位向量 \(\displaystyle e_n\) 证明闭单位球不紧. 再说明该结论与有限维\autoref{i03:finite-dimensional-heine-borel}并不矛盾.
+\end{FAExercise}

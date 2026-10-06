@@ -1,0 +1,519 @@
+\chapter{有界线性算子与连续线性泛函}\label{chap:I-05}
+\FAChapterOpening
+{建立线性算子连续性与统一有界估计的等价关系；定义算子范数并完成其范数结构、复合估计与典型算子计算；证明 \(\displaystyle \mathcal B(X,Y)\) 在 \(\displaystyle Y\) 完备时为 Banach 空间；区分有界双射与赋范空间同构；用 Banach 压缩映射原理证明可逆算子的局部稳定性；定义连续对偶 \(\displaystyle X^*\) 并证明其总是 Banach 空间.}
+{I-03，特别是\autoref{fa:BAN-A01}.}
+{\begin{center}
+\begin{tikzpicture}[x=2.35cm,y=1.15cm]
+\node[fa/node] (ban) at (0,0) {赋范/Banach空间};
+\node[fa/node] (c01) at (1,0) {线性算子工具};
+\node[fa/node] (a01) at (2,0) {连续/有界等价};
+\node[fa/node] (b01) at (3,0) {算子范数估计};
+\node[fa/node] (a02) at (2,-1) {算子空间完备性};
+\node[fa/node] (fp) at (3.2,-1) {Banach压缩原理};
+\node[fa/node] (b02) at (4.2,0) {可逆算子稳定性};
+\node[fa/node] (dual) at (3.2,-2) {\(\displaystyle X^*\)};
+\draw[fa/arrow] (ban) -- (c01);
+\draw[fa/arrow] (c01) -- (a01);
+\draw[fa/arrow] (a01) -- (b01);
+\draw[fa/arrow] (ban.south) to[bend right=35] (a01.south);
+\draw[fa/arrow] (a01) -- (a02);
+\draw[fa/arrow] (ban) -- (a02);
+\draw[fa/arrow] (fp) -- (b02);
+\draw[fa/arrow] (b01) -- (b02);
+\draw[fa/arrow] (a01) -- (dual);
+\draw[fa/arrow] (a02) -- (dual);
+\end{tikzpicture}
+\end{center}}
+
+全文固定 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). 若无特别说明，\(\displaystyle X,Y,Z\) 均为 \(\displaystyle \mathbb K\)-赋范空间.
+
+\section{连续性与有界性}\label{sec:i05-continuity-boundedness}
+\index{bounded linear operator@有界线性算子}\index{continuous linear operator@连续线性算子}\index{kernel@核}\index{range@值域}
+
+\begin{FADefinition}[A][有界线性算子]{i05:bounded-operator}
+线性算子 \(\displaystyle \mathcal T:X\to Y\) 称为有界，若 \(\displaystyle \exists\,C\geqslant0\ \forall\,x\in X,\; \|\mathcal T x\|_Y\leqslant C\|x\|_X\).
+这里“有界”表示存在统一线性增长估计，而不表示整个 \(\displaystyle \operatorname{Ran}\mathcal T\) 是有界集.
+\end{FADefinition}
+
+\subsection{线性算子的代数工具}
+
+\begin{FAProposition}[C][线性算子计算工具]{fa:OP-C01}
+设 \(\displaystyle \mathcal T:X\to Y\)、\(\displaystyle \mathcal S:Y\to Z\) 为线性算子，\(\displaystyle \lambda\in\mathbb K\). 则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle \ker\mathcal T:=\{x\in X:\mathcal T x=0\}\) 是 \(\displaystyle X\) 的线性子空间；
+\item \(\displaystyle \operatorname{Ran}\mathcal T:=\{\mathcal T x:x\in X\}\) 是 \(\displaystyle Y\) 的线性子空间；
+\item \(\displaystyle \mathcal T\) 单射当且仅当 \(\displaystyle \ker\mathcal T=\{0\}\)；
+\item 若 \(\displaystyle \mathcal R:X\to Y\) 线性，则 \(\displaystyle \mathcal R+\mathcal T\) 与 \(\displaystyle \lambda\mathcal T\) 线性；复合 \(\displaystyle \mathcal S\mathcal T:X\to Z\) 线性；
+\item 若 \(\displaystyle \mathcal T\) 与 \(\displaystyle \mathcal S\) 有界，则 \(\displaystyle \mathcal S\mathcal T\) 有界；
+\item 若 \(\displaystyle \mathcal T\) 为线性双射，则 \(\displaystyle \mathcal T^{-1}:Y\to X\) 线性.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+（i） 因 \(\displaystyle \mathcal T0=0\)，有 \(\displaystyle 0\in\ker\mathcal T\). 若 \(\displaystyle x,y\in\ker\mathcal T\)、\(\displaystyle \alpha,\beta\in\mathbb K\)，则 \(\displaystyle \mathcal T(\alpha x+\beta y)=\alpha\mathcal T x+\beta\mathcal T y=0\)，故 \(\displaystyle \alpha x+\beta y\in\ker\mathcal T\).
+
+（ii） 若 \(\displaystyle u=\mathcal T x\)、\(\displaystyle v=\mathcal T y\) 属于 \(\displaystyle \operatorname{Ran}\mathcal T\)，则对 \(\displaystyle \alpha,\beta\in\mathbb K\)，有 \(\displaystyle \alpha u+\beta v=\mathcal T(\alpha x+\beta y)\in\operatorname{Ran}\mathcal T\).
+
+（iii） 若 \(\displaystyle \mathcal T\) 单射且 \(\displaystyle x\in\ker\mathcal T\)，则 \(\displaystyle \mathcal T x=0=\mathcal T0\)，故 \(\displaystyle x=0\). 反之，若 \(\displaystyle \ker\mathcal T=\{0\}\) 且 \(\displaystyle \mathcal T x=\mathcal T y\)，则 \(\displaystyle \mathcal T(x-y)=0\)，故 \(\displaystyle x-y=0\)，即 \(\displaystyle x=y\).
+
+（iv） 对 \(\displaystyle x,y\in X\)、\(\displaystyle \alpha,\beta\in\mathbb K\)，逐项使用线性性即得
+\[
+(\mathcal R+\mathcal T)(\alpha x+\beta y)
+=\alpha(\mathcal R+\mathcal T)x+\beta(\mathcal R+\mathcal T)y,
+\] \(\displaystyle (\lambda\mathcal T)(\alpha x+\beta y) =\alpha(\lambda\mathcal T)x+\beta(\lambda\mathcal T)y\),
+以及 \(\displaystyle (\mathcal S\mathcal T)(\alpha x+\beta y)=\alpha\mathcal S\mathcal T x+\beta\mathcal S\mathcal T y\).
+
+（v） 取 \(\displaystyle C,D\geqslant0\) 使 \(\displaystyle \|\mathcal T x\|_Y\leqslant C\|x\|_X\) 与 \(\displaystyle \|\mathcal S y\|_Z\leqslant D\|y\|_Y\) 分别对全部 \(\displaystyle x\in X\)、\(\displaystyle y\in Y\) 成立. 则 \(\displaystyle \|\mathcal S\mathcal T x\|_Z \leqslant D\|\mathcal T x\|_Y \leqslant DC\|x\|_X\)，
+故 \(\displaystyle \mathcal S\mathcal T\) 有界.
+
+（vi） 设 \(\displaystyle u,v\in Y\)、\(\displaystyle \alpha,\beta\in\mathbb K\)，并令 \(\displaystyle x=\mathcal T^{-1}u\)、\(\displaystyle y=\mathcal T^{-1}v\). 则 \(\displaystyle \mathcal T(\alpha x+\beta y)=\alpha u+\beta v\).
+由 \(\displaystyle \mathcal T\) 单射，\(\displaystyle \mathcal T^{-1}(\alpha u+\beta v)=\alpha x+\beta y=\alpha\mathcal T^{-1}u+\beta\mathcal T^{-1}v\)，故 \(\displaystyle \mathcal T^{-1}\) 线性. 上述六项均成立.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{有界与连续的等价}
+
+\begin{FATheorem}[A][线性算子连续与有界等价]{fa:OP-A01}
+设 \(\displaystyle \mathcal T:X\to Y\) 线性. 下列条件等价：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle \mathcal T\) 在 \(\displaystyle 0\) 连续；
+\item \(\displaystyle \mathcal T\) 在某一点 \(\displaystyle x_0\in X\) 连续；
+\item \(\displaystyle \mathcal T\) 在每一点连续；
+\item \(\displaystyle \mathcal T\) 有界.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+先证 （iv）\(\displaystyle\Rightarrow\)（iii）. 取 \(\displaystyle C\geqslant0\) 使 \(\displaystyle \|\mathcal T z\|_Y\leqslant C\|z\|_X\) 对全部 \(\displaystyle z\in X\) 成立. 对任意 \(\displaystyle x,y\in X\)， \(\displaystyle \|\mathcal T x-\mathcal T y\|_Y =\|\mathcal T(x-y)\|_Y \leqslant C\|x-y\|_X\).
+若 \(\displaystyle C=0\)，则 \(\displaystyle \mathcal T=0\) 并处处连续. 若 \(\displaystyle C>0\)，给定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle \delta=\frac{\varepsilon}{C}\)；当 \(\displaystyle \|x-y\|_X<\delta\) 时，上式给出 \(\displaystyle \|\mathcal T x-\mathcal T y\|_Y<\varepsilon\). 故 \(\displaystyle \mathcal T\) 处处连续.
+
+（iii）\(\displaystyle\Rightarrow\)（ii）：若 \(\displaystyle \mathcal T\) 在每一点连续，则特别在 \(\displaystyle 0\) 连续，因而当然存在连续点.
+
+再证 （ii）\(\displaystyle\Rightarrow\)（i）. 设 \(\displaystyle \mathcal T\) 在 \(\displaystyle x_0\) 连续. 对 \(\displaystyle h\in X\)， \(\displaystyle \mathcal T h =\mathcal T(x_0+h)-\mathcal T x_0\).
+当 \(\displaystyle h\to0\) 时，\(\displaystyle x_0+h\to x_0\)，由 \(\displaystyle x_0\) 处连续性得 \(\displaystyle \mathcal T(x_0+h)\to\mathcal T x_0\)，故 \(\displaystyle \mathcal T h\to0=\mathcal T0\). 因此 \(\displaystyle \mathcal T\) 在 \(\displaystyle0\) 连续.
+
+最后证 （i）\(\displaystyle\Rightarrow\)（iv）. 在 \(\displaystyle0\) 处连续性中固定 \(\displaystyle \varepsilon=1\). 存在 \(\displaystyle \delta>0\) 使 \(\displaystyle \|z\|_X<\delta \Longrightarrow \|\mathcal T z\|_Y<1\).
+若 \(\displaystyle x\neq0\)，显式令 \(\displaystyle z=\frac{\delta}{2\|x\|_X}x\).
+则
+\[
+\|z\|_X
+=\frac{\delta}{2\|x\|_X}\|x\|_X
+=\frac{\delta}{2}
+<\delta,
+\]
+从而 \(\displaystyle \|\mathcal T z\|_Y<1\). 由线性性， \(\displaystyle \mathcal T z =\frac{\delta}{2\|x\|_X}\mathcal T x\),
+故 \(\displaystyle \frac{\delta}{2\|x\|_X}\|\mathcal T x\|_Y<1\)，
+即 \(\displaystyle \|\mathcal T x\|_Y <\frac{2}{\delta}\|x\|_X\).
+若 \(\displaystyle x=0\)，则 \(\displaystyle \|\mathcal T0\|_Y=0\leqslant\frac{2}{\delta}\|0\|_X\). 因而取 \(\displaystyle C=\frac{2}{\delta}\) 即得统一有界估计，故 （iv） 成立. 四个条件等价.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[线性结构的特殊作用]
+\autoref{fa:OP-A01}的关键是线性性把一点附近的连续性传播到原点，再由缩放把原点附近的局部控制变成全空间统一估计. 对一般非线性映射不存在同样的等价链.
+\end{FARemark}
+
+\begin{FACounterexample}[线性不蕴含连续]\label{i05:ce-discont-lin}
+令 \(\displaystyle c_{00} =\{x=(x_n):\#\{n\in\mathbb N:x_n\neq0\}<\infty\}\)，
+并赋予 \(\displaystyle \|x\|_\infty=\sup_{n\in\mathbb N}|x_n|\). 定义线性泛函 \(\displaystyle \varphi:c_{00}\to\mathbb K\) 为 \(\displaystyle \varphi(x)=\sum_{n=1}^{\infty}n x_n\).
+由于 \(\displaystyle x\in c_{00}\)，上式实际为有限和，故定义良好且线性. 对标准单位向量 \(\displaystyle e_n\)，有 \(\displaystyle \|e_n\|_\infty=1\)，而 \(\displaystyle |\varphi(e_n)|=n\to\infty\). 若存在 \(\displaystyle C\geqslant0\) 使 \(\displaystyle |\varphi(x)|\leqslant C\|x\|_\infty\) 对全部 \(\displaystyle x\in c_{00}\) 成立，则取 \(\displaystyle x=e_n\) 得 \(\displaystyle n\leqslant C\) 对全部 \(\displaystyle n\) 成立，矛盾. 因而 \(\displaystyle \varphi\) 不有界；由\autoref{fa:OP-A01}，\(\displaystyle \varphi\) 不连续. 此例精确反驳命题“线性 \(\displaystyle \Rightarrow\) 连续”.
+\end{FACounterexample}
+
+\section{算子范数}\label{sec:i05-operator-norm}
+\index{operator norm@算子范数}\index{bounded operator space@有界算子空间}
+
+\subsection{定义与基本估计}
+
+\begin{FADefinition}[A][有界算子空间与算子范数]{i05:operator-norm-def}
+定义 \(\displaystyle \mathcal B(X,Y) =\{\mathcal T:X\to Y:\mathcal T\text{线性且有界}\}\).
+对 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\)，定义 \(\displaystyle \|\mathcal T\| :=\sup_{\|x\|_X\leqslant1}\|\mathcal T x\|_Y\).
+若 \(\displaystyle X=\{0\}\)，单位球等于 \(\displaystyle\{0\}\)，故 \(\displaystyle \|\mathcal T\|=0\). 若 \(\displaystyle X\neq\{0\}\)，单位球非空且包含非零向量. 由有界性，存在 \(\displaystyle C\geqslant0\) 使 \(\displaystyle \|\mathcal T x\|_Y\leqslant C\|x\|_X\) 对全部 \(\displaystyle x\in X\) 成立；因此 \(\displaystyle \|x\|_X\leqslant1\Rightarrow\|\mathcal T x\|_Y\leqslant C\). 故定义上确界的集合非空且在 \(\displaystyle \mathbb R\) 中有上界，算子范数良定义且有限.
+\end{FADefinition}
+
+\begin{FATheorem}[B][算子范数基本估计]{fa:OP-B01}
+设 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\). 则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 对全部 \(\displaystyle x\in X\)，\(\displaystyle \|\mathcal T x\|_Y\leqslant\|\mathcal T\|\|x\|_X\)；
+\item \(\displaystyle \|\mathcal T\| =\inf\{C\geqslant0:\forall\,x\in X,\ \|\mathcal T x\|_Y\leqslant C\|x\|_X\}\);
+\item 若 \(\displaystyle X\neq\{0\}\)，则 \(\displaystyle \|\mathcal T\| =\sup_{\|x\|_X=1}\|\mathcal T x\|_Y\)；
+\item \(\displaystyle \|\cdot\|\) 是 \(\displaystyle \mathcal B(X,Y)\) 上的范数；
+\item 若 \(\displaystyle \mathcal R,\mathcal T\in\mathcal B(X,Y)\)，则 \(\displaystyle \|\mathcal R+\mathcal T\|\leqslant\|\mathcal R\|+\|\mathcal T\|\)，且对 \(\displaystyle \lambda\in\mathbb K\)，\(\displaystyle \|\lambda\mathcal T\|=|\lambda|\|\mathcal T\|\)；
+\item 若 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\)、\(\displaystyle \mathcal S\in\mathcal B(Y,Z)\)，则 \(\displaystyle \|\mathcal S\mathcal T\|\leqslant\|\mathcal S\|\|\mathcal T\|\)；
+\item 若 \(\displaystyle X\neq\{0\}\)，则恒等算子 \(\displaystyle \mathcal I_X\) 满足 \(\displaystyle \|\mathcal I_X\|=1\).
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+（i） 若 \(\displaystyle x=0\)，则两边均为零. 若 \(\displaystyle x\neq0\)，令 \(\displaystyle u=\\frac{x}{\\|x\\|}_X\). 则 \(\displaystyle \|u\|_X=1\)，故由上确界定义，\(\displaystyle \|\mathcal T u\|_Y\leqslant\|\mathcal T\|\). 因而 \(\displaystyle \|\mathcal T x\|_Y =\|x\|_X\|\mathcal T u\|_Y \leqslant\|\mathcal T\|\|x\|_X\).
+
+（ii） 令 \(\displaystyle \mathcal C :=\{C\geqslant0:\forall\,x\in X,\ \|\mathcal T x\|_Y\leqslant C\|x\|_X\}\).
+由 \(\displaystyle \mathcal T\) 有界，\(\displaystyle \mathcal C\neq\varnothing\). 若 \(\displaystyle C\in\mathcal C\) 且 \(\displaystyle \|x\|_X\leqslant1\)，则 \(\displaystyle \|\mathcal T x\|_Y\leqslant C\)，故取上确界得 \(\displaystyle \|\mathcal T\|\leqslant C\). 因而 \(\displaystyle \|\mathcal T\|\leqslant\inf\mathcal C\). 另一方面，由 （i），\(\displaystyle \|\mathcal T\|\in\mathcal C\)，故 \(\displaystyle \inf\mathcal C\leqslant\|\mathcal T\|\). 两者相等.
+
+（iii） 记 \(\displaystyle M=\sup_{\|x\|_X=1}\|\mathcal T x\|_Y\). 单位球包含单位球面，故 \(\displaystyle M\leqslant\|\mathcal T\|\). 对任意 \(\displaystyle x\) 满足 \(\displaystyle \|x\|_X\leqslant1\)，若 \(\displaystyle x=0\)，则 \(\displaystyle \|\mathcal T x\|_Y=0\leqslant M\)；若 \(\displaystyle x\neq0\)，令 \(\displaystyle u=\\frac{x}{\\|x\\|}_X\)，则 \(\displaystyle \|u\|_X=1\)，且 \(\displaystyle \|\mathcal T x\|_Y =\|x\|_X\|\mathcal T u\|_Y \leqslant M\).
+对单位球取上确界得 \(\displaystyle \|\mathcal T\|\leqslant M\)，故相等.
+
+（iv） 非负性由范数值非负与上确界定义得到. 对 \(\displaystyle \lambda\in\mathbb K\)，
+\[
+\|\lambda\mathcal T\|
+=\sup_{\|x\|_X\leqslant1}\|\lambda\mathcal T x\|_Y
+=|\lambda|\sup_{\|x\|_X\leqslant1}\|\mathcal T x\|_Y
+=|\lambda|\|\mathcal T\|.
+\]
+若 \(\displaystyle \mathcal R,\mathcal T\in\mathcal B(X,Y)\)，则对 \(\displaystyle \|x\|_X\leqslant1\)，
+\[
+\|(\mathcal R+\mathcal T)x\|_Y
+\leqslant\|\mathcal R x\|_Y+\|\mathcal T x\|_Y
+\leqslant\|\mathcal R\|+\|\mathcal T\|.
+\]
+取上确界得三角不等式. 若 \(\displaystyle \|\mathcal T\|=0\)，则由 （i），对全部 \(\displaystyle x\in X\)，有 \(\displaystyle \|\mathcal T x\|_Y\leqslant0\)，故 \(\displaystyle \mathcal T x=0\). 因而 \(\displaystyle \mathcal T=0\). 若 \(\displaystyle \mathcal T=0\)，则单位球上恒有 \(\displaystyle \|\mathcal T x\|_Y=0\)，故 \(\displaystyle \|\mathcal T\|=0\). 因此算子范数满足全部范数公理.
+
+（v） 已由 （iv） 的计算同时得到.
+
+（vi） 对任意 \(\displaystyle x\in X\)，由 （i） 两次使用得
+\[
+\|\mathcal S\mathcal T x\|_Z
+\leqslant\|\mathcal S\|\|\mathcal T x\|_Y
+\leqslant\|\mathcal S\|\|\mathcal T\|\|x\|_X.
+\]
+由 （ii） 的最小常数刻画，\(\displaystyle \|\mathcal S\mathcal T\|\leqslant\|\mathcal S\|\|\mathcal T\|\).
+
+（vii） 若 \(\displaystyle X\neq\{0\}\)，则对 \(\displaystyle \|x\|_X\leqslant1\)，\(\displaystyle \|\mathcal I_Xx\|_X=\|x\|_X\leqslant1\)，故 \(\displaystyle \|\mathcal I_X\|\leqslant1\). 任取 \(\displaystyle x_0\neq0\)，令 \(\displaystyle u=\frac{x_0}{\|x_0\|_X}\)，则 \(\displaystyle \|u\|_X=1\) 且 \(\displaystyle \|\mathcal I_Xu\|_X=1\)，故 \(\displaystyle \|\mathcal I_X\|\geqslant1\). 因而 \(\displaystyle \|\mathcal I_X\|=1\). 全部结论成立.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{单边移位}
+
+\begin{FAExample}[右移与左移]\label{i05:ex-shift}
+在 \(\displaystyle \ell^2(\mathbb N)\) 上定义右移 \(\displaystyle \mathcal S(x_1,x_2,\dots)=(0,x_1,x_2,\dots)\).
+对 \(\displaystyle x,y\in\ell^2\)、\(\displaystyle \alpha,\beta\in\mathbb K\)，逐坐标有 \(\displaystyle \mathcal S(\alpha x+\beta y)=\alpha\mathcal Sx+\beta\mathcal Sy\)，故 \(\displaystyle \mathcal S\) 线性. 此外
+\[
+\|\mathcal Sx\|_2^2
+=\sum_{n=1}^{\infty}|(\mathcal Sx)_n|^2
+=\sum_{n=1}^{\infty}|x_n|^2
+=\|x\|_2^2.
+\]
+故 \(\displaystyle \|\mathcal Sx\|_2=\|x\|_2\)，从而 \(\displaystyle \mathcal S\in\mathcal B(\ell^2,\ell^2)\) 且 \(\displaystyle \|\mathcal S\|=1\). 若 \(\displaystyle \mathcal Sx=0\)，则全部 \(\displaystyle x_n=0\)，故 \(\displaystyle \mathcal S\) 单射. 但 \(\displaystyle e_1=(1,0,0,\dots)\) 不属于其值域，因为每个 \(\displaystyle \mathcal Sx\) 的第一坐标均为零，故 \(\displaystyle \mathcal S\) 非满射.
+
+定义左移 \(\displaystyle \mathcal L(x_1,x_2,\dots)=(x_2,x_3,\dots)\).
+逐坐标验证得 \(\displaystyle \mathcal L\) 线性. 且 \(\displaystyle \|\mathcal Lx\|_2^2 =\sum_{n=2}^{\infty}|x_n|^2 \leqslant\|x\|_2^2\)，
+故 \(\displaystyle \|\mathcal L\|\leqslant1\). 又 \(\displaystyle \mathcal Le_2=e_1\)，且 \(\displaystyle \|e_2\|_2=\|e_1\|_2=1\)，故 \(\displaystyle \|\mathcal L\|=1\). 对任意 \(\displaystyle x\in\ell^2\)，有 \(\displaystyle \mathcal L\mathcal Sx=x\)，即 \(\displaystyle \mathcal L\mathcal S=\mathcal I\). 因此 \(\displaystyle \mathcal L\) 满射；又 \(\displaystyle \mathcal Le_1=0\)，故 \(\displaystyle \mathcal L\) 非单射. 另一方面，\(\displaystyle \mathcal S\mathcal Le_1=0\neq e_1\)，故 \(\displaystyle \mathcal S\mathcal L\neq\mathcal I\). 因而 \(\displaystyle \mathcal L\) 是 \(\displaystyle \mathcal S\) 的左逆，而不是双边逆；单侧逆的两个方向不可混同.
+\end{FAExample}
+
+\subsection{乘法算子}
+
+\begin{FAExample}[\(\displaystyle C(K)\)上的乘法算子]\label{i05:ex-mult}
+设 \(\displaystyle K\) 为非空紧 Hausdorff 空间，\(\displaystyle h\in C(K;\mathbb K)\). 定义 \(\displaystyle \mathcal M_h:C(K;\mathbb K)\to C(K;\mathbb K)\) 为 \(\displaystyle (\mathcal M_hf)(t)=h(t)f(t)\).
+乘积连续性保证 \(\displaystyle \mathcal M_hf\in C(K;\mathbb K)\)，且 \(\displaystyle \mathcal M_h\) 线性. 对任意 \(\displaystyle f\in C(K;\mathbb K)\)， \(\displaystyle \|\mathcal M_hf\|_\infty =\sup_{t\in K}|h(t)f(t)| \leqslant\|h\|_\infty\|f\|_\infty\),
+故 \(\displaystyle \mathcal M_h\in\mathcal B(C(K),C(K))\) 且 \(\displaystyle \|\mathcal M_h\|\leqslant\|h\|_\infty\). 取常函数 \(\displaystyle f\equiv1\)，有 \(\displaystyle \|f\|_\infty=1\) 与 \(\displaystyle \|\mathcal M_hf\|_\infty=\|h\|_\infty\)，故 \(\displaystyle \|\mathcal M_h\|=\|h\|_\infty\).
+若 \(\displaystyle h(t)\neq0\) 对全部 \(\displaystyle t\in K\) 成立，则连续函数 \(\displaystyle |h|\) 在紧集 \(\displaystyle K\) 上取得最小值 \(\displaystyle m\geqslant0\). 若 \(\displaystyle m=0\)，则存在 \(\displaystyle t_0\in K\) 使 \(\displaystyle |h(t_0)|=0\)，矛盾；故 \(\displaystyle m>0\). 因此 \(\displaystyle \frac{1}{h}\in C(K;\mathbb K)\)，且 \(\displaystyle \mathcal M_h\mathcal M_{\frac{1}{h}}=\mathcal I =\mathcal M_{\frac{1}{h}}\mathcal M_h\).
+于是 \(\displaystyle \mathcal M_h^{-1}=\mathcal M_{\frac{1}{h}}\in\mathcal B(C(K),C(K))\)，并有 \(\displaystyle \|\mathcal M_h^{-1}\|=\left\|\frac{1}{h}\right\|_\infty=\frac{1}{m}\). 若 \(\displaystyle h(t_0)=0\) 对某个 \(\displaystyle t_0\in K\) 成立，则每个 \(\displaystyle \mathcal M_hf\) 在 \(\displaystyle t_0\) 处均取零值，故常函数 \(\displaystyle1\) 不在值域中，\(\displaystyle \mathcal M_h\) 不满射. 此外 \(\displaystyle \ker\mathcal M_h =\{f\in C(K;\mathbb K):f(t)=0\text{ 对所有满足 }h(t)\neq0\text{ 的 }t\in K\}\)，
+因此一般情形下单射性由该核是否仅含零函数决定.
+\end{FAExample}
+
+\newpage
+\subsection{Volterra 积分算子模型与微分算子对比}
+
+\begin{FAExample}[Volterra积分算子]\label{i05:ex-volterra}
+在 \(\displaystyle C[0,1]:=C([0,1];\mathbb K)\) 上定义 \(\displaystyle (\mathcal V f)(x)=\int_0^x f(t)\,\mathrm{d}t\).
+由积分线性性，\(\displaystyle \mathcal V\) 线性；由微积分基本定理，\(\displaystyle \mathcal V f\in C[0,1]\). 对任意 \(\displaystyle x\in[0,1]\)，
+\[
+|(\mathcal V f)(x)|
+\leqslant\int_0^x|f(t)|\,\mathrm{d}t
+\leqslant x\|f\|_\infty
+\leqslant\|f\|_\infty.
+\]
+故 \(\displaystyle \|\mathcal V f\|_\infty\leqslant\|f\|_\infty\)，从而 \(\displaystyle \|\mathcal V\|\leqslant1\). 取 \(\displaystyle f\equiv1\)，则 \(\displaystyle (\mathcal V f)(x)=x\)，故 \(\displaystyle \|\mathcal V f\|_\infty=1=\|f\|_\infty\). 因而 \(\displaystyle \|\mathcal V\|=1\).
+若 \(\displaystyle \mathcal V f=0\)，则由微积分基本定理，\(\displaystyle f=(\mathcal V f)'=0\)，故 \(\displaystyle \mathcal V\) 单射. 同一基本定理还给出 \(\displaystyle \operatorname{Ran}\mathcal V =\{g\in C^1[0,1]:g(0)=0\}\).
+事实上，\(\displaystyle g=\mathcal V f\Rightarrow g\in C^1[0,1]\)、\(\displaystyle g(0)=0\) 且 \(\displaystyle g'=f\)；反之若 \(\displaystyle g\in C^1[0,1]\)、\(\displaystyle g(0)=0\)，则 \(\displaystyle g(x)=\int_0^x g'(t)\,\mathrm{d}t=\mathcal V(g')(x)\). 因常函数 \(\displaystyle1\) 不属于该集合，\(\displaystyle \mathcal V\) 非满射.
+
+在值域赋予 \(\displaystyle C[0,1]\) 继承的上确界范数时，代数逆为 \(\displaystyle \mathcal V^{-1}g=g'\)，但它不有界. 取 \(\displaystyle f_n(t)=t^n\) 与 \(\displaystyle g_n=\mathcal V f_n=\frac{t^{n+1}}{n+1}\)，则
+\[
+\|g_n\|_\infty=\frac1{n+1},
+\quad
+\|\mathcal V^{-1}g_n\|_\infty=\|f_n\|_\infty=1.
+\]
+若 \(\displaystyle \mathcal V^{-1}\) 有界，则存在 \(\displaystyle C\geqslant0\) 使 \(\displaystyle1\leqslant \frac{C}{n+1}\) 对全部 \(\displaystyle n\) 成立，矛盾.
+\end{FAExample}
+
+\begin{FAApplication}[积分有界而微分可不有界]\label{i05:diff-int-contrast}
+令 \(\displaystyle \mathcal P[0,1]\) 为 \(\displaystyle[0,1]\) 上 \(\displaystyle \mathbb K\)-系数多项式空间，赋予上确界范数，并定义 \(\displaystyle \mathcal D:\mathcal P[0,1]\to\mathcal P[0,1]\) 为 \(\displaystyle \mathcal Dp=p'\). 它线性. 取 \(\displaystyle p_n(t)=t^n\)，则 \(\displaystyle \|p_n\|_\infty=1\)，而 \(\displaystyle \|\mathcal Dp_n\|_\infty =\sup_{0\leqslant t\leqslant1}n t^{n-1} =n \to\infty\).
+若 \(\displaystyle \mathcal D\) 有界，则存在 \(\displaystyle C\geqslant0\) 使 \(\displaystyle \|\mathcal Dp_n\|_\infty\leqslant C\|p_n\|_\infty=C\) 对全部 \(\displaystyle n\) 成立，与 \(\displaystyle n\to\infty\) 矛盾. 故 \(\displaystyle \mathcal D\) 不有界，并由\autoref{fa:OP-A01}得 \(\displaystyle \mathcal D\) 不连续. 与之相对，Volterra 积分算子模型中的积分算子 \(\displaystyle \mathcal V\) 有界且范数为 \(\displaystyle1\). 这里只比较同一类经典运算在给定赋范结构下的连续性，不进入无界算子理论.
+\end{FAApplication}
+
+\section{算子空间}\label{sec:i05-operator-space}
+\index{Banach space of operators@算子Banach空间}
+
+由\autoref{fa:OP-C01}，\(\displaystyle \mathcal B(X,Y)\) 对逐点加法与标量乘法封闭；由\autoref{fa:OP-B01}，算子范数使其成为赋范空间. 完备性只取决于陪域.
+
+\begin{FATheorem}[A][有界算子空间完备性]{fa:OP-A02}
+设 \(\displaystyle X\) 为任意赋范空间，\(\displaystyle Y\) 为 Banach 空间. 则 \(\displaystyle \mathcal B(X,Y)\) 配算子范数为 Banach 空间. 特别地，\(\displaystyle X\) 不要求完备.
+\end{FATheorem}
+
+\begin{FAProof}
+设 \(\displaystyle (\mathcal T_n)\) 是 \(\displaystyle \mathcal B(X,Y)\) 中的算子范数 Cauchy 列. 固定 \(\displaystyle x\in X\). 对任意 \(\displaystyle m,n\)，由\autoref{fa:OP-B01}，
+\[
+\|\mathcal T_nx-\mathcal T_mx\|_Y
+=\|(\mathcal T_n-\mathcal T_m)x\|_Y
+\leqslant\|\mathcal T_n-\mathcal T_m\|\|x\|_X.
+\]
+当 \(\displaystyle m,n\to\infty\) 时右端趋于零，故 \(\displaystyle (\mathcal T_nx)\) 是 \(\displaystyle Y\) 中 Cauchy 列. 因 \(\displaystyle Y\) 完备，对每个 \(\displaystyle x\in X\) 定义 \(\displaystyle \mathcal T x:=\lim_{n\to\infty}\mathcal T_nx\).
+这对全部 \(\displaystyle x\in X\) 定义了映射 \(\displaystyle \mathcal T:X\to Y\).
+
+证明线性性. 对 \(\displaystyle x,y\in X\)、\(\displaystyle \alpha,\beta\in\mathbb K\)，连续的向量加法与标量乘法给出
+\[
+\mathcal T(\alpha x+\beta y)
+=\lim_{n\to\infty}\mathcal T_n(\alpha x+\beta y)
+=\alpha\lim_{n\to\infty}\mathcal T_nx+\beta\lim_{n\to\infty}\mathcal T_ny
+=\alpha\mathcal T x+\beta\mathcal T y.
+\]
+故 \(\displaystyle \mathcal T\) 线性.
+
+证明统一范数上界. 因 \(\displaystyle (\mathcal T_n)\) 为 Cauchy 列，存在 \(\displaystyle N_0\) 使 \(\displaystyle n\geqslant N_0\Rightarrow\|\mathcal T_n-\mathcal T_{N_0}\|<1\). 因而对 \(\displaystyle n\geqslant N_0\)， \(\displaystyle \|\mathcal T_n\| \leqslant\|\mathcal T_{N_0}\|+1\).
+令 \(\displaystyle M:=\max\{\|\mathcal T_1\|,\dots,\|\mathcal T_{N_0-1}\|,\|\mathcal T_{N_0}\|+1\}\)，
+其中当 \(\displaystyle N_0=1\) 时忽略前面的有限列表. 则 \(\displaystyle \|\mathcal T_n\|\leqslant M\) 对全部 \(\displaystyle n\) 成立.
+
+证明 \(\displaystyle \mathcal T\) 有界. 对任意 \(\displaystyle x\in X\)，由范数连续性与 \(\displaystyle \mathcal T_nx\to\mathcal T x\)， \(\displaystyle \|\mathcal T x\|_Y =\lim_{n\to\infty}\|\mathcal T_nx\|_Y \leqslant M\|x\|_X\).
+故 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\) 且 \(\displaystyle \|\mathcal T\|\leqslant M\).
+
+最后证明算子范数收敛. 给定 \(\displaystyle \varepsilon>0\)，由 Cauchy 性取 \(\displaystyle N\) 使
+\[
+m,n\geqslant N
+\Longrightarrow
+\|\mathcal T_n-\mathcal T_m\|<\frac{\varepsilon}{2}.
+\]
+固定 \(\displaystyle n\geqslant N\) 与任意满足 \(\displaystyle \|x\|_X\leqslant1\) 的 \(\displaystyle x\). 对所有 \(\displaystyle m\geqslant N\)，
+\[
+\|(\mathcal T_n-\mathcal T_m)x\|_Y
+\leqslant\|\mathcal T_n-\mathcal T_m\|\|x\|_X
+<\frac{\varepsilon}{2}.
+\]
+令 \(\displaystyle m\to\infty\)，由 \(\displaystyle \mathcal T_mx\to\mathcal T x\) 得
+\[
+\|(\mathcal T_n-\mathcal T)x\|_Y
+\leqslant\frac{\varepsilon}{2}
+<\varepsilon.
+\]
+对单位球取上确界，得到 \(\displaystyle \|\mathcal T_n-\mathcal T\|\leqslant\frac{\varepsilon}{2}<\varepsilon\). 因而 \(\displaystyle \mathcal T_n\to\mathcal T\) 于算子范数，故 \(\displaystyle \mathcal B(X,Y)\) 完备. 整个证明只使用 \(\displaystyle Y\) 的完备性，从未要求 \(\displaystyle X\) 完备.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[定义域完备性不需要]
+\autoref{fa:OP-A02}的极限是逐个固定 \(\displaystyle x\in X\) 后在 \(\displaystyle Y\) 中取得，因此完备性假设落在陪域 \(\displaystyle Y\)，而不是定义域 \(\displaystyle X\). 证明中对 \(\displaystyle (\mathcal T_n)\) 的统一范数上界仅来自“Cauchy 列必有界”，没有调用一致有界性原理.
+\end{FARemark}
+
+\section{可逆与同构}\label{sec:i05-invertibility-isomorphism}
+\index{isomorphism of normed spaces@赋范空间同构}\index{invertible bounded operator@有界可逆算子}
+
+\subsection{定义与边界}
+
+\begin{FADefinition}[B][有界可逆与赋范空间同构]{i05:isomorphism-def}
+设 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\). 若 \(\displaystyle \mathcal T\) 双射且 \(\displaystyle \mathcal T^{-1}\in\mathcal B(Y,X)\)，则称 \(\displaystyle \mathcal T\) 有界可逆. 若存在有界可逆线性映射 \(\displaystyle \mathcal T:X\to Y\)，则称赋范空间 \(\displaystyle X\) 与 \(\displaystyle Y\) 同构.
+\end{FADefinition}
+
+本章不把“有界线性双射”与“有界可逆”混同；前者还没有包含逆映射有界性.
+
+\begin{FACounterexample}[有界线性双射的逆未必有界]\label{i05:bounded-bijection-unbounded-inverse}
+在同一线性空间 \(\displaystyle c_{00}\) 上分别使用 \(\displaystyle \|x\|_1=\sum_n|x_n|\) 与 \(\displaystyle \|x\|_\infty=\sup_n|x_n|\). 恒等映射 \(\displaystyle \mathcal J:(c_{00},\|\cdot\|_1)\to(c_{00},\|\cdot\|_\infty),\; \mathcal Jx=x\)，
+线性且双射，并由 \(\displaystyle \|x\|_\infty\leqslant\|x\|_1\) 得 \(\displaystyle \|\mathcal J\|\leqslant1\). 取 \(\displaystyle e_1=(1,0,0,\dots)\)，则 \(\displaystyle \|e_1\|_1=\|\mathcal Je_1\|_\infty=1\)，故 \(\displaystyle \|\mathcal J\|=1\). 对 \(\displaystyle x^{(n)}=(\underbrace{1,\dots,1}_{n\text{项}},0,0,\dots)\)，
+有 \(\displaystyle \|x^{(n)}\|_\infty=1\) 与 \(\displaystyle \|x^{(n)}\|_1=n\). 因而逆映射 \(\displaystyle \mathcal J^{-1}:(c_{00},\|\cdot\|_\infty)\to(c_{00},\|\cdot\|_1\) 不有界. 这说明逆的有界性必须在当前定义中单独要求；Banach空间之间的自动有界逆结论留待后续章节.
+\end{FACounterexample}
+
+\subsection{可逆算子的局部稳定性}
+
+以下记 \(\displaystyle \mathcal B(X):=\mathcal B(X,X)\).
+
+\begin{FATheorem}[B][可逆算子集合局部稳定性]{fa:OP-B02}
+设 \(\displaystyle X\) 为 Banach 空间，\(\displaystyle \mathcal A\in\mathcal B(X)\) 有界可逆，\(\displaystyle \mathcal B\in\mathcal B(X)\)，并令 \(\displaystyle q:=\|\mathcal A^{-1}\|\|\mathcal B-\mathcal A\|<1\).
+则 \(\displaystyle \mathcal B\) 有界可逆，而且 \(\displaystyle \|\mathcal B^{-1}\| \leqslant \frac{\|\mathcal A^{-1}\|}{1-q}\).
+\end{FATheorem}
+
+\begin{FAProof}
+定义 \(\displaystyle \mathcal E :=\mathcal I_X-\mathcal A^{-1}\mathcal B =\mathcal A^{-1}(\mathcal A-\mathcal B)\).
+由\autoref{fa:OP-B01}的复合估计， \(\displaystyle \|\mathcal E\| \leqslant\|\mathcal A^{-1}\|\|\mathcal A-\mathcal B\| =q<1\).
+固定任意 \(\displaystyle y\in X\)，定义 \(\displaystyle \Phi_y:X\to X\) 为 \(\displaystyle \Phi_y(x)=\mathcal E x+\mathcal A^{-1}y\).
+对任意 \(\displaystyle x,z\in X\)，
+\[
+\|\Phi_y(x)-\Phi_y(z)\|
+=\|\mathcal E(x-z)\|
+\leqslant\|\mathcal E\|\|x-z\|
+\leqslant q\|x-z\|.
+\]
+因 \(\displaystyle X\) 完备且 \(\displaystyle q<1\)，由\autoref{fa:FP-A01}，\(\displaystyle \Phi_y\) 存在唯一不动点 \(\displaystyle x\in X\). 对任意 \(\displaystyle x\in X\)，
+\[
+\begin{aligned}
+x=\Phi_y(x)
+&\iff x=\mathcal E x+\mathcal A^{-1}y\iff (\mathcal I_X-\mathcal E)x=\mathcal A^{-1}y\\
+&\iff \mathcal A^{-1}\mathcal Bx=\mathcal A^{-1}y\iff \mathcal Bx=y.
+\end{aligned}
+\]
+因此对每个 \(\displaystyle y\in X\)，方程 \(\displaystyle \mathcal Bx=y\) 存在唯一解. 故 \(\displaystyle \mathcal B\) 双射；由\autoref{fa:OP-C01}，\(\displaystyle \mathcal B^{-1}\) 线性.
+
+对该唯一解 \(\displaystyle x=\mathcal B^{-1}y\)，由不动点方程与 \(\displaystyle \|\mathcal E\|\leqslant q\)，
+\[
+\|x\|
+\leqslant\|\mathcal E x\|+\|\mathcal A^{-1}y\|
+\leqslant q\|x\|+\|\mathcal A^{-1}\|\|y\|.
+\]
+故 \(\displaystyle (1-q)\|x\| \leqslant\|\mathcal A^{-1}\|\|y\|\)，
+即
+\[
+\|\mathcal B^{-1}y\|
+\leqslant
+\frac{\|\mathcal A^{-1}\|}{1-q}\|y\|.
+\]
+因 \(\displaystyle y\) 任意，\(\displaystyle \mathcal B^{-1}\in\mathcal B(X)\)，并由算子范数最小常数刻画得到所需估计.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][可逆算子集合是开集]{i05:GL-open}
+设 \(\displaystyle X\) 为 Banach 空间，并定义 \(\displaystyle \mathrm{GL}(X) :=\{\mathcal T\in\mathcal B(X):\mathcal T\text{有界可逆}\}\).
+则 \(\displaystyle \mathrm{GL}(X)\) 是赋范空间 \(\displaystyle \mathcal B(X)\) 中的开集.
+\end{FACorollary}
+
+\begin{FAProof}
+若 \(\displaystyle X=\{0\}\)，则 \(\displaystyle \mathcal B(X)=\mathrm{GL}(X)=\{0\}\)，故结论成立. 以下设 \(\displaystyle X\neq\{0\}\). 固定 \(\displaystyle \mathcal A\in\mathrm{GL}(X)\). 因 \(\displaystyle \mathcal I_X=\mathcal A^{-1}\mathcal A\) 且 \(\displaystyle \|\mathcal I_X\|=1\)，由\autoref{fa:OP-B01}得 \(\displaystyle 1\leqslant\|\mathcal A^{-1}\|\|\mathcal A\|\)，故 \(\displaystyle \|\mathcal A^{-1}\|>0\). 取 \(\displaystyle r=\frac{1}{\|\mathcal A^{-1}\|}\). 若 \(\displaystyle \|\mathcal B-\mathcal A\|<r\)，则 \(\displaystyle \|\mathcal A^{-1}\|\|\mathcal B-\mathcal A\|<1\). 由\autoref{fa:OP-B02}，\(\displaystyle \mathcal B\in\mathrm{GL}(X)\). 因而以每个 \(\displaystyle \mathcal A\in\mathrm{GL}(X)\) 为中心都有一个算子范数开球包含于 \(\displaystyle \mathrm{GL}(X)\)，故其为开集.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][局部逆映射估计]{i05:inverse-difference}
+在\autoref{fa:OP-B02}的条件下， \(\displaystyle \mathcal B^{-1}-\mathcal A^{-1} =\mathcal B^{-1}(\mathcal A-\mathcal B)\mathcal A^{-1}\),
+并且
+\[
+\|\mathcal B^{-1}-\mathcal A^{-1}\|
+\leqslant
+\frac{\|\mathcal A^{-1}\|^2\|\mathcal B-\mathcal A\|}{1-q}.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+直接计算
+\[
+\mathcal B^{-1}(\mathcal A-\mathcal B)\mathcal A^{-1}
+=\mathcal B^{-1}\mathcal A\mathcal A^{-1}-\mathcal B^{-1}\mathcal B\mathcal A^{-1}
+=\mathcal B^{-1}-\mathcal A^{-1}.
+\]
+再由\autoref{fa:OP-B01}与\autoref{fa:OP-B02}，
+\[
+\|\mathcal B^{-1}-\mathcal A^{-1}\|
+\leqslant\|\mathcal B^{-1}\|\|\mathcal A-\mathcal B\|\|\mathcal A^{-1}\|
+\leqslant
+\frac{\|\mathcal A^{-1}\|^2\|\mathcal B-\mathcal A\|}{1-q}.
+\]
+结论成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[本章的证明边界]
+\autoref{fa:OP-B02}只使用 Banach 压缩映射原理与算子范数估计，没有使用算子级数. 一般 Neumann 级数、预解集与谱论不在本章建立.
+\end{FARemark}
+
+\section{连续线性泛函}\label{sec:i05-continuous-dual}
+\index{continuous dual@连续对偶}\index{dual norm@对偶范数}\index{dual pairing@对偶配对}\index{evaluation functional@点值泛函}
+
+\subsection{连续对偶与对偶范数}
+
+\begin{FADefinition}[A][连续线性泛函与连续对偶]{i05:continuous-dual-def}
+线性映射 \(\displaystyle x^*:X\to\mathbb K\) 称为线性泛函. 由\autoref{fa:OP-A01}，它连续当且仅当有界. 定义连续对偶空间 \(\displaystyle X^*:=\mathcal B(X,\mathbb K)\)，
+并定义对偶范数 \(\displaystyle \|x^*\| :=\sup_{\|x\|_X\leqslant1}|x^*(x)|\).
+对 \(\displaystyle x^*\in X^*\)、\(\displaystyle x\in X\)，定义对偶配对 \(\displaystyle \langle x^*,x\rangle_{X^*,X}:=x^*(x)\).
+这里的 \(\displaystyle \langle\cdot,\cdot\rangle_{X^*,X}\) 是对偶配对，不是 Hilbert 内积.
+\end{FADefinition}
+
+\begin{FACorollary}[A][连续对偶总是Banach空间]{i05:dual-banach}
+对任意赋范空间 \(\displaystyle X\)，其连续对偶 \(\displaystyle X^*\) 配对偶范数总是 Banach 空间；\(\displaystyle X\) 本身不要求完备.
+\end{FACorollary}
+
+\begin{FAProof}
+数域 \(\displaystyle \mathbb K\) 在绝对值范数下完备. 将\autoref{fa:OP-A02}应用于任意赋范空间 \(\displaystyle X\) 与 Banach 空间 \(\displaystyle Y=\mathbb K\)，得到 \(\displaystyle \mathcal B(X,\mathbb K)=X^*\) 在算子范数下完备. 该算子范数正是\autoref{i05:continuous-dual-def}的对偶范数. 因此 \(\displaystyle X^*\) 为 Banach 空间，且证明不需要 \(\displaystyle X\) 完备.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{点值泛函与积分泛函}
+
+\begin{FAExample}[点值泛函]\label{i05:evaluation-functional}
+设 \(\displaystyle K\) 为非空紧 Hausdorff 空间，\(\displaystyle t_0\in K\). 定义 \(\displaystyle \delta_{t_0}:C(K;\mathbb K)\to\mathbb K\) 为 \(\displaystyle \delta_{t_0}(f)=f(t_0)\).
+它线性，且对全部 \(\displaystyle f\in C(K;\mathbb K)\)， \(\displaystyle |\delta_{t_0}(f)|=|f(t_0)|\leqslant\|f\|_\infty\).
+故 \(\displaystyle \|\delta_{t_0}\|\leqslant1\). 取 \(\displaystyle f\equiv1\)，则 \(\displaystyle \|f\|_\infty=1\) 且 \(\displaystyle |\delta_{t_0}(f)|=1\)，故 \(\displaystyle \|\delta_{t_0}\|=1\).
+\end{FAExample}
+
+\begin{FAExample}[积分泛函]\label{i05:integral-functional}
+在 \(\displaystyle C[0,1]\) 上定义 \(\displaystyle \varphi:C[0,1]\to\mathbb K\) 为 \(\displaystyle \varphi(f)=\int_0^1 f(t)\,\mathrm{d}t\).
+它线性，且 \(\displaystyle |\varphi(f)| \leqslant\int_0^1|f(t)|\,\mathrm{d}t \leqslant\|f\|_\infty\).
+故 \(\displaystyle \|\varphi\|\leqslant1\). 取 \(\displaystyle f\equiv1\)，则 \(\displaystyle \|f\|_\infty=1\) 与 \(\displaystyle |\varphi(f)|=1\)，故 \(\displaystyle \|\varphi\|=1\).
+\end{FAExample}
+
+\subsection{本章习题}\label{sec:i05-exercises}
+
+\begin{FAExercise}[连续性在一点与原点]{ex:i05-01}
+设 \(\displaystyle \mathcal T:X\to Y\) 线性. 只使用 \(\displaystyle \mathcal T h=\mathcal T(x_0+h)-\mathcal T x_0\) 从 \(\displaystyle x_0\) 处连续推出原点连续，并明确写出给定 \(\displaystyle \varepsilon>0\) 时的邻域传递.
+\end{FAExercise}
+
+\begin{FAExercise}[原点连续推出统一有界]{ex:i05-02}
+重建\autoref{fa:OP-A01}中 \(\displaystyle0\) 连续 \(\displaystyle\Rightarrow\) 有界的缩放步骤. 固定 \(\displaystyle \varepsilon=1\)，对 \(\displaystyle x\neq0\) 使用 \(\displaystyle z=\frac{\delta x}{2\|x\|}\)，并单独处理 \(\displaystyle x=0\).
+\end{FAExercise}
+
+\begin{FAExercise}[单位球与单位球面上确界]{ex:i05-03}
+设 \(\displaystyle X\neq\{0\}\)、\(\displaystyle \mathcal T\in\mathcal B(X,Y)\). 从归一化 \(\displaystyle u=\\frac{x}{\\|x\\|}\) 出发完整证明 \(\displaystyle \sup_{\|x\|\leqslant1}\|\mathcal T x\| =\sup_{\|x\|=1}\|\mathcal T x\|\).
+\end{FAExercise}
+
+\begin{FAExercise}[算子范数的最小常数刻画]{ex:i05-04}
+设 \(\displaystyle \mathcal C=\{C\geqslant0:\forall\,x,\ \|\mathcal T x\|\leqslant C\|x\|\}\). 证明 \(\displaystyle \|\mathcal T\|\) 既是 \(\displaystyle \mathcal C\) 的下界又属于 \(\displaystyle \mathcal C\)，从而 \(\displaystyle \|\mathcal T\|=\inf\mathcal C\).
+\end{FAExercise}
+
+\begin{FAExercise}[复合估计与等号]{ex:i05-05}
+证明 \(\displaystyle \|\mathcal S\mathcal T\|\leqslant\|\mathcal S\|\|\mathcal T\|\). 再在有限维标准内积空间中构造一个等号成立的非零例子，并逐项核验范数.
+\end{FAExercise}
+
+\begin{FAExercise}[右移的值域]{ex:i05-06}
+对移位算子模型中的右移 \(\displaystyle \mathcal S\)，证明 \(\displaystyle \operatorname{Ran}\mathcal S =\{x\in\ell^2:x_1=0\}\)，
+并证明该值域是 \(\displaystyle \ell^2\) 的闭线性子空间.
+\end{FAExercise}
+
+\begin{FAExercise}[左逆与右逆不能交换]{ex:i05-07}
+设 \(\displaystyle \mathcal A:X\to Y\)、\(\displaystyle \mathcal B:Y\to X\) 线性且 \(\displaystyle \mathcal B\mathcal A=\mathcal I_X\). 证明 \(\displaystyle \mathcal A\) 单射、\(\displaystyle \mathcal B\) 满射. 用移位算子模型说明不能由此推出 \(\displaystyle \mathcal A\mathcal B=\mathcal I_Y\).
+\end{FAExercise}
+
+\begin{FAExercise}[乘法算子的核]{ex:i05-08}
+设 \(\displaystyle K\) 为非空紧 Hausdorff 空间，\(\displaystyle h\in C(K)\). 描述 \(\displaystyle \ker\mathcal M_h\)，并证明当 \(\displaystyle h\) 处处非零时 \(\displaystyle \mathcal M_h\) 的逆正是 \(\displaystyle \mathcal M_{\frac{1}{h}}\).
+\end{FAExercise}
+
+\begin{FAExercise}[Volterra值域与逆映射]{ex:i05-09}
+设 \(\displaystyle \mathcal V\) 如Volterra 积分算子模型所定义. 使用微积分基本定理完整证明 \(\displaystyle \operatorname{Ran}\mathcal V=\{g\in C^1[0,1]:g(0)=0\}\)，并用 \(\displaystyle g_n(t)=\frac{t^{n+1}}{n+1}\) 证明值域取继承的上确界范数时，\(\displaystyle \mathcal V^{-1}g=g'\) 不有界.
+\end{FAExercise}
+
+\begin{FAExercise}[微分算子不有界]{ex:i05-10}
+在 \(\displaystyle (\mathcal P[0,1],\|\cdot\|_\infty)\) 中使用 \(\displaystyle p_n(t)=t^n\) 重做前述“积分有界而微分可不有界”中的计算，并明确指出若 \(\displaystyle \mathcal D\) 有界则会得到怎样的统一常数矛盾.
+\end{FAExercise}
+
+\begin{FAExercise}[算子Cauchy列的统一范数上界]{ex:i05-11}
+不使用一致有界性原理，证明任意算子范数 Cauchy 列 \(\displaystyle (\mathcal T_n)\subseteq\mathcal B(X,Y)\) 满足 \(\displaystyle \sup_n\|\mathcal T_n\|<\infty\). 必须从某个尾部与一个固定 \(\displaystyle \mathcal T_{N_0}\) 的距离小于 \(\displaystyle1\) 开始.
+\end{FAExercise}
+
+\begin{FAExercise}[有界算子空间完备性中的线性极限]{ex:i05-12}
+在\autoref{fa:OP-A02}中，对固定 \(\displaystyle x,y\in X\)、\(\displaystyle \alpha,\beta\in\mathbb K\)，从 \(\displaystyle \mathcal T_n(\alpha x+\beta y)=\alpha\mathcal T_nx+\beta\mathcal T_ny\) 出发证明逐点极限 \(\displaystyle \mathcal T\) 线性.
+\end{FAExercise}
+
+\begin{FAExercise}[有界算子空间完备性中的算子范数收敛]{ex:i05-13}
+详细重建\autoref{fa:OP-A02}的最后一步：先固定 \(\displaystyle n\geqslant N\) 与 \(\displaystyle \|x\|\leqslant1\)，再令 \(\displaystyle m\to\infty\)，最后对单位球取上确界. 解释为什么“逐点收敛”本身不足以推出算子范数收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[定义域无需完备]{ex:i05-14}
+取不完备赋范空间 \(\displaystyle X=c_{00}\) 配 \(\displaystyle \|\cdot\|_2\)，取 \(\displaystyle Y=\mathbb K\). 使用\autoref{fa:OP-A02}说明 \(\displaystyle \mathcal B(X,\mathbb K)\) 仍为 Banach 空间，并指出证明中没有对 \(\displaystyle X\) 取任何极限.
+\end{FAExercise}
+
+\begin{FAExercise}[有界双射与有界逆]{ex:i05-15}
+对前述有界线性双射反例中的恒等映射 \(\displaystyle \mathcal J\)，计算 \(\displaystyle \|\mathcal J\|\)，并使用 \(\displaystyle x^{(n)}\) 证明不存在 \(\displaystyle C\) 使 \(\displaystyle \|x\|_1\leqslant C\|x\|_\infty\) 对全部 \(\displaystyle x\in c_{00}\) 成立.
+\end{FAExercise}
+
+\begin{FAExercise}[局部可逆半径]{ex:i05-16}
+设 \(\displaystyle X\) Banach、\(\displaystyle \mathcal A\in\mathrm{GL}(X)\). 证明开球 \(\displaystyle \{\mathcal B\in\mathcal B(X):\|\mathcal B-\mathcal A\|<\frac{1}{\|\mathcal A^{-1}\|}\}\)
+包含于 \(\displaystyle \mathrm{GL}(X)\)，并写出其中每个 \(\displaystyle \mathcal B\) 的逆范数上界.
+\end{FAExercise}
+
+\begin{FAExercise}[压缩映射中的方程等价]{ex:i05-17}
+在\autoref{fa:OP-B02}中逐行验证 \(\displaystyle x=\mathcal E x+\mathcal A^{-1}y \iff \mathcal Bx=y\)，
+并说明“唯一不动点”分别对应 \(\displaystyle \mathcal B\) 的满射性与单射性中的哪一部分.
+\end{FAExercise}
+
+\begin{FAExercise}[逆映射差估计]{ex:i05-18}
+从 \(\displaystyle \mathcal B^{-1}-\mathcal A^{-1}=\mathcal B^{-1}(\mathcal A-\mathcal B)\mathcal A^{-1}\) 与\autoref{fa:OP-B02}推出\autoref{i05:inverse-difference}的估计. 不使用任何算子级数.
+\end{FAExercise}
+
+\begin{FAExercise}[连续对偶的完备性]{ex:i05-19}
+设 \(\displaystyle X\) 为任意赋范空间，\(\displaystyle (x_n^*)\) 为 \(\displaystyle X^*\) 中 Cauchy 列. 不直接引用\autoref{i05:dual-banach}，而是仿照\autoref{fa:OP-A02}逐点定义 \(\displaystyle x^*(x)=\lim_n x_n^*(x)\)，并完成有界性与对偶范数收敛证明.
+\end{FAExercise}
+
+\begin{FAExercise}[点值、积分与不连续泛函]{ex:i05-20}
+分别核验上述点值泛函与积分泛函的范数等于 \(\displaystyle1\). 再与线性不蕴含连续的反例比较：说明为什么同为线性泛函，前两者满足统一范数估计，而 \(\displaystyle \varphi(x)=\sum_n n x_n\) 在 \(\displaystyle (c_{00},\|\cdot\|_\infty)\) 上不存在这样的统一常数.
+\end{FAExercise}

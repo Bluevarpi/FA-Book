@@ -1,0 +1,806 @@
+\chapter{紧算子、Riesz--Schauder与Fredholm择一原理}\label{chap:I-13}
+\FAChapterOpening
+{建立紧算子的序列刻画、复合与范数闭性工具；证明有限秩算子紧性及连续核积分算子的显式有限秩逼近；在复Banach空间上闭合Riesz--Schauder非零谱结构；再对实或复Banach空间证明\(\displaystyle \mathcal I-\mathcal K\)的Fredholm择一原理与零指标结论，并应用于第二类积分方程.}
+{I-03的Banach空间、商空间完备性与Riesz引理；I-11的Banach对偶算子及核--值域关系；I-12的谱、点谱、有界逆接口与Volterra谱计算.}
+{\begin{center}
+\begin{tikzpicture}[x=1.75cm,y=1.08cm]
+\node[fa/node] (ban) at (0,0.75) {Riesz引理};
+\node[fa/node] (op) at (0,-0.75) {连续/有界等价};
+\node[fa/node] (comp) at (2.15,0) {紧算子};
+\node[fa/node] (spec) at (2.15,1.45) {预解与谱};
+\node[fa/node] (rs) at (4.45,0.75) {Riesz--Schauder理论};
+\node[fa/node] (adj) at (4.45,-0.85) {Banach对偶算子};
+\node[fa/node] (fred) at (6.75,0) {Fredholm择一};
+\draw[fa/arrow] (ban) -- (comp);
+\draw[fa/arrow] (op) -- (comp);
+\draw[fa/arrow] (comp) -- (rs);
+\draw[fa/arrow] (spec) -- (rs);
+\draw[fa/arrow] (ban) -- (rs);
+\draw[fa/arrow] (rs) -- (fred);
+\draw[fa/arrow] (adj) -- (fred);
+\end{tikzpicture}
+\end{center}}
+
+第1、2、4、5节固定 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). 第3节涉及I-12的谱时固定 \(\displaystyle X\neq\{0\}\) 为复Banach空间. 对实紧算子，本章只允许通过I-12的显式复化讨论其复化后的谱，不另建实谱理论.
+
+\section{紧算子}\label{sec:i13-compact}
+\index{compact operator@紧算子}\index{relatively compact@相对紧}
+
+先固定一个拓扑术语. 赋范空间 \(\displaystyle Y\) 的子集 \(\displaystyle E\subseteq Y\) 称为相对紧，当 \(\displaystyle \overline E\) 在 \(\displaystyle Y\) 中紧.
+
+\begin{FADefinition}[A][紧算子及其序列刻画]{fa:COMP-A01}
+设 \(\displaystyle X,Y\) 为赋范空间，\(\displaystyle \mathcal K:X\to Y\) 为线性映射. 若每个有界集 \(\displaystyle B\subseteq X\) 的像 \(\displaystyle \mathcal K(B)\) 在 \(\displaystyle Y\) 中相对紧，则称 \(\displaystyle \mathcal K\) 为紧算子. 等价地，\(\displaystyle \mathcal K\) 紧当且仅当每个有界列 \(\displaystyle (x_n)\subseteq X\) 都存在子列 \(\displaystyle (x_{n_j})\)，使 \(\displaystyle (\mathcal Kx_{n_j})\) 在 \(\displaystyle Y\) 中按范数收敛.
+\end{FADefinition}
+
+\begin{FAProof}
+先设 \(\displaystyle \mathcal K\) 紧，并令 \(\displaystyle (x_n)\subseteq X\) 有界. 集合 \(\displaystyle B=\{x_n:n\in\mathbb N\}\) 有界，所以 \(\displaystyle \overline{\mathcal K(B)}\) 紧. 由I-02中紧度量空间与序列紧的等价性，序列 \(\displaystyle (\mathcal Kx_n)\subseteq\overline{\mathcal K(B)}\) 有收敛子列.
+
+反之，假设每个有界列都有上述性质. 任取有界集 \(\displaystyle B\subseteq X\). 要证 \(\displaystyle \overline{\mathcal K(B)}\) 紧，由I-02只需证明它序列紧. 任取 \(\displaystyle (y_n)\subseteq\overline{\mathcal K(B)}\). 对每个 \(\displaystyle n\) 选取 \(\displaystyle x_n\in B\)，使
+\[
+\|y_n-\mathcal Kx_n\|<\frac{1}{n}.
+\]
+列 \(\displaystyle (x_n)\) 有界，因此存在子列 \(\displaystyle (x_{n_j})\)，使 \(\displaystyle \mathcal Kx_{n_j}\to y\) 于 \(\displaystyle Y\). 又 \(\displaystyle \|y_{n_j}-\mathcal Kx_{n_j}\|<\frac{1}{n_j}\to0\)，故 \(\displaystyle y_{n_j}\to y\). 于是 \(\displaystyle \overline{\mathcal K(B)}\) 序列紧，从而紧. 两个方向均成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][紧线性算子自动有界]{i13:compact-bounded}
+设 \(\displaystyle \mathcal K:X\to Y\) 为紧线性算子. 则 \(\displaystyle \mathcal K\in\mathcal B(X,Y)\).
+\end{FAProposition}
+
+\begin{FAProof}
+闭单位球 \(\displaystyle \overline B_X\) 有界，所以 \(\displaystyle \mathcal K(\overline B_X)\) 相对紧. 相对紧集的闭包紧，而紧子集必有界，因此 \(\displaystyle \mathcal K(\overline B_X)\) 有界. 故存在 \(\displaystyle C\geqslant0\)，使 \(\displaystyle \|\mathcal Kx\|\leqslant C\) 对全部 \(\displaystyle \|x\|\leqslant1\) 成立. 由线性缩放得到 \(\displaystyle \|\mathcal Kx\|\leqslant C\|x\|\) 对全部 \(\displaystyle x\in X\) 成立，所以 \(\displaystyle \mathcal K\) 有界.
+\hfill\(\square\)
+\end{FAProof}
+
+以后记 \(\displaystyle \mathcal K(X,Y)\subseteq\mathcal B(X,Y)\) 为从 \(\displaystyle X\) 到 \(\displaystyle Y\) 的紧线性算子全体，并写 \(\displaystyle \mathcal K(X)=\mathcal K(X,X)\).
+
+\begin{FAProposition}[C][紧算子的复合、线性封闭与范数闭性]{fa:COMP-C01}
+设 \(\displaystyle W,X,Y,Z\) 为赋范空间.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 若 \(\displaystyle \mathcal A\in\mathcal B(Y,Z)\)、\(\displaystyle \mathcal K\in\mathcal K(X,Y)\)、\(\displaystyle \mathcal B\in\mathcal B(W,X)\)，则 \(\displaystyle \mathcal A\mathcal K\mathcal B\in\mathcal K(W,Z)\).
+\item 若 \(\displaystyle \mathcal K_1,\mathcal K_2\in\mathcal K(X,Y)\) 且 \(\displaystyle \alpha,\beta\in\mathbb K\)，则 \(\displaystyle \alpha\mathcal K_1+\beta\mathcal K_2\in\mathcal K(X,Y)\).
+\item 若 \(\displaystyle Y\) 为Banach空间，\(\displaystyle \mathcal K_n\in\mathcal K(X,Y)\) 且 \(\displaystyle \|\mathcal K_n-\mathcal K\|\to0\)，则 \(\displaystyle \mathcal K\in\mathcal K(X,Y)\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+对（i），任取 \(\displaystyle W\) 中有界列 \(\displaystyle (w_n)\). 因为 \(\displaystyle \mathcal B\) 有界，\(\displaystyle (\mathcal Bw_n)\) 在 \(\displaystyle X\) 中有界. 紧性给出子列 \(\displaystyle (w_{n_j})\)，使 \(\displaystyle \mathcal K\mathcal Bw_{n_j}\) 在 \(\displaystyle Y\) 中收敛. 由 \(\displaystyle \mathcal A\) 连续，\(\displaystyle \mathcal A\mathcal K\mathcal Bw_{n_j}\) 在 \(\displaystyle Z\) 中收敛. 因而复合算子紧.
+
+对（ii），标量倍数的结论直接由序列刻画得到. 对和算子，给定有界列 \(\displaystyle (x_n)\)，先由 \(\displaystyle \mathcal K_1\) 紧性取子列 \(\displaystyle (x_{n_j})\)，使 \(\displaystyle \mathcal K_1x_{n_j}\) 收敛；再在该子列中由 \(\displaystyle \mathcal K_2\) 紧性取子子列 \(\displaystyle (x_{n_{j_k}})\)，使 \(\displaystyle \mathcal K_2x_{n_{j_k}}\) 收敛. 此时 \(\displaystyle (\alpha\mathcal K_1+\beta\mathcal K_2)x_{n_{j_k}}\) 收敛.
+
+对（iii），任取有界列 \(\displaystyle (x_n)\subseteq X\)，并取 \(\displaystyle M>0\) 使 \(\displaystyle \|x_n\|\leqslant M\) 对全部 \(\displaystyle n\) 成立. 递归抽取子列，使第 \(\displaystyle m\) 次抽取后的列在 \(\displaystyle \mathcal K_m\) 下收敛. 取对角子列 \(\displaystyle (y_j)\). 对每个固定 \(\displaystyle m\)，列 \(\displaystyle (\mathcal K_my_j)\) 收敛，因此为Cauchy列. 给定 \(\displaystyle \varepsilon>0\)，选 \(\displaystyle m\) 使
+\[
+2M\|\mathcal K-\mathcal K_m\|<\frac{\varepsilon}{2}.
+\]
+再选 \(\displaystyle J\)，使 \(\displaystyle j,k\geqslant J\) 时
+\[
+\|\mathcal K_my_j-\mathcal K_my_k\|<\frac{\varepsilon}{2}.
+\]
+于是
+\[
+\|\mathcal Ky_j-\mathcal Ky_k\| \leqslant \|(\mathcal K-\mathcal K_m)y_j\| +\|\mathcal K_my_j-\mathcal K_my_k\| +\|(\mathcal K_m-\mathcal K)y_k\| <\varepsilon.
+\]
+故 \(\displaystyle (\mathcal Ky_j)\) 在 \(\displaystyle Y\) 中为Cauchy列. 这里必须使用 \(\displaystyle Y\) 完备，才能推出该列在 \(\displaystyle Y\) 中收敛. 由\autoref{fa:COMP-A01}的序列刻画，\(\displaystyle \mathcal K\) 紧.
+\hfill\(\square\)
+\end{FAProof}
+
+上述命题只建立本章实际使用的复合性质，不发展一般算子理想理论.
+
+\begin{FACounterexample}[无限维恒等算子不紧]\label{i13:ce-id-noncompact}
+设 \(\displaystyle X\) 为无限维赋范空间. 若 \(\displaystyle \mathcal I_X\) 紧，则闭单位球 \(\displaystyle \overline B_X=\mathcal I_X(\overline B_X)\) 相对紧. 但 \(\displaystyle \overline B_X\) 已闭，所以它本身紧，这与I-03的\autoref{fa:BAN-A02}矛盾. 因而 \(\displaystyle \mathcal I_X\) 不紧. 这给出本章规范反例无限维恒等算子非紧的反例，并明确说明有界算子未必紧.
+\end{FACounterexample}
+
+\begin{FAProposition}[C][紧算子把弱收敛列送到范数收敛列]{i13:weak-to-norm}
+设 \(\displaystyle X,Y\) 为Banach空间，\(\displaystyle \mathcal K\in\mathcal K(X,Y)\)，且 \(\displaystyle x_n\rightharpoonup x\) 于 \(\displaystyle X\). 则 \(\displaystyle \|\mathcal Kx_n-\mathcal Kx\|\to0\).
+\end{FAProposition}
+
+\begin{FAProof}
+I-08已经证明弱收敛列必范数有界，因此 \(\displaystyle (x_n)\) 有界. 任取子列 \(\displaystyle (x_{n_j})\). 紧性给出子子列 \(\displaystyle (x_{n_{j_k}})\)，使 \(\displaystyle \mathcal Kx_{n_{j_k}}\to y\) 于 \(\displaystyle Y\). 另一方面，\(\displaystyle \mathcal K\) 有界，故对每个 \(\displaystyle y^*\in Y^*\)，I-11的Banach对偶算子给出
+\(\displaystyle y^*(\mathcal Kx_n) = (\mathcal K'y^*)(x_n) \to (\mathcal K'y^*)(x) = y^*(\mathcal Kx)\).
+因此 \(\displaystyle \mathcal Kx_n\rightharpoonup\mathcal Kx\). 范数收敛蕴含弱收敛，所以同一子子列也弱收敛到 \(\displaystyle y\). 弱极限唯一，故 \(\displaystyle y=\mathcal Kx\).
+
+若原列不按范数收敛到 \(\displaystyle \mathcal Kx\)，则存在 \(\displaystyle \varepsilon>0\) 与子列 \(\displaystyle (x_{n_j})\)，使 \(\displaystyle \|\mathcal Kx_{n_j}-\mathcal Kx\|\geqslant\varepsilon\) 对全部 \(\displaystyle j\) 成立. 但该子列存在子子列使其像按范数收敛到 \(\displaystyle \mathcal Kx\)，矛盾. 因而整个像列按范数收敛.
+\hfill\(\square\)
+\end{FAProof}
+
+本命题只对弱收敛列建立，不扩张为未经证明的网版本.
+
+\section{有限秩与逼近}\label{sec:i13-finite-rank}
+\index{finite-rank operator@有限秩算子}\index{Arzela-Ascoli theorem@Arzelà--Ascoli定理}
+
+\begin{FATheorem}[B][有限秩算子紧性]{fa:COMP-B01}
+设 \(\displaystyle X,Y\) 为赋范空间，\(\displaystyle \mathcal F\in\mathcal B(X,Y)\)，并且 \(\displaystyle \dim\operatorname{Ran}\mathcal F<\infty\). 则 \(\displaystyle \mathcal F\) 紧.
+\end{FATheorem}
+
+\begin{FAProof}
+任取有界列 \(\displaystyle (x_n)\subseteq X\). 因为 \(\displaystyle \mathcal F\) 有界，\(\displaystyle (\mathcal Fx_n)\) 在有限维赋范空间 \(\displaystyle \operatorname{Ran}\mathcal F\) 中有界. 有限维Heine--Borel定理等价地给出有限维有界列存在收敛子列，因此 \(\displaystyle (\mathcal Fx_n)\) 有范数收敛子列. 由\autoref{fa:COMP-A01}，\(\displaystyle \mathcal F\) 紧.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[一般有限秩稠密性不在本章成立]
+本章不作如下断言：“任意Banach空间之间的每个紧算子都是有限秩算子的算子范数极限”. 该命题在一般Banach空间上需要额外的逼近性质假设，而本项目没有加入该假设. 因此一般有限秩稠密性不作结论，Banach空间逼近性质理论留待以后；本节只在具有显式核插值结构的具体积分算子上构造有限秩逼近.
+\end{FAWarning}
+
+\begin{FAExample}[连续核积分算子的紧性]\label{i13:ex-compact-integral}
+设 \(\displaystyle a<b\)，\(\displaystyle k\in C([a,b]\times[a,b];\mathbb K)\). 在 \(\displaystyle C([a,b])\) 上定义
+\[
+(\mathcal Kf)(x)
+=
+\int_a^b k(x,t)f(t)\,\mathrm{d}t.
+\]
+则
+\(\displaystyle \|\mathcal K\| \leqslant (b-a)\|k\|_\infty\)，
+并且 \(\displaystyle \mathcal K\) 紧.
+\end{FAExample}
+
+\begin{FAProof}
+对 \(\displaystyle \|f\|_\infty\leqslant1\) 与 \(\displaystyle x\in[a,b]\)，
+\[
+|(\mathcal Kf)(x)|
+\leqslant
+\int_a^b|k(x,t)|\,\mathrm{d}t
+\leqslant
+(b-a)\|k\|_\infty.
+\]
+故 \(\displaystyle \|\mathcal K\|\leqslant(b-a)\|k\|_\infty\)，并且单位球的像一致有界.
+
+又对 \(\displaystyle x,y\in[a,b]\)，
+\[
+|(\mathcal Kf)(x)-(\mathcal Kf)(y)| \leqslant \int_a^b|k(x,t)-k(y,t)|\,|f(t)|\,\mathrm{d}t \leqslant (b-a)\sup_{t\in[a,b]}|k(x,t)-k(y,t)|.
+\]
+连续函数 \(\displaystyle k\) 在紧集 \(\displaystyle [a,b]^2\) 上一致连续，所以右端随 \(\displaystyle |x-y|\to0\) 一致地趋于 \(\displaystyle0\)，且与单位球中的 \(\displaystyle f\) 无关. 因而单位球的像等度连续. 由I-02的Arzelà--Ascoli定理，单位球像的闭包在 \(\displaystyle C([a,b])\) 中紧. 因此 \(\displaystyle \mathcal K\) 紧.
+\hfill\(\square\)
+\end{FAProof}
+
+下面只对该连续核算子给出显式有限秩逼近.
+
+\begin{FAProposition}[B][连续核算子的显式有限秩逼近]{i13:kernel-finite-rank-approx}
+在\autoref{i13:ex-compact-integral}的条件下，存在有限秩算子 \(\displaystyle \mathcal K_N\)，使 \(\displaystyle \|\mathcal K_N-\mathcal K\|\to0\).
+\end{FAProposition}
+
+\begin{FAProof}
+取分割
+\(\displaystyle a=x_0<x_1<\cdots<x_N=b\)
+并令网格宽度 \(\displaystyle h_N=\max_{0\leqslant j<N}(x_{j+1}-x_j)\to0\). 取对应的连续分片线性帽函数 \(\displaystyle \varphi_0,\dots,\varphi_N\)，使 \(\displaystyle \varphi_j(x_i)=\delta_{ij}\)、\(\displaystyle \varphi_j\geqslant0\)，并在每个小区间上满足 \(\displaystyle \sum_{j=0}^N\varphi_j(x)=1\). 定义
+\[
+k_N(x,t)
+=
+\sum_{j=0}^N\varphi_j(x)k(x_j,t).
+\]
+若 \(\displaystyle x\in[x_i,x_{i+1}]\)，则只有 \(\displaystyle \varphi_i(x)\) 与 \(\displaystyle \varphi_{i+1}(x)\) 可能非零，并且
+\[
+|k_N(x,t)-k(x,t)| \leqslant \varphi_i(x)|k(x_i,t)-k(x,t)| \mathrel{+} \varphi_{i+1}(x)|k(x_{i+1},t)-k(x,t)|.
+\]
+由 \(\displaystyle k\) 对 \(\displaystyle x\) 变量的一致连续性，存在模函数
+\[
+\omega(\delta)
+:=
+\sup\{|k(x,t)-k(y,t)|:x,y,t\in[a,b],\ |x-y|\leqslant\delta\}
+\]
+且 \(\displaystyle \omega(\delta)\to0\) 当 \(\displaystyle \delta\to0\). 上式给出 \(\displaystyle \|k_N-k\|_\infty\leqslant\omega(h_N)\to0\).
+
+定义
+\[
+(\mathcal K_Nf)(x)
+=
+\int_a^b k_N(x,t)f(t)\,\mathrm{d}t.
+\]
+交换有限求和与积分得
+\[
+(\mathcal K_Nf)(x)
+=
+\sum_{j=0}^N
+\varphi_j(x)
+\int_a^b k(x_j,t)f(t)\,\mathrm{d}t,
+\]
+所以
+\(\displaystyle \operatorname{Ran}\mathcal K_N \subseteq \operatorname{span}\{\varphi_0,\dots,\varphi_N\}\).
+因此 \(\displaystyle \mathcal K_N\) 有限秩. 对 \(\displaystyle \|f\|_\infty\leqslant1\)，
+\[
+\|(\mathcal K_N-\mathcal K)f\|_\infty \leqslant \sup_{x\in[a,b]} \int_a^b|k_N(x,t)-k(x,t)|\,\mathrm{d}t \leqslant (b-a)\|k_N-k\|_\infty.
+\]
+故
+\(\displaystyle \|\mathcal K_N-\mathcal K\| \leqslant (b-a)\|k_N-k\|_\infty \to0\).
+整个构造只使用分片线性插值与一致连续性，没有调用Stone--Weierstrass定理.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[Volterra算子的紧性]\label{i13:ex-volterra-compact}
+在 \(\displaystyle C([0,1])\) 上令
+\[
+(\mathcal Vf)(x)
+=
+\int_0^x f(t)\,\mathrm{d}t.
+\]
+若 \(\displaystyle \|f\|_\infty\leqslant1\)，则 \(\displaystyle \|\mathcal Vf\|_\infty\leqslant1\)，并且
+\(\displaystyle |(\mathcal Vf)(x)-(\mathcal Vf)(y)| \leqslant |x-y|\).
+故单位球像一致有界且等度连续. 由Arzelà--Ascoli定理，\(\displaystyle \mathcal V\) 紧.
+\end{FAExample}
+
+\begin{FAProof}
+第一条估计由
+\[
+|(\mathcal Vf)(x)|
+\leqslant
+\int_0^x|f(t)|\,\mathrm{d}t
+\leqslant
+x
+\leqslant1
+\]
+得到. 若 \(\displaystyle x\geqslant y\)，则
+\[
+|(\mathcal Vf)(x)-(\mathcal Vf)(y)|
+=
+\left|\int_y^x f(t)\,\mathrm{d}t\right|
+\leqslant
+x-y.
+\]
+交换 \(\displaystyle x,y\) 即得一般情形. Arzelà--Ascoli随后给出紧性；这里不需要Fubini定理.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{Riesz--Schauder理论}\label{sec:i13-riesz-schauder}
+\index{Riesz-Schauder theorem@Riesz--Schauder定理}\index{generalized eigenspace@广义特征空间}
+
+本节固定 \(\displaystyle X\neq\{0\}\) 为复Banach空间，\(\displaystyle \mathcal K\in\mathcal K(X)\)，并固定 \(\displaystyle \lambda\in\mathbb C\setminus\{0\}\). 记
+\[
+\mathcal A_\lambda := \lambda\mathcal I-\mathcal K, \; N_n:=\ker\mathcal A_\lambda^n, \; R_n:=\operatorname{Ran}\mathcal A_\lambda^n.
+\]
+这里和下面的链稳定化论证只使用 \(\displaystyle \lambda\neq0\)、Banach完备性与紧性；复标量假设只在把结论解释为I-12的谱结构时使用.
+
+\begin{FALemma}[B][非零特征空间有限维]{i13:eigenspace-finite}
+令 \(\displaystyle N_1=\ker(\lambda\mathcal I-\mathcal K)\). 则 \(\displaystyle N_1\) 有限维.
+\end{FALemma}
+
+\begin{FAProof}
+因为 \(\displaystyle \mathcal A_\lambda\) 有界，\(\displaystyle N_1\) 闭. 在 \(\displaystyle N_1\) 上有 \(\displaystyle \mathcal Kx=\lambda x\). 若 \(\displaystyle N_1\) 无限维，则限制算子 \(\displaystyle \mathcal K|_{N_1}:N_1\to N_1\) 紧，因此
+\(\displaystyle \mathcal I_{N_1} = \lambda^{-1}\mathcal K|_{N_1}\)
+紧. 这与无限维恒等算子非紧的反例矛盾. 故 \(\displaystyle N_1\) 有限维.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][到核距离估计与闭值域]{i13:closed-range}
+存在 \(\displaystyle c_\lambda>0\)，使对全部 \(\displaystyle x\in X\)，
+\(\displaystyle \operatorname{dist}(x,N_1) \leqslant c_\lambda\|\mathcal A_\lambda x\|\).
+因此 \(\displaystyle \operatorname{Ran}\mathcal A_\lambda\) 闭.
+\end{FALemma}
+
+\begin{FAProof}
+反设不存在上述常数. 则对每个 \(\displaystyle n\) 可取 \(\displaystyle x_n\in X\)，满足
+\(\displaystyle \operatorname{dist}(x_n,N_1) > n\|\mathcal A_\lambda x_n\|\).
+因为右侧有限，\(\displaystyle x_n\notin N_1\). 选取 \(\displaystyle z_n\in N_1\)，使
+\(\displaystyle \|x_n-z_n\| < 2\operatorname{dist}(x_n,N_1)\)，
+并定义
+\[
+y_n
+:=
+\frac{x_n-z_n}{\operatorname{dist}(x_n,N_1)}.
+\]
+利用距离对平移与正比例缩放的性质，得到
+\[
+\operatorname{dist}(y_n,N_1)=1, \; \|y_n\|<2, \; \|\mathcal A_\lambda y_n\|<\frac{1}{n}.
+\]
+列 \(\displaystyle (y_n)\) 有界. 由 \(\displaystyle \mathcal K\) 紧，存在子列 \(\displaystyle (y_{n_j})\)，使 \(\displaystyle \mathcal Ky_{n_j}\) 收敛. 因为
+\(\displaystyle \lambda y_{n_j} = \mathcal A_\lambda y_{n_j}+\mathcal Ky_{n_j}\)，
+且第一项趋于 \(\displaystyle0\)，所以 \(\displaystyle y_{n_j}\) 按范数收敛到某个 \(\displaystyle y\in X\). 连续性给出 \(\displaystyle \mathcal A_\lambda y=0\)，即 \(\displaystyle y\in N_1\). 另一方面，到闭集 \(\displaystyle N_1\) 的距离函数满足常数为1的Lipschitz估计，所以
+\[
+\operatorname{dist}(y,N_1)
+=
+\lim_{j\to\infty}\operatorname{dist}(y_{n_j},N_1)
+=1,
+\]
+矛盾. 因而距离估计成立.
+
+现在设 \(\displaystyle \mathcal A_\lambda x_n\to y\). 因为 \(\displaystyle N_1\) 闭且 \(\displaystyle X\) 为Banach空间，I-03的\autoref{fa:BAN-B02}给出商空间 \(\displaystyle X/N_1\) 完备. 距离估计等价于
+\(\displaystyle \|x+N_1\|_{X/N_1} \leqslant c_\lambda\|\mathcal A_\lambda x\|\).
+故
+\(\displaystyle \|(x_n-x_m)+N_1\|_{X/N_1} \leqslant c_\lambda\|\mathcal A_\lambda x_n-\mathcal A_\lambda x_m\| \to0\).
+于是 \(\displaystyle (x_n+N_1)\) 在 \(\displaystyle X/N_1\) 中为Cauchy列，从而存在 \(\displaystyle x\in X\)，使 \(\displaystyle x_n+N_1\to x+N_1\). 诱导算子 \(\displaystyle \widetilde{\mathcal A}_\lambda:X/N_1\to X\) 由 \(\displaystyle \widetilde{\mathcal A}_\lambda(z+N_1)=\mathcal A_\lambda z\) 定义，并满足 \(\displaystyle \|\widetilde{\mathcal A}_\lambda(z+N_1)\|\leqslant\|\mathcal A_\lambda\|\|z+N_1\|_{X/N_1}\)，故连续. 因此 \(\displaystyle \mathcal A_\lambda x_n\to\mathcal A_\lambda x\). 因极限唯一，\(\displaystyle y=\mathcal A_\lambda x\). 故值域闭.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[C][核链、值域链与不变性]{i13:chains-invariance}
+有
+\(\displaystyle N_1\subseteq N_2\subseteq\cdots, \; R_1\supseteq R_2\supseteq\cdots\).
+并且 \(\displaystyle \mathcal K\mathcal A_\lambda=\mathcal A_\lambda\mathcal K\). 因此对每个 \(\displaystyle n\geqslant1\)，
+\(\displaystyle \mathcal K(N_n)\subseteq N_n, \; \mathcal K(R_n)\subseteq R_n\).
+\end{FALemma}
+
+\begin{FAProof}
+若 \(\displaystyle x\in N_n\)，则 \(\displaystyle \mathcal A_\lambda^nx=0\)，所以 \(\displaystyle \mathcal A_\lambda^{n+1}x=0\)，故 \(\displaystyle x\in N_{n+1}\). 又 \(\displaystyle R_{n+1}=\mathcal A_\lambda(R_n)\subseteq R_n\). 因为 \(\displaystyle \mathcal A_\lambda=\lambda\mathcal I-\mathcal K\)，直接展开得到 \(\displaystyle \mathcal K\mathcal A_\lambda=\mathcal A_\lambda\mathcal K\). 若 \(\displaystyle x\in N_n\)，则 \(\displaystyle \mathcal A_\lambda^n\mathcal Kx=\mathcal K\mathcal A_\lambda^nx=0\). 若 \(\displaystyle x=\mathcal A_\lambda^ny\in R_n\)，则 \(\displaystyle \mathcal Kx=\mathcal A_\lambda^n\mathcal Ky\in R_n\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][核链稳定]{i13:kernel-stabilization}
+存在 \(\displaystyle p_0\geqslant1\)，使
+\(\displaystyle N_{p_0}=N_{p_0+1}=N_{p_0+2}=\cdots\).
+\end{FALemma}
+
+\begin{FAProof}
+反设核链不稳定. 若某一步有 \(\displaystyle N_p=N_{p+1}\)，则对任意 \(\displaystyle x\in N_{p+2}\) 有 \(\displaystyle \mathcal A_\lambda x\in N_{p+1}=N_p\)，从而 \(\displaystyle x\in N_{p+1}\)，并可归纳得到此后各层全部相等. 因此在“不稳定”的反设下，必有 \(\displaystyle N_{n-1}\subsetneq N_n\) 对全部 \(\displaystyle n\geqslant2\) 成立. 由I-03的Riesz引理，对每个 \(\displaystyle n\geqslant2\) 取 \(\displaystyle x_n\in N_n\)，使
+\[
+\|x_n\|=1,
+\quad
+\operatorname{dist}(x_n,N_{n-1})>\frac{1}{2}.
+\]
+由 \(\displaystyle \mathcal A_\lambda x_n\in N_{n-1}\) 得
+\(\displaystyle \mathcal Kx_n = \lambda x_n-\mathcal A_\lambda x_n\).
+若 \(\displaystyle m<n\)，则由\autoref{i13:chains-invariance}，\(\displaystyle \mathcal Kx_m\in N_m\subseteq N_{n-1}\). 因而
+\(\displaystyle \mathcal Kx_n-\mathcal Kx_m = \lambda x_n-u_{m,n}\)
+其中 \(\displaystyle u_{m,n}\in N_{n-1}\). 所以
+\[
+\|\mathcal Kx_n-\mathcal Kx_m\|
+\geqslant
+|\lambda|\operatorname{dist}(x_n,N_{n-1})
+>
+\frac{|\lambda|}{2}.
+\]
+于是有界列 \(\displaystyle (x_n)\) 的像没有Cauchy子列，与 \(\displaystyle \mathcal K\) 紧矛盾. 故“不稳定”的反设不成立，核链必在有限步后稳定.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][值域链闭且稳定]{i13:range-stabilization}
+每个 \(\displaystyle R_n\) 都是 \(\displaystyle X\) 的闭子空间，并且存在 \(\displaystyle q_0\geqslant1\)，使
+\(\displaystyle R_{q_0}=R_{q_0+1}=R_{q_0+2}=\cdots\).
+\end{FALemma}
+
+\begin{FAProof}
+先证闭性. 令 \(\displaystyle R_0=X\). 若 \(\displaystyle R_n\) 闭，则 \(\displaystyle R_n\) 为Banach空间. 由紧性序列刻画，限制 \(\displaystyle \mathcal K|_{R_n}:R_n\to R_n\) 紧，因为\autoref{i13:chains-invariance}已知 \(\displaystyle R_n\) 在 \(\displaystyle \mathcal K\) 下不变. 在 \(\displaystyle R_n\) 上有
+\(\displaystyle \mathcal A_\lambda|_{R_n} = \lambda\mathcal I_{R_n}-\mathcal K|_{R_n}\).
+把\autoref{i13:closed-range}的同一证明应用于Banach空间 \(\displaystyle R_n\)，得到其值域 \(\displaystyle \mathcal A_\lambda(R_n)=R_{n+1}\) 在 \(\displaystyle R_n\) 中闭，因此也在 \(\displaystyle X\) 中闭. 归纳得到全部 \(\displaystyle R_n\) 闭.
+
+若值域链永不稳定，则对每个 \(\displaystyle n\geqslant1\) 有 \(\displaystyle R_{n+1}\subsetneq R_n\). 由Riesz引理取 \(\displaystyle x_n\in R_n\)，使
+\[
+\|x_n\|=1,
+\quad
+\operatorname{dist}(x_n,R_{n+1})>\frac{1}{2}.
+\]
+若 \(\displaystyle m>n\)，则 \(\displaystyle x_m\in R_m\subseteq R_{n+1}\)，并由不变性有 \(\displaystyle \mathcal Kx_m\in R_m\subseteq R_{n+1}\). 同时 \(\displaystyle \mathcal A_\lambda x_n\in R_{n+1}\)，且
+\(\displaystyle \mathcal Kx_n = \lambda x_n-\mathcal A_\lambda x_n\).
+所以
+\(\displaystyle \mathcal Kx_n-\mathcal Kx_m = \lambda x_n-v_{m,n}\)
+其中 \(\displaystyle v_{m,n}\in R_{n+1}\). 因而
+\[
+\|\mathcal Kx_n-\mathcal Kx_m\|
+>
+\frac{|\lambda|}{2}.
+\]
+这同样与紧性矛盾，故值域链稳定. 若某一步 \(\displaystyle R_q=R_{q+1}\)，则 \(\displaystyle R_{q+1}=\mathcal A_\lambda(R_q)=\mathcal A_\lambda(R_{q+1})=R_{q+2}\)，归纳得后续全部相等.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][广义特征空间有限维]{i13:generalized-eigenspace-finite}
+对每个 \(\displaystyle n\geqslant1\)，\(\displaystyle N_n\) 有限维. 因而核链稳定后的广义特征空间也是有限维.
+\end{FALemma}
+
+\begin{FAProof}
+\autoref{i13:eigenspace-finite}已给出 \(\displaystyle N_1\) 有限维. 对 \(\displaystyle n\geqslant1\)，映射
+\(\displaystyle \mathcal A_\lambda:N_{n+1}\to N_n\)
+良定义，且其核恰为 \(\displaystyle N_1\). 因而它诱导单射
+\(\displaystyle N_{n+1}/N_1 \longrightarrow N_n\).
+若 \(\displaystyle N_n\) 有限维，则商空间 \(\displaystyle N_{n+1}/N_1\) 有限维. 又 \(\displaystyle N_1\) 有限维，所以 \(\displaystyle N_{n+1}\) 有限维，并由有限维秩--零化度公式得到
+\(\displaystyle \dim N_{n+1} \leqslant \dim N_n+ \dim N_1\).
+归纳得全部 \(\displaystyle N_n\) 有限维.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[A][局部Riesz分解]{i13:riesz-decomposition}
+取 \(\displaystyle p\) 足够大，使核链与值域链都从第 \(\displaystyle p\) 层起稳定. 则
+\(\displaystyle X = N_p\oplus R_p\).
+\end{FALemma}
+
+\begin{FAProof}
+先证交为零. 若 \(\displaystyle x\in N_p\cap R_p\)，则存在 \(\displaystyle y\in X\) 使 \(\displaystyle x=\mathcal A_\lambda^py\). 因为 \(\displaystyle x\in N_p\)，
+\(\displaystyle \mathcal A_\lambda^{2p}y=0\)，
+故 \(\displaystyle y\in N_{2p}\). 核链已稳定，所以 \(\displaystyle N_{2p}=N_p\). 因而 \(\displaystyle \mathcal A_\lambda^py=0\)，即 \(\displaystyle x=0\).
+
+再证和为全空间. 任取 \(\displaystyle x\in X\). 值域链稳定给出 \(\displaystyle R_p=R_{2p}\). 因为 \(\displaystyle \mathcal A_\lambda^px\in R_p=R_{2p}\)，存在 \(\displaystyle y\in X\) 使
+\(\displaystyle \mathcal A_\lambda^px = \mathcal A_\lambda^{2p}y\).
+于是
+\(\displaystyle \mathcal A_\lambda^p \bigl(x-\mathcal A_\lambda^py\bigr) =0\)，
+故 \(\displaystyle x-\mathcal A_\lambda^py\in N_p\)，而 \(\displaystyle \mathcal A_\lambda^py\in R_p\). 因而 \(\displaystyle x\in N_p+R_p\). 与交为零合并即得直和分解.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[A][非零谱点恰为特征值]{i13:nonzero-spectrum-point}
+对 \(\displaystyle \lambda\neq0\)，
+\(\displaystyle \lambda\in\sigma(\mathcal K) \iff \lambda\in\sigma_{\mathrm p}(\mathcal K)\).
+\end{FAProposition}
+
+\begin{FAProof}
+点谱包含于谱已由I-12证明. 只需证明反向的逆否命题. 假设
+\(\displaystyle \ker(\lambda\mathcal I-\mathcal K) = \{0\}\).
+即 \(\displaystyle N_1=\{0\}\). 核链递增，因此全部 \(\displaystyle N_n=\{0\}\). 取\autoref{i13:riesz-decomposition}中的稳定指标 \(\displaystyle p\)，得到 \(\displaystyle X=N_p\oplus R_p=R_p\). 因为 \(\displaystyle R_p\subseteq R_1=\operatorname{Ran}\mathcal A_\lambda\)，所以 \(\displaystyle \mathcal A_\lambda\) 满射；假设又给出它单射. 故 \(\displaystyle \mathcal A_\lambda\) 是Banach空间上的有界线性双射. 由I-09的\autoref{fa:BIT-A01}，其逆有界，即 \(\displaystyle \lambda\in\rho(\mathcal K)\). 因而若 \(\displaystyle \lambda\in\sigma(\mathcal K)\setminus\{0\}\)，则必为特征值.
+\hfill\(\square\)
+\end{FAProof}
+
+每个非零谱点的特征空间 \(\displaystyle N_1\) 有限维；若 \(\displaystyle p\) 为稳定指标，则广义特征空间 \(\displaystyle N_p\) 也有限维. 本章称 \(\displaystyle \dim N_1\) 为该非零谱点的几何重数，并把 \(\displaystyle \dim N_p\) 称为本章意义下的代数重数或稳定广义重数.
+
+\begin{FAProposition}[A][非零谱的离散性]{i13:nonzero-spectrum-discrete}
+对每个 \(\displaystyle \varepsilon>0\)，集合
+\(\displaystyle \{\lambda\in\sigma(\mathcal K):|\lambda|\geqslant\varepsilon\}\)
+有限. 因此 \(\displaystyle \sigma(\mathcal K)\setminus\{0\}\) 至多可数，且非零谱唯一可能的聚点是 \(\displaystyle0\).
+\end{FAProposition}
+
+\begin{FAProof}
+反设存在互不相同的谱点 \(\displaystyle \lambda_1,\lambda_2,\dots\)，满足 \(\displaystyle |\lambda_n|\geqslant\varepsilon\). 由\autoref{i13:nonzero-spectrum-point}，每个 \(\displaystyle \lambda_n\) 都是特征值. 取对应非零特征向量 \(\displaystyle e_n\). 不同特征值对应的特征向量线性无关，因此
+\(\displaystyle M_n := \operatorname{span}\{e_1,\dots,e_n\}\)
+满足 \(\displaystyle M_{n-1}\subsetneq M_n\). 由Riesz引理，对 \(\displaystyle n\geqslant2\) 取 \(\displaystyle x_n\in M_n\)，使
+\[
+\|x_n\|=1,
+\quad
+\operatorname{dist}(x_n,M_{n-1})>\frac{1}{2}.
+\]
+由于 \(\displaystyle \mathcal K e_j=\lambda_je_j\)，对任意 \(\displaystyle x_n\in M_n\) 有
+\(\displaystyle (\mathcal K-\lambda_n\mathcal I)x_n \in M_{n-1}\).
+若 \(\displaystyle m<n\)，则 \(\displaystyle \mathcal Kx_m\in M_m\subseteq M_{n-1}\). 因而存在 \(\displaystyle w_{m,n}\in M_{n-1}\)，使
+\(\displaystyle \mathcal Kx_n-\mathcal Kx_m = \lambda_nx_n-w_{m,n}\).
+所以
+\[
+\|\mathcal Kx_n-\mathcal Kx_m\|
+\geqslant
+|\lambda_n|\operatorname{dist}(x_n,M_{n-1})
+>
+\frac{\varepsilon}{2},
+\]
+与 \(\displaystyle \mathcal K\) 紧矛盾. 故给定 \(\displaystyle \varepsilon\) 后这样的谱点只能有限多个.
+
+再令 \(\displaystyle \varepsilon=\frac{1}{m}\)，得到
+\[
+\sigma(\mathcal K)\setminus\{0\}
+=
+\bigcup_{m=1}^{\infty}
+\{\lambda\in\sigma(\mathcal K):|\lambda|\geqslant\frac{1}{m}\},
+\]
+右侧是可数个有限集之并，因此至多可数. 若非零点 \(\displaystyle \lambda_0\neq0\) 是谱的聚点，取 \(\displaystyle \varepsilon=\frac{|\lambda_0|}{2}\) 会得到模长至少 \(\displaystyle \varepsilon\) 的无穷多个谱点，矛盾. 故唯一可能的聚点为 \(\displaystyle0\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][无限维情形的零谱点]{i13:zero-in-spectrum}
+若 \(\displaystyle X\) 无限维且 \(\displaystyle \mathcal K\in\mathcal K(X)\)，则 \(\displaystyle0\in\sigma(\mathcal K)\).
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle0\notin\sigma(\mathcal K)\)，则 \(\displaystyle \mathcal K\) 有界可逆. 由\autoref{fa:COMP-C01}的复合性质，
+\(\displaystyle \mathcal I = \mathcal K^{-1}\mathcal K\)
+紧. 这与无限维恒等算子不紧的无限维恒等算子非紧的反例矛盾.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][Riesz--Schauder谱结构]{fa:RS-A01}
+设 \(\displaystyle X\neq\{0\}\) 为复Banach空间，\(\displaystyle \mathcal K\in\mathcal K(X)\). 则：
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 每个 \(\displaystyle \lambda\in\sigma(\mathcal K)\setminus\{0\}\) 都是 \(\displaystyle \mathcal K\) 的特征值.
+\item 每个非零谱点的特征空间有限维.
+\item 对每个非零谱点，核链 \(\displaystyle \ker(\lambda\mathcal I-\mathcal K)^n\) 在有限步后稳定，且稳定广义特征空间有限维.
+\item 非零谱至多可数，并且对每个 \(\displaystyle \varepsilon>0\)，模长至少 \(\displaystyle \varepsilon\) 的谱点只有有限多个.
+\item 非零谱唯一可能的聚点是 \(\displaystyle0\).
+\item 若 \(\displaystyle X\) 无限维，则 \(\displaystyle0\in\sigma(\mathcal K)\).
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+（i）由\autoref{i13:nonzero-spectrum-point}得到. （ii）由\autoref{i13:eigenspace-finite}得到. （iii）由\autoref{i13:kernel-stabilization}与\autoref{i13:generalized-eigenspace-finite}得到. （iv）与（v）由\autoref{i13:nonzero-spectrum-discrete}得到. （vi）由\autoref{i13:zero-in-spectrum}得到. 前述局部引理已经闭合全部依赖，因此这里只作规范汇总，不引入新的前提.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[I-14边界]
+本节没有使用紧自伴算子的正交特征向量、正交特征基、特征值实性、极小--极大原理或函数演算. 这些结果属于I-14；本章的Riesz--Schauder定理适用于一般紧算子，并不包含自伴谱分解.
+\end{FARemark}
+
+\section{Fredholm择一原理}\label{sec:i13-fredholm}
+\index{Fredholm alternative@Fredholm择一原理}\index{annihilator@湮灭子}\index{Fredholm operator@Fredholm算子}
+
+本节重新允许 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). 设 \(\displaystyle X\) 为Banach空间，\(\displaystyle \mathcal K\in\mathcal K(X)\)，并记
+\(\displaystyle \mathcal A := \mathcal I-\mathcal K\).
+第3节关于 \(\displaystyle \mathcal A_\lambda=\lambda\mathcal I-\mathcal K\) 的非零特征空间有限维、闭值域、核链稳定、值域链稳定与局部Riesz分解的证明只用了 \(\displaystyle \lambda\neq0\) 及实或复Banach空间共有的线性结构. 因此取 \(\displaystyle \lambda=1\) 时，这些证明对实、复标量域同样成立，不需要复谱理论.
+
+取 \(\displaystyle p\) 足够大，使
+\(\displaystyle N_p:=\ker\mathcal A^p, \; R_p:=\operatorname{Ran}\mathcal A^p\)
+均已稳定. 则
+\(\displaystyle X=N_p\oplus R_p\)，
+\(\displaystyle N_p\) 有限维，且 \(\displaystyle \operatorname{Ran}\mathcal A\) 闭.
+
+\begin{FAProposition}[A][零化度与亏维相等]{i13:nullity-deficiency}
+对 \(\displaystyle \mathcal A=\mathcal I-\mathcal K\)，有
+\(\displaystyle \operatorname{codim}\operatorname{Ran}\mathcal A = \dim\ker\mathcal A <\infty\).
+\end{FAProposition}
+
+\begin{FAProof}
+由于 \(\displaystyle R_p\) 在 \(\displaystyle \mathcal A\) 下不变，且值域链稳定，
+\(\displaystyle \mathcal A(R_p) = R_{p+1} = R_p\).
+又若 \(\displaystyle x\in R_p\) 且 \(\displaystyle \mathcal Ax=0\)，则 \(\displaystyle x\in R_p\cap N_1\subseteq R_p\cap N_p=\{0\}\). 因而 \(\displaystyle \mathcal A|_{R_p}:R_p\to R_p\) 为双射.
+
+对 \(\displaystyle X=N_p\oplus R_p\)，有
+\(\displaystyle \operatorname{Ran}\mathcal A = \mathcal A(N_p)+\mathcal A(R_p) = \mathcal A(N_p)+R_p\).
+因为 \(\displaystyle \mathcal A(N_p)\subseteq N_p\) 且 \(\displaystyle N_p\cap R_p=\{0\}\)，上式为直和：
+\(\displaystyle \operatorname{Ran}\mathcal A = \mathcal A(N_p)\oplus R_p\).
+因此
+\(\displaystyle \operatorname{codim}\operatorname{Ran}\mathcal A = \dim N_p- \dim\mathcal A(N_p)\).
+在有限维空间 \(\displaystyle N_p\) 上应用秩--零化度公式，且 \(\displaystyle \ker(\mathcal A|_{N_p})=\ker\mathcal A=N_1\)，得到
+\(\displaystyle \dim N_p- \dim\mathcal A(N_p) = \dim\ker\mathcal A\).
+故结论成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][有限余维闭子空间的湮灭子维数]{i13:annihilator-dimension}
+设 \(\displaystyle M\subseteq X\) 为闭子空间且 \(\displaystyle \operatorname{codim}M<\infty\). 本节局部记
+\(\displaystyle M^\circ := \{x^*\in X^*:x^*|_M=0\}\)
+为 \(\displaystyle M\) 的湮灭子. 则
+\(\displaystyle (X/M)^* \cong M^\circ, \; \dim M^\circ = \operatorname{codim}M\).
+\end{FALemma}
+
+\begin{FAProof}
+令商映射 \(\displaystyle q:X\to X/M\)，\(\displaystyle q(x)=x+M\). 定义
+\(\displaystyle \mathcal J:(X/M)^*\to X^*, \; \mathcal J\varphi := \varphi\circ q\).
+对任意 \(\displaystyle m\in M\)，有 \(\displaystyle q(m)=M=0_{X/M}\)，从而 \(\displaystyle (\mathcal J\varphi)(m)=\varphi(q(m))=0\). 因此 \(\displaystyle \mathcal J\varphi\in M^\circ\)，即 \(\displaystyle \operatorname{Ran}\mathcal J\subseteq M^\circ\). 若 \(\displaystyle \mathcal J\varphi=0\)，则 \(\displaystyle \varphi(qx)=0\) 对全部 \(\displaystyle x\in X\) 成立，而 \(\displaystyle q\) 满射，所以 \(\displaystyle \varphi=0\). 因而 \(\displaystyle \mathcal J\) 单射.
+
+反之，取 \(\displaystyle x^*\in M^\circ\). 定义 \(\displaystyle \varphi(x+M)=x^*(x)\). 因为 \(\displaystyle x^*\) 在 \(\displaystyle M\) 上为零，该定义与代表元无关. 对任意 \(\displaystyle m\in M\)，
+\(\displaystyle |\varphi(x+M)| = |x^*(x-m)| \leqslant \|x^*\|\|x-m\|\).
+对 \(\displaystyle m\) 取下确界得
+\(\displaystyle |\varphi(x+M)| \leqslant \|x^*\|\|x+M\|_{X/M}\)，
+故 \(\displaystyle \varphi\in(X/M)^*\)，且 \(\displaystyle \mathcal J\varphi=x^*\). 因而 \(\displaystyle \mathcal J\) 为线性同构. 由于 \(\displaystyle X/M\) 有限维，
+\(\displaystyle \dim M^\circ = \dim(X/M)^* = \dim(X/M) = \operatorname{codim}M\).
+这里的符号 \(\displaystyle \circ\) 仅是本节局部的湮灭子记号，不与I-10的极集记号混用.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[A][原算子与对偶算子的零化度相等]{i13:primal-dual-nullity}
+对 \(\displaystyle \mathcal A=\mathcal I-\mathcal K\)，有
+\(\displaystyle \dim\ker\mathcal A = \dim\ker\mathcal A' <\infty\).
+特别地，
+\(\displaystyle \dim\ker(\mathcal I-\mathcal K) = \dim\ker(\mathcal I-\mathcal K')\).
+\end{FAProposition}
+
+\begin{FAProof}
+I-11的Banach对偶算子核--值域关系给出
+\[
+\ker\mathcal A'
+=
+\{x^*\in X^*:x^*|_{\operatorname{Ran}\mathcal A}=0\}
+=
+(\operatorname{Ran}\mathcal A)^\circ.
+\]
+由第3节的闭值域引理，\(\displaystyle \operatorname{Ran}\mathcal A\) 闭；由\autoref{i13:nullity-deficiency}，其余维有限. 因而\autoref{i13:annihilator-dimension}给出
+\(\displaystyle \dim\ker\mathcal A' = \operatorname{codim}\operatorname{Ran}\mathcal A = \dim\ker\mathcal A\).
+最后，Banach对偶算子按复合定义是线性的，所以 \(\displaystyle (\mathcal I-\mathcal K)'=\mathcal I-\mathcal K'\). 整个论证没有假设 \(\displaystyle \mathcal K'\) 紧，也没有调用Schauder紧伴随定理.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[A][Fredholm可解性条件]{i13:fredholm-solvability}
+对任意 \(\displaystyle y\in X\)，
+\[
+y\in\operatorname{Ran}(\mathcal I-\mathcal K)
+\iff
+x^*(y)=0
+\;\text{对全部}\;
+x^*\in\ker(\mathcal I-\mathcal K').
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+记 \(\displaystyle M=\operatorname{Ran}\mathcal A\)，其中 \(\displaystyle \mathcal A=\mathcal I-\mathcal K\). 已知 \(\displaystyle M\) 闭. 若 \(\displaystyle y\in M\)，则由 \(\displaystyle M^\circ=\{x^*\in X^*:x^*|_M=0\}\) 的定义，每个 \(\displaystyle x^*\in M^\circ\) 都满足 \(\displaystyle x^*(y)=0\).
+
+反之，若 \(\displaystyle y\notin M\)，则 \(\displaystyle y+M\neq0\) 于Banach空间 \(\displaystyle X/M\). 在一维子空间 \(\displaystyle \operatorname{span}\{y+M\}\) 上定义连续线性泛函，使其在 \(\displaystyle y+M\) 上取值1. 由I-06的Hahn--Banach定理，它延拓为某个 \(\displaystyle \varphi\in(X/M)^*\). 于是 \(\displaystyle x^*=\varphi\circ q\in M^\circ\)，且 \(\displaystyle x^*(y)=1\neq0\). 因此
+\(\displaystyle y\in M \iff x^*(y)=0 \;\text{对全部}\; x^*\in M^\circ\).
+再用I-11关系 \(\displaystyle M^\circ=\ker\mathcal A'=\ker(\mathcal I-\mathcal K')\) 即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][Fredholm择一原理：\(\displaystyle \mathcal I-\mathcal K\)]{fa:FRED-A01}
+设 \(\displaystyle X\) 为实或复Banach空间，\(\displaystyle \mathcal K\in\mathcal K(X)\). 则以下三条等价：
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(\displaystyle \ker(\mathcal I-\mathcal K)=\{0\}\).
+\item \(\displaystyle \operatorname{Ran}(\mathcal I-\mathcal K)=X\).
+\item \(\displaystyle \mathcal I-\mathcal K\) 有界可逆.
+\end{enumerate}
+并且总有
+\[
+\dim\ker(\mathcal I-\mathcal K)
+=
+\operatorname{codim}\operatorname{Ran}(\mathcal I-\mathcal K)
+=
+\dim\ker(\mathcal I-\mathcal K')
+<\infty.
+\]
+对任意 \(\displaystyle y\in X\)，方程
+\(\displaystyle x-\mathcal Kx=y\)
+可解当且仅当
+\(\displaystyle x^*(y)=0\)
+对全部 \(\displaystyle x^*\in\ker(\mathcal I-\mathcal K')\) 成立. 若齐次方程只有零解，则每个 \(\displaystyle y\) 有唯一解；若齐次核非零且非齐次方程有一个解 \(\displaystyle x_0\)，则全部解恰为仿射空间
+\(\displaystyle x_0+ \ker(\mathcal I-\mathcal K)\).
+\end{FATheorem}
+
+\begin{FAProof}
+\autoref{i13:nullity-deficiency}与\autoref{i13:primal-dual-nullity}已给出三项维数相等且有限. 因而若（i）成立，则 \(\displaystyle \operatorname{codim}\operatorname{Ran}(\mathcal I-\mathcal K)=0\). 值域已经闭，所以它等于 \(\displaystyle X\)，得到（ii）. 若（ii）成立，则余维为零，由同一维数等式得到核维数为零，即（i）. 当（i）与（ii）成立时，\(\displaystyle \mathcal I-\mathcal K\) 是Banach空间上的有界线性双射，由\autoref{fa:BIT-A01}得到有界逆，即（iii）. 若（iii）成立，则可逆算子必为单射且满射，因此同时得到（i）与（ii）.
+
+非齐次方程的可解性恰是 \(\displaystyle y\in\operatorname{Ran}(\mathcal I-\mathcal K)\)，由\autoref{i13:fredholm-solvability}得到湮灭子条件. 若核为零，则等价条件给出满射，因此解存在且由单射性唯一. 若 \(\displaystyle x_0\) 是一个解，则 \(\displaystyle x\) 也是解当且仅当
+\(\displaystyle (\mathcal I-\mathcal K)(x-x_0)=0\)，
+即 \(\displaystyle x-x_0\in\ker(\mathcal I-\mathcal K)\). 因而解集正是所述仿射空间.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[B][Fredholm算子与指数]{i13:fredholm-definition}
+设 \(\displaystyle X,Y\) 为Banach空间，\(\displaystyle \mathcal A\in\mathcal B(X,Y)\). 若 \(\displaystyle \ker\mathcal A\) 有限维、\(\displaystyle \operatorname{Ran}\mathcal A\) 闭且 \(\displaystyle \operatorname{codim}\operatorname{Ran}\mathcal A<\infty\)，则称 \(\displaystyle \mathcal A\) 为Fredholm算子，并定义
+\[
+\operatorname{ind}\mathcal A
+:=
+\dim\ker\mathcal A
+-
+\operatorname{codim}\operatorname{Ran}\mathcal A.
+\]
+\end{FADefinition}
+
+\begin{FATheorem}[B][恒等减紧算子的Fredholm指数]{fa:FRED-B01}
+设 \(\displaystyle X\) 为Banach空间，\(\displaystyle \mathcal K\in\mathcal K(X)\). 则 \(\displaystyle \mathcal I-\mathcal K\) 为Fredholm算子，并且
+\(\displaystyle \operatorname{ind}(\mathcal I-\mathcal K) =0\).
+\end{FATheorem}
+
+\begin{FAProof}
+非零特征空间有限维的 \(\displaystyle \lambda=1\) 版本给出 \(\displaystyle \ker(\mathcal I-\mathcal K)\) 有限维；\autoref{i13:closed-range}的 \(\displaystyle \lambda=1\) 版本给出值域闭；\autoref{i13:nullity-deficiency}给出值域余维有限且等于核维数. 因而 \(\displaystyle \mathcal I-\mathcal K\) 为Fredholm算子，并且其指数等于零.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[一般Fredholm指标理论边界]
+本章只定义Fredholm算子与指标，并证明 \(\displaystyle \operatorname{ind}(\mathcal I-\mathcal K)=0\). 指标的局部常值性、可加性、一般Fredholm算子的紧扰动不变性、Atkinson定理、Calkin代数与本质谱均不在本章建立.
+\end{FARemark}
+
+\section{积分方程}\label{sec:i13-integral-equations}
+\index{integral equation@积分方程}\index{Volterra equation@Volterra方程}
+
+\begin{FAApplication}[连续核第二类积分方程的Fredholm择一原理]\label{i13:fredholm-integral-application}
+沿用\autoref{i13:ex-compact-integral}的连续核算子 \(\displaystyle \mathcal K\). 给定 \(\displaystyle \mu\in\mathbb K\) 与 \(\displaystyle g\in C([a,b])\)，考虑
+\(\displaystyle f-\mu\mathcal Kf=g\).
+因为 \(\displaystyle \mu\mathcal K\) 紧，\autoref{fa:FRED-A01}应用于 \(\displaystyle \mathcal I-\mu\mathcal K\). 若齐次方程
+\(\displaystyle f-\mu\mathcal Kf=0\)
+只有零解，则对每个 \(\displaystyle g\) 都存在唯一解. 否则，方程可解当且仅当
+\(\displaystyle \Lambda(g)=0\)
+对全部
+\(\displaystyle \Lambda \in \ker\bigl((\mathcal I-\mu\mathcal K)'\bigr)\)
+成立. Banach对偶算子是线性复合算子，因此
+\(\displaystyle (\mathcal I-\mu\mathcal K)' = \mathcal I-\mu\mathcal K'\).
+在复Banach空间的连续线性对偶约定下，标量 \(\displaystyle \mu\) 不共轭. 这里使用的是Banach对偶算子撇号 \(\displaystyle '\)，不是Hilbert伴随 \(\displaystyle *\).
+\end{FAApplication}
+
+\begin{FAApplication}[Volterra第二类方程全参数唯一可解]\label{i13:volterra-second-kind}
+在 \(\displaystyle C([0,1])\) 上考虑
+\(\displaystyle f-\mu\mathcal Vf=g, \; \mu\in\mathbb K\).
+I-12已经证明复情形 \(\displaystyle \sigma(\mathcal V)=\{0\}\)，所以 \(\displaystyle \mathcal I-\mu\mathcal V\) 对每个复 \(\displaystyle \mu\) 可逆. 对实、复两种标量域都可直接使用I-12的阶乘估计
+\[
+\|\mathcal V^n\|
+\leqslant
+\frac{1}{n!}.
+\]
+于是标量级数 \(\displaystyle \sum_{n=0}^{\infty}\frac{|\mu|^n}{n!}\) 由比值判别收敛，从而
+\[
+\sum_{n=0}^{\infty}\mu^n\mathcal V^n
+\]
+在算子范数下绝对收敛. 令
+\[
+\mathcal S_N
+:=
+\sum_{n=0}^{N}\mu^n\mathcal V^n.
+\]
+有限几何恒等式给出
+\[
+(\mathcal I-\mu\mathcal V)\mathcal S_N
+=
+\mathcal S_N(\mathcal I-\mu\mathcal V)
+=
+\mathcal I-\mu^{N+1}\mathcal V^{N+1}.
+\]
+而
+\[
+\|\mu^{N+1}\mathcal V^{N+1}\|
+\leqslant
+\frac{|\mu|^{N+1}}{(N+1)!}
+\to0.
+\]
+令 \(\displaystyle N\to\infty\)，得到
+\[
+(\mathcal I-\mu\mathcal V)^{-1}
+=
+\sum_{n=0}^{\infty}\mu^n\mathcal V^n.
+\]
+因此对每个 \(\displaystyle \mu\in\mathbb K\) 与每个 \(\displaystyle g\in C([0,1])\)，Volterra第二类方程都有唯一解
+\[
+f
+=
+\sum_{n=0}^{\infty}\mu^n\mathcal V^ng.
+\]
+该论证没有使用禁用的指数函数记号.
+\end{FAApplication}
+
+\begin{FARemark}[后续理论边界]
+紧自伴谱定理、正交特征基、特征值正交性与离散函数演算留到I-14. 一般Banach代数谱、Gelfand理论留到II-02，\(\displaystyle C^*\) 代数与有界正规算子谱定理留到II-03. 本章没有使用这些后续结果.
+\end{FARemark}
+
+\section{习题}\label{sec:i13-exercises}
+
+\begin{FAExercise}[紧性的序列判据]{ex:i13-01}
+不引用\autoref{fa:COMP-A01}的证明，独立重建以下方向：若每个有界列的像都有范数收敛子列，则每个有界集的像相对紧. 必须写出从闭包中的任意序列回到原像点列的逼近步骤.
+\end{FAExercise}
+
+\begin{FAExercise}[紧线性映射自动连续]{ex:i13-02}
+设 \(\displaystyle \mathcal K:X\to Y\) 线性且把有界集送到相对紧集. 直接从单位球像有界证明存在 \(\displaystyle C\geqslant0\) 使 \(\displaystyle \|\mathcal Kx\|\leqslant C\|x\|\). 不得先假设连续.
+\end{FAExercise}
+
+\begin{FAExercise}[两侧复合]{ex:i13-03}
+设 \(\displaystyle \mathcal K\in\mathcal K(X,Y)\)、\(\displaystyle \mathcal A\in\mathcal B(Y,Z)\)、\(\displaystyle \mathcal B\in\mathcal B(W,X)\). 用有界列与子列证明 \(\displaystyle \mathcal A\mathcal K\mathcal B\) 紧，并指出每一步分别使用哪个算子的性质.
+\end{FAExercise}
+
+\begin{FAExercise}[线性封闭与范数极限]{ex:i13-04}
+证明紧算子对加法与标量乘法封闭. 再证明当值域 \(\displaystyle Y\) 完备时，紧算子的算子范数极限仍紧，并明确标出完备性只在哪一步使用.
+\end{FAExercise}
+
+\begin{FAExercise}[无限维恒等算子]{ex:i13-05}
+设 \(\displaystyle X\) 无限维. 用\autoref{fa:BAN-A02}证明 \(\displaystyle \mathcal I_X\) 不紧，并给出一个有界但不紧的算子实例. 不得使用I-14结果.
+\end{FAExercise}
+
+\begin{FAExercise}[有限秩紧性]{ex:i13-06}
+设 \(\displaystyle \mathcal F\in\mathcal B(X,Y)\) 且 \(\displaystyle \operatorname{Ran}\mathcal F\) 有限维. 证明 \(\displaystyle \mathcal F\) 紧，并解释为什么“有限维有界集相对紧”不能直接替换为无限维结论.
+\end{FAExercise}
+
+\begin{FAExercise}[连续核算子的Arzelà--Ascoli路线]{ex:i13-07}
+对连续核 \(\displaystyle k\) 的积分算子重新证明单位球像一致有界与等度连续，并由Arzelà--Ascoli得到紧性. 要求写出等度连续估计中的上确界.
+\end{FAExercise}
+
+\begin{FAExercise}[核插值的有限秩逼近]{ex:i13-08}
+沿\autoref{i13:kernel-finite-rank-approx}的帽函数构造，证明 \(\displaystyle \|k_N-k\|_\infty\to0\)、\(\displaystyle \operatorname{Ran}\mathcal K_N\subseteq\operatorname{span}\{\varphi_0,\dots,\varphi_N\}\) 与 \(\displaystyle \|\mathcal K_N-\mathcal K\|\to0\). 说明该题不能推出一般Banach空间的有限秩稠密性.
+\end{FAExercise}
+
+\begin{FAExercise}[Volterra紧性]{ex:i13-09}
+对 \(\displaystyle \mathcal V:C([0,1])\to C([0,1])\) 证明单位球像一致有界且1-Lipschitz，从而由Arzelà--Ascoli证明 \(\displaystyle \mathcal V\) 紧. 不使用Fubini定理.
+\end{FAExercise}
+
+\begin{FAExercise}[弱收敛到范数收敛]{ex:i13-10}
+设 \(\displaystyle x_n\rightharpoonup x\)，\(\displaystyle \mathcal K\) 紧. 用“任意子列都有子子列范数收敛到同一极限”的反证法证明 \(\displaystyle \mathcal Kx_n\to\mathcal Kx\) 于范数. 不得把结论无证明推广到网.
+\end{FAExercise}
+
+\begin{FAExercise}[非零特征空间有限维]{ex:i13-11}
+设 \(\displaystyle \lambda\neq0\) 且 \(\displaystyle \mathcal Kx=\lambda x\) 的特征空间为 \(\displaystyle N_\lambda\). 假设 \(\displaystyle N_\lambda\) 无限维并把 \(\displaystyle \mathcal I_{N_\lambda}\) 表成紧算子的标量倍数，推出矛盾.
+\end{FAExercise}
+
+\begin{FAExercise}[闭值域估计]{ex:i13-12}
+从距离估计不存在出发，构造 \(\displaystyle y_n\) 满足 \(\displaystyle \operatorname{dist}(y_n,N_1)=1\)、\(\displaystyle \|y_n\|<2\) 与 \(\displaystyle \|\mathcal A_\lambda y_n\|\to0\)，并完成紧性矛盾. 随后用商Banach空间证明 \(\displaystyle \operatorname{Ran}\mathcal A_\lambda\) 闭.
+\end{FAExercise}
+
+\begin{FAExercise}[核链稳定化]{ex:i13-13}
+假设 \(\displaystyle N_{n-1}\subsetneq N_n\) 永远严格. 用Riesz引理选取 \(\displaystyle x_n\)，并证明当 \(\displaystyle m<n\) 时 \(\displaystyle \|\mathcal Kx_n-\mathcal Kx_m\|>\frac{|\lambda|}{2}\)，由此否定假设.
+\end{FAExercise}
+
+\begin{FAExercise}[值域链闭性与稳定化]{ex:i13-14}
+先归纳证明每个 \(\displaystyle R_n\) 闭，再假设 \(\displaystyle R_{n+1}\subsetneq R_n\) 永远严格并用Riesz引理构造分离像列. 必须说明为什么 \(\displaystyle x_m\) 与 \(\displaystyle \mathcal Kx_m\) 在 \(\displaystyle m>n\) 时都属于 \(\displaystyle R_{n+1}\).
+\end{FAExercise}
+
+\begin{FAExercise}[局部Riesz分解]{ex:i13-15}
+设核链与值域链都从第 \(\displaystyle p\) 层起稳定. 分别证明 \(\displaystyle N_p\cap R_p=\{0\}\) 与 \(\displaystyle N_p+R_p=X\). 求和部分必须使用 \(\displaystyle R_p=R_{2p}\).
+\end{FAExercise}
+
+\begin{FAExercise}[非零谱等于点谱]{ex:i13-16}
+设 \(\displaystyle \lambda\neq0\) 且 \(\displaystyle \ker(\lambda\mathcal I-\mathcal K)=\{0\}\). 用局部Riesz分解证明 \(\displaystyle \lambda\mathcal I-\mathcal K\) 满射，再用有界逆定理证明 \(\displaystyle \lambda\notin\sigma(\mathcal K)\).
+\end{FAExercise}
+
+\begin{FAExercise}[非零谱离散性]{ex:i13-17}
+假设存在互异特征值 \(\displaystyle \lambda_n\) 且 \(\displaystyle |\lambda_n|\geqslant\varepsilon>0\). 用特征向量张成的严格递增子空间链与Riesz引理构造有界列，使其紧像中任意两项保持正距离. 推出矛盾，并进一步证明非零谱至多可数.
+\end{FAExercise}
+
+\begin{FAExercise}[零必在无限维紧算子谱中]{ex:i13-18}
+设 \(\displaystyle X\) 无限维，\(\displaystyle \mathcal K\) 紧. 假设 \(\displaystyle0\notin\sigma(\mathcal K)\)，用 \(\displaystyle \mathcal I=\mathcal K^{-1}\mathcal K\) 与复合紧性推出矛盾.
+\end{FAExercise}
+
+\begin{FAExercise}[零化度与亏维]{ex:i13-19}
+对 \(\displaystyle \mathcal A=\mathcal I-\mathcal K\) 与稳定分解 \(\displaystyle X=N_p\oplus R_p\)，证明 \(\displaystyle \operatorname{Ran}\mathcal A=\mathcal A(N_p)\oplus R_p\)，并由有限维秩--零化度公式推出 \(\displaystyle \dim\ker\mathcal A=\operatorname{codim}\operatorname{Ran}\mathcal A\).
+\end{FAExercise}
+
+\begin{FAExercise}[湮灭子与可解性]{ex:i13-20}
+设 \(\displaystyle M\subseteq X\) 闭且有限余维. 证明 \(\displaystyle (X/M)^*\cong M^\circ\). 再对 \(\displaystyle M=\operatorname{Ran}(\mathcal I-\mathcal K)\) 使用I-11的对偶核关系与Hahn--Banach定理，推出Fredholm可解性条件.
+\end{FAExercise}
+
+\begin{FAExercise}[指数零与理论边界]{ex:i13-21}
+证明 \(\displaystyle \mathcal I-\mathcal K\) 为Fredholm算子且指数为零. 随后解释为什么本题不能据此宣称任意Fredholm算子在紧扰动下指标不变，也不能使用Atkinson定理、本质谱或I-14的紧自伴谱定理.
+\end{FAExercise}
+
+\begin{FAExercise}[积分方程与Volterra唯一可解]{ex:i13-22}
+对连续核第二类方程 \(\displaystyle f-\mu\mathcal Kf=g\)，写出Fredholm择一原理的齐次判据与对偶湮灭条件，并正确使用Banach对偶撇号. 对Volterra算子再用 \(\displaystyle \|\mathcal V^n\|\leqslant\frac{1}{n!}\) 证明 \(\displaystyle \sum_{n=0}^{\infty}\mu^n\mathcal V^n\) 是 \(\displaystyle \mathcal I-\mu\mathcal V\) 的有界逆，从而证明每个参数下唯一可解.
+\end{FAExercise}

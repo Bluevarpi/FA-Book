@@ -1,0 +1,47 @@
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[FANavy] (current page.south west) rectangle (current page.north east);
+  \fill[FARoyal,opacity=.20] ([xshift=-1.2cm,yshift=-1.6cm]current page.north east) circle (5.3cm);
+  \fill[FACyan,opacity=.10] ([yshift=1.0cm]current page.west) circle (5.8cm);
+  \draw[white,opacity=.07,line width=.35pt,step=9mm] ([xshift=0.9cm,yshift=1.0cm]current page.south west) grid ([xshift=-0.9cm,yshift=-1.0cm]current page.north east);
+
+  % Abstract operator/duality constellation.
+  \coordinate (C) at ([xshift=-3.1cm,yshift=1.0cm]current page.east);
+  \node[circle,draw=FACyan,fill=FANavy,line width=1.2pt,text=white,minimum size=11mm,font=\sffamily\bfseries] (X) at ([xshift=-1.7cm,yshift=2.1cm]C) {\(\displaystyle X\)};
+  \node[circle,draw=FAViolet!70!white,fill=FANavy,line width=1.2pt,text=white,minimum size=11mm,font=\sffamily\bfseries] (Xs) at ([xshift=1.1cm,yshift=2.8cm]C) {\(\displaystyle X^*\)};
+  \node[circle,draw=FAEmerald!85!white,fill=FANavy,line width=1.2pt,text=white,minimum size=11mm,font=\sffamily\bfseries] (H) at ([xshift=1.5cm,yshift=.3cm]C) {\(\displaystyle H\)};
+  \node[rounded corners=3pt,draw=FAAmber!90!white,fill=FANavy,line width=1.2pt,text=white,inner sep=5pt,font=\sffamily\bfseries] (T) at ([xshift=-1.5cm,yshift=-.5cm]C) {\(\displaystyle T\)};
+  \node[rounded corners=3pt,draw=FARose!85!white,fill=FANavy,line width=1.2pt,text=white,inner sep=5pt,font=\sffamily\bfseries] (S) at ([xshift=.1cm,yshift=-2.4cm]C) {\(\displaystyle \sigma(T)\)};
+  \draw[-{Stealth[length=2.3mm]},FACyan,line width=1pt,opacity=.8] (X) -- (Xs);
+  \draw[-{Stealth[length=2.3mm]},FAEmerald!85!white,line width=1pt,opacity=.8] (X) -- (H);
+  \draw[-{Stealth[length=2.3mm]},FAAmber!90!white,line width=1pt,opacity=.8] (T) -- (H);
+  \draw[-{Stealth[length=2.3mm]},FARose!85!white,line width=1pt,opacity=.8] (T) -- (S);
+  \draw[FAViolet!70!white,line width=1pt,opacity=.75] (Xs) -- (H);
+
+  \fill[FARoyal] (current page.south west) rectangle ([yshift=6mm]current page.south east);
+  \fill[FACyan] ([yshift=6mm]current page.south west) rectangle ([xshift=.34\paperwidth,yshift=8mm]current page.south west);
+\end{tikzpicture}
+
+\vspace*{0.115\textheight}
+\noindent{\sffamily\FAHei\bfseries\fontsize{34}{40}\selectfont\color{white}泛函分析自学书\par}
+\vspace{8pt}
+\noindent{\FAKai\fontsize{12.5}{16}\selectfont\color{white!72}三卷合订·自学版\par}
+\vspace{25pt}
+\noindent{\color{white!30}\rule{0.43\textwidth}{0.6pt}\par}
+\vspace{22pt}
+\begin{minipage}{0.64\textwidth}
+{\sffamily\FAHei\bfseries\zihao{3}\color{white}第一卷\enspace 基础、对偶与算子谱论\par}
+\vspace{6pt}
+{\sffamily\FAHei\bfseries\zihao{3}\color{white}第二卷\enspace 高级线性理论与无界算子\par}
+\vspace{6pt}
+{\sffamily\FAHei\bfseries\zihao{3}\color{white}第三卷\enspace 非线性分析与变分法\par}
+\end{minipage}
+
+\vfill
+\noindent{\color{white!26}\rule{0.55\textwidth}{0.5pt}\par}
+\vspace{7pt}
+{\sffamily\small\color{white!78}三卷合订·40 章·人工智能辅助生成\par}
+\vspace{7mm}
+{\sffamily\small\color{white!62}2026 年 10 月\par}
+\end{titlepage}

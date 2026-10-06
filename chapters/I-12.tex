@@ -1,0 +1,995 @@
+\chapter{预解集、谱与最小 Banach 代数工具}\label{chap:I-12}
+\FAChapterOpening
+{在非零复Banach空间上建立预解集、谱、点谱与谱半径的规范语言；由逐向量Neumann级数得到预解集开性、局部预解展开与扰动可逆性；证明预解恒等式、谱非空紧性、谱半径公式与多项式谱映射；最后计算右移、乘法算子与Volterra算子的谱，并给出实空间复化接口.}
+{I-05的有界算子、算子范数、复合估计与局部可逆稳定性；I-09的有界逆定理；I-11的Hilbert伴随及其代数.}
+{\begin{center}
+\begin{tikzpicture}[x=1.85cm,y=1.05cm]
+\node[fa/node] (bit) at (0,0.65) {有界逆定理};
+\node[fa/node] (op) at (0,-0.65) {连续/有界等价};
+\node[fa/node] (a01) at (2.1,0) {预解与谱};
+\node[fa/node] (a02) at (4.2,0) {Neumann/预解开性};
+\node[fa/node] (b01) at (4.2,1.25) {预解恒等式};
+\node[fa/node] (c01) at (4.2,-1.25) {预解估计};
+\node[fa/node] (a03) at (6.3,0) {谱非空紧/谱半径};
+\node[fa/node] (b02) at (6.3,-1.35) {多项式谱映射};
+\draw[fa/arrow] (bit) -- (a01);
+\draw[fa/arrow] (op) -- (a01);
+\draw[fa/arrow] (a01) -- (a02);
+\draw[fa/arrow] (a02) -- (a03);
+\draw[fa/arrow] (a02) -- (b01);
+\draw[fa/arrow] (a02) -- (c01);
+\draw[fa/arrow] (a03) -- (b02);
+\end{tikzpicture}
+\end{center}}
+
+除“实空间的复化”小节外，本章固定 \(\displaystyle X\neq\{0\}\) 为复Banach空间，\(\displaystyle \mathcal T\in\mathcal B(X)\). 非零假设不可删除：零空间上的唯一算子可逆于每个 \(\displaystyle \lambda\in\mathbb C\)，其谱为空，因此“复Banach空间上谱非空”的统一结论只对非零空间成立.
+
+\begin{FARemark}[标量复分析前置接口]\label{i12:scalar-complex-interface}
+本章所需的标量复分析只调用 I-01 已建立的标量复分析接口：收敛标量幂级数的局部全纯性与逐项求导、Taylor系数解释、标量Cauchy公式及导数/系数估计、Liouville定理. 不调用Banach值Cauchy定理、全纯函数演算、辐角原理、Rouché定理、留数理论或Montel理论. 所有Banach值结论仍由本章的Neumann级数、算子范数估计与连续线性泛函标量化推出. 后文多项式谱映射所需的复多项式线性分解不作为额外复分析接口调用，而由已经建立的\autoref{fa:SPEC-A03}作用于有限维友矩阵算子后在书内推出.
+\end{FARemark}
+
+\begin{FARemark}[本章的乘法边界]
+I-05已经给出 \(\displaystyle \mathcal B(X)\) 中的恒等算子、算子复合与次乘性估计
+\(\displaystyle \|\mathcal S\mathcal T\| \leqslant \|\mathcal S\|\|\mathcal T\|\).
+本章只在这个具体算子空间内使用恒等算子、复合、多项式、Neumann级数与预解算子，不定义一般含幺Banach代数，不引入极大理想、角色或Gelfand变换. 这些抽象结构留到II-02.
+\end{FARemark}
+
+\section{Neumann 级数}\label{sec:i12-neumann}
+\index{Neumann series@Neumann级数}\index{invertible operator@可逆算子}
+
+\begin{FALemma}[B][Neumann级数]{i12:neumann-series}
+设 \(\displaystyle \mathcal A\in\mathcal B(X)\) 且 \(\displaystyle \|\mathcal A\|<1\). 则 \(\displaystyle \mathcal I-\mathcal A\) 有界可逆，并且
+\[
+(\mathcal I-\mathcal A)^{-1}
+=
+\sum_{n=0}^{\infty}\mathcal A^n
+\]
+在算子范数下成立. 进一步，
+\[
+\|(\mathcal I-\mathcal A)^{-1}\|
+\leqslant
+\frac{1}{1-\|\mathcal A\|}.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in X\). 由I-05的算子范数估计，\(\displaystyle \|\mathcal A^n x\|\leqslant\|\mathcal A\|^n\|x\|\)，故
+\[
+\sum_{n=0}^{\infty}\|\mathcal A^n x\|
+\leqslant
+\|x\|\sum_{n=0}^{\infty}\|\mathcal A\|^n
+<\infty.
+\]
+因为 \(\displaystyle X\) 完备，级数 \(\displaystyle \sum_{n=0}^{\infty}\mathcal A^n x\) 在 \(\displaystyle X\) 中收敛. 定义
+\[
+\mathcal Sx
+:=
+\sum_{n=0}^{\infty}\mathcal A^n x.
+\]
+逐项使用有限部分和的线性性并取极限，得到 \(\displaystyle \mathcal S\) 线性. 又
+\[
+\|\mathcal Sx\|
+\leqslant
+\sum_{n=0}^{\infty}\|\mathcal A^n x\|
+\leqslant
+\frac{1}{1-\|\mathcal A\|}\|x\|,
+\]
+所以 \(\displaystyle \mathcal S\in\mathcal B(X)\) 且 \(\displaystyle \|\mathcal S\|\leqslant(1-\|\mathcal A\|)^{-1}\).
+
+令 \(\displaystyle \mathcal P_N=\sum_{k=0}^{N}\mathcal A^k\). 对每个 \(\displaystyle x\in X\)，
+\(\displaystyle (\mathcal I-\mathcal A)\mathcal P_Nx = (\mathcal I-\mathcal A^{N+1})x\)，
+并且
+\(\displaystyle \mathcal P_N(\mathcal I-\mathcal A)x = (\mathcal I-\mathcal A^{N+1})x\).
+因为 \(\displaystyle \|\mathcal A^{N+1}x\|\leqslant\|\mathcal A\|^{N+1}\|x\|\to0\)，又 \(\displaystyle \mathcal P_Nx\to\mathcal Sx\)，由 \(\displaystyle \mathcal I-\mathcal A\) 的连续性得到
+\(\displaystyle (\mathcal I-\mathcal A)\mathcal Sx=x\).
+另一方面，把固定向量 \(\displaystyle (\mathcal I-\mathcal A)x\) 代入 \(\displaystyle \mathcal P_Ny\to\mathcal Sy\)，得到
+\(\displaystyle \mathcal S(\mathcal I-\mathcal A)x=x\).
+故 \(\displaystyle \mathcal S=(\mathcal I-\mathcal A)^{-1}\)，左右逆同时成立.
+
+最后，对 \(\displaystyle N\geqslant0\) 与 \(\displaystyle \|x\|\leqslant1\)，
+\[
+\|(\mathcal S-\mathcal P_N)x\|
+\leqslant
+\sum_{n=N+1}^{\infty}\|\mathcal A\|^n
+=
+\frac{\|\mathcal A\|^{N+1}}{1-\|\mathcal A\|}.
+\]
+取上确界可知 \(\displaystyle \mathcal P_N\to\mathcal S\) 于算子范数，因此上面的Neumann级数确为算子范数收敛.
+结论全部成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[与I-05局部可逆稳定性的关系]
+I-05的\autoref{fa:OP-B02}已经由压缩映射原理证明有界可逆算子的局部稳定性，但并未建立Neumann级数. 本节给出以后预解展开所需的规范级数路线，不能把\autoref{fa:OP-B02}当作本节级数公式的替代.
+\end{FARemark}
+
+\section{预解与谱}\label{sec:i12-spectrum}
+\index{resolvent set@预解集}\index{spectrum@谱}\index{point spectrum@点谱}\index{resolvent operator@预解算子}
+
+\begin{FADefinition}[A][预解集、谱与预解算子]{fa:SPEC-A01}
+设 \(\displaystyle X\neq\{0\}\) 为复Banach空间，\(\displaystyle \mathcal T\in\mathcal B(X)\). 定义预解集
+\(\displaystyle \rho(\mathcal T) := \left\{ \lambda\in\mathbb C: \lambda\mathcal I-\mathcal T\text{有界可逆} \right\}\)，
+并定义谱
+\(\displaystyle \sigma(\mathcal T) := \mathbb C\setminus\rho(\mathcal T)\).
+若 \(\displaystyle \lambda\in\rho(\mathcal T)\)，定义预解算子
+\(\displaystyle \mathcal R(\lambda,\mathcal T) := (\lambda\mathcal I-\mathcal T)^{-1}\).
+由I-09的有界逆定理\autoref{fa:BIT-A01}，对Banach空间 \(\displaystyle X\)，\(\displaystyle \lambda\mathcal I-\mathcal T\) 有界可逆当且仅当它是有界线性双射.
+\end{FADefinition}
+
+\begin{FADefinition}[B][点谱]{i12:point-spectrum}
+定义
+\[
+\sigma_{\mathrm p}(\mathcal T)
+:=
+\left\{
+\lambda\in\mathbb C:
+\ker(\lambda\mathcal I-\mathcal T)\neq\{0\}
+\right\}.
+\]
+因此 \(\displaystyle \sigma_{\mathrm p}(\mathcal T)\) 正是 \(\displaystyle \mathcal T\) 的特征值集合.
+\end{FADefinition}
+
+\begin{FAProposition}[C][点谱包含于谱]{i12:point-spectrum-subset}
+对每个 \(\displaystyle \mathcal T\in\mathcal B(X)\)，有
+\(\displaystyle \sigma_{\mathrm p}(\mathcal T) \subseteq \sigma(\mathcal T)\).
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle \lambda\in\sigma_{\mathrm p}(\mathcal T)\)，则 \(\displaystyle \ker(\lambda\mathcal I-\mathcal T)\neq\{0\}\)，所以 \(\displaystyle \lambda\mathcal I-\mathcal T\) 不单射，从而不可能可逆. 因此 \(\displaystyle \lambda\notin\rho(\mathcal T)\)，即 \(\displaystyle \lambda\in\sigma(\mathcal T)\).
+\hfill\(\square\)
+\end{FAProof}
+
+本章不进一步定义连续谱、剩余谱或近似点谱；当前目的只需要点谱这一最低接口来区分“谱”与“特征值集合”.
+
+\begin{FATheorem}[A][Neumann级数与预解集开性]{fa:SPEC-A02}
+设 \(\displaystyle \lambda_0\in\rho(\mathcal T)\). 若
+\[
+|\lambda-\lambda_0|
+<
+\frac{1}{\|\mathcal R(\lambda_0,\mathcal T)\|},
+\]
+则 \(\displaystyle \lambda\in\rho(\mathcal T)\)，并且
+\[
+\mathcal R(\lambda,\mathcal T)
+=
+\mathcal R(\lambda_0,\mathcal T)
+\sum_{n=0}^{\infty}
+\left[-(\lambda-\lambda_0)\mathcal R(\lambda_0,\mathcal T)\right]^n
+\]
+在算子范数下收敛. 因而 \(\displaystyle \rho(\mathcal T)\) 是开集，\(\displaystyle \sigma(\mathcal T)\) 是闭集，且预解算子在每个预解点附近具有算子范数收敛的幂级数展开.
+\end{FATheorem}
+
+\begin{FAProof}
+记 \(\displaystyle \mathcal R_0=\mathcal R(\lambda_0,\mathcal T)\). 直接计算得
+\[
+\lambda\mathcal I-\mathcal T
+=
+(\lambda_0\mathcal I-\mathcal T)
+\left[
+\mathcal I+(\lambda-\lambda_0)\mathcal R_0
+\right].
+\]
+事实上，第二项乘开后使用 \(\displaystyle (\lambda_0\mathcal I-\mathcal T)\mathcal R_0=\mathcal I\)，右侧等于 \(\displaystyle \lambda_0\mathcal I-\mathcal T+(\lambda-\lambda_0)\mathcal I=\lambda\mathcal I-\mathcal T\). 由假设，
+\(\displaystyle \|(\lambda-\lambda_0)\mathcal R_0\| \leqslant |\lambda-\lambda_0|\|\mathcal R_0\| <1\).
+对 \(\displaystyle \mathcal A=-(\lambda-\lambda_0)\mathcal R_0\) 应用\autoref{i12:neumann-series}，得到第二因子有界可逆，且
+\[
+\left[
+\mathcal I+(\lambda-\lambda_0)\mathcal R_0
+\right]^{-1}
+=
+\sum_{n=0}^{\infty}
+\left[-(\lambda-\lambda_0)\mathcal R_0\right]^n.
+\]
+第一因子也有界可逆，因此 \(\displaystyle \lambda\mathcal I-\mathcal T\) 有界可逆，故 \(\displaystyle \lambda\in\rho(\mathcal T)\). 取乘积的逆得
+\[
+\mathcal R(\lambda,\mathcal T)
+=
+\left[
+\mathcal I+(\lambda-\lambda_0)\mathcal R_0
+\right]^{-1}
+\mathcal R_0.
+\]
+Neumann级数中的每一项都是 \(\displaystyle \mathcal R_0\) 的幂，故与 \(\displaystyle \mathcal R_0\) 交换，于是可把 \(\displaystyle \mathcal R_0\) 移到左侧，得到定理中的展开式.
+
+因此每个 \(\displaystyle \lambda_0\in\rho(\mathcal T)\) 都有半径 \(\displaystyle \|\mathcal R(\lambda_0,\mathcal T)\|^{-1}\) 的开圆盘包含于预解集，故预解集开；其补集谱为闭集. 局部公式已经给出以 \(\displaystyle \lambda-\lambda_0\) 为变量的算子范数幂级数.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][大参数预解展开]{i12:large-lambda-resolvent}
+若 \(\displaystyle |\lambda|>\|\mathcal T\|\)，则 \(\displaystyle \lambda\in\rho(\mathcal T)\)，并且
+\[
+\mathcal R(\lambda,\mathcal T)
+=
+\frac{1}{\lambda}
+\sum_{n=0}^{\infty}
+\frac{\mathcal T^n}{\lambda^n}.
+\]
+同时
+\[
+\|\mathcal R(\lambda,\mathcal T)\|
+\leqslant
+\frac{1}{|\lambda|-\|\mathcal T\|},
+\]
+从而
+\(\displaystyle \sigma(\mathcal T) \subseteq \{\lambda\in\mathbb C:|\lambda|\leqslant\|\mathcal T\|\}\).
+\end{FACorollary}
+
+\begin{FAProof}
+由
+\(\displaystyle \lambda\mathcal I-\mathcal T = \lambda\left(\mathcal I-\lambda^{-1}\mathcal T\right)\)
+且 \(\displaystyle \|\lambda^{-1}\mathcal T\|<1\)，应用\autoref{i12:neumann-series}得
+\[
+(\mathcal I-\lambda^{-1}\mathcal T)^{-1}
+=
+\sum_{n=0}^{\infty}\lambda^{-n}\mathcal T^n.
+\]
+因此预解公式成立. 范数估计为
+\[
+\|\mathcal R(\lambda,\mathcal T)\|
+\leqslant
+\frac{1}{|\lambda|}
+\frac{1}{1-\frac{\|\mathcal T\|}{|\lambda|}}
+=
+\frac{1}{|\lambda|-\|\mathcal T\|}.
+\]
+所以所有满足 \(\displaystyle |\lambda|>\|\mathcal T\|\) 的复数均属于预解集，谱只能位于闭圆盘 \(\displaystyle |\lambda|\leqslant\|\mathcal T\|\) 内.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAApplication}[预解形式的扰动可逆性]\label{i12:perturbative-invertibility}
+若 \(\displaystyle \lambda\in\rho(\mathcal T)\)、\(\displaystyle \mathcal E\in\mathcal B(X)\)，并且
+\[
+\|\mathcal E\|
+<
+\frac{1}{\|\mathcal R(\lambda,\mathcal T)\|},
+\]
+则 \(\displaystyle \lambda\in\rho(\mathcal T+\mathcal E)\).
+\end{FAApplication}
+
+\begin{FAProof}
+分解为
+\[
+\lambda\mathcal I-(\mathcal T+\mathcal E)
+=
+(\lambda\mathcal I-\mathcal T)
+\left[
+\mathcal I-\mathcal R(\lambda,\mathcal T)\mathcal E
+\right].
+\]
+因为
+\[
+\|\mathcal R(\lambda,\mathcal T)\mathcal E\|
+\leqslant
+\|\mathcal R(\lambda,\mathcal T)\|\|\mathcal E\|
+<1,
+\]
+第二因子由\autoref{i12:neumann-series}有界可逆，第一因子按 \(\displaystyle \lambda\in\rho(\mathcal T)\) 有界可逆. 因而整个乘积有界可逆，即 \(\displaystyle \lambda\in\rho(\mathcal T+\mathcal E)\). 这是I-05局部可逆稳定性在预解语言中的规范Neumann级数表述.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{预解恒等式}\label{sec:i12-resolvent-identity}
+\index{resolvent identity@预解恒等式}\index{distance to spectrum@到谱的距离}
+
+\begin{FATheorem}[B][预解恒等式]{fa:SPEC-B01}
+若 \(\displaystyle \lambda,\mu\in\rho(\mathcal T)\)，则
+\[
+\mathcal R(\lambda,\mathcal T)
+-
+\mathcal R(\mu,\mathcal T)
+=
+(\mu-\lambda)
+\mathcal R(\lambda,\mathcal T)
+\mathcal R(\mu,\mathcal T).
+\]
+并且
+\[
+\mathcal R(\lambda,\mathcal T)
+\mathcal R(\mu,\mathcal T)
+=
+\mathcal R(\mu,\mathcal T)
+\mathcal R(\lambda,\mathcal T).
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+对任意可逆算子 \(\displaystyle A,B\)，直接乘开可得
+\(\displaystyle A^{-1}-B^{-1} = A^{-1}(B-A)B^{-1}\).
+取 \(\displaystyle A=\lambda\mathcal I-\mathcal T\)、\(\displaystyle B=\mu\mathcal I-\mathcal T\)，则 \(\displaystyle B-A=(\mu-\lambda)\mathcal I\)，故第一式成立.
+
+交换 \(\displaystyle \lambda\) 与 \(\displaystyle \mu\) 后同样得到
+\[
+\mathcal R(\lambda,\mathcal T)
+-
+\mathcal R(\mu,\mathcal T)
+=
+(\mu-\lambda)
+\mathcal R(\mu,\mathcal T)
+\mathcal R(\lambda,\mathcal T).
+\]
+若 \(\displaystyle \lambda\neq\mu\)，比较两式并除以非零标量 \(\displaystyle \mu-\lambda\) 得预解算子交换；若 \(\displaystyle \lambda=\mu\)，两边都是 \(\displaystyle \mathcal R(\lambda,\mathcal T)^2\)，故交换关系仍成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][预解估计工具]{fa:SPEC-C01}
+对 \(\displaystyle \lambda\in\rho(\mathcal T)\)，以下结论成立：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 局部预解圆盘满足
+\[
+B\left(
+\lambda,
+\frac{1}{\|\mathcal R(\lambda,\mathcal T)\|}
+\right)
+\subseteq
+\rho(\mathcal T).
+\]
+\item 采用扩展约定 \(\displaystyle \operatorname{dist}(\lambda,\varnothing)=+\infty\) 与 \(\displaystyle \frac{1}{+\infty}=0\)，有
+\[
+\|\mathcal R(\lambda,\mathcal T)\|
+\geqslant
+\frac{1}{\operatorname{dist}(\lambda,\sigma(\mathcal T))}.
+\]
+\item 若 \(\displaystyle |\lambda|>\|\mathcal T\|\)，则
+\[
+\|\mathcal R(\lambda,\mathcal T)\|
+\leqslant
+\frac{1}{|\lambda|-\|\mathcal T\|}.
+\]
+\item 若 \(\displaystyle \lambda_n\in\rho(\mathcal T)\) 且 \(\displaystyle \lambda_n\to\lambda_0\in\sigma(\mathcal T)\)，则
+\(\displaystyle \|\mathcal R(\lambda_n,\mathcal T)\| \to\infty\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+（i） 正是\autoref{fa:SPEC-A02}的局部圆盘结论.
+
+（ii） 若 \(\displaystyle \sigma(\mathcal T)=\varnothing\)，右侧按约定为零，而左侧是非负数，故所述下界成立. 以下设 \(\displaystyle \sigma(\mathcal T)\neq\varnothing\). 由（i），以 \(\displaystyle \lambda\) 为中心、半径 \(\displaystyle \|\mathcal R(\lambda,\mathcal T)\|^{-1}\) 的开圆盘不与谱相交. 因而每个 \(\displaystyle \mu\in\sigma(\mathcal T)\) 都满足
+\[
+|\mu-\lambda|
+\geqslant
+\frac{1}{\|\mathcal R(\lambda,\mathcal T)\|}.
+\]
+对 \(\displaystyle \mu\in\sigma(\mathcal T)\) 取下确界得到（ii）.
+
+（iii） 已由\autoref{i12:large-lambda-resolvent}证明.
+
+（iv） 由（ii）与 \(\displaystyle \lambda_0\in\sigma(\mathcal T)\)，
+\[
+\|\mathcal R(\lambda_n,\mathcal T)\|
+\geqslant
+\frac{1}{\operatorname{dist}(\lambda_n,\sigma(\mathcal T))}
+\geqslant
+\frac{1}{|\lambda_n-\lambda_0|}.
+\]
+右端趋于 \(\displaystyle +\infty\)，故结论成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][标量化预解的全纯性]{i12:scalarized-resolvent-holomorphy}
+对任意 \(\displaystyle x\in X\)、\(\displaystyle x^*\in X^*\)，标量函数
+\(\displaystyle f_{x,x^*}(\lambda) := x^*(\mathcal R(\lambda,\mathcal T)x)\)
+在 \(\displaystyle \rho(\mathcal T)\) 上全纯.
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle \lambda_0\in\rho(\mathcal T)\)，记 \(\displaystyle \mathcal R_0=\mathcal R(\lambda_0,\mathcal T)\). 由\autoref{fa:SPEC-A02}，在 \(\displaystyle |\lambda-\lambda_0|<\|\mathcal R_0\|^{-1}\) 内，
+\[
+\mathcal R(\lambda,\mathcal T)
+=
+\sum_{n=0}^{\infty}
+(-1)^n(\lambda-\lambda_0)^n\mathcal R_0^{n+1}
+\]
+在算子范数下收敛. 对固定 \(\displaystyle x\) 作用后再应用连续线性泛函 \(\displaystyle x^*\)，得到标量幂级数
+\[
+f_{x,x^*}(\lambda)
+=
+\sum_{n=0}^{\infty}
+(-1)^n
+x^*(\mathcal R_0^{n+1}x)
+(\lambda-\lambda_0)^n.
+\]
+因此由 I-01 已建立的标量复分析接口中的收敛标量幂级数局部全纯结论，\(\displaystyle f_{x,x^*}\) 在每个预解点附近全纯，从而在整个预解集上全纯. 这里没有引入Banach值全纯函数理论.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{谱非空紧}\label{sec:i12-spectrum-compact}
+\index{compact spectrum@紧谱}\index{Liouville theorem@Liouville定理}
+
+由\autoref{fa:SPEC-A02}，\(\displaystyle \sigma(\mathcal T)\) 闭；由\autoref{i12:large-lambda-resolvent}，它包含于闭圆盘 \(\displaystyle |\lambda|\leqslant\|\mathcal T\|\)，故有界. 因为 \(\displaystyle \mathbb C\cong\mathbb R^2\)，I-03的有限维Heine--Borel结论说明：一旦证明谱非空，它就自动为紧集. 因此本节的核心只剩非空性.
+
+\begin{FAProposition}[A][复Banach算子的谱非空紧]{i12:spectrum-nonempty-compact}
+设 \(\displaystyle X\neq\{0\}\) 为复Banach空间，\(\displaystyle \mathcal T\in\mathcal B(X)\). 则
+\[
+\varnothing
+\neq
+\sigma(\mathcal T)
+\subseteq
+\{\lambda\in\mathbb C:|\lambda|\leqslant\|\mathcal T\|\},
+\]
+并且 \(\displaystyle \sigma(\mathcal T)\) 为紧集.
+\end{FAProposition}
+
+\begin{FAProof}
+反设 \(\displaystyle \sigma(\mathcal T)=\varnothing\). 则 \(\displaystyle \rho(\mathcal T)=\mathbb C\). 固定 \(\displaystyle x\in X\) 与 \(\displaystyle x^*\in X^*\)，定义
+\(\displaystyle f(\lambda) := x^*(\mathcal R(\lambda,\mathcal T)x)\).
+由\autoref{i12:scalarized-resolvent-holomorphy}，\(\displaystyle f\) 是整函数. 当 \(\displaystyle |\lambda|>\|\mathcal T\|\) 时，\autoref{i12:large-lambda-resolvent}给出
+\[
+|f(\lambda)|
+\leqslant
+\|x^*\|\|\mathcal R(\lambda,\mathcal T)\|\|x\|
+\leqslant
+\frac{\|x^*\|\|x\|}{|\lambda|-\|\mathcal T\|}.
+\]
+因此 \(\displaystyle f(\lambda)\to0\) 当 \(\displaystyle |\lambda|\to\infty\). 取任意 \(\displaystyle R>\|\mathcal T\|+1\). 连续函数 \(\displaystyle f\) 在闭圆盘 \(\displaystyle |\lambda|\leqslant R\) 上有界，而在其外由上式也有界，所以 \(\displaystyle f\) 是有界整函数. 由上述标量复分析接口中的Liouville定理，\(\displaystyle f\) 为常数；结合无穷远处极限得到 \(\displaystyle f\equiv0\).
+
+因此对任意 \(\displaystyle \lambda\in\mathbb C\)、\(\displaystyle x\in X\)、\(\displaystyle x^*\in X^*\)，有
+\(\displaystyle x^*(\mathcal R(\lambda,\mathcal T)x)=0\).
+固定 \(\displaystyle \lambda\) 与 \(\displaystyle x\). 由I-06的对偶范数表示\autoref{i06:dual-norm-representation}，若全部 \(\displaystyle x^*\in X^*\) 都在向量 \(\displaystyle \mathcal R(\lambda,\mathcal T)x\) 上取零，则
+\(\displaystyle \mathcal R(\lambda,\mathcal T)x=0\).
+由于 \(\displaystyle X\neq\{0\}\)，可取 \(\displaystyle x\neq0\). 但 \(\displaystyle \mathcal R(\lambda,\mathcal T)\) 是可逆算子，必为单射，不可能把非零向量送到零. 矛盾. 故 \(\displaystyle \sigma(\mathcal T)\neq\varnothing\).
+
+前面已经证明谱闭且有界. 由 \(\displaystyle \mathbb C\) 中的Heine--Borel定理，谱为紧集；圆盘包含关系已由\autoref{i12:large-lambda-resolvent}得到.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[零空间边界]
+若 \(\displaystyle X=\{0\}\)，则唯一线性算子同时也是唯一恒等算子，并且对每个 \(\displaystyle \lambda\in\mathbb C\)，\(\displaystyle \lambda\mathcal I-\mathcal T\) 都是零空间到自身的双射，其逆仍是唯一算子. 因而预解集为 \(\displaystyle \mathbb C\)，谱为空. 这解释了本章主定理中 \(\displaystyle X\neq\{0\}\) 的必要性.
+\end{FARemark}
+
+\section{谱半径}\label{sec:i12-spectral-radius}
+\index{spectral radius@谱半径}\index{spectral radius formula@谱半径公式}\index{complexification@复化}
+
+由\autoref{i12:spectrum-nonempty-compact}，连续函数 \(\displaystyle \lambda\mapsto|\lambda|\) 在非空紧集 \(\displaystyle \sigma(\mathcal T)\) 上取得最大值. 定义谱半径
+\(\displaystyle r(\mathcal T) := \max_{\lambda\in\sigma(\mathcal T)}|\lambda|\).
+圆盘估计立即给出
+\(\displaystyle 0 \leqslant r(\mathcal T) \leqslant \|\mathcal T\|\).
+
+\begin{FALemma}[B][次乘序列的根极限]{i12:submultiplicative-root}
+令 \(\displaystyle a_n=\|\mathcal T^n\|\) 对 \(\displaystyle n\geqslant1\). 则
+\(\displaystyle a_{m+n} \leqslant a_ma_n\)
+对所有 \(\displaystyle m,n\geqslant1\) 成立，并且极限
+\[
+\lim_{n\to\infty}a_n^{\frac{1}{n}}
+\]
+存在，且
+\[
+\lim_{n\to\infty}a_n^{\frac{1}{n}}
+=
+\inf_{n\geqslant1}a_n^{\frac{1}{n}}.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+由I-05的复合估计，
+\[
+a_{m+n}
+=
+\|\mathcal T^{m+n}\|
+=
+\|\mathcal T^m\mathcal T^n\|
+\leqslant
+\|\mathcal T^m\|\|\mathcal T^n\|
+=
+a_ma_n.
+\]
+若存在 \(\displaystyle m\geqslant1\) 使 \(\displaystyle \mathcal T^m=0\)，则对所有 \(\displaystyle n\geqslant m\) 有 \(\displaystyle \mathcal T^n=0\)，于是 \(\displaystyle a_n^{\frac{1}{n}}=0\) 最终恒为零，极限与下确界都为零.
+
+以下假设 \(\displaystyle a_m>0\) 对每个 \(\displaystyle m\geqslant1\) 成立. 固定 \(\displaystyle m\geqslant1\). 对任意 \(\displaystyle n\geqslant1\)，写
+\(\displaystyle n=qm+r, \; 0\leqslant r<m\).
+令 \(\displaystyle a_0:=\|\mathcal I\|=1\)，并记 \(\displaystyle C_m=\max_{0\leqslant r<m}a_r\). 反复使用次乘性得到
+\(\displaystyle a_n =a_{qm+r} \leqslant a_m^q a_r \leqslant a_m^q C_m\).
+因此
+\[
+a_n^{\frac{1}{n}}
+\leqslant
+a_m^{\frac{q}{n}}C_m^{\frac{1}{n}}.
+\]
+当 \(\displaystyle n\to\infty\) 时，\(\displaystyle \frac{q}{n}\to\frac{1}{m}\) 且 \(\displaystyle C_m^{\frac{1}{n}}\to1\)，故
+\[
+\limsup_{n\to\infty}a_n^{\frac{1}{n}}
+\leqslant
+a_m^{\frac{1}{m}}.
+\]
+因为 \(\displaystyle m\) 任意，
+\[
+\limsup_{n\to\infty}a_n^{\frac{1}{n}}
+\leqslant
+\inf_{m\geqslant1}a_m^{\frac{1}{m}}.
+\]
+另一方面，下确界不超过每一项，因此
+\[
+\inf_{m\geqslant1}a_m^{\frac{1}{m}}
+\leqslant
+\liminf_{n\to\infty}a_n^{\frac{1}{n}}.
+\]
+结合 \(\displaystyle \liminf\leqslant\limsup\)，三者相等，故极限存在并等于所述下确界.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][复Banach算子谱非空紧与谱半径公式]{fa:SPEC-A03}
+设 \(\displaystyle X\neq\{0\}\) 为复Banach空间，\(\displaystyle \mathcal T\in\mathcal B(X)\). 则
+\[
+\varnothing
+\neq
+\sigma(\mathcal T)
+\subseteq
+\{\lambda\in\mathbb C:|\lambda|\leqslant\|\mathcal T\|\},
+\]
+且 \(\displaystyle \sigma(\mathcal T)\) 为紧集. 并且
+\[
+r(\mathcal T)
+=
+\lim_{n\to\infty}\|\mathcal T^n\|^{\frac{1}{n}}
+=
+\inf_{n\geqslant1}\|\mathcal T^n\|^{\frac{1}{n}}.
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+谱非空、紧性与范数圆盘包含已经在\autoref{i12:spectrum-nonempty-compact}中完整证明. 由\autoref{i12:submultiplicative-root}，令
+\[
+\alpha
+:=
+\lim_{n\to\infty}\|\mathcal T^n\|^{\frac{1}{n}}
+=
+\inf_{n\geqslant1}\|\mathcal T^n\|^{\frac{1}{n}}.
+\]
+先证 \(\displaystyle r(\mathcal T)\leqslant\alpha\). 若 \(\displaystyle |\lambda|>\alpha\)，则
+\[
+\lim_{n\to\infty}
+\left(
+\frac{\|\mathcal T^n\|}{|\lambda|^{n+1}}
+\right)^{\frac{1}{n}}
+=
+\frac{\alpha}{|\lambda|}
+<1.
+\]
+由标量根值判别法，
+\[
+\sum_{n=0}^{\infty}
+\frac{\|\mathcal T^n\|}{|\lambda|^{n+1}}
+<\infty.
+\]
+对 \(\displaystyle x\in X\) 定义
+\[
+\mathcal Sx
+:=
+\sum_{n=0}^{\infty}
+\frac{\mathcal T^n x}{\lambda^{n+1}}.
+\]
+由上面的标量级数与 \(\displaystyle X\) 完备，此级数收敛；并且
+\[
+\|\mathcal Sx\|
+\leqslant
+\left(
+\sum_{n=0}^{\infty}
+\frac{\|\mathcal T^n\|}{|\lambda|^{n+1}}
+\right)
+\|x\|,
+\]
+所以 \(\displaystyle \mathcal S\in\mathcal B(X)\). 令
+\[
+\mathcal P_N
+:=
+\sum_{n=0}^{N}
+\frac{\mathcal T^n}{\lambda^{n+1}}.
+\]
+有限和直接给出
+\[
+(\lambda\mathcal I-\mathcal T)\mathcal P_N
+=
+\mathcal I-\frac{\mathcal T^{N+1}}{\lambda^{N+1}},
+\]
+以及
+\[
+\mathcal P_N(\lambda\mathcal I-\mathcal T)
+=
+\mathcal I-\frac{\mathcal T^{N+1}}{\lambda^{N+1}}.
+\]
+又因 \(\displaystyle \frac{\|\mathcal T^{N+1}\|}{|\lambda|^{N+1}}\to0\)，逐向量取极限得到
+\(\displaystyle (\lambda\mathcal I-\mathcal T)\mathcal S = \mathcal I = \mathcal S(\lambda\mathcal I-\mathcal T)\).
+故 \(\displaystyle \lambda\in\rho(\mathcal T)\). 因此 \(\displaystyle \sigma(\mathcal T)\subseteq\{\lambda:|\lambda|\leqslant\alpha\}\)，从而 \(\displaystyle r(\mathcal T)\leqslant\alpha\).
+
+现证反向不等式 \(\displaystyle \alpha\leqslant r(\mathcal T)\). 若 \(\displaystyle \mathcal T=0\)，则 \(\displaystyle \sigma(\mathcal T)=\{0\}\) 且 \(\displaystyle \alpha=0\)，两边均为零，反向不等式成立. 以下设 \(\displaystyle \mathcal T\neq0\). 对所有使 \(\displaystyle \mathcal I-z\mathcal T\) 可逆的 \(\displaystyle z\in\mathbb C\)，记
+\(\displaystyle \mathcal F(z) := (\mathcal I-z\mathcal T)^{-1}\).
+若 \(\displaystyle z\neq0\)，则
+\(\displaystyle \mathcal I-z\mathcal T = z(z^{-1}\mathcal I-\mathcal T)\)，
+故 \(\displaystyle \mathcal F(z)\) 存在当且仅当 \(\displaystyle z^{-1}\in\rho(\mathcal T)\). 因此当 \(\displaystyle r(\mathcal T)>0\) 时，\(\displaystyle \mathcal F(z)\) 在 \(\displaystyle |z|<\frac{1}{r(\mathcal T)}\) 上存在；当 \(\displaystyle r(\mathcal T)=0\) 时，它在整个 \(\displaystyle \mathbb C\) 上存在.
+
+固定一个这样的 \(\displaystyle z_0\). 分解
+\[
+\mathcal I-z\mathcal T
+=
+(\mathcal I-z_0\mathcal T)
+\left[
+\mathcal I-(z-z_0)\mathcal F(z_0)\mathcal T
+\right].
+\]
+当 \(\displaystyle |z-z_0|\|\mathcal F(z_0)\mathcal T\|<1\) 时，\autoref{i12:neumann-series}给出 \(\displaystyle \mathcal F(z)\) 的局部算子范数幂级数. 因此 \(\displaystyle z\mapsto\mathcal F(z)\) 在其定义域中算子范数连续，并且对每个 \(\displaystyle x\in X\)、\(\displaystyle x^*\in X^*\)，标量函数
+\(\displaystyle g_{x,x^*}(z) := x^*(\mathcal F(z)x)\)
+在该定义域上全纯.
+
+由于 \(\displaystyle \mathcal T\neq0\)，有 \(\displaystyle \|\mathcal T\|>0\). 当 \(\displaystyle |z|<\frac{1}{\|\mathcal T\|}\) 时，Neumann级数给出
+\[
+\mathcal F(z)
+=
+\sum_{n=0}^{\infty}z^n\mathcal T^n,
+\]
+故
+\[
+g_{x,x^*}(z)
+=
+\sum_{n=0}^{\infty}x^*(\mathcal T^n x)z^n.
+\]
+因此 \(\displaystyle g_{x,x^*}\) 在零点的第 \(\displaystyle n\) 个Taylor系数就是 \(\displaystyle x^*(\mathcal T^n x)\).
+
+固定 \(\displaystyle s>0\)，并要求当 \(\displaystyle r(\mathcal T)>0\) 时还满足 \(\displaystyle s<\frac{1}{r(\mathcal T)}\). 圆周 \(\displaystyle |z|=s\) 紧，\(\displaystyle \mathcal F\) 在该圆周上算子范数连续，因此
+\[
+M_s
+:=
+\max_{|z|=s}\|\mathcal F(z)\|
+<\infty.
+\]
+对标量全纯函数 \(\displaystyle g_{x,x^*}\) 使用上述标量复分析接口中的Cauchy系数估计，得到
+\[
+|x^*(\mathcal T^n x)| \leqslant M_s s^{-n}\|x^*\|\|x\|.
+\]
+对满足 \(\displaystyle \|x^*\|\leqslant1\) 的全部 \(\displaystyle x^*\) 取上确界，再用I-06的对偶范数表示，得到
+\(\displaystyle \|\mathcal T^n x\| \leqslant M_s s^{-n}\|x\|\).
+于是
+\(\displaystyle \|\mathcal T^n\| \leqslant M_s s^{-n}\).
+取 \(\displaystyle n\) 次根并令 \(\displaystyle n\to\infty\)，得到
+\[
+\alpha
+\leqslant
+\frac{1}{s}.
+\]
+若 \(\displaystyle r(\mathcal T)>0\)，令 \(\displaystyle s\uparrow\frac{1}{r(\mathcal T)}\)，得到 \(\displaystyle \alpha\leqslant r(\mathcal T)\). 若 \(\displaystyle r(\mathcal T)=0\)，上述估计对任意 \(\displaystyle s>0\) 成立，故 \(\displaystyle \alpha\leqslant\frac{1}{s}\) 对任意 \(\displaystyle s>0\) 成立，只能有 \(\displaystyle \alpha=0=r(\mathcal T)\).
+
+两方向合并得到 \(\displaystyle r(\mathcal T)=\alpha\)，再与\autoref{i12:submultiplicative-root}给出的下确界表达结合，即得全部谱半径公式. 整个反向不等式只使用标量Cauchy系数估计，没有使用Banach值Cauchy积分.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{实空间的复化}\label{subsec:i12-complexification}
+
+\begin{FAProposition}[B][实Banach空间的标准复化接口]{i12:real-complexification}
+设 \(\displaystyle X_{\mathbb R}\) 为实Banach空间. 在实向量空间直和 \(\displaystyle X_{\mathbb R}\oplus X_{\mathbb R}\) 上写 \(\displaystyle x+\mathrm{i}y\)，并按通常规则定义复数乘法. 定义
+\(\displaystyle X_{\mathbb C} := X_{\mathbb R}\oplus\mathrm{i}X_{\mathbb R}\)
+及
+\[
+\|x+\mathrm{i}y\|_{\mathbb C}
+:=
+\sup_{\theta\in[0,2\pi]}
+\|x\cos\theta-y\sin\theta\|.
+\]
+则 \(\displaystyle X_{\mathbb C}\) 是复Banach空间，并且实嵌入 \(\displaystyle x\mapsto x+\mathrm{i}0\) 等距. 若 \(\displaystyle \mathcal T\in\mathcal B(X_{\mathbb R})\)，定义
+\(\displaystyle \mathcal T_{\mathbb C}(x+\mathrm{i}y) := \mathcal T x+ \mathrm{i}\mathcal T y\).
+则 \(\displaystyle \mathcal T_{\mathbb C}\in\mathcal B(X_{\mathbb C})\)，且
+\(\displaystyle \|\mathcal T_{\mathbb C}\| = \|\mathcal T\|\)，
+并且对每个 \(\displaystyle n\geqslant1\)，
+\(\displaystyle (\mathcal T_{\mathbb C})^n = (\mathcal T^n)_{\mathbb C}\).
+本书对实算子的复谱定义为
+\(\displaystyle \sigma_{\mathbb C}(\mathcal T) := \sigma(\mathcal T_{\mathbb C})\).
+\end{FAProposition}
+
+\begin{FAProof}
+先验证范数. 正定性方面，若 \(\displaystyle \|x+\mathrm{i}y\|_{\mathbb C}=0\)，取 \(\displaystyle \theta=0\) 得 \(\displaystyle \|x\|=0\)，取 \(\displaystyle \theta=\frac{\pi}{2}\) 得 \(\displaystyle \|y\|=0\)，故 \(\displaystyle x=y=0\). 三角不等式由对每个 \(\displaystyle \theta\) 使用 \(\displaystyle X_{\mathbb R}\) 中的三角不等式后取上确界得到.
+
+设 \(\displaystyle \alpha=a+\mathrm{i}b\in\mathbb C\). 若 \(\displaystyle \alpha=0\)，等式两边均为零，齐次性成立. 若 \(\displaystyle \alpha\neq0\)，写 \(\displaystyle \alpha=r(\cos\varphi+\mathrm{i}\sin\varphi)\)，其中 \(\displaystyle r=|\alpha|\). 则
+\(\displaystyle \alpha(x+\mathrm{i}y) = r(x\cos\varphi-y\sin\varphi) + \mathrm{i}r(x\sin\varphi+y\cos\varphi)\).
+代入范数定义后，角参数只发生平移 \(\displaystyle \theta\mapsto\theta+\varphi\)，故
+\(\displaystyle \|\alpha(x+\mathrm{i}y)\|_{\mathbb C} = |\alpha|\|x+\mathrm{i}y\|_{\mathbb C}\).
+因此这是复范数. 对 \(\displaystyle y=0\)，
+\[
+\|x+\mathrm{i}0\|_{\mathbb C}
+=
+\sup_{\theta}|\cos\theta|\|x\|
+=
+\|x\|,
+\]
+故实嵌入等距.
+
+现证完备性. 若 \(\displaystyle z_n=x_n+\mathrm{i}y_n\) 在 \(\displaystyle X_{\mathbb C}\) 中为Cauchy列，则取 \(\displaystyle \theta=0\) 与 \(\displaystyle \theta=\frac{\pi}{2}\) 得
+\(\displaystyle \|x_n-x_m\| \leqslant \|z_n-z_m\|_{\mathbb C}\)，
+\(\displaystyle \|y_n-y_m\| \leqslant \|z_n-z_m\|_{\mathbb C}\).
+因此 \(\displaystyle (x_n)\)、\(\displaystyle (y_n)\) 都在实Banach空间 \(\displaystyle X_{\mathbb R}\) 中为Cauchy列，分别收敛到 \(\displaystyle x,y\). 对任意 \(\displaystyle \theta\)，
+\(\displaystyle \|(x_n-x)\cos\theta-(y_n-y)\sin\theta\| \leqslant \|x_n-x\|+\|y_n-y\|\).
+取上确界得到 \(\displaystyle \|z_n-(x+\mathrm{i}y)\|_{\mathbb C}\to0\)，故 \(\displaystyle X_{\mathbb C}\) 完备.
+
+复线性性由定义直接验证. 对任意 \(\displaystyle x,y\in X_{\mathbb R}\)，
+\[
+\begin{aligned}
+\displaystyle \|\mathcal T_{\mathbb C}(x+\mathrm{i}y)\|_{\mathbb C}
+&\displaystyle =
+\sup_{\theta}
+\|\mathcal T(x\cos\theta-y\sin\theta)\|\\
+&\displaystyle \leqslant
+\|\mathcal T\|
+\|x+\mathrm{i}y\|_{\mathbb C}.
+\end{aligned}
+\]
+所以 \(\displaystyle \|\mathcal T_{\mathbb C}\|\leqslant\|\mathcal T\|\). 反过来，对实向量 \(\displaystyle x\) 有 \(\displaystyle \|x+\mathrm{i}0\|_{\mathbb C}=\|x\|\) 与 \(\displaystyle \|\mathcal T_{\mathbb C}(x+\mathrm{i}0)\|_{\mathbb C}=\|\mathcal T x\|\)，故取上确界得到 \(\displaystyle \|\mathcal T_{\mathbb C}\|\geqslant\|\mathcal T\|\). 因而范数相等.
+
+最后，对 \(\displaystyle n=1\) 公式由定义成立. 若 \(\displaystyle (\mathcal T_{\mathbb C})^n(x+\mathrm{i}y)=\mathcal T^n x+\mathrm{i}\mathcal T^n y\)，则 \(\displaystyle (\mathcal T_{\mathbb C})^{n+1}(x+\mathrm{i}y)=\mathcal T_{\mathbb C}(\mathcal T^n x+\mathrm{i}\mathcal T^n y)=\mathcal T^{n+1}x+\mathrm{i}\mathcal T^{n+1}y\). 归纳得到 \(\displaystyle (\mathcal T_{\mathbb C})^n=(\mathcal T^n)_{\mathbb C}\) 对全部 \(\displaystyle n\geqslant1\) 成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[实算子的谱语言]
+对实Banach空间，本书只把 \(\displaystyle \sigma_{\mathbb C}(\mathcal T)=\sigma(\mathcal T_{\mathbb C})\) 称为本书所用的谱. 不断言实标量预解集的补集 \(\displaystyle \mathbb R\setminus\rho_{\mathbb R}(\mathcal T)\) 具有与复谱相同的非空性结论.
+\end{FARemark}
+
+\subsection{多项式谱映射}\label{subsec:i12-polynomial-mapping}
+
+\begin{FALemma}[B][交换因子乘积的可逆性]{i12:commuting-product-invertible}
+设 \(\displaystyle \mathcal A_1,\dots,\mathcal A_m\in\mathcal B(X)\) 两两交换. 则有限乘积 \(\displaystyle \mathcal A_1\cdots\mathcal A_m\) 有界可逆，当且仅当每个 \(\displaystyle \mathcal A_j\) 都有界可逆.
+\end{FALemma}
+
+\begin{FAProof}
+若每个因子都可逆，则乘积的逆为 \(\displaystyle \mathcal A_m^{-1}\cdots\mathcal A_1^{-1}\)，这是一般可逆算子的基本复合计算.
+
+反之，设 \(\displaystyle \mathcal P=\mathcal A_1\cdots\mathcal A_m\) 可逆. 固定 \(\displaystyle j\)，令 \(\displaystyle \mathcal B_j\) 为其余因子的乘积，于是 \(\displaystyle \mathcal P=\mathcal A_j\mathcal B_j=\mathcal B_j\mathcal A_j\). 因 \(\displaystyle \mathcal A_j\) 与 \(\displaystyle \mathcal P\) 交换，它也与 \(\displaystyle \mathcal P^{-1}\) 交换：从 \(\displaystyle \mathcal A_j\mathcal P=\mathcal P\mathcal A_j\) 左右乘 \(\displaystyle \mathcal P^{-1}\) 即得. 由同一个交换关系 \(\displaystyle \mathcal B_j\mathcal P=\mathcal P\mathcal B_j\) 左右乘 \(\displaystyle \mathcal P^{-1}\)，得到 \(\displaystyle \mathcal B_j\mathcal P^{-1}=\mathcal P^{-1}\mathcal B_j\). 于是
+\(\displaystyle \mathcal A_j(\mathcal B_j\mathcal P^{-1}) = \mathcal P\mathcal P^{-1} = \mathcal I\)，
+且
+\[
+(\mathcal B_j\mathcal P^{-1})\mathcal A_j
+=
+\mathcal B_j\mathcal A_j\mathcal P^{-1}
+=
+\mathcal P\mathcal P^{-1}
+=
+\mathcal I.
+\]
+故 \(\displaystyle \mathcal A_j\) 可逆. 因 \(\displaystyle j\) 任意，每个因子都可逆.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][多项式谱映射]{fa:SPEC-B02}
+设 \(\displaystyle p\in\mathbb C[z]\). 则
+\(\displaystyle \sigma(p(\mathcal T)) = p(\sigma(\mathcal T))\).
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle p\) 非恒定. 这里先在书内推出本证明所需的复多项式完全线性分解，而不调用未命名的代数基本定理. 对任意首一多项式
+\(\displaystyle q(z)=z^m+a_{m-1}z^{m-1}+\cdots+a_1z+a_0, \; m\geqslant1\)，
+若 \(\displaystyle m=1\)，则 \(\displaystyle q(z)=z+a_0\)，其根为 \(\displaystyle -a_0\). 以下设 \(\displaystyle m\geqslant2\). 取其标准友矩阵算子 \(\displaystyle C_q\in\mathcal B(\mathbb C^m)\)，其矩阵为
+\[
+C_q=
+\begin{pmatrix}
+0&0&\cdots&0&-a_0\\
+1&0&\cdots&0&-a_1\\
+0&1&\ddots&0&-a_2\\
+\vdots&\ddots&\ddots&\vdots&\vdots\\
+0&\cdots&0&1&-a_{m-1}
+\end{pmatrix}.
+\]
+由已经建立的\autoref{fa:SPEC-A03}，\(\displaystyle \sigma(C_q)\neq\varnothing\)；取 \(\displaystyle \lambda\in\sigma(C_q)\). 有限维线性代数给出非零向量 \(\displaystyle v=(v_1,\dots,v_m)\) 使 \(\displaystyle C_qv=\lambda v\). 若 \(\displaystyle v_m=0\)，则由最后一行开始逐行向上递推可得 \(\displaystyle v_{m-1}=\cdots=v_1=0\)，与 \(\displaystyle v\neq0\) 矛盾，故 \(\displaystyle v_m\neq0\). 对 \(\displaystyle r=1,\dots,m-1\)，由第 \(\displaystyle m-r+1\) 行的关系
+\(\displaystyle v_{m-r}=\lambda v_{m-r+1}+a_{m-r}v_m\) 对 \(\displaystyle r\) 归纳，得到
+\(\displaystyle v_{m-r} = \bigl(\lambda^r+a_{m-1}\lambda^{r-1}+\cdots+a_{m-r}\bigr)v_m\).
+取 \(\displaystyle r=m-1\) 并代入第一行 \(\displaystyle -a_0v_m=\lambda v_1\)，得到 \(\displaystyle q(\lambda)v_m=0\). 由于 \(\displaystyle v_m\neq0\)，故 \(\displaystyle q(\lambda)=0\). 因而每个非常数复多项式都有复根. 对任意非恒定 \(\displaystyle r\in\mathbb C[z]\)，先除以首项系数化为首一多项式取得一个复根，再用因式定理写成 \(\displaystyle r(z)=(z-\lambda)r_1(z)\)，对次数归纳即可得到完全线性分解.
+
+现在固定 \(\displaystyle \mu\in\mathbb C\). 把上述书内线性分解应用于 \(\displaystyle p(z)-\mu\)，存在 \(\displaystyle c\neq0\) 与复数 \(\displaystyle \lambda_1,\dots,\lambda_m\) 使
+\[
+p(z)-\mu
+=
+c\prod_{j=1}^{m}(z-\lambda_j).
+\]
+代入 \(\displaystyle \mathcal T\) 得
+\[
+p(\mathcal T)-\mu\mathcal I
+=
+c\prod_{j=1}^{m}
+(\mathcal T-\lambda_j\mathcal I).
+\]
+这些因子都是 \(\displaystyle \mathcal T\) 的一次多项式，故两两交换. 非零标量因子 \(\displaystyle c\mathcal I\) 可逆，由\autoref{i12:commuting-product-invertible}，\(\displaystyle p(\mathcal T)-\mu\mathcal I\) 可逆，当且仅当每个 \(\displaystyle \mathcal T-\lambda_j\mathcal I\) 可逆. 又 \(\displaystyle \mu\mathcal I-p(\mathcal T)=-(p(\mathcal T)-\mu\mathcal I)\)，故这两个算子的可逆性等价. 因而，
+\(\displaystyle \mu\in\sigma(p(\mathcal T)) \iff \text{至少一个 }\lambda_j\in\sigma(\mathcal T)\).
+而 \(\displaystyle \lambda_j\) 正是方程 \(\displaystyle p(\lambda)=\mu\) 的根，因此右侧等价于 \(\displaystyle \mu\in p(\sigma(\mathcal T))\). 非恒定情形得证.
+
+若 \(\displaystyle p\equiv c\) 为常数，则 \(\displaystyle p(\mathcal T)=c\mathcal I\). 当 \(\displaystyle \mu\neq c\) 时，\(\displaystyle \mu\mathcal I-c\mathcal I=(\mu-c)\mathcal I\) 可逆；当 \(\displaystyle \mu=c\) 时得到零算子，而 \(\displaystyle X\neq\{0\}\)，故零算子不单射，不可逆. 因此
+\(\displaystyle \sigma(p(\mathcal T)) = \{c\} = p(\sigma(\mathcal T))\).
+两种情形合并得到结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{典型谱计算与反例}\label{subsec:i12-examples}
+
+\begin{FAExample}[右移的完整谱]\label{i12:shift-spectrum}
+在复Hilbert空间 \(\displaystyle \ell^2(\mathbb N;\mathbb C)\) 上沿用I-05的右移
+\(\displaystyle \mathcal S(x_1,x_2,\dots) = (0,x_1,x_2,\dots)\).
+I-05已知 \(\displaystyle \|\mathcal S\|=1\)，因此\autoref{i12:large-lambda-resolvent}给出 \(\displaystyle |\lambda|>1\Rightarrow\lambda\in\rho(\mathcal S)\).
+
+现设 \(\displaystyle |\lambda|<1\)，定义
+\(\displaystyle y_\lambda := (1,\overline\lambda,\overline\lambda^2,\dots)\).
+几何级数说明 \(\displaystyle y_\lambda\in\ell^2\) 且 \(\displaystyle y_\lambda\neq0\). I-11已证明 \(\displaystyle \mathcal S^*=\mathcal L\)，故
+\(\displaystyle \mathcal S^*y_\lambda = \overline\lambda y_\lambda\).
+若 \(\displaystyle \lambda\mathcal I-\mathcal S\) 有界可逆，则I-11的伴随代数给出
+\(\displaystyle (\lambda\mathcal I-\mathcal S)^* = \overline\lambda\mathcal I-\mathcal S^*\).
+而可逆算子的伴随仍可逆，其逆为原逆的伴随：这是由 \(\displaystyle \mathcal A^{-1}\mathcal A=\mathcal I=\mathcal A\mathcal A^{-1}\) 取伴随后直接得到. 但 \(\displaystyle (\overline\lambda\mathcal I-\mathcal S^*)y_\lambda=0\) 且 \(\displaystyle y_\lambda\neq0\)，所以该伴随不单射，矛盾. 因此 \(\displaystyle |\lambda|<1\Rightarrow\lambda\in\sigma(\mathcal S)\).
+
+谱由\autoref{fa:SPEC-A02}为闭集，因此开单位圆盘的闭包也包含于谱. 结合 \(\displaystyle \sigma(\mathcal S)\subseteq\{|\lambda|\leqslant1\}\)，得到
+\(\displaystyle \sigma(\mathcal S) = \{\lambda\in\mathbb C:|\lambda|\leqslant1\}\).
+\end{FAExample}
+
+\begin{FACounterexample}[谱不等于特征值集合]\label{i12:ce-spectrum-noeig}
+上面的右移 \(\displaystyle \mathcal S\) 没有任何特征值. 事实上，若 \(\displaystyle \mathcal Sx=\lambda x\)，写 \(\displaystyle x=(x_1,x_2,\dots)\). 坐标方程为
+\(\displaystyle 0=\lambda x_1, \; x_1=\lambda x_2, \; x_2=\lambda x_3, \; \cdots.\)
+若 \(\displaystyle \lambda=0\)，第二个及后续等式依次给出 \(\displaystyle x_1=x_2=\cdots=0\). 若 \(\displaystyle \lambda\neq0\)，第一个等式先给出 \(\displaystyle x_1=0\)，再逐项得到 \(\displaystyle x_2=x_3=\cdots=0\). 因而只有零向量满足特征方程，故
+\(\displaystyle \sigma_{\mathrm p}(\mathcal S) = \varnothing\).
+但上面的移位算子模型计算已经证明
+\(\displaystyle \sigma(\mathcal S) = \{\lambda:|\lambda|\leqslant1\}\).
+特别地，
+\(\displaystyle 0 \in \sigma(\mathcal S) \setminus \sigma_{\mathrm p}(\mathcal S)\).
+这正式给出“谱不等于特征值集合”的无限维反例.
+\end{FACounterexample}
+
+\begin{FAExample}[连续函数乘法算子的谱]\label{i12:mult-spectrum}
+设 \(\displaystyle K\) 为非空紧Hausdorff空间，\(\displaystyle h\in C(K;\mathbb C)\)，并在 \(\displaystyle C(K;\mathbb C)\) 上定义 \(\displaystyle (\mathcal M_hf)(t)=h(t)f(t)\). I-05已证明 \(\displaystyle \|\mathcal M_h\|=\|h\|_\infty\).
+
+若 \(\displaystyle \lambda\notin h(K)\)，则连续函数 \(\displaystyle \lambda-h\) 在紧集 \(\displaystyle K\) 上处处非零，因此 \(\displaystyle \frac{1}{\lambda-h}\in C(K;\mathbb C)\)，并且
+\[
+(\lambda\mathcal I-\mathcal M_h)^{-1}
+=
+\mathcal M_{\frac{1}{\lambda-h}}.
+\]
+故 \(\displaystyle \lambda\in\rho(\mathcal M_h)\).
+
+若 \(\displaystyle \lambda=h(t_0)\) 对某个 \(\displaystyle t_0\in K\) 成立，则对任意 \(\displaystyle f\in C(K;\mathbb C)\)，
+\(\displaystyle ((\lambda\mathcal I-\mathcal M_h)f)(t_0) = (\lambda-h(t_0))f(t_0) = 0\).
+因此常函数 \(\displaystyle1\) 不属于 \(\displaystyle \operatorname{Ran}(\lambda\mathcal I-\mathcal M_h)\)，该算子不满射，所以 \(\displaystyle \lambda\in\sigma(\mathcal M_h)\). 故
+\(\displaystyle \sigma(\mathcal M_h) = h(K)\).
+于是
+\[
+r(\mathcal M_h)
+=
+\max_{t\in K}|h(t)|
+=
+\|h\|_\infty
+=
+\|\mathcal M_h\|.
+\]
+\end{FAExample}
+
+\begin{FAExample}[谱为零点单集]\label{i12:volterra-spectrum}
+在 \(\displaystyle C([0,1];\mathbb C)\) 上沿用I-05的Volterra算子
+\[
+(\mathcal V f)(x)
+=
+\int_0^x f(t)\,\mathrm{d}t.
+\]
+对 \(\displaystyle n\geqslant1\) 直接归纳证明
+\[
+|(\mathcal V^n f)(x)|
+\leqslant
+\frac{x^n}{n!}\|f\|_\infty.
+\]
+当 \(\displaystyle n=1\) 时，这正是
+\(\displaystyle |(\mathcal V f)(x)| \leqslant x\|f\|_\infty\).
+若对某个 \(\displaystyle n\) 成立，则
+\[
+\begin{aligned}
+\displaystyle |(\mathcal V^{n+1}f)(x)|
+&\displaystyle \leqslant
+\int_0^x
+|(\mathcal V^nf)(t)|\,\mathrm{d}t\\[6pt]
+&\displaystyle \leqslant
+\int_0^x
+\frac{t^n}{n!}\|f\|_\infty\,\mathrm{d}t\\[12pt]
+&\displaystyle =
+\frac{x^{n+1}}{(n+1)!}\|f\|_\infty.
+\end{aligned}
+\]
+故归纳完成，并得到
+\[
+\|\mathcal V^n\|
+\leqslant
+\frac{1}{n!}.
+\]
+由谱半径公式，
+\[
+r(\mathcal V)
+\leqslant
+\lim_{n\to\infty}(\frac{1}{n!})^{\frac{1}{n}}
+=0,
+\]
+其中最后一个极限可由 \(\displaystyle n!\geqslant(\frac{n}{2})^{\frac{n}{2}}\) 对充分大的 \(\displaystyle n\) 直接得到. 因而 \(\displaystyle r(\mathcal V)=0\)，所以 \(\displaystyle \sigma(\mathcal V)\subseteq\{0\}\). I-05已证明 \(\displaystyle \mathcal V\) 不满射，因此 \(\displaystyle 0\in\sigma(\mathcal V)\). 最终
+\(\displaystyle \sigma(\mathcal V) = \{0\}\).
+整个计算只使用一重积分与归纳，没有使用Fubini定理.
+\end{FAExample}
+
+\begin{FARemark}[后续理论边界]
+本章到此只建立一般有界算子的初等谱论. 抽象含幺Banach代数、一般代数元素的谱、角色、极大理想与Gelfand变换留到II-02；紧算子、Riesz--Schauder理论与Fredholm择一原理留到I-13；紧自伴谱定理留到I-14；一般有界正规算子的\(\displaystyle C^*\)谱定理留到II-03. 本章不使用这些后续结果.
+\end{FARemark}
+
+\subsection{习题}\label{subsec:i12-exercises}
+
+\begin{FAExercise}[逐向量Neumann收敛]{ex:i12-01}
+设 \(\displaystyle \mathcal A\in\mathcal B(X)\) 且 \(\displaystyle \|\mathcal A\|<1\). 不引用 \(\displaystyle \mathcal B(X)\) 的完备性，直接证明对每个 \(\displaystyle x\in X\)，级数 \(\displaystyle \sum_{n=0}^{\infty}\mathcal A^n x\) 在 \(\displaystyle X\) 中收敛，并给出其和对 \(\displaystyle x\) 的统一范数估计.
+\end{FAExercise}
+
+\begin{FAExercise}[Neumann左右逆]{ex:i12-02}
+在\autoref{i12:neumann-series}的条件下，从有限几何和恒等式出发，分别证明所得算子既是 \(\displaystyle \mathcal I-\mathcal A\) 的左逆又是右逆. 指出若只证明一侧为何不足以直接称其为逆算子.
+\end{FAExercise}
+
+\begin{FAExercise}[逆算子范数估计]{ex:i12-03}
+证明 \(\displaystyle \|(\mathcal I-\mathcal A)^{-1}\|\leqslant(1-\|\mathcal A\|)^{-1}\). 构造一个一维例子说明这个上界可以取到.
+\end{FAExercise}
+
+\begin{FAExercise}[预解定义与有界逆定理的等价]{ex:i12-04}
+设 \(\displaystyle X\) 为Banach空间. 证明 \(\displaystyle \lambda\in\rho(\mathcal T)\) 当且仅当 \(\displaystyle \lambda\mathcal I-\mathcal T\) 是双射. 明确指出“逆映射自动有界”在哪一步使用\autoref{fa:BIT-A01}.
+\end{FAExercise}
+
+\begin{FAExercise}[点谱是谱的子集]{ex:i12-05}
+从点谱定义重新证明 \(\displaystyle \sigma_{\mathrm p}(\mathcal T)\subseteq\sigma(\mathcal T)\). 再给出有限维情形中谱等于特征值集合的原因，并说明该论证在哪一步依赖有限维线性代数.
+\end{FAExercise}
+
+\begin{FAExercise}[大参数预解]{ex:i12-06}
+设 \(\displaystyle |\lambda|>\|\mathcal T\|\). 从 \(\displaystyle \lambda\mathcal I-\mathcal T=\lambda(\mathcal I-\lambda^{-1}\mathcal T)\) 出发重新推导预解级数与估计 \(\displaystyle \|\mathcal R(\lambda,\mathcal T)\|\leqslant(|\lambda|-\|\mathcal T\|)^{-1}\).
+\end{FAExercise}
+
+\begin{FAExercise}[扰动可逆性]{ex:i12-07}
+设 \(\displaystyle \lambda\in\rho(\mathcal T)\). 找出一个只依赖 \(\displaystyle \|\mathcal R(\lambda,\mathcal T)\|\) 的正数 \(\displaystyle \delta\)，使得 \(\displaystyle \|\mathcal E\|<\delta\Rightarrow\lambda\in\rho(\mathcal T+\mathcal E)\)，并写出相应Neumann级数形式的逆算子.
+\end{FAExercise}
+
+\begin{FAExercise}[预解恒等式的符号]{ex:i12-08}
+从 \(\displaystyle A^{-1}-B^{-1}=A^{-1}(B-A)B^{-1}\) 推导\autoref{fa:SPEC-B01}. 特别检查系数必须是 \(\displaystyle \mu-\lambda\) 而不是 \(\displaystyle \lambda-\mu\).
+\end{FAExercise}
+
+\begin{FAExercise}[预解算子交换]{ex:i12-09}
+不用“它们都是 \(\displaystyle \mathcal T\) 的函数”这样的非正式说法，严格证明任意两个预解算子 \(\displaystyle \mathcal R(\lambda,\mathcal T)\) 与 \(\displaystyle \mathcal R(\mu,\mathcal T)\) 交换.
+\end{FAExercise}
+
+\begin{FAExercise}[到谱距离与预解范数]{ex:i12-10}
+设 \(\displaystyle \lambda\in\rho(\mathcal T)\) 且 \(\displaystyle \sigma(\mathcal T)\neq\varnothing\). 从局部预解圆盘包含证明
+\[
+\operatorname{dist}(\lambda,\sigma(\mathcal T))
+\geqslant
+\frac{1}{\|\mathcal R(\lambda,\mathcal T)\|}.
+\]
+再说明为什么这等价于\autoref{fa:SPEC-C01}中的下界.
+\end{FAExercise}
+
+\begin{FAExercise}[标量化预解全纯性]{ex:i12-11}
+固定 \(\displaystyle x\in X\)、\(\displaystyle x^*\in X^*\). 从\autoref{fa:SPEC-A02}的局部算子范数级数出发，写出 \(\displaystyle x^*(\mathcal R(\lambda,\mathcal T)x)\) 在 \(\displaystyle \lambda_0\in\rho(\mathcal T)\) 附近的标量幂级数，并指出为何不需要Banach值复积分.
+\end{FAExercise}
+
+\begin{FAExercise}[Liouville谱非空路线]{ex:i12-12}
+假设 \(\displaystyle \sigma(\mathcal T)=\varnothing\). 对固定 \(\displaystyle x,x^*\) 重建\autoref{i12:spectrum-nonempty-compact}中的有界整函数论证，并明确说明无穷远估计、Liouville定理与对偶分离各自承担哪一步.
+\end{FAExercise}
+
+\begin{FAExercise}[零空间边界]{ex:i12-13}
+令 \(\displaystyle X=\{0\}\). 直接从定义计算唯一算子的预解集与谱，并说明为什么这不与\autoref{fa:SPEC-A03}矛盾.
+\end{FAExercise}
+
+\begin{FAExercise}[次乘根极限]{ex:i12-14}
+设 \(\displaystyle (a_n)_{n\geqslant1}\) 为非负次乘序列，即 \(\displaystyle a_{m+n}\leqslant a_ma_n\). 仿照\autoref{i12:submultiplicative-root}，完整证明 \(\displaystyle \lim a_n^{\frac{1}{n}}=\inf a_n^{\frac{1}{n}}\)，并单独处理某项为零的情形.
+\end{FAExercise}
+
+\begin{FAExercise}[谱半径第一方向]{ex:i12-15}
+设 \(\displaystyle \alpha=\lim\|\mathcal T^n\|^{\frac{1}{n}}\). 对 \(\displaystyle |\lambda|>\alpha\)，不调用一般Banach代数理论，逐向量构造 \(\displaystyle (\lambda\mathcal I-\mathcal T)^{-1}\)，并推出 \(\displaystyle r(\mathcal T)\leqslant\alpha\).
+\end{FAExercise}
+
+\begin{FAExercise}[谱半径反向不等式]{ex:i12-16}
+沿 \(\displaystyle \mathcal F(z)=(\mathcal I-z\mathcal T)^{-1}\) 的路线证明 \(\displaystyle \alpha\leqslant r(\mathcal T)\). 必须分别处理 \(\displaystyle r(\mathcal T)>0\) 与 \(\displaystyle r(\mathcal T)=0\)，并只使用标量Cauchy系数估计.
+\end{FAExercise}
+
+\begin{FAExercise}[实空间复化]{ex:i12-17}
+对 \(\displaystyle X_{\mathbb R}\) 的标准复化范数，验证复齐次性与完备性. 再证明 \(\displaystyle \|\mathcal T_{\mathbb C}\|=\|\mathcal T\|\) 以及 \(\displaystyle (\mathcal T_{\mathbb C})^n=(\mathcal T^n)_{\mathbb C}\).
+\end{FAExercise}
+
+\begin{FAExercise}[多项式谱映射]{ex:i12-18}
+对非恒定多项式 \(\displaystyle p\) 重建\autoref{fa:SPEC-B02}的证明，并完整证明“有限个两两交换因子的乘积可逆当且仅当每个因子可逆”. 最后单独验证常数多项式情形.
+\end{FAExercise}
+
+\begin{FAExercise}[右移的谱]{ex:i12-19}
+在 \(\displaystyle \ell^2(\mathbb N;\mathbb C)\) 上重新证明 \(\displaystyle \sigma(\mathcal S)=\{\lambda:|\lambda|\leqslant1\}\). 内部圆盘部分必须使用 \(\displaystyle \mathcal S^*=\mathcal L\) 与向量 \(\displaystyle y_\lambda=(1,\overline\lambda,\overline\lambda^2,\dots)\).
+\end{FAExercise}
+
+\begin{FAExercise}[右移没有特征值]{ex:i12-20}
+直接逐坐标证明 \(\displaystyle \sigma_{\mathrm p}(\mathcal S)=\varnothing\)，并结合上一题解释为什么 \(\displaystyle 0\in\sigma(\mathcal S)\setminus\sigma_{\mathrm p}(\mathcal S)\). 不得引入连续谱或剩余谱的定义.
+\end{FAExercise}
+
+\begin{FAExercise}[乘法算子谱]{ex:i12-21}
+设 \(\displaystyle K\) 非空紧Hausdorff，\(\displaystyle h\in C(K;\mathbb C)\). 证明 \(\displaystyle \sigma(\mathcal M_h)=h(K)\)，写出 \(\displaystyle \lambda\notin h(K)\) 时的显式预解算子，并计算 \(\displaystyle r(\mathcal M_h)\).
+\end{FAExercise}
+
+\begin{FAExercise}[Volterra谱与后续理论边界]{ex:i12-22}
+对 \(\displaystyle C([0,1];\mathbb C)\) 上的Volterra算子，用归纳法证明 \(\displaystyle \|\mathcal V^n\|\leqslant\frac{1}{n!}\)，从谱半径公式推出 \(\displaystyle \sigma(\mathcal V)=\{0\}\). 证明中不得使用Fubini、紧算子理论、Riesz--Schauder、Fredholm择一原理、Gelfand变换或一般\(\displaystyle C^*\)谱定理.
+\end{FAExercise}

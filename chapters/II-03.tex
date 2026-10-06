@@ -1,0 +1,1214 @@
+\chapter{\(\displaystyle C^*\)代数与有界正规谱定理}\label{chap:II-03}
+\FAChapterOpening
+{建立复\(\displaystyle C^*\)代数的范数--谱结构、正元素与唯一正平方根；由交换Gelfand理论构造单个正规元的连续函数演算；在紧度量谱上证明Riesz--Markov--Kakutani表示，进而构造有界正规算子的投影值谱测度与谱积分.}
+{I-04的Hilbert空间Riesz表示定理\autoref{fa:HIL-A02}；I-11的Hilbert伴随理论，特别是\autoref{fa:ADJ-A02}；II-02的Banach代数谱与Gelfand理论，特别是\autoref{fa:BALG-A01}与\autoref{fa:GEL-A01}.}
+{\begin{center}
+\begin{tikzpicture}[x=0.88cm,y=1.00cm]
+\node[fa/node] (gel) at (0,1.25) {Gelfand定理};
+\node[fa/node] (adj) at (0,-1.25) {Hilbert伴随};
+\node[fa/node] (c01) at (3.2,0) {\(\displaystyle C^*\)谱工具};
+\node[fa/node] (a01) at (6.6,0) {连续函数演算};
+\node[fa/node] (rmk) at (6.6,-1.85) {Riesz--Markov--Kakutani表示定理};
+\node[fa/node] (hil) at (6.6,1.85) {Riesz表示定理};
+\node[fa/node] (a02) at (10.1,0) {有界正规谱定理};
+\node[fa/node] (b02) at (13.1,0) {谱投影};
+\draw[fa/arrow] (gel) -- (c01);
+\draw[fa/arrow] (adj) -- (c01);
+\draw[fa/arrow] (c01) -- (a01);
+\draw[fa/arrow] (a01) -- (a02);
+\draw[fa/arrow] (rmk) -- (a02);
+\draw[fa/arrow] (hil) -- (a02);
+\draw[fa/arrow] (a02) -- (b02);
+\end{tikzpicture}
+\end{center}}
+
+本章全部\(\displaystyle C^*\)代数均以 \(\displaystyle\mathbb C\) 为标量域，主要考虑非零含幺\(\displaystyle C^*\)代数. 所有算子均为处处定义的有界算子. I-14的实或复紧自伴谱定理保持其原有范围；本章的一般\(\displaystyle C^*\)框架与一般有界正规谱定理是复理论，不把它改写成实\(\displaystyle C^*\)定理.
+
+\section{\(\displaystyle C^*\)代数基础}\label{sec:ii03-cstar-basics}
+\index{C*-algebra@\(\displaystyle C^*\)代数}\index{involution@对合}\index{normal element@正规元}
+
+\begin{FADefinition}[A][复对合代数与\(\displaystyle C^*\)代数]{ii03:cstar-definition}
+复代数 \(\displaystyle\mathcal A\) 上的对合是映射 \(\displaystyle a\mapsto a^*\)，满足对全部 \(\displaystyle a,b\in\mathcal A\) 与 \(\displaystyle\alpha,\beta\in\mathbb C\) 有
+\[
+(\alpha a+\beta b)^*=\overline\alpha a^*+\overline\beta b^*,
+\;
+(ab)^*=b^*a^*,
+\;
+(a^*)^*=a.
+\]
+若 \(\displaystyle\mathcal A\) 同时是复Banach代数且
+\(\displaystyle \|a^*a\|=\|a\|^2\)
+对全部 \(\displaystyle a\in\mathcal A\) 成立，则称 \(\displaystyle\mathcal A\) 为\(\displaystyle C^*\)代数. 若 \(\displaystyle\mathcal A\) 含非零单位元 \(\displaystyle1\)，则称其为含幺\(\displaystyle C^*\)代数. 元素 \(\displaystyle a\) 称为正规元，当且仅当 \(\displaystyle a^*a=aa^*\).
+\end{FADefinition}
+
+由\(\displaystyle C^*\)恒等式本身即可确定单位元范数. 因 \(\displaystyle1^*=1\)，
+\(\displaystyle \|1\|^2=\|1^*1\|=\|1\|.\)
+单位元非零，故 \(\displaystyle\|1\|=1\). 因而II-02对含幺Banach代数采用的单位范数规范在\(\displaystyle C^*\)情形自动成立.
+
+\begin{FAExample}[\(\displaystyle\mathcal B(H)\) 是\(\displaystyle C^*\)代数]\label{ii03:bh-cstar}
+设 \(\displaystyle H\neq\{0\}\) 为复Hilbert空间. 由I-11，\(\displaystyle\mathcal B(H)\) 在算子复合、算子范数与Hilbert伴随下是含幺Banach \(\displaystyle *\)-代数. 对 \(\displaystyle\mathcal T\in\mathcal B(H)\)，先由次乘性与 \(\displaystyle\|\mathcal T^*\|=\|\mathcal T\|\) 得
+\(\displaystyle \|\mathcal T^*\mathcal T\|\leqslant\|\mathcal T\|^2.\)
+另一方面，对任意 \(\displaystyle x\in H\)，
+\[
+\|\mathcal T x\|^2
+=\langle\mathcal T^*\mathcal T x,x\rangle
+\leqslant\|\mathcal T^*\mathcal T\|\|x\|^2.
+\]
+对 \(\displaystyle\|x\|=1\) 取上确界得到 \(\displaystyle\|\mathcal T\|^2\leqslant\|\mathcal T^*\mathcal T\|\). 因而
+\(\displaystyle \|\mathcal T^*\mathcal T\|=\|\mathcal T\|^2.\)
+故 \(\displaystyle\mathcal B(H)\) 是含幺\(\displaystyle C^*\)代数.
+\end{FAExample}
+
+\begin{FAExample}[\(\displaystyle C(K)\) 是交换\(\displaystyle C^*\)代数]\label{ii03:ck-cstar}
+设 \(\displaystyle K\neq\varnothing\) 为紧Hausdorff空间. 在 \(\displaystyle C(K)\) 上取逐点乘法、上确界范数与 \(\displaystyle f^*(x)=\overline{f(x)}\). 则
+\[
+\|f^*f\|_\infty
+=\sup_{x\in K}|f(x)|^2
+=\|f\|_\infty^2.
+\]
+故 \(\displaystyle C(K)\) 是交换含幺\(\displaystyle C^*\)代数.
+\end{FAExample}
+
+\begin{FAProposition}[C][\(\displaystyle C^*\)范数谱工具]{fa:CSTAR-C01}
+设 \(\displaystyle\mathcal A\) 为非零含幺复\(\displaystyle C^*\)代数. 则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 对全部 \(\displaystyle a\in\mathcal A\)，\(\displaystyle\|a^*\|=\|a\|\).
+\item 若 \(\displaystyle a\) 正规，则 \(\displaystyle r_{\mathcal A}(a)=\|a\|\).
+\item 若 \(\displaystyle\mathcal A\) 交换且 \(\displaystyle\varphi\in\Delta(\mathcal A)\)，则 \(\displaystyle\varphi(a^*)=\overline{\varphi(a)}\) 对全部 \(\displaystyle a\in\mathcal A\) 成立.
+\item 若 \(\displaystyle\mathcal A\) 交换，则II-02的Gelfand变换是含幺等距 *-同态.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+由\(\displaystyle C^*\)恒等式与次乘性，若 \(\displaystyle a\neq0\)，则
+\(\displaystyle \|a\|^2=\|a^*a\|\leqslant\|a^*\|\|a\|,\)
+故 \(\displaystyle\|a\|\leqslant\|a^*\|\). 对 \(\displaystyle a^*\) 应用同一结论并用 \(\displaystyle(a^*)^*=a\)，得到反向不等式；\(\displaystyle a=0\) 时等式两边都等于零. 因而（i）成立.
+
+设 \(\displaystyle a\) 正规. 因 \(\displaystyle a\) 与 \(\displaystyle a^*\) 交换，
+\(\displaystyle \|a^2\|^2=\|(a^2)^*a^2\|=\|(a^*)^2a^2\|=\|(a^*a)^2\|=\|a^*a\|^2=\|a\|^4.\)
+故 \(\displaystyle\|a^2\|=\|a\|^2\). 每个 \(\displaystyle a^{2^n}\) 仍正规，递推得到
+\(\displaystyle \|a^{2^n}\|=\|a\|^{2^n}.\)
+由II-02的谱半径公式\autoref{fa:BALG-A01}，
+\(\displaystyle r(a)=\lim_{m\to\infty}\|a^m\|^{\frac{1}{m}}.\)
+沿子列 \(\displaystyle m=2^n\) 取极限即得 \(\displaystyle r(a)=\|a\|\). 这里没有使用后面的连续函数演算.
+
+现设 \(\displaystyle\mathcal A\) 交换，\(\displaystyle\varphi\in\Delta(\mathcal A)\). II-02已证明 \(\displaystyle\|\varphi\|=1\). 先取 \(\displaystyle h=h^*\)，写 \(\displaystyle\varphi(h)=\alpha+\mathrm{i}\beta\)，其中 \(\displaystyle\alpha,\beta\in\mathbb R\). 对任意 \(\displaystyle t\in\mathbb R\)，
+\(\displaystyle |1+\mathrm{i}t\varphi(h)|^2 =|\varphi(1+\mathrm{i}th)|^2 \leqslant\|1+\mathrm{i}th\|^2.\)
+由\(\displaystyle C^*\)恒等式，
+\[
+\|1+\mathrm{i}th\|^2=\|(1+\mathrm{i}th)^*(1+\mathrm{i}th)\|=\|(1-\mathrm{i}th)(1+\mathrm{i}th)\|=\|1+t^2h^2\|\leqslant1+t^2\|h\|^2.
+\]
+于是
+\(\displaystyle 1-2t\beta+t^2|\varphi(h)|^2 \leqslant 1+t^2\|h\|^2.\)
+当 \(\displaystyle t>0\) 时除以 \(\displaystyle t\) 并令 \(\displaystyle t\downarrow0\)，得 \(\displaystyle-2\beta\leqslant0\)；当 \(\displaystyle t<0\) 时除以 \(\displaystyle t\) 不等号反向，再令 \(\displaystyle t\uparrow0\)，得 \(\displaystyle-2\beta\geqslant0\). 故 \(\displaystyle\beta=0\)，即角色在自伴元上取实值.
+
+对任意 \(\displaystyle a\in\mathcal A\)，令
+\(\displaystyle h=\frac{a+a^*}{2}, \; k=\frac{a-a^*}{2\mathrm{i}}.\)
+则 \(\displaystyle h=h^*\)、\(\displaystyle k=k^*\) 且 \(\displaystyle a=h+\mathrm{i}k\)、\(\displaystyle a^*=h-\mathrm{i}k\). 因 \(\displaystyle\varphi(h),\varphi(k)\in\mathbb R\)，
+\(\displaystyle \varphi(a^*) =\varphi(h)-\mathrm{i}\varphi(k) =\overline{\varphi(h)+\mathrm{i}\varphi(k)} =\overline{\varphi(a)}.\)
+这证明（iii）.
+
+最后由\autoref{fa:GEL-A01}与（ii），交换\(\displaystyle C^*\)代数中每个元素均正规，故
+\(\displaystyle \|\widehat a\|_\infty=r(a)=\|a\|.\)
+Gelfand变换的乘法与含幺性来自II-02，而（iii）给出 \(\displaystyle\widehat{a^*}=\overline{\widehat a}\). 因而它是含幺等距 *-同态.\hfill\(\square\)
+\end{FAProof}
+
+下面证明本章所需的Stone--Weierstrass选定版本，而不把它作为隐藏前置.
+
+\begin{FALemma}[C][绝对值的一致多项式逼近]{ii03:absolute-value-polynomial}
+对任意 \(\displaystyle M>0\) 与 \(\displaystyle\varepsilon>0\)，存在实系数多项式 \(\displaystyle p\)，使
+\[
+\sup_{|t|\leqslant M}|p(t)-|t||<\varepsilon.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+先取 \(\displaystyle\delta>0\) 使 \(\displaystyle\sqrt\delta<\frac{\varepsilon}{2}\). 对 \(\displaystyle |t|\leqslant M\)，
+\(\displaystyle 0\leqslant\sqrt{t^2+\delta}-|t| =\frac{\delta}{\sqrt{t^2+\delta}+|t|} \leqslant\sqrt\delta <\frac{\varepsilon}{2}.\)
+令 \(\displaystyle C^2=M^2+\delta\) 与
+\(\displaystyle s(t)=1-\frac{t^2+\delta}{C^2}.\)
+则 \(\displaystyle0\leqslant s(t)\leqslant q:=1-\frac{\delta}{C^2}<1\)，并且
+\(\displaystyle \sqrt{t^2+\delta}=C\sqrt{1-s(t)}.\)
+二项级数
+\[
+(1-s)^{\frac{1}{2}}=\sum_{n=0}^{\infty}{\binom{\frac{1}{2}}{n}}(-s)^n
+\]
+在每个闭区间 \(\displaystyle[0,q]\) 上绝对且一致收敛，因为幂级数收敛半径为 \(\displaystyle1\). 因而存在 \(\displaystyle N\)，使其截断多项式 \(\displaystyle P_N(s)\) 满足
+\(\displaystyle \sup_{0\leqslant s\leqslant q}|C P_N(s)-C\sqrt{1-s}|<\frac{\varepsilon}{2}.\)
+取 \(\displaystyle p(t)=C P_N(s(t))\). 这是 \(\displaystyle t\) 的实系数多项式，并由三角不等式得到所需估计.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][选定Stone--Weierstrass定理]{ii03:stone-weierstrass-selected}
+设 \(\displaystyle K\) 为紧Hausdorff空间，\(\displaystyle\mathcal B\subseteq C(K)\) 为闭含幺自伴子代数，并且分离 \(\displaystyle K\) 中不同点. 则
+\(\displaystyle \mathcal B=C(K).\)
+\end{FALemma}
+
+\begin{FAProof}
+记 \(\displaystyle\mathcal B_{\mathbb R}=\{f\in\mathcal B:f=\overline f\}\). 若 \(\displaystyle f\in\mathcal B_{\mathbb R}\)，取 \(\displaystyle M=\|f\|_\infty\). 当 \(\displaystyle M=0\) 时 \(\displaystyle|f|=0\in\mathcal B\). 当 \(\displaystyle M>0\) 时，由\autoref{ii03:absolute-value-polynomial}可取实多项式 \(\displaystyle p_n\) 使 \(\displaystyle p_n(f)\to|f|\) 一致. 因 \(\displaystyle\mathcal B\) 含幺且闭，得到 \(\displaystyle|f|\in\mathcal B_{\mathbb R}\). 因而对 \(\displaystyle f,g\in\mathcal B_{\mathbb R}\)，
+\(\displaystyle \max(f,g)=\frac{f+g+|f-g|}{2}, \; \min(f,g)=\frac{f+g-|f-g|}{2}\)
+均属于 \(\displaystyle\mathcal B_{\mathbb R}\). 所以 \(\displaystyle\mathcal B_{\mathbb R}\) 是实向量格.
+
+自伴性给出 \(\displaystyle\operatorname{Re}h=\frac{h+\overline h}{2}\in\mathcal B_{\mathbb R}\) 与 \(\displaystyle\operatorname{Im}h=\frac{h-\overline h}{2\mathrm{i}}\in\mathcal B_{\mathbb R}\). 若 \(\displaystyle h(x)\neq h(y)\)，则实部或虚部至少一个区分 \(\displaystyle x,y\). 因而 \(\displaystyle\mathcal B_{\mathbb R}\) 也分离点.
+
+固定 \(\displaystyle g\in C(K;\mathbb R)\) 与 \(\displaystyle\varepsilon>0\). 对每个 \(\displaystyle x,y\in K\)，若 \(\displaystyle x=y\)，取常函数 \(\displaystyle h_{x,y}=g(x)\). 若 \(\displaystyle x\neq y\)，取 \(\displaystyle v\in\mathcal B_{\mathbb R}\) 使 \(\displaystyle v(x)\neq v(y)\)，再取唯一仿射函数 \(\displaystyle h_{x,y}=av+b\) 满足 \(\displaystyle h_{x,y}(x)=g(x)\)、\(\displaystyle h_{x,y}(y)=g(y)\). 固定 \(\displaystyle x\). 集合
+\(\displaystyle V_y=\{z\in K:h_{x,y}(z)<g(z)+\varepsilon\}\)
+随 \(\displaystyle y\in K\) 覆盖 \(\displaystyle K\). 紧性给出有限子覆盖 \(\displaystyle V_{y_1},\dots,V_{y_m}\). 令
+\(\displaystyle h_x=\min_{1\leqslant j\leqslant m}h_{x,y_j}\in\mathcal B_{\mathbb R}.\)
+则 \(\displaystyle h_x(x)=g(x)\) 且 \(\displaystyle h_x<g+\varepsilon\) 于 \(\displaystyle K\). 再令
+\(\displaystyle U_x=\{z\in K:h_x(z)>g(z)-\varepsilon\}.\)
+这些 \(\displaystyle U_x\) 覆盖 \(\displaystyle K\)，取有限子覆盖 \(\displaystyle U_{x_1},\dots,U_{x_n}\)，并令
+\(\displaystyle h=\max_{1\leqslant j\leqslant n}h_{x_j}\in\mathcal B_{\mathbb R}.\)
+则 \(\displaystyle g-\varepsilon<h<g+\varepsilon\) 于 \(\displaystyle K\)，故 \(\displaystyle\mathcal B_{\mathbb R}\) 在 \(\displaystyle C(K;\mathbb R)\) 中稠密. 由于 \(\displaystyle\mathcal B\) 闭，全部实值连续函数属于 \(\displaystyle\mathcal B\). 任意 \(\displaystyle f\in C(K)\) 写成 \(\displaystyle f=\operatorname{Re}f+\mathrm{i}\operatorname{Im}f\)，故 \(\displaystyle f\in\mathcal B\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][交换\(\displaystyle C^*\)代数的Gelfand表示]{ii03:commutative-cstar-gelfand}
+设 \(\displaystyle\mathcal A\) 为非零交换含幺复\(\displaystyle C^*\)代数. 则II-02的Gelfand变换
+\(\displaystyle \Gamma:\mathcal A\longrightarrow C(\Delta(\mathcal A))\)
+是含幺等距 *-同构.
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{fa:GEL-A01}与\autoref{fa:CSTAR-C01}，\(\displaystyle\Gamma\) 是含幺等距 *-同态，故单射且其像 \(\displaystyle\Gamma(\mathcal A)\) 完备，从而在 \(\displaystyle C(\Delta(\mathcal A))\) 中闭. 像包含常函数并因 *-保持而自伴. 若 \(\displaystyle\varphi\neq\psi\) 是两个角色，则作为不同线性泛函存在 \(\displaystyle a\in\mathcal A\) 使 \(\displaystyle\varphi(a)\neq\psi(a)\)，即 \(\displaystyle\widehat a\) 区分二者. 因而像分离点. 对紧Hausdorff空间 \(\displaystyle\Delta(\mathcal A)\) 应用\autoref{ii03:stone-weierstrass-selected}，得到 \(\displaystyle\Gamma(\mathcal A)=C(\Delta(\mathcal A))\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[B][单个正规元生成的\(\displaystyle C^*\)代数]{ii03:cstar-generated}
+设 \(\displaystyle\mathcal A\) 为非零含幺复\(\displaystyle C^*\)代数，\(\displaystyle a\in\mathcal A\). 记 \(\displaystyle C^*(1,a)\) 为包含 \(\displaystyle1,a\) 的最小闭含幺 *-子代数. 等价地，它是全部 *-多项式 \(\displaystyle p(a,a^*)\) 的范数闭包.
+\end{FADefinition}
+
+若 \(\displaystyle a\) 正规，则 \(\displaystyle a\) 与 \(\displaystyle a^*\) 交换，故全部 *-多项式彼此交换，其闭包 \(\displaystyle C^*(1,a)\) 也是交换\(\displaystyle C^*\)代数. 对 \(\displaystyle\varphi\in\Delta(C^*(1,a))\) 定义
+\(\displaystyle j(\varphi)=\varphi(a).\)
+角色空间取II-02的弱*子空间拓扑，故 \(\displaystyle j\) 连续. 若 \(\displaystyle j(\varphi)=j(\psi)\)，则由\autoref{fa:CSTAR-C01}的 *-保持性，
+\(\displaystyle \varphi(a^*)=\overline{\varphi(a)} =\overline{\psi(a)}=\psi(a^*).\)
+所以 \(\displaystyle\varphi\) 与 \(\displaystyle\psi\) 在全部 *-多项式上相同；由连续性与 *-多项式稠密性，它们在 \(\displaystyle C^*(1,a)\) 上相同. 故 \(\displaystyle j\) 单射. 角色空间紧而 \(\displaystyle\mathbb C\) Hausdorff，所以 \(\displaystyle j\) 是到其像的同胚. 再由\autoref{fa:GEL-A01}，
+\(\displaystyle j(\Delta(C^*(1,a)))=\sigma_{C^*(1,a)}(a).\)
+
+\begin{FAProposition}[B][正规元的谱保持]{ii03:normal-spectral-permanence}
+设 \(\displaystyle\mathcal A\) 为非零含幺复\(\displaystyle C^*\)代数，\(\displaystyle a\in\mathcal A\) 正规. 则
+\(\displaystyle \sigma_{C^*(1,a)}(a)=\sigma_{\mathcal A}(a).\)
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle a-\lambda1\) 在 \(\displaystyle C^*(1,a)\) 中可逆，则它在 \(\displaystyle\mathcal A\) 中也可逆，故
+\(\displaystyle \sigma_{\mathcal A}(a)\subseteq\sigma_{C^*(1,a)}(a).\)
+反之，取 \(\displaystyle\lambda\in\sigma_{C^*(1,a)}(a)\)，记 \(\displaystyle K=\sigma_{C^*(1,a)}(a)\). 对 \(\displaystyle n\geqslant1\) 定义
+\(\displaystyle f_n(z)=\max\{0,1-n|z-\lambda|\}, \; z\in K.\)
+则 \(\displaystyle\|f_n\|_\infty=1\) 且
+\(\displaystyle \|(z-\lambda)f_n(z)\|_\infty\leqslant\frac1n.\)
+由\autoref{ii03:commutative-cstar-gelfand}与上面的同胚 \(\displaystyle j\)，可取唯一 \(\displaystyle b_n\in C^*(1,a)\) 对应于 \(\displaystyle f_n\). 等距性给出
+\(\displaystyle \|b_n\|=1, \; \|(a-\lambda1)b_n\|\leqslant\frac1n.\)
+若 \(\displaystyle a-\lambda1\) 在 \(\displaystyle\mathcal A\) 中可逆，则
+\[
+1=\|b_n\|
+\leqslant\|(a-\lambda1)^{-1}\|\|(a-\lambda1)b_n\|
+\leqslant\frac{\|(a-\lambda1)^{-1}\|}{n}
+\longrightarrow0,
+\]
+矛盾. 故 \(\displaystyle\lambda\in\sigma_{\mathcal A}(a)\). 这只证明单个正规元的谱保持，不宣称任意\(\displaystyle C^*\)子代数中的一般谱保持.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][单个正规元的局部函数演算引擎]{ii03:normal-one-element-engine}
+在\autoref{ii03:normal-spectral-permanence}的条件下，记 \(\displaystyle K=\sigma_{\mathcal A}(a)\). 存在含幺等距 *-同构
+\(\displaystyle \Psi_a:C(K)\longrightarrow C^*(1,a)\)
+满足 \(\displaystyle\Psi_a(\operatorname{id}_K)=a\). 对 \(\displaystyle f\in C(K)\) 暂记 \(\displaystyle\Psi_a(f)=f[a]\). 则
+\(\displaystyle \sigma_{\mathcal A}(f[a])=f(K), \; \|f[a]\|=\|f\|_\infty.\)
+若 \(\displaystyle g\in C(f(K))\)，则
+\(\displaystyle g[f[a]]=(g\circ f)[a].\)
+\end{FAProposition}
+
+\begin{FAProof}
+交换\(\displaystyle C^*\)代数 \(\displaystyle C^*(1,a)\) 的Gelfand变换由\autoref{ii03:commutative-cstar-gelfand}给出 *-同构
+\(\displaystyle \Gamma:C^*(1,a)\longrightarrow C(\Delta(C^*(1,a))).\)
+前述 \(\displaystyle j\) 是 \(\displaystyle\Delta(C^*(1,a))\) 到 \(\displaystyle K\) 的同胚. 令 \(\displaystyle J:C(K)\to C(\Delta(C^*(1,a)))\) 为 \(\displaystyle Jf=f\circ j\)，则 \(\displaystyle J\) 是含幺等距 *-同构. 定义 \(\displaystyle\Psi_a=\Gamma^{-1}J\). 因 \(\displaystyle J(\operatorname{id}_K)=\widehat a\)，故 \(\displaystyle\Psi_a(\operatorname{id}_K)=a\).
+
+范数等式由等距性直接得到. 对谱映射，令 \(\displaystyle b=f[a]\). 元素 \(\displaystyle b\) 正规. 在 \(\displaystyle C^*(1,a)\) 中，Gelfand谱识别给出 \(\displaystyle\sigma_{C^*(1,a)}(b)=f(K)\). 先在环境代数 \(\displaystyle C^*(1,a)\) 中把\autoref{ii03:normal-spectral-permanence}应用于正规元 \(\displaystyle b\)，得到
+\(\displaystyle \sigma_{C^*(1,b)}(b)=\sigma_{C^*(1,a)}(b)=f(K).\)
+再在环境代数 \(\displaystyle\mathcal A\) 中对同一正规元应用该命题，得到
+\(\displaystyle \sigma_{\mathcal A}(b)=\sigma_{C^*(1,b)}(b)=f(K).\)
+这只使用单个正规元的谱保持，没有调用一般\(\displaystyle C^*\)子代数谱保持定理.
+
+最后令 \(\displaystyle b=f[a]\). 映射
+\(\displaystyle \Theta:C(f(K))\longrightarrow C^*(1,a), \; \Theta(g)=(g\circ f)[a]\)
+是含幺等距 *-同态，且 \(\displaystyle\Theta(\operatorname{id}_{f(K)})=b\). 其像是包含 \(\displaystyle1,b,b^*\) 的闭 *-子代数，因此恰为 \(\displaystyle C^*(1,b)\). 对 \(\displaystyle b\) 重复上述Gelfand构造所得局部演算也把坐标函数送到 \(\displaystyle b\). 两个映射在 \(\displaystyle z,\overline z\) 的 *-多项式上相同，而这些 *-多项式由\autoref{ii03:stone-weierstrass-selected}在 \(\displaystyle C(f(K))\) 中稠密；由连续性二者相同. 因而 \(\displaystyle g[b]=(g\circ f)[a]\).\hfill\(\square\)
+\end{FAProof}
+
+本节至此已经在正式 \(\displaystyle\mathrm{CSTAR\!-\!A01}\) 之前闭合了单个正规元所需的全部交换表示、谱保持与局部函数演算. 下一节只调用\autoref{ii03:normal-one-element-engine}，不前向引用尚未正式包装的\autoref{fa:CSTAR-A01}.
+
+\section{正元素}\label{sec:ii03-positive-elements}
+\index{positive element@正元素}\index{positive square root@正平方根}
+
+\begin{FAProposition}[B][自伴元的谱为实数]{ii03:self-adjoint-real-spectrum}
+设 \(\displaystyle\mathcal A\) 为非零含幺复\(\displaystyle C^*\)代数，\(\displaystyle h=h^*\in\mathcal A\). 则
+\(\displaystyle \sigma_{\mathcal A}(h)\subseteq\mathbb R.\)
+\end{FAProposition}
+
+\begin{FAProof}
+元素 \(\displaystyle h\) 正规. 在交换\(\displaystyle C^*\)代数 \(\displaystyle C^*(1,h)\) 中，每个角色 \(\displaystyle\varphi\) 由\autoref{fa:CSTAR-C01}满足 \(\displaystyle\varphi(h)\in\mathbb R\). 由II-02的Gelfand谱识别，
+\(\displaystyle \sigma_{C^*(1,h)}(h) =\{\varphi(h):\varphi\in\Delta(C^*(1,h))\} \subseteq\mathbb R.\)
+再由\autoref{ii03:normal-spectral-permanence}得到环境代数中的同一结论.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[A][正元素]{ii03:positive-definition}
+设 \(\displaystyle\mathcal A\) 为非零含幺复\(\displaystyle C^*\)代数. 元素 \(\displaystyle a\in\mathcal A\) 称为正元素，记作 \(\displaystyle a\geqslant0\)，当且仅当
+\(\displaystyle a=a^*, \; \sigma_{\mathcal A}(a)\subseteq[0,\infty).\)
+本章以此谱条件作为\(\displaystyle C^*\)正性的定义.
+\end{FADefinition}
+
+\begin{FATheorem}[B][正元素的唯一正平方根]{fa:CSTAR-B01}
+设 \(\displaystyle a\geqslant0\). 则存在唯一 \(\displaystyle b\geqslant0\) 满足
+\(\displaystyle b^2=a.\)
+记该元素为 \(\displaystyle a^{\frac{1}{2}}\).
+\end{FATheorem}
+
+\begin{FAProof}
+记 \(\displaystyle K=\sigma_{\mathcal A}(a)\subseteq[0,\infty)\). 由\autoref{ii03:normal-one-element-engine}，可在 \(\displaystyle C^*(1,a)\) 中对 \(\displaystyle f(t)=\sqrt t\) 定义 \(\displaystyle b=f[a]\). 因 \(\displaystyle f\) 为实值，
+\(\displaystyle b^*=\overline f[a]=f[a]=b.\)
+谱映射给出
+\(\displaystyle \sigma_{\mathcal A}(b)=f(K)\subseteq[0,\infty),\)
+故 \(\displaystyle b\geqslant0\). 乘法性给出 \(\displaystyle b^2=(f^2)[a]=a\). 因而正平方根存在，并且 \(\displaystyle b\in C^*(1,a)\).
+
+现设 \(\displaystyle c\geqslant0\) 且 \(\displaystyle c^2=a\). 对正规元 \(\displaystyle c\) 使用\autoref{ii03:normal-one-element-engine}的复合律. 因 \(\displaystyle\sigma(c)\subseteq[0,\infty)\)，函数 \(\displaystyle t\mapsto\sqrt{t^2}\) 在 \(\displaystyle\sigma(c)\) 上等于坐标函数 \(\displaystyle t\mapsto t\). 因而
+\(\displaystyle (c^2)^{\frac{1}{2}}=c.\)
+又 \(\displaystyle c^2=a\)，而上面构造的 \(\displaystyle a^{\frac{1}{2}}\) 正是对 \(\displaystyle a\) 应用 \(\displaystyle\sqrt{\cdot}\) 所得元素，所以
+\(\displaystyle c=(c^2)^{\frac{1}{2}}=a^{\frac{1}{2}}.\)
+唯一性成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][正元素的局部函数工具]{ii03:positive-calculus-tools}
+若 \(\displaystyle a\geqslant0\)，则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle\|a\|=\max\sigma(a)\).
+\item 若 \(\displaystyle f\in C(\sigma(a))\) 且 \(\displaystyle f\geqslant0\)，则 \(\displaystyle f[a]\geqslant0\).
+\item \(\displaystyle a^{\frac{1}{2}}\in C^*(1,a)\).
+\item 若 \(\displaystyle b\in\mathcal A\) 同时与 \(\displaystyle a\) 和 \(\displaystyle a^*\) 交换，则 \(\displaystyle b\) 与每个 \(\displaystyle f[a]\) 交换.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+正元素正规，故\autoref{fa:CSTAR-C01}给出 \(\displaystyle\|a\|=r(a)\). 因 \(\displaystyle\sigma(a)\subseteq[0,\infty)\) 非空紧，
+\(\displaystyle r(a)=\max_{\lambda\in\sigma(a)}|\lambda|=\max\sigma(a).\)
+若 \(\displaystyle f\geqslant0\) 为连续函数，则 \(\displaystyle f\) 实值，故 \(\displaystyle f[a]\) 自伴；谱映射给出 \(\displaystyle\sigma(f[a])=f(\sigma(a))\subseteq[0,\infty)\)，所以 \(\displaystyle f[a]\geqslant0\). 第（iii）项已在\autoref{fa:CSTAR-B01}的构造中证明. 对（iv），\(\displaystyle b\) 与 \(\displaystyle a,a^*\) 交换，所以与每个 *-多项式 \(\displaystyle p(a,a^*)\) 交换；交换关系在范数极限下保持，而 \(\displaystyle f[a]\in C^*(1,a)\) 是这些 *-多项式的范数极限.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][\(\displaystyle C^*\)正性与Hilbert正算子定义相容]{ii03:positive-operator-compatibility}
+设 \(\displaystyle H\) 为复Hilbert空间，\(\displaystyle\mathcal T\in\mathcal B(H)\) 自伴. 则以下两者等价：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 按\autoref{ii03:positive-definition}，\(\displaystyle\mathcal T\geqslant0\) 于\(\displaystyle C^*\)代数 \(\displaystyle\mathcal B(H)\) 中.
+\item 按I-11定义，\(\displaystyle\langle\mathcal T x,x\rangle\geqslant0\) 对全部 \(\displaystyle x\in H\) 成立.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+先设（i）成立. 令 \(\displaystyle\mathcal S=\mathcal T^{\frac{1}{2}}\). 由\autoref{fa:CSTAR-B01}，\(\displaystyle\mathcal S\geqslant0\)，故 \(\displaystyle\mathcal S^*=\mathcal S\) 且 \(\displaystyle\mathcal T=\mathcal S^2=\mathcal S^*\mathcal S\). 因而
+\(\displaystyle \langle\mathcal T x,x\rangle =\langle\mathcal S^*\mathcal Sx,x\rangle =\|\mathcal Sx\|^2 \geqslant0.\)
+
+反设（ii）成立但（i）不成立. 由\autoref{ii03:self-adjoint-real-spectrum}，存在 \(\displaystyle\lambda<0\) 属于 \(\displaystyle\sigma(\mathcal T)\). 令 \(\displaystyle K=\sigma(\mathcal T)\)，并对足够大的 \(\displaystyle n\) 定义
+\(\displaystyle f_n(t)=\max\{0,1-n|t-\lambda|\}, \; t\in K.\)
+局部函数演算给出 \(\displaystyle\mathcal B_n=f_n[\mathcal T]\)，满足
+\(\displaystyle \|\mathcal B_n\|=1, \; \|(\mathcal T-\lambda\mathcal I)\mathcal B_n\|\leqslant\frac1n.\)
+由算子范数定义可取单位向量 \(\displaystyle y_n\) 使 \(\displaystyle\|\mathcal B_ny_n\|>\frac{1}{2}\). 令
+\(\displaystyle x_n=\frac{\mathcal B_ny_n}{\|\mathcal B_ny_n\|}.\)
+则 \(\displaystyle\|x_n\|=1\) 且
+\(\displaystyle \|(\mathcal T-\lambda\mathcal I)x_n\| \leqslant\frac{2}{n} \longrightarrow0.\)
+因此
+\(\displaystyle \bigl|\langle\mathcal T x_n,x_n\rangle-\lambda\bigr| \leqslant\|(\mathcal T-\lambda\mathcal I)x_n\| \longrightarrow0.\)
+左侧二次型由（ii）非负，但右侧极限 \(\displaystyle\lambda<0\)，矛盾. 故（i）成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[\(\displaystyle C(K)\) 中的正性与平方根]\label{ii03:ex-cont-positivity}
+设 \(\displaystyle K\neq\varnothing\) 为紧Hausdorff空间，\(\displaystyle f\in C(K)\). II-02已证明 \(\displaystyle\sigma_{C(K)}(f)=f(K)\). 因而按本章谱定义，\(\displaystyle f\geqslant0\) 当且仅当 \(\displaystyle f=\overline f\) 且 \(\displaystyle f(K)\subseteq[0,\infty)\)，即当且仅当 \(\displaystyle f\) 实值且
+\(\displaystyle f(x)\geqslant0 \;\text{对全部 }x\in K.\)
+此时\autoref{fa:CSTAR-B01}的唯一正平方根恰为逐点平方根
+\(\displaystyle f^{\frac{1}{2}}(x)=\sqrt{f(x)}.\)
+因为右侧连续、非负且平方等于 \(\displaystyle f\)，唯一性即可识别二者.
+\end{FAExample}
+
+\section{连续函数演算}\label{sec:ii03-continuous-functional-calculus}
+\index{continuous functional calculus@连续函数演算}\index{spectral mapping@谱映射}
+
+\begin{FATheorem}[A][正规元连续函数演算]{fa:CSTAR-A01}
+设 \(\displaystyle\mathcal A\) 为非零含幺复\(\displaystyle C^*\)代数，\(\displaystyle a\in\mathcal A\) 正规. 记 \(\displaystyle K=\sigma_{\mathcal A}(a)\). 则存在唯一含幺等距 *-同态
+\(\displaystyle \Phi_a:C(K)\longrightarrow C^*(1,a)\subseteq\mathcal A\)
+满足
+\(\displaystyle \Phi_a(\operatorname{id}_K)=a.\)
+记 \(\displaystyle f(a):=\Phi_a(f)\). 对 \(\displaystyle f,g\in C(K)\)，
+\(\displaystyle (f+g)(a)=f(a)+g(a), \; (fg)(a)=f(a)g(a),\)
+\(\displaystyle \overline f(a)=f(a)^*, \; 1(a)=1, \; \operatorname{id}_K(a)=a,\)
+\(\displaystyle \|f(a)\|=\|f\|_\infty, \; \sigma_{\mathcal A}(f(a))=f(K).\)
+若 \(\displaystyle g\in C(f(K))\)，则复合律成立：
+\(\displaystyle g(f(a))=(g\circ f)(a).\)
+\end{FATheorem}
+
+\begin{FAProof}
+存在性、等距性、代数与 *-性质、谱映射及复合律已经在\autoref{ii03:normal-one-element-engine}中按实际依赖顺序证明. 这里只需证明所要求的唯一性.
+
+设 \(\displaystyle\Psi:C(K)\to C^*(1,a)\) 是另一个连续含幺 *-同态且 \(\displaystyle\Psi(\operatorname{id}_K)=a\). 记 \(\displaystyle z=\operatorname{id}_K\). 由 *-保持，\(\displaystyle\Psi(\overline z)=a^*\). 因而对任意二元复多项式 \(\displaystyle p\)，
+\(\displaystyle \Psi(p(z,\overline z))=p(a,a^*)=\Phi_a(p(z,\overline z)).\)
+所有 \(\displaystyle p(z,\overline z)\) 构成 \(\displaystyle C(K)\) 的含幺自伴子代数，并且坐标函数 \(\displaystyle z\) 本身分离 \(\displaystyle K\) 中不同点. 由本章已经证明的选定Stone--Weierstrass定理\autoref{ii03:stone-weierstrass-selected}，该 *-多项式代数在 \(\displaystyle C(K)\) 中一致稠密. \(\displaystyle\Psi\) 与 \(\displaystyle\Phi_a\) 连续，故二者在全部 \(\displaystyle C(K)\) 上相同. 唯一性得证.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][自伴与酉的谱位置]{ii03:selfadjoint-unitary-specialization}
+设 \(\displaystyle\mathcal A\) 为非零含幺复\(\displaystyle C^*\)代数.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 若 \(\displaystyle a=a^*\)，则 \(\displaystyle\sigma(a)\subseteq\mathbb R\).
+\item 若 \(\displaystyle u^*u=uu^*=1\)，则
+\(\displaystyle \sigma(u)\subseteq\mathbb T:=\{z\in\mathbb C:|z|=1\}.\)
+\end{enumerate}
+\end{FACorollary}
+
+\begin{FAProof}
+第一项即\autoref{ii03:self-adjoint-real-spectrum}. 对第二项，\(\displaystyle C^*\)恒等式给
+\(\displaystyle \|u\|^2=\|u^*u\|=1, \; \|u^{-1}\|=\|u^*\|=1.\)
+由\autoref{fa:BALG-A01}，\(\displaystyle\sigma(u)\subseteq\{z:|z|\leqslant1\}\). 若 \(\displaystyle\lambda\in\sigma(u)\)，则 \(\displaystyle\lambda\neq0\)，且Banach代数中的谱求逆规则给 \(\displaystyle\lambda^{-1}\in\sigma(u^{-1})\). 对 \(\displaystyle u^{-1}=u^*\) 应用同一谱半径估计，得到 \(\displaystyle|\lambda^{-1}|\leqslant1\)，故 \(\displaystyle|\lambda|\geqslant1\). 两者合并得到 \(\displaystyle|\lambda|=1\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[I-14桥接]
+I-14的紧自伴连续函数演算\autoref{fa:CSPEC-C01}是本章一般正规元连续函数演算的离散原型. 本章没有重写I-14证明；在谱测度构造完成后，将用PVM唯一性把I-14的特征投影公式识别为本章谱积分的纯原子特例.
+\end{FARemark}
+
+\section{谱测度接口}\label{sec:ii03-spectral-measure-interface}
+\index{Riesz--Markov--Kakutani theorem@Riesz--Markov--Kakutani表示定理}\index{projection-valued measure@投影值测度}
+
+本节只证明有界正规谱定理所需的紧度量版本Riesz--Markov--Kakutani定理. 由于任意有界算子的谱是 \(\displaystyle\mathbb C\) 的紧子集，所以这一版本已经足够. 不在此扩张到一般局部紧Hausdorff空间.
+
+\begin{FALemma}[C][紧度量空间上的有限从属分割]{ii03:finite-partition-lemma}
+设 \(\displaystyle K\) 为紧度量空间，\(\displaystyle F\subseteq K\) 紧，\(\displaystyle U_1,\dots,U_m\) 为覆盖 \(\displaystyle F\) 的开集. 则存在 \(\displaystyle\eta_1,\dots,\eta_m\in C(K)\) 满足
+\[
+0\leqslant\eta_j\leqslant1,
+\;
+\operatorname{supp}\eta_j\subseteq U_j,
+\;
+\sum_{j=1}^m\eta_j=1\ \text{于 }F.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+若 \(\displaystyle F=\varnothing\)，取全部 \(\displaystyle\eta_j=0\) 即可. 以下设 \(\displaystyle F\neq\varnothing\). 对每个 \(\displaystyle x\in F\) 选取 \(\displaystyle j(x)\) 使 \(\displaystyle x\in U_{j(x)}\). 因 \(\displaystyle U_{j(x)}\) 开，可取 \(\displaystyle r_x>0\) 使闭球 \(\displaystyle\overline B(x,2r_x)\subseteq U_{j(x)}\). 紧性给出有限点 \(\displaystyle x_1,\dots,x_N\) 使 \(\displaystyle F\subseteq\bigcup_{k=1}^N B(x_k,r_{x_k})\). 对每个 \(\displaystyle k\)，若 \(\displaystyle K\setminus B(x_k,2r_{x_k})=\varnothing\)，置 \(\displaystyle\rho_k\equiv1\)；否则令
+\[
+\rho_k(y)=\frac{d(y,K\setminus B(x_k,2r_{x_k}))}{d(y,K\setminus B(x_k,2r_{x_k}))+d(y,\overline B(x_k,r_{x_k}))}.
+\]
+在后一情形两个非空闭集不交，所以分母处处正；在前一情形 \(\displaystyle K\subseteq B(x_k,2r_{x_k})\subseteq U_{j(x_k)}\). 因此两种情形下 \(\displaystyle\rho_k\) 都连续、\(\displaystyle0\leqslant\rho_k\leqslant1\)，在 \(\displaystyle\overline B(x_k,r_{x_k})\) 上等于 \(\displaystyle1\)，且 \(\displaystyle\operatorname{supp}\rho_k\subseteq U_{j(x_k)}\). 令 \(\displaystyle\rho=\sum_{k=1}^N\rho_k\). 则 \(\displaystyle\rho>0\) 于 \(\displaystyle F\). 由紧性可取开邻域 \(\displaystyle W\supseteq F\) 使 \(\displaystyle\rho>0\) 于 \(\displaystyle\overline W\). 若 \(\displaystyle W=K\)，置 \(\displaystyle\chi\equiv1\)；否则令
+\(\displaystyle \chi(y)=\frac{d(y,K\setminus W)}{d(y,K\setminus W)+d(y,F)}.\)
+于是 \(\displaystyle\chi\in C(K)\)、\(\displaystyle0\leqslant\chi\leqslant1\)、\(\displaystyle\chi=1\) 于 \(\displaystyle F\)，且 \(\displaystyle\operatorname{supp}\chi\subseteq\overline W\subseteq\{\rho>0\}\). 在 \(\displaystyle\{\rho>0\}\) 上定义 \(\displaystyle\widetilde\eta_k=\chi\frac{\rho_k}{\rho}\)，并在其补集上置零；因 \(\displaystyle\operatorname{supp}\chi\subseteq\{\rho>0\}\)，所得函数连续. 最后按相同的 \(\displaystyle j(x_k)\) 合并：
+\[
+\eta_j=\sum_{k:j(x_k)=j}\widetilde\eta_k.
+\]
+则所需性质全部成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[C][有限度量外测度的Borel可测性]{ii03:metric-outer-measure-borel}
+设 \(\displaystyle K\) 为度量空间，\(\displaystyle\mu^*\) 为有限外测度，并满足当 \(\displaystyle d(A,B)>0\) 时
+\(\displaystyle \mu^*(A\cup B)=\mu^*(A)+\mu^*(B).\)
+则每个闭集满足Carath\'eodory可测性条件，因而每个Borel集 \(\displaystyle E\) 可测，且 \(\displaystyle\mu:=\mu^*|_{\mathcal B(K)}\) 是有限Borel测度.
+\end{FALemma}
+
+\begin{FAProof}
+固定闭集 \(\displaystyle F\subseteq K\) 与任意 \(\displaystyle A\subseteq K\). 外测度次可加性给
+\(\displaystyle \mu^*(A)\leqslant\mu^*(A\cap F)+\mu^*(A\setminus F),\)
+只需证明反向不等式. 令
+\(\displaystyle A_0=\{x\in A\setminus F:d(x,F)\geqslant1\},\)
+并对 \(\displaystyle n\geqslant1\) 令
+\[
+A_n=\left\{x\in A\setminus F:\frac1{n+1}\leqslant d(x,F)<\frac1n\right\}.
+\]
+则 \(\displaystyle A\setminus F=\bigcup_{n=0}^{\infty}A_n\). 对固定奇偶性，任意有限个对应环带彼此由正距离分离，因为距离函数 \(\displaystyle x\mapsto d(x,F)\) 是1-Lipschitz. 因而度量可加性逐次给出
+\[
+\sum_{n\in J}\mu^*(A_n)
+=\mu^*\left(\bigcup_{n\in J}A_n\right)
+\leqslant\mu^*(K)
+\]
+对每个有限同奇偶指标集 \(\displaystyle J\) 成立. 故 \(\displaystyle\sum_{n=0}^{\infty}\mu^*(A_n)<\infty\).
+
+给定 \(\displaystyle\varepsilon>0\)，取 \(\displaystyle N\) 使
+\[
+\sum_{n=N}^{\infty}\mu^*(A_n)<\varepsilon.
+\]
+集合 \(\displaystyle A\cap F\) 与 \(\displaystyle A_0\cup\dots\cup A_{N-1}\) 的距离严格正，所以
+\(\displaystyle \mu^*(A) \geqslant \mu^*(A\cap F) + \mu^*(A_0\cup\dots\cup A_{N-1}).\)
+另一方面，
+\[
+\mu^*(A\setminus F)
+\leqslant
+\mu^*(A_0\cup\dots\cup A_{N-1})
++
+\sum_{n=N}^{\infty}\mu^*(A_n).
+\]
+故
+\(\displaystyle \mu^*(A) \geqslant \mu^*(A\cap F)+\mu^*(A\setminus F)-\varepsilon.\)
+令 \(\displaystyle\varepsilon\downarrow0\) 得Carath\'eodory等式，因此全部闭集都满足 \(\displaystyle\mu^*\) 的Carath\'eodory可测性条件. 此处只调用 I-01 已建立的 Carath\'eodory 外测度接口中的两个一般结论：Carath\'eodory可测集构成 \(\displaystyle\sigma\)-代数，且外测度限制到该 \(\displaystyle\sigma\)-代数后成为可数可加测度. 因该 \(\displaystyle\sigma\)-代数包含全部闭集，它包含Borel \(\displaystyle\sigma\)-代数，所以全部Borel集可测，且 \(\displaystyle\mu^*\) 在Borel集上的限制为测度. 这里没有调用正则性、完备化或其他测度定理.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][Riesz--Markov--Kakutani表示定理：紧度量版]{fa:RMK-B01}
+设 \(\displaystyle K\neq\varnothing\) 为紧度量空间，\(\displaystyle\Lambda:C(K)\to\mathbb C\) 为正线性泛函，即
+\(\displaystyle f\geqslant0\Longrightarrow\Lambda(f)\geqslant0.\)
+则存在唯一有限正则正Borel测度 \(\displaystyle\mu\)，使
+\[
+\Lambda(f)=\int_K f\,\mathrm{d}\mu
+\;\text{对全部 }f\in C(K),
+\]
+并且
+\(\displaystyle \mu(K)=\Lambda(1)=\|\Lambda\|.\)
+\end{FATheorem}
+
+\begin{FAProof}
+先证明有界性. 若 \(\displaystyle f\in C(K;\mathbb R)\)，则
+\(\displaystyle -\|f\|_\infty1\leqslant f\leqslant\|f\|_\infty1.\)
+正性与线性给出 \(\displaystyle\Lambda(f)\in\mathbb R\) 且
+\(\displaystyle |\Lambda(f)|\leqslant\Lambda(1)\|f\|_\infty.\)
+若 \(\displaystyle f\in C(K)\)，取 \(\displaystyle\alpha\in\mathbb T\) 使 \(\displaystyle\alpha\Lambda(f)=|\Lambda(f)|\). 因实值函数的 \(\displaystyle\Lambda\)-值为实数，
+\(\displaystyle |\Lambda(f)| =\operatorname{Re}(\alpha\Lambda(f)) =\Lambda(\operatorname{Re}(\alpha f)) \leqslant\Lambda(1)\|f\|_\infty.\)
+故 \(\displaystyle\|\Lambda\|\leqslant\Lambda(1)\). 反向由 \(\displaystyle\|1\|_\infty=1\) 得 \(\displaystyle\|\Lambda\|\geqslant|\Lambda(1)|=\Lambda(1)\). 因而
+\(\displaystyle \|\Lambda\|=\Lambda(1).\)
+若 \(\displaystyle\Lambda(1)=0\)，则 \(\displaystyle\Lambda=0\)，取零测度即可. 以下设 \(\displaystyle\Lambda(1)>0\).
+
+对开集 \(\displaystyle U\subseteq K\) 定义
+\[
+\mu_0(U)=
+\sup\left\{
+\Lambda(f):
+ f\in C(K),\ 0\leqslant f\leqslant1,\ \operatorname{supp}f\subseteq U
+\right\}.
+\]
+由正性与 \(\displaystyle0\leqslant f\leqslant1\) 可得 \(\displaystyle0\leqslant\Lambda(f)\leqslant\Lambda(1)\)，对可容许 \(\displaystyle f\) 取上确界即有 \(\displaystyle0\leqslant\mu_0(U)\leqslant\Lambda(1)\). 且 \(\displaystyle U\subseteq V\) 推出 \(\displaystyle\mu_0(U)\leqslant\mu_0(V)\). 又 \(\displaystyle1\) 在 \(\displaystyle U=K\) 时可取，所以 \(\displaystyle\mu_0(K)=\Lambda(1)\).
+
+先证明开集上的次可加性. 设 \(\displaystyle U\subseteq\bigcup_{j=1}^{\infty}U_j\)，且各 \(\displaystyle U_j\) 开. 固定可容许函数 \(\displaystyle f\) 满足 \(\displaystyle\operatorname{supp}f=:F\subseteq U\). 紧集 \(\displaystyle F\) 被有限个 \(\displaystyle U_{j_1},\dots,U_{j_m}\) 覆盖. 用\autoref{ii03:finite-partition-lemma}取 \(\displaystyle\eta_1,\dots,\eta_m\) 从属于该覆盖，并在 \(\displaystyle F\) 上和为1. 则
+\[
+f=\sum_{k=1}^m f\eta_k,
+\;
+0\leqslant f\eta_k\leqslant1,
+\;
+\operatorname{supp}(f\eta_k)\subseteq U_{j_k}.
+\]
+因此
+\[
+\Lambda(f)
+\leqslant\sum_{k=1}^m\mu_0(U_{j_k})
+\leqslant\sum_{j=1}^{\infty}\mu_0(U_j).
+\]
+对 \(\displaystyle f\) 取上确界，得到
+\[
+\mu_0(U)\leqslant\sum_{j=1}^{\infty}\mu_0(U_j).
+\]
+若 \(\displaystyle U,V\) 不交，则反向可加性也成立. 给定 \(\displaystyle\varepsilon>0\)，分别取 \(\displaystyle f,g\) 支持于 \(\displaystyle U,V\)，满足 \(\displaystyle0\leqslant f,g\leqslant1\) 且
+\(\displaystyle \Lambda(f)>\mu_0(U)-\frac\varepsilon2, \; \Lambda(g)>\mu_0(V)-\frac\varepsilon2.\)
+因支集不交，\(\displaystyle0\leqslant f+g\leqslant1\)，且支集包含于 \(\displaystyle U\cup V\). 故
+\(\displaystyle \mu_0(U\cup V) \geqslant\Lambda(f+g) >\mu_0(U)+\mu_0(V)-\varepsilon.\)
+结合次可加性并令 \(\displaystyle\varepsilon\downarrow0\)，得到
+\(\displaystyle \mu_0(U\cup V)=\mu_0(U)+\mu_0(V)\)
+对不交开集成立.
+
+对任意 \(\displaystyle E\subseteq K\) 定义
+\(\displaystyle \mu^*(E)=\inf\{\mu_0(U):E\subseteq U,\ U\text{ 开}\}.\)
+由定义，空集可由空开集覆盖且 \(\displaystyle\mu_0(\varnothing)=0\)，故 \(\displaystyle\mu^*(\varnothing)=0\)；覆盖族的包含关系同时给出单调性. 若 \(\displaystyle E_n\subseteq K\)，给定 \(\displaystyle\varepsilon>0\)，取开集 \(\displaystyle U_n\supseteq E_n\) 使
+\(\displaystyle \mu_0(U_n)<\mu^*(E_n)+\varepsilon2^{-n}.\)
+由开集次可加性，
+\[
+\mu^*\left(\bigcup_{n=1}^{\infty}E_n\right)
+\leqslant\mu_0\left(\bigcup_{n=1}^{\infty}U_n\right)
+\leqslant\sum_{n=1}^{\infty}\mu_0(U_n)
+\leqslant\sum_{n=1}^{\infty}\mu^*(E_n)+\varepsilon.
+\]
+令 \(\displaystyle\varepsilon\downarrow0\)，故 \(\displaystyle\mu^*\) 是外测度.
+
+再证明度量分离性. 若 \(\displaystyle d(A,B)=d>0\)，任取开集 \(\displaystyle U\supseteq A\cup B\)，令
+\(\displaystyle U_A=U\cap\{x:d(x,A)<\frac{d}{3}\}, \; U_B=U\cap\{x:d(x,B)<\frac{d}{3}\}.\)
+则 \(\displaystyle U_A,U_B\) 不交，分别包含 \(\displaystyle A,B\). 因而
+\(\displaystyle \mu_0(U) \geqslant\mu_0(U_A\cup U_B) =\mu_0(U_A)+\mu_0(U_B) \geqslant\mu^*(A)+\mu^*(B).\)
+对 \(\displaystyle U\) 取下确界，结合外测度次可加性，得到
+\(\displaystyle \mu^*(A\cup B)=\mu^*(A)+\mu^*(B).\)
+又 \(\displaystyle\mu^*(K)=\mu_0(K)=\Lambda(1)<\infty\). 由\autoref{ii03:metric-outer-measure-borel}，全部Borel集可测，\(\displaystyle\mu=\mu^*|_{\mathcal B(K)}\) 是有限Borel测度.
+
+若 \(\displaystyle U\) 开，则由定义与单调性，
+\(\displaystyle \mu(U)=\mu^*(U) =\inf_{V\supseteq U,\ V\text{ 开}}\mu_0(V) =\mu_0(U).\)
+所以 \(\displaystyle\mu\) 外正则. 对开集 \(\displaystyle U\)，若 \(\displaystyle f\) 是定义 \(\displaystyle\mu_0(U)\) 的可容许函数，记 \(\displaystyle F=\operatorname{supp}f\subseteq U\). 对任意开 \(\displaystyle V\supseteq F\)，\(\displaystyle f\) 也可用于 \(\displaystyle\mu_0(V)\)，故 \(\displaystyle\Lambda(f)\leqslant\mu_0(V)\). 对 \(\displaystyle V\) 取下确界得到 \(\displaystyle\Lambda(f)\leqslant\mu(F)\). 因而
+\(\displaystyle \mu(U)=\mu_0(U) \leqslant\sup\{\mu(F):F\subseteq U,\ F\text{ 紧}\}.\)
+反向由单调性成立，所以开集内正则. 对一般Borel集 \(\displaystyle E\)，外正则给 \(\displaystyle K\setminus E\) 的开邻域 \(\displaystyle V\) 使 \(\displaystyle\mu(V)<\mu(K\setminus E)+\varepsilon\). 令 \(\displaystyle F=K\setminus V\subseteq E\)，则 \(\displaystyle F\) 紧，且有限可加性给
+\(\displaystyle \mu(E)-\mu(F)=\mu(V)-\mu(K\setminus E)<\varepsilon.\)
+故 \(\displaystyle\mu\) 对全部Borel集内正则. 因而 \(\displaystyle\mu\) 是有限正则Borel测度.
+
+现在证明表示恒等式. 先取 \(\displaystyle f\in C(K)\) 且 \(\displaystyle f\geqslant0\)，记 \(\displaystyle M=\|f\|_\infty\). 固定 \(\displaystyle\delta>0\)，对正整数 \(\displaystyle k\) 令
+\(\displaystyle U_k=\{x\in K:f(x)>k\delta\}.\)
+只需取有限多个满足 \(\displaystyle k\delta<M\) 的指标. 对每个这样的 \(\displaystyle k\)，由 \(\displaystyle\mu(U_k)=\mu_0(U_k)\)，可选 \(\displaystyle g_k\in C(K)\) 使
+\(\displaystyle 0\leqslant g_k\leqslant1, \; \operatorname{supp}g_k\subseteq U_k, \; \Lambda(g_k)>\mu(U_k)-\varepsilon_k,\)
+其中有限个 \(\displaystyle\varepsilon_k>0\) 可使 \(\displaystyle\delta\sum_k\varepsilon_k<\varepsilon\). 对每个 \(\displaystyle x\)，若 \(\displaystyle g_k(x)>0\)，则 \(\displaystyle k\delta<f(x)\). 因而可出现的正指标数不超过 \(\displaystyle\lfloor \frac{f(x)}{\delta}\rfloor\)，所以
+\[
+\delta\sum_k g_k(x)\leqslant f(x).
+\]
+正性给出
+\[
+\delta\sum_k\mu(U_k)-\varepsilon
+<\delta\sum_k\Lambda(g_k)
+\leqslant\Lambda(f).
+\]
+另一方面，逐点有
+\[
+0\leqslant f-\delta\sum_k1_{U_k}\leqslant\delta,
+\]
+故
+\[
+0\leqslant
+\int_K f\,\mathrm{d}\mu
+-
+\delta\sum_k\mu(U_k)
+\leqslant\delta\mu(K).
+\]
+先令 \(\displaystyle\varepsilon\downarrow0\)，再令 \(\displaystyle\delta\downarrow0\)，得到
+\[
+\int_K f\,\mathrm{d}\mu\leqslant\Lambda(f).
+\]
+对非负函数 \(\displaystyle M1-f\) 应用同一结论，并用 \(\displaystyle\mu(K)=\Lambda(1)\)，得
+\[
+M\mu(K)-\int_K f\,\mathrm{d}\mu
+\leqslant
+M\Lambda(1)-\Lambda(f),
+\]
+即 \(\displaystyle\Lambda(f)\leqslant\int_K f\,\mathrm{d}\mu\). 因而非负连续函数上等号成立. 对实值 \(\displaystyle f\)，写 \(\displaystyle f=f_+-f_-\)，其中 \(\displaystyle f_\pm=\frac{|f|\pm f}{2}\) 连续非负；对复值函数再写 \(\displaystyle f=\operatorname{Re}f+\mathrm{i}\operatorname{Im}f\). 线性给出
+\[
+\Lambda(f)=\int_K f\,\mathrm{d}\mu
+\]
+对全部 \(\displaystyle f\in C(K)\) 成立.
+
+最后证明唯一性，而且这里不预先假设第二个表示测度正则. 设 \(\displaystyle\nu\) 是任意有限正Borel测度，且对全部连续函数积分与 \(\displaystyle\mu\) 相同. 对闭集 \(\displaystyle F\subseteq K\) 定义
+\(\displaystyle g_n(x)=\max\{0,1-n d(x,F)\}.\)
+则 \(\displaystyle0\leqslant g_n\leqslant1\)、\(\displaystyle g_n\downarrow1_F\) 逐点成立. 有限测度上的支配收敛定理给出
+\[
+\mu(F)=\lim_{n\to\infty}\int g_n\,\mathrm{d}\mu
+=\lim_{n\to\infty}\int g_n\,\mathrm{d}\nu
+=\nu(F).
+\]
+取补集即得全部开集上 \(\displaystyle\mu(U)=\nu(U)\). 对任意Borel集 \(\displaystyle E\) 及开集 \(\displaystyle U\supseteq E\)，有 \(\displaystyle\nu(E)\leqslant\nu(U)=\mu(U)\). 对 \(\displaystyle U\) 取下确界并用已构造测度 \(\displaystyle\mu\) 的外正则性，得到 \(\displaystyle\nu(E)\leqslant\mu(E)\). 又由 \(\displaystyle\nu(K)=\mu(K)\) 及对 \(\displaystyle K\setminus E\) 的同一不等式，得到反向不等式. 因而 \(\displaystyle\nu=\mu\). 唯一性成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[C][正则复测度由连续函数唯一确定]{ii03:complex-measure-uniqueness}
+设 \(\displaystyle\mu,\nu\) 为紧度量空间 \(\displaystyle K\) 上有限正则复Borel测度. 若
+\[
+\int_K f\,\mathrm{d}\mu=\int_K f\,\mathrm{d}\nu
+\;\text{对全部 }f\in C(K),
+\]
+则 \(\displaystyle\mu=\nu\).
+\end{FACorollary}
+
+\begin{FAProof}
+本节所称有限正则复测度均为有限个有限正则正Borel测度的复线性组合；本章由极化产生的复测度均属于此类. 令 \(\displaystyle\rho=\mu-\nu\)，写成 \(\displaystyle\rho=\sum_{j=1}^m c_j\eta_j\)，其中每个 \(\displaystyle\eta_j\) 是有限正则正Borel测度. 令
+\[
+\lambda=\sum_{j=1}^m|c_j|\eta_j.
+\]
+则 \(\displaystyle\lambda\) 是有限正则正Borel测度，并且对任意Borel集 \(\displaystyle A\) 及满足 \(\displaystyle|g|\leqslant1\) 的有界Borel函数，
+\[
+|\rho(A)|\leqslant\lambda(A),
+\;\text{且}\;
+\left|\int_A g\,\mathrm{d}\rho\right|\leqslant\lambda(A).
+\]
+固定开集 \(\displaystyle U\) 与 \(\displaystyle\varepsilon>0\). 由 \(\displaystyle\lambda\) 的内正则性取紧集 \(\displaystyle F\subseteq U\)，使 \(\displaystyle\lambda(U\setminus F)<\varepsilon\). 距离公式给出连续 \(\displaystyle0\leqslant g\leqslant1\)，满足 \(\displaystyle g=1\) 于 \(\displaystyle F\) 且 \(\displaystyle\operatorname{supp}g\subseteq U\). 由假设 \(\displaystyle\int g\,\mathrm{d}\rho=0\)，且 \(\displaystyle g=1\) 于 \(\displaystyle F\)，故
+\[
+|\rho(F)|
+=\left|\int_Fg\,\mathrm{d}\rho\right|
+=\left|\int_{U\setminus F}g\,\mathrm{d}\rho\right|
+\leqslant\lambda(U\setminus F)
+<\varepsilon.
+\]
+于是 \(\displaystyle|\rho(U)|\leqslant|\rho(F)|+|\rho(U\setminus F)|<2\varepsilon\)，从而 \(\displaystyle\rho(U)=0\). 对任意Borel集 \(\displaystyle E\)，由 \(\displaystyle\lambda\) 的外正则性取开集 \(\displaystyle U\supseteq E\) 使 \(\displaystyle\lambda(U\setminus E)<\varepsilon\). 因 \(\displaystyle\rho(U)=0\)，
+\(\displaystyle |\rho(E)|=|\rho(U\setminus E)|\leqslant\lambda(U\setminus E)<\varepsilon.\)
+令 \(\displaystyle\varepsilon\downarrow0\) 得 \(\displaystyle\rho(E)=0\). 因而 \(\displaystyle\mu=\nu\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[C][连续函数在 \(\displaystyle L^2\) 中稠密]{ii03:ck-dense-l2}
+设 \(\displaystyle K\) 为紧度量空间，\(\displaystyle\mu\) 为有限正则正Borel测度. 则
+\(\displaystyle C(K)\ \text{在 }L^2(K,\mu)\text{ 中稠密}.\)
+\end{FALemma}
+
+\begin{FAProof}
+先逼近指示函数. 固定Borel集 \(\displaystyle E\) 与 \(\displaystyle\varepsilon>0\). 正则性给出紧集 \(\displaystyle F\subseteq E\) 与开集 \(\displaystyle U\supseteq E\)，使
+\(\displaystyle \mu(U\setminus F)<\varepsilon^2.\)
+距离公式
+\(\displaystyle g(x)=\frac{d(x,K\setminus U)}{d(x,K\setminus U)+d(x,F)}\)
+给出 \(\displaystyle g\in C(K)\)、\(\displaystyle0\leqslant g\leqslant1\)、\(\displaystyle g=1\) 于 \(\displaystyle F\)、\(\displaystyle g=0\) 于 \(\displaystyle K\setminus U\). 因而
+\(\displaystyle \|1_E-g\|_2^2 \leqslant\mu(U\setminus F) <\varepsilon^2.\)
+所以每个Borel指示函数可由连续函数在 \(\displaystyle L^2\) 中逼近. 有限线性组合给出全部简单函数的逼近，而I-01的测度接口已经建立简单函数在 \(\displaystyle L^2\) 中稠密. 故结论成立.\hfill\(\square\)
+\end{FAProof}
+
+设以下直到本节末尾，\(\displaystyle H\) 为复Hilbert空间，\(\displaystyle\mathcal T\in\mathcal B(H)\) 正规，记
+\(\displaystyle K=\sigma(\mathcal T).\)
+由\autoref{fa:BALG-A01}，\(\displaystyle K\) 是非空紧集；作为 \(\displaystyle\mathbb C\) 的子空间，它是紧度量空间. 由\autoref{fa:CSTAR-A01}存在连续函数演算
+\(\displaystyle \Phi:C(K)\longrightarrow C^*(\mathcal I,\mathcal T)\subseteq\mathcal B(H).\)
+
+\begin{FAProposition}[B][标量谱测度与极化]{ii03:scalar-spectral-measures}
+对每个 \(\displaystyle x\in H\)，存在唯一有限正则正Borel测度 \(\displaystyle\mu_x\) 满足
+\[
+\langle\Phi(f)x,x\rangle
+=\int_K f\,\mathrm{d}\mu_x
+\;\text{对全部 }f\in C(K),
+\]
+且 \(\displaystyle\mu_x(K)=\|x\|^2\). 对 \(\displaystyle x,y\in H\) 定义有限正则复Borel测度
+\[
+\mu_{x,y}
+=\frac14\left(
+\mu_{x+y}-\mu_{x-y}
++\mathrm{i}\mu_{x+\mathrm{i}y}
+-\mathrm{i}\mu_{x-\mathrm{i}y}
+\right).
+\]
+则
+\[
+\langle\Phi(f)x,y\rangle
+=\int_K f\,\mathrm{d}\mu_{x,y}
+\;\text{对全部 }f\in C(K).
+\]
+这里的极化符号与本书“第一变量线性、第二变量共轭线性”的内积约定一致.
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in H\)，定义
+\(\displaystyle \Lambda_x(f)=\langle\Phi(f)x,x\rangle.\)
+若 \(\displaystyle f\geqslant0\)，令 \(\displaystyle g=\sqrt f\in C(K)\). 由函数演算的 *-同态性，
+\(\displaystyle \Phi(f)=\Phi(\overline g g)=\Phi(g)^*\Phi(g).\)
+故
+\(\displaystyle \Lambda_x(f)=\|\Phi(g)x\|^2\geqslant0.\)
+由\autoref{fa:RMK-B01}，存在唯一有限正则正Borel测度 \(\displaystyle\mu_x\) 表示 \(\displaystyle\Lambda_x\). 又
+\(\displaystyle \mu_x(K)=\Lambda_x(1)=\langle x,x\rangle=\|x\|^2.\)
+
+先核验极化符号. 若 \(\displaystyle A=A^*\in\mathcal B(H)\)，记 \(\displaystyle q_A(x)=\langle Ax,x\rangle\). 直接展开并使用第一变量线性得到
+\[
+\langle Ax,y\rangle
+=\frac14\left(
+q_A(x+y)-q_A(x-y)
++\mathrm{i}q_A(x+\mathrm{i}y)
+-\mathrm{i}q_A(x-\mathrm{i}y)
+\right).
+\]
+若 \(\displaystyle f\) 实值，则 \(\displaystyle\Phi(f)^*=\Phi(f)\)，将 \(\displaystyle q_{\Phi(f)}(z)=\int f\,\mathrm{d}\mu_z\) 代入上式，得到
+\[
+\langle\Phi(f)x,y\rangle
+=\int_K f\,\mathrm{d}\mu_{x,y}.
+\]
+对一般 \(\displaystyle f=u+\mathrm{i}v\)，其中 \(\displaystyle u,v\) 实值连续，分别应用实值情形并用线性，即得同一公式.\hfill\(\square\)
+\end{FAProof}
+
+由上一表示与\autoref{ii03:complex-measure-uniqueness}，测度 \(\displaystyle\mu_{x,y}\) 对 \(\displaystyle x\) 线性、对 \(\displaystyle y\) 共轭线性. 事实上，例如任意 \(\displaystyle\alpha,\beta\in\mathbb C\) 与 \(\displaystyle x_1,x_2,y\in H\) 满足
+\[
+\int f\,\mathrm{d}\mu_{\alpha x_1+\beta x_2,y}
+=\langle\Phi(f)(\alpha x_1+\beta x_2),y\rangle
+=\alpha\int f\,\mathrm{d}\mu_{x_1,y}
++\beta\int f\,\mathrm{d}\mu_{x_2,y},
+\]
+故测度本身相等；对第二变量重复该极化恒等式并利用内积第二变量的共轭线性，可得相应的共轭线性. 特别地 \(\displaystyle\mu_{x,x}=\mu_x\).
+
+\begin{FAProposition}[B][Borel集上的有界半双线性型]{ii03:spectral-sesquilinear-form}
+对Borel集 \(\displaystyle B\subseteq K\) 定义
+\(\displaystyle \beta_B(x,y)=\mu_{x,y}(B), \; q_B(x)=\mu_x(B).\)
+则 \(\displaystyle\beta_B\) 对第一变量线性、第二变量共轭线性，\(\displaystyle q_B(x)=\beta_B(x,x)\geqslant0\)，并且
+\(\displaystyle |\beta_B(x,y)|^2\leqslant q_B(x)q_B(y), \; |\beta_B(x,y)|\leqslant\|x\|\|y\|.\)
+\end{FAProposition}
+
+\begin{FAProof}
+半双线性已由上面的复测度唯一性得到，且 \(\displaystyle q_B(x)=\mu_x(B)\geqslant0\). 因 \(\displaystyle\beta_B\) 为正半双线性型，它自动Hermitian：对 \(\displaystyle x,y\) 展开 \(\displaystyle q_B(x+y)\) 与 \(\displaystyle q_B(x+\mathrm{i}y)\) 并利用所得实数，可得 \(\displaystyle\beta_B(y,x)=\overline{\beta_B(x,y)}\).
+
+若 \(\displaystyle q_B(y)>0\)，对任意 \(\displaystyle\alpha\in\mathbb C\)，
+\[
+0\leqslant q_B(x+\alpha y)
+=q_B(x)+\overline\alpha\beta_B(x,y)+\alpha\overline{\beta_B(x,y)}+|\alpha|^2q_B(y).
+\]
+取 \(\displaystyle\alpha=-\frac{\beta_B(x,y)}{q_B(y)}\)，得到
+\(\displaystyle 0\leqslant q_B(x)-\frac{|\beta_B(x,y)|^2}{q_B(y)}.\)
+若 \(\displaystyle q_B(y)=0\)，则上式对所有 \(\displaystyle\alpha\) 非负迫使 \(\displaystyle\beta_B(x,y)=0\). 因而Cauchy--Schwarz不等式总成立. 又
+\(\displaystyle q_B(x)\leqslant\mu_x(K)=\|x\|^2,\)
+故第二个估计立即得到.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][谱投影算子的重建]{ii03:spectral-projection-reconstruction}
+对每个Borel集 \(\displaystyle B\subseteq K\)，存在唯一 \(\displaystyle E(B)\in\mathcal B(H)\) 满足
+\(\displaystyle \langle E(B)x,y\rangle=\mu_{x,y}(B) \;\text{对全部 }x,y\in H,\)
+且 \(\displaystyle\|E(B)\|\leqslant1\).
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in H\). 映射
+\(\displaystyle y\longmapsto\overline{\beta_B(x,y)}\)
+是有界线性泛函，且其范数不超过 \(\displaystyle\|x\|\). 由I-04的Hilbert空间Riesz表示定理\autoref{fa:HIL-A02}，存在唯一 \(\displaystyle z_x\in H\) 使
+\(\displaystyle \overline{\beta_B(x,y)}=\langle y,z_x\rangle ,\;\text{对全部 }y\in H.\)
+取共轭得到 \(\displaystyle\beta_B(x,y)=\langle z_x,y\rangle\). 令 \(\displaystyle E(B)x=z_x\). \(\displaystyle\beta_B\) 对第一变量线性与Riesz表示的唯一性给出 \(\displaystyle E(B)\) 线性，而
+\(\displaystyle \|E(B)x\|=\|z_x\|\leqslant\|x\|\)
+给出有界性与 \(\displaystyle\|E(B)\|\leqslant1\). 唯一性由内积分离点直接得到. 这里\autoref{fa:HIL-A02}是从标量测度到算子谱投影的实际重建步骤.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][循环 \(\displaystyle L^2\) 模型]{ii03:cyclic-l2-model}
+固定 \(\displaystyle x\in H\)，定义循环子空间
+\(\displaystyle H_x= \overline{\{\Phi(f)x:f\in C(K)\}}.\)
+则 \(\displaystyle H_x\) 同时对 \(\displaystyle\mathcal T\) 与 \(\displaystyle\mathcal T^*\) 不变，因而约化 \(\displaystyle\mathcal T\). 映射
+\(\displaystyle U_x:C(K)\longrightarrow H_x, \; U_xf=\Phi(f)x\)
+满足
+\[
+\langle U_xf,U_xg\rangle
+=\int_K f\overline g\,\mathrm{d}\mu_x,
+\]
+并唯一延拓为酉算子
+\(\displaystyle U_x:L^2(K,\mu_x)\longrightarrow H_x.\)
+在此识别下
+\(\displaystyle U_x^{-1}\mathcal T U_x=M_z, \; U_x^{-1}\mathcal T^*U_x=M_{\overline z},\)
+其中 \(\displaystyle z(\lambda)=\lambda\).
+\end{FAProposition}
+
+\begin{FAProof}
+对 \(\displaystyle f\in C(K)\)，
+\(\displaystyle \mathcal T\Phi(f)x=\Phi(zf)x, \; \mathcal T^*\Phi(f)x=\Phi(\overline z f)x.\)
+故生成稠密集对二者不变；由算子有界性，闭包 \(\displaystyle H_x\) 也对二者不变，所以它约化 \(\displaystyle\mathcal T\).
+
+又由函数演算与标量测度表示，
+\[
+\begin{aligned}
+\displaystyle \langle U_xf,U_xg\rangle &\displaystyle =\langle\Phi(f)x,\Phi(g)x\rangle\\
+\displaystyle &\displaystyle =\langle\Phi(\overline g f)x,x\rangle\\
+\displaystyle &\displaystyle =\int_K f\overline g\,\mathrm{d}\mu_x.
+\end{aligned}
+\]
+所以 \(\displaystyle U_x\) 只依赖于 \(\displaystyle L^2\) 等价类并在 \(\displaystyle C(K)\) 上是等距映射. 由\autoref{ii03:ck-dense-l2}，它延拓为从 \(\displaystyle L^2(K,\mu_x)\) 到 \(\displaystyle H_x\) 的等距映射. 延拓像闭且包含定义 \(\displaystyle H_x\) 的稠密生成集，故满射，因而酉. 最后对连续 \(\displaystyle f\)，
+\(\displaystyle \mathcal T U_xf=U_x(zf), \; \mathcal T^*U_xf=U_x(\overline z f),\)
+再由稠密性与有界性延拓到全部 \(\displaystyle L^2\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][谱投影的乘法模型]{ii03:spectral-projection-multiplication-model}
+对任意Borel集 \(\displaystyle B\subseteq K\) 与任意 \(\displaystyle x\in H\)，
+\(\displaystyle E(B)H_x\subseteq H_x, \; E(B)|_{H_x}=U_xM_{1_B}U_x^{-1}.\)
+\end{FAProposition}
+
+\begin{FAProof}
+先取 \(\displaystyle u=\Phi(f)x\)、\(\displaystyle v=\Phi(g)x\)，其中 \(\displaystyle f,g\in C(K)\). 对任意 \(\displaystyle h\in C(K)\)，
+\[
+\begin{aligned}
+\displaystyle \int_K h\,\mathrm{d}\mu_{u,v} &\displaystyle =\langle\Phi(h)u,v\rangle\\
+\displaystyle &\displaystyle =\langle\Phi(hf)x,\Phi(g)x\rangle\\
+\displaystyle &\displaystyle =\int_K hf\overline g\,\mathrm{d}\mu_x.
+\end{aligned}
+\]
+右侧由有限正则复测度 \(\displaystyle f\overline g\,\mu_x\) 表示. 由\autoref{ii03:complex-measure-uniqueness}，
+\(\displaystyle \mu_{u,v}=f\overline g\,\mu_x.\)
+若 \(\displaystyle y\perp H_x\)，则对全部 \(\displaystyle h\in C(K)\)，\(\displaystyle\Phi(h)u\in H_x\)，故
+\[
+\int_K h\,\mathrm{d}\mu_{u,y}
+=\langle\Phi(h)u,y\rangle=0.
+\]
+再由复测度唯一性，\(\displaystyle\mu_{u,y}=0\).
+
+于是对任意 \(\displaystyle v=\Phi(g)x\)，
+\[
+\langle E(B)u,v\rangle=\mu_{u,v}(B)=\int_B f\overline g\,\mathrm{d}\mu_x=\langle U_xM_{1_B}f,U_xg\rangle.
+\]
+而对 \(\displaystyle y\perp H_x\)，有 \(\displaystyle\langle E(B)u,y\rangle=0\). 因此
+\(\displaystyle E(B)u=U_xM_{1_B}f.\)
+此式先在 \(\displaystyle H_x\) 的稠密生成集上成立，再由 \(\displaystyle E(B)\) 与 \(\displaystyle M_{1_B}\) 有界延拓到全部 \(\displaystyle H_x\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][谱投影基本性质]{fa:CSTAR-B02}
+以上构造的映射 \(\displaystyle E:\mathcal B(K)\to\mathcal B(H)\) 满足：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle E(\varnothing)=0\)，\(\displaystyle E(K)=\mathcal I\).
+\item \(\displaystyle E(B)^*=E(B)\) 且 \(\displaystyle E(B)^2=E(B)\).
+\item \(\displaystyle E(B)E(C)=E(B\cap C)\).
+\item 若 \(\displaystyle B_n\cap B_m=\varnothing\) 对 \(\displaystyle n\neq m\) 成立，则对每个 \(\displaystyle x\in H\)，
+\[
+E\left(\bigcup_{n=1}^{\infty}B_n\right)x
+=
+\sum_{n=1}^{\infty}E(B_n)x
+\]
+且级数在 \(\displaystyle H\) 范数中收敛.
+\item 每个 \(\displaystyle E(B)\) 与全部 \(\displaystyle\Phi(f)\) 以及 \(\displaystyle\mathcal T\) 交换；\(\displaystyle E(B)H\) 约化 \(\displaystyle\mathcal T\).
+\end{enumerate}
+此外每个标量测度 \(\displaystyle B\mapsto\langle E(B)x,y\rangle\) 都是有限正则复Borel测度. 因而 \(\displaystyle E\) 是正则投影值测度.
+\end{FATheorem}
+
+\begin{FAProof}
+固定任意 \(\displaystyle x\in H\). 在循环模型\autoref{ii03:spectral-projection-multiplication-model}中，\(\displaystyle E(B)|_{H_x}\) 对应 \(\displaystyle M_{1_B}\). 因而
+\(\displaystyle M_{1_\varnothing}=0, \; M_{1_K}=\mathcal I, \; M_{1_B}^*=M_{1_B},\)
+\(\displaystyle M_{1_B}^2=M_{1_B}, \; M_{1_B}M_{1_C}=M_{1_{B\cap C}}.\)
+将这些等式作用于原任意向量 \(\displaystyle x\) 即得（i）--（iii）全局成立.
+
+若 \(\displaystyle(B_n)\) 两两不交，则在 \(\displaystyle L^2(K,\mu_x)\) 中
+\[
+\left\|
+1_{\cup_{n\geqslant1}B_n}
+-
+\sum_{n=1}^N1_{B_n}
+\right\|_2^2
+=
+\mu_x\left(\bigcup_{n>N}B_n\right)
+\longrightarrow0
+\]
+由标量测度的从上连续性成立. 因 \(\displaystyle U_x1=x\)，乘法模型给出
+\[
+\left\|
+E\left(\bigcup_{n=1}^{\infty}B_n\right)x
+-
+\sum_{n=1}^NE(B_n)x
+\right\|
+\longrightarrow0.
+\]
+这证明的是强可数可加性，而不只是弱标量可加性.
+
+在 \(\displaystyle H_x\) 上，\(\displaystyle\Phi(f)\) 对应乘法算子 \(\displaystyle M_f\)，它与 \(\displaystyle M_{1_B}\) 交换；特别地 \(\displaystyle\mathcal T\) 对应 \(\displaystyle M_z\). 因 \(\displaystyle x\) 任意，得到全局交换关系. 又 \(\displaystyle E(B)\) 为正交投影且与 \(\displaystyle\mathcal T,\mathcal T^*\) 交换，所以其值域同时对二者不变，即约化 \(\displaystyle\mathcal T\). 最后的正则性由定义
+\(\displaystyle \langle E(B)x,y\rangle=\mu_{x,y}(B)\)
+与\autoref{ii03:scalar-spectral-measures}直接得到.\hfill\(\square\)
+\end{FAProof}
+
+若 \(\displaystyle B,C\) 不交，则 \(\displaystyle E(B)E(C)=0\)，故
+\(\displaystyle E(B)H\perp E(C)H.\)
+因此 \(\displaystyle E(B)H\) 是 \(\displaystyle\mathcal T\) 的约化谱子空间. 但一般正规算子的谱测度可以完全非原子；不能把\autoref{fa:CSTAR-B02}误读成特征向量基定理.
+
+\begin{FAProposition}[B][有界Borel谱积分接口]{ii03:bounded-borel-spectral-integral}
+设 \(\displaystyle E\) 为\autoref{fa:CSTAR-B02}的PVM. 若
+\[
+s=\sum_{j=1}^m c_j1_{B_j}
+\]
+是有界Borel简单函数，其中 \(\displaystyle B_j\) 两两不交，则定义
+\[
+\int_K s\,\mathrm{d}E
+:=\sum_{j=1}^m c_jE(B_j).
+\]
+若 \(\displaystyle g:K\to\mathbb C\) 为有界Borel函数，则存在一致收敛于 \(\displaystyle g\) 的Borel简单函数 \(\displaystyle s_n\)，且
+\[
+\int_K g\,\mathrm{d}E
+:=\lim_{n\to\infty}\int_K s_n\,\mathrm{d}E
+\]
+在算子范数中存在并与逼近选择无关. 此积分满足线性、乘法与
+\[
+\left(\int_K g\,\mathrm{d}E\right)^*
+=\int_K\overline g\,\mathrm{d}E.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+简单函数的定义与表示的细分无关，因为交叠表示可按有限公共分割化为两两不交的Borel集，再用PVM有限可加性. 对上述不交表示，\(\displaystyle E(B_j)H\) 两两正交. 因而对任意 \(\displaystyle x\in H\)，
+\[
+\begin{aligned}
+\displaystyle \left\|\sum_{j=1}^m c_jE(B_j)x\right\|^2 &\displaystyle =\sum_{j=1}^m|c_j|^2\|E(B_j)x\|^2\\
+\displaystyle &\displaystyle \leqslant\|s\|_\infty^2\sum_{j=1}^m\|E(B_j)x\|^2\\
+\displaystyle &\displaystyle \leqslant\|s\|_\infty^2\|x\|^2.
+\end{aligned}
+\]
+故
+\[
+\left\|\int_K s\,\mathrm{d}E\right\|\leqslant\|s\|_\infty.
+\]
+
+对有界Borel函数 \(\displaystyle g\)，分别把其实部与虚部的有界值域按网格 \(\displaystyle\frac{1}{n}\) 划分为有限区间，并在每个Borel原像上取一个网格值，即得到有限值Borel简单函数 \(\displaystyle s_n\) 满足 \(\displaystyle\|s_n-g\|_\infty\to0\). 上述估计给
+\[
+\left\|
+\int s_n\,\mathrm{d}E-
+\int s_m\,\mathrm{d}E
+\right\|
+\leqslant\|s_n-s_m\|_\infty,
+\]
+所以算子范数极限存在；同一估计也证明与逼近选择无关.
+
+对简单函数，线性由定义，乘法由 \(\displaystyle E(B)E(C)=E(B\cap C)\)，伴随公式由 \(\displaystyle E(B)^*=E(B)\) 直接得到. 对一般有界Borel函数，取一致简单逼近并利用算子范数下乘法与伴随的连续性，即把三项性质传递到极限. 这一积分只通过PVM简单函数与算子范数极限定义，不是Bochner积分，也没有引入无界可测函数演算.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][连续函数演算与谱积分一致]{ii03:continuous-spectral-integral-compatibility}
+对全部 \(\displaystyle f\in C(K)\)，
+\[
+\Phi(f)=\int_K f(\lambda)\,\mathrm{d}E(\lambda).
+\]
+特别地，
+\[
+\mathcal T=\int_K\lambda\,\mathrm{d}E(\lambda),
+\;
+\mathcal T^*=\int_K\overline\lambda\,\mathrm{d}E(\lambda).
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+固定任意 \(\displaystyle x\in H\). 在循环模型 \(\displaystyle U_x:L^2(K,\mu_x)\to H_x\) 中，\(\displaystyle\Phi(f)|_{H_x}=U_xM_fU_x^{-1}\). 对简单函数 \(\displaystyle s\)，\autoref{ii03:spectral-projection-multiplication-model}给出
+\[
+\left(\int_K s\,\mathrm{d}E\right)\bigg|_{H_x}
+=U_xM_sU_x^{-1}.
+\]
+取一致简单逼近 \(\displaystyle s_n\to f\). 两边分别在算子范数中收敛到 \(\displaystyle\int f\,\mathrm{d}E\) 与 \(\displaystyle U_xM_fU_x^{-1}\). 因而两算子在 \(\displaystyle x\in H_x\) 上取值相同. 因 \(\displaystyle x\) 任意，得到全局等式. 取 \(\displaystyle f(\lambda)=\lambda\) 与 \(\displaystyle f(\lambda)=\overline\lambda\) 即得最后两式.\hfill\(\square\)
+\end{FAProof}
+
+\section{有界正规算子谱定理}\label{sec:ii03-bounded-normal-spectral-theorem}
+\index{spectral theorem@谱定理!有界正规算子}\index{spectral atom@谱原子}
+
+\begin{FATheorem}[A][有界正规算子谱定理]{fa:CSTAR-A02}
+设 \(\displaystyle H\) 为复Hilbert空间，\(\displaystyle\mathcal T\in\mathcal B(H)\) 正规. 则在紧度量谱 \(\displaystyle K=\sigma(\mathcal T)\) 的Borel \(\displaystyle\sigma\)-代数上存在唯一正则投影值测度 \(\displaystyle E_{\mathcal T}\)，使
+\[
+\mathcal T
+=\int_K\lambda\,\mathrm{d}E_{\mathcal T}(\lambda).
+\]
+并且对每个 \(\displaystyle f\in C(K)\)，
+\[
+f(\mathcal T)
+=\int_K f(\lambda)\,\mathrm{d}E_{\mathcal T}(\lambda).
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+存在性由本节前半的构造完成：\autoref{fa:CSTAR-A01}给出 \(\displaystyle\Phi\)，\autoref{fa:RMK-B01}把正标量泛函 \(\displaystyle\langle\Phi(f)x,x\rangle\) 表成正则测度，极化与\autoref{fa:HIL-A02}重建 \(\displaystyle E(B)\)，\autoref{fa:CSTAR-B02}证明它是正则PVM，而\autoref{ii03:continuous-spectral-integral-compatibility}给出两条积分公式.
+
+只证唯一性. 设 \(\displaystyle F\) 是另一个正则PVM，且
+\[
+\mathcal T=\int_K\lambda\,\mathrm{d}F(\lambda).
+\]
+由有界Borel谱积分的伴随公式，
+\[
+\mathcal T^*=\int_K\overline\lambda\,\mathrm{d}F(\lambda).
+\]
+再由乘法性，对任意 *-多项式 \(\displaystyle p(z,\overline z)\)，
+\[
+p(\mathcal T,\mathcal T^*)
+=\int_Kp(z,\overline z)\,\mathrm{d}F(z).
+\]
+另一方面\autoref{fa:CSTAR-A01}给
+\(\displaystyle p(\mathcal T,\mathcal T^*)=p(\operatorname{id},\overline{\operatorname{id}})(\mathcal T).\)
+由\autoref{ii03:stone-weierstrass-selected}，这些 *-多项式在 \(\displaystyle C(K)\) 中一致稠密. 谱积分满足
+\[
+\left\|\int_K h\,\mathrm{d}F\right\|\leqslant\|h\|_\infty,
+\]
+故一致极限给出
+\[
+f(\mathcal T)=\int_Kf\,\mathrm{d}F
+\;\text{对全部 }f\in C(K).
+\]
+于是对任意 \(\displaystyle x,y\in H\)，两个有限正则复测度
+\(\displaystyle B\longmapsto\langle E_{\mathcal T}(B)x,y\rangle, \; B\longmapsto\langle F(B)x,y\rangle\)
+对全部连续函数积分相同. 由\autoref{ii03:complex-measure-uniqueness}，它们相同. 因而
+\(\displaystyle \langle(E_{\mathcal T}(B)-F(B))x,y\rangle=0\)
+对全部 \(\displaystyle x,y\) 与Borel \(\displaystyle B\) 成立，故 \(\displaystyle E_{\mathcal T}=F\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][谱原子等于特征空间投影]{ii03:eigenvalue-projection}
+对任意 \(\displaystyle\lambda\in\mathbb C\)，若 \(\displaystyle\lambda\notin K\) 约定 \(\displaystyle E_{\mathcal T}(\{\lambda\})=0\)，则
+\(\displaystyle E_{\mathcal T}(\{\lambda\})H = \ker(\mathcal T-\lambda\mathcal I).\)
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle x=E_{\mathcal T}(\{\lambda\})x\)，则在以 \(\displaystyle x\) 为循环向量的乘法模型中，\(\displaystyle x\) 对应常函数 \(\displaystyle1\)，而 \(\displaystyle E(\{\lambda\})x=x\) 表示 \(\displaystyle1_{\{\lambda\}}=1\) 于 \(\displaystyle\mu_x\)-几乎处处. 因而坐标函数 \(\displaystyle z=\lambda\) 几乎处处，所以
+\(\displaystyle \mathcal T x =U_xM_z1 =\lambda U_x1 =\lambda x.\)
+
+反之，若 \(\displaystyle\mathcal T x=\lambda x\)，则 \(\displaystyle H_x\) 的模型中 \(\displaystyle U_x1=x\)，并且
+\(\displaystyle M_z1=U_x^{-1}\mathcal T x=\lambda1.\)
+故 \(\displaystyle z=\lambda\) 于 \(\displaystyle\mu_x\)-几乎处处，因而 \(\displaystyle M_{1_{\{\lambda\}}}1=1\). 由谱投影乘法模型，\(\displaystyle E(\{\lambda\})x=x\). 两个包含关系给出结论.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[\(\displaystyle L^2([0,1])\) 上的乘法算子]\label{ii03:ex-mult}
+沿用I-11的复Hilbert空间 \(\displaystyle H=L^2([0,1])\) 与 \(\displaystyle h\in L^\infty([0,1])\). 取一个本质有界的可测代表元并定义
+\(\displaystyle (\mathcal M_hf)(t)=h(t)f(t).\)
+I-11已经证明
+\(\displaystyle \mathcal M_h^*=\mathcal M_{\overline h},\)
+故 \(\displaystyle\mathcal M_h\) 正规. 定义本质值域
+\[
+\operatorname{ess\,ran}(h)
+=
+\left\{
+\lambda\in\mathbb C:
+ m(\{|h-\lambda|<\varepsilon\})>0
+\text{ 对全部 }\varepsilon>0
+\right\},
+\]
+其中 \(\displaystyle m\) 为Lebesgue测度. 则
+\(\displaystyle \sigma(\mathcal M_h)=\operatorname{ess\,ran}(h).\)
+事实上，若 \(\displaystyle\lambda\notin\operatorname{ess\,ran}(h)\)，则存在 \(\displaystyle\delta>0\) 使 \(\displaystyle|h-\lambda|\geqslant\delta\) 几乎处处，所以
+\[
+\frac1{h-\lambda}\in L^\infty([0,1])
+\]
+且 \(\displaystyle(\mathcal M_h-\lambda\mathcal I)^{-1}=\mathcal M_{\frac{1}{h-\lambda}}\).
+
+反之，若 \(\displaystyle\lambda\in\operatorname{ess\,ran}(h)\)，令
+\[
+A_n=\{|h-\lambda|<\frac{1}{n}\},
+\;
+x_n=\frac{1_{A_n}}{m(A_n)^{\frac{1}{2}}}.
+\]
+则 \(\displaystyle m(A_n)>0\)、\(\displaystyle\|x_n\|_2=1\)，且
+\(\displaystyle \|(\mathcal M_h-\lambda\mathcal I)x_n\|_2 \leqslant\frac1n.\)
+若 \(\displaystyle\mathcal M_h-\lambda\mathcal I\) 可逆，则
+\[
+1=\|x_n\|_2
+\leqslant\|(\mathcal M_h-\lambda\mathcal I)^{-1}\|\|(\mathcal M_h-\lambda\mathcal I)x_n\|_2
+\longrightarrow0,
+\]
+矛盾. 因而 \(\displaystyle\lambda\in\sigma(\mathcal M_h)\).
+\end{FAExample}
+
+记 \(\displaystyle K=\operatorname{ess\,ran}(h)\). 先说明 \(\displaystyle h(t)\in K\) 几乎处处. 取复平面的可数有理球基 \(\displaystyle\mathfrak B\). 对每个满足 \(\displaystyle m(h^{-1}(B))=0\) 的 \(\displaystyle B\in\mathfrak B\) 取其并 \(\displaystyle O\). 若 \(\displaystyle z\notin K\)，存在开球 \(\displaystyle B(z,\varepsilon)\) 使其原像为零测集，并可在其中选取含 \(\displaystyle z\) 的有理基球，所以 \(\displaystyle z\in O\). 反之若 \(\displaystyle z\in O\)，某个包含 \(\displaystyle z\) 的基球原像为零，故 \(\displaystyle z\notin K\). 因此 \(\displaystyle\mathbb C\setminus K=O\)，而
+\[
+m(h^{-1}(\mathbb C\setminus K))
+\leqslant
+\sum_{B\in\mathfrak B,\ m(h^{-1}(B))=0}m(h^{-1}(B))
+=0.
+\]
+
+\begin{FAProposition}[B][乘法算子模型的连续函数演算与显式投影值测度]{ii03:ex-mult-calculus-pvm}
+对 \(\displaystyle f\in C(K)\)，
+\(\displaystyle f(\mathcal M_h)=\mathcal M_{f\circ h} \;\text{几乎处处意义下}.\)
+其谱测度为
+\(\displaystyle E(B)=\mathcal M_{1_{h^{-1}(B)}}\)
+对每个Borel集 \(\displaystyle B\subseteq K\) 成立，其中逆像只按零测集等价类理解.
+\end{FAProposition}
+
+\begin{FAProof}
+因 \(\displaystyle h(t)\in K\) 几乎处处，\(\displaystyle f\circ h\) 定义了 \(\displaystyle L^\infty\) 元素. 映射
+\(\displaystyle \Psi:C(K)\longrightarrow\mathcal B(L^2([0,1])), \; \Psi(f)=\mathcal M_{f\circ h}\)
+由逐点乘法、单位元与共轭运算可直接验证它保持加法、乘法、单位元与对合，故是含幺 \(\displaystyle *\)-同态，并把坐标函数送到 \(\displaystyle\mathcal M_h\). 其等距性如下. 一方面 \(\displaystyle h\in K\) 几乎处处给
+\(\displaystyle \|f\circ h\|_{L^\infty}\leqslant\|f\|_{C(K)}.\)
+另一方面，固定 \(\displaystyle\lambda\in K\) 与 \(\displaystyle\varepsilon>0\). 连续性给出 \(\displaystyle\delta>0\)，使 \(\displaystyle|z-\lambda|<\delta\) 推出 \(\displaystyle|f(z)-f(\lambda)|<\varepsilon\). 本质值域定义保证 \(\displaystyle m(\{|h-\lambda|<\delta\})>0\)，故
+\(\displaystyle \|f\circ h\|_{L^\infty}\geqslant|f(\lambda)|-\varepsilon.\)
+对 \(\displaystyle\lambda\) 取上确界并令 \(\displaystyle\varepsilon\downarrow0\)，得到等距性. 由本章选定Stone--Weierstrass定理，存在 \(\displaystyle z,\overline z\) 的 *-多项式 \(\displaystyle p_n\) 在 \(\displaystyle K\) 上一致收敛到 \(\displaystyle f\). 因而
+\[
+\mathcal M_{p_n(h,\overline h)}
+=p_n(\mathcal M_h,\mathcal M_h^*)
+\in C^*(\mathcal I,\mathcal M_h),
+\;\text{且}\;
+\|\mathcal M_{p_n(h,\overline h)}-\mathcal M_{f\circ h}\|
+\longrightarrow0.
+\]
+故 \(\displaystyle\Psi(C(K))\subseteq C^*(\mathcal I,\mathcal M_h)\). 另一方面 \(\displaystyle\Psi\) 等距，所以其像闭；该像含 \(\displaystyle\mathcal I,\mathcal M_h,\mathcal M_h^*\)，故 \(\displaystyle\Psi(C(K))=C^*(\mathcal I,\mathcal M_h)\). 于是由\autoref{fa:CSTAR-A01}的唯一性，\(\displaystyle\Psi\) 就是连续函数演算.
+
+对 \(\displaystyle x\in L^2([0,1])\) 定义有限正Borel测度
+\[
+\nu_x(B)=\int_{h^{-1}(B)}|x(t)|^2\,\mathrm{d}t.
+\]
+其中 \(\displaystyle B\subseteq K\) 为Borel集.
+对全部 \(\displaystyle f\in C(K)\)，
+\[
+\int_K f\,\mathrm{d}\nu_x
+=\int_0^1 f(h(t))|x(t)|^2\,\mathrm{d}t
+=\langle\mathcal M_{f\circ h}x,x\rangle.
+\]
+因此 \(\displaystyle\nu_x\) 与谱测度构造中的正则正测度 \(\displaystyle\mu_x\) 表示同一个正泛函.\autoref{fa:RMK-B01}的强化唯一性不要求第二个表示测度预先正则，故 \(\displaystyle\nu_x=\mu_x\). 依照本章第一变量线性的极化公式，得到
+\[
+\mu_{x,y}(B)=\int_{h^{-1}(B)}x(t)\overline{y(t)}\,\mathrm{d}t.
+\]
+由谱投影的Riesz重建，
+\(\displaystyle \langle E(B)x,y\rangle =\mu_{x,y}(B) =\left\langle\mathcal M_{1_{h^{-1}(B)}}x,y\right\rangle\)
+对全部 \(\displaystyle x,y\) 成立，故 \(\displaystyle E(B)=\mathcal M_{1_{h^{-1}(B)}}\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[乘法算子模型族中的非原子正规谱]\label{ii03:nonatomic-example}
+取 \(\displaystyle h(t)=t\) 于 \(\displaystyle L^2([0,1])\). 则上例给出
+\(\displaystyle \sigma(\mathcal M_t)=[0,1].\)
+若 \(\displaystyle\lambda\in[0,1]\) 且 \(\displaystyle\mathcal M_tf=\lambda f\)，则 \(\displaystyle(t-\lambda)f(t)=0\) 几乎处处. 单点 \(\displaystyle\{\lambda\}\) 的Lebesgue测度为零，所以 \(\displaystyle f=0\) 于 \(\displaystyle L^2\). 因而
+\(\displaystyle \ker(\mathcal M_t-\lambda\mathcal I)=\{0\}, \; E_{\mathcal M_t}(\{\lambda\})=0\)
+对全部 \(\displaystyle\lambda\in[0,1]\) 成立，而谱仍是非空连续区间. 所以一般有界正规谱定理是PVM分解定理，不是特征向量基定理.
+\end{FAExample}
+
+\begin{FARemark}[移位算子模型与谱不等于特征值集合的反例边界]
+I-11的单边右移 \(\displaystyle\mathcal S\) 满足 \(\displaystyle\mathcal S^*\mathcal S=\mathcal I\) 但 \(\displaystyle\mathcal S\mathcal S^*=\mathcal I-\mathcal P_{\operatorname{span}\{e_1\}}\)，故不正规，不能套用\autoref{fa:CSTAR-A02}. I-12的既有的谱不等于特征值集合反例（\autoref{i12:ce-spectrum-noeig}）进一步说明一般算子的谱不等于特征值集合. 本章只复用该边界，不创建新的规范反例编号.
+\end{FARemark}
+
+\begin{FAApplication}[I-14紧自伴谱定理是纯原子特例]\label{ii03:i14-atomic-bridge}
+设 \(\displaystyle H\) 为复Hilbert空间，\(\displaystyle\mathcal K\in\mathcal B(H)\) 紧且自伴. I-14的\autoref{fa:CSPEC-A01}已给出
+\[
+H
+=\ker\mathcal K
+\oplus
+\overline{\bigoplus_{\lambda\neq0}E_\lambda},
+\;
+E_\lambda=\ker(\mathcal K-\lambda\mathcal I).
+\]
+令 \(\displaystyle\mathcal P_0=\mathcal P_{\ker\mathcal K}\)，\(\displaystyle\mathcal P_\lambda=\mathcal P_{E_\lambda}\). 定义
+\[
+F(B)
+=1_B(0)\mathcal P_0
++
+\sum_{\lambda\neq0,\ \lambda\in B}\mathcal P_\lambda,
+\]
+其中和按强算子拓扑解释. 正交特征分解保证 \(\displaystyle F\) 是PVM，并且I-14的特征展开给出
+\[
+\mathcal K=\int\lambda\,\mathrm{d}F(\lambda).
+\]
+由\autoref{fa:CSTAR-A02}的唯一性，\(\displaystyle F=E_{\mathcal K}\). 因而I-14确实是本章一般有界正规谱定理的纯原子紧自伴特例. 若I-14处于实Hilbert空间，则仍使用I-14原有实结论；本段不把复\(\displaystyle C^*\)谱测度理论改写成实\(\displaystyle C^*\)定理.
+\end{FAApplication}
+
+自伴、酉与一般正规三类算子由同一框架统一：自伴算子满足 \(\displaystyle\sigma(\mathcal T)\subseteq\mathbb R\)；酉算子满足 \(\displaystyle\sigma(\mathcal U)\subseteq\mathbb T\)；一般正规算子的谱可以是 \(\displaystyle\mathbb C\) 的任意适当紧子集. 三者都由\autoref{fa:CSTAR-A01}的连续函数演算与\autoref{fa:CSTAR-A02}的PVM表示控制.
+
+\begin{FAWarning}[后续边界]
+II-04的积分理论不参与本章谱积分：这里的 \(\displaystyle\int g\,\mathrm{d}E\) 由PVM简单函数与算子范数极限定义，不是Bochner积分. II-05才定义无界算子、定义域与闭性；II-06才研究无界对称与自伴算子；II-07才建立无界自伴谱定理与相应可测函数演算. 本章不使用GNS、一般\(\displaystyle C^*\)表示理论、泛表示、态的一般理论、本原理想或非交换Gelfand对偶.
+\end{FAWarning}
+
+\subsection*{本章习题}\label{sec:ii03-exercises}
+
+\begin{FAExercise}[\(\displaystyle C^*\)恒等式与对合等距]{ex:ii03-01}
+在不引用\autoref{fa:CSTAR-C01}结论的前提下，从 \(\displaystyle\|a^*a\|=\|a\|^2\) 推出 \(\displaystyle\|a^*\|=\|a\|\) 与含幺情形 \(\displaystyle\|1\|=1\). 再对 \(\displaystyle\mathcal B(H)\) 完整证明 \(\displaystyle\|\mathcal T^*\mathcal T\|=\|\mathcal T\|^2\).
+\end{FAExercise}
+
+\begin{FAExercise}[正规元谱半径]{ex:ii03-02}
+设 \(\displaystyle a\) 正规. 证明 \(\displaystyle\|a^{2^n}\|=\|a\|^{2^n}\)，再只调用II-02的谱半径公式推出 \(\displaystyle r(a)=\|a\|\). 指出证明为何不能循环使用\autoref{fa:CSTAR-A01}.
+\end{FAExercise}
+
+\begin{FAExercise}[角色保持对合]{ex:ii03-03}
+对自伴元 \(\displaystyle h\) 重做 \(\displaystyle1+\mathrm{i}th\) 估计，分别令 \(\displaystyle t\downarrow0\) 与 \(\displaystyle t\uparrow0\) 证明角色在自伴元上取实值，再由自伴实部与虚部分解证明 \(\displaystyle\varphi(a^*)=\overline{\varphi(a)}\).
+\end{FAExercise}
+
+\begin{FAExercise}[绝对值的多项式逼近]{ex:ii03-04}
+按正文路线，先用 \(\displaystyle\sqrt{t^2+\delta}\) 逼近 \(\displaystyle|t|\)，再把平方根写成 \(\displaystyle(1-s)^{\frac{1}{2}}\) 的二项级数截断，给出每一步的一致误差界.
+\end{FAExercise}
+
+\begin{FAExercise}[选定Stone--Weierstrass]{ex:ii03-05}
+证明闭含幺自伴点分离子代数的实值部分对 \(\displaystyle|\cdot|\)、\(\displaystyle\max\)、\(\displaystyle\min\) 封闭，并完整重建两次有限覆盖的格论逼近证明.
+\end{FAExercise}
+
+\begin{FAExercise}[交换\(\displaystyle C^*\)代数的Gelfand同构]{ex:ii03-06}
+从\autoref{fa:GEL-A01}、\autoref{fa:CSTAR-C01}与\autoref{ii03:stone-weierstrass-selected}推出\autoref{ii03:commutative-cstar-gelfand}. 必须逐项验证像闭、含常数、自伴且分离点.
+\end{FAExercise}
+
+\begin{FAExercise}[正规元谱保持]{ex:ii03-07}
+对 \(\displaystyle\lambda\in\sigma_{C^*(1,a)}(a)\) 构造正文的三角形凸帽函数 \(\displaystyle f_n\)，证明 \(\displaystyle\|(a-\lambda1)b_n\|\leqslant\frac{1}{n}\)，并由环境代数中的可逆性推出矛盾.
+\end{FAExercise}
+
+\begin{FAExercise}[自伴谱实性]{ex:ii03-08}
+只用角色保持对合、Gelfand谱识别与正规元谱保持，证明自伴元的谱包含于 \(\displaystyle\mathbb R\). 不得调用II-07.
+\end{FAExercise}
+
+\begin{FAExercise}[正平方根]{ex:ii03-09}
+对 \(\displaystyle a\geqslant0\) 由局部正规元引擎构造 \(\displaystyle a^{\frac{1}{2}}\)，并用复合律证明唯一性. 证明中不得把“正平方根唯一”作为标准事实引用.
+\end{FAExercise}
+
+\begin{FAExercise}[两种正性与连续函数空间模型]{ex:ii03-10}
+证明 \(\displaystyle\mathcal B(H)\) 中谱正性与I-11二次型非负定义等价. 反向必须从负谱点构造单位近似特征向量. 随后对 \(\displaystyle C(K)\) 证明正性等价于逐点非负，并识别逐点平方根.
+\end{FAExercise}
+
+\begin{FAExercise}[正规元连续函数演算唯一性]{ex:ii03-11}
+证明 \(\displaystyle z,\overline z\) 的 *-多项式在 \(\displaystyle C(\sigma(a))\) 中构成含幺自伴点分离代数，再由选定Stone--Weierstrass证明任何把坐标函数送到 \(\displaystyle a\) 的连续含幺 *-同态都等于 \(\displaystyle\Phi_a\).
+\end{FAExercise}
+
+\begin{FAExercise}[谱映射与复合律]{ex:ii03-12}
+从单个正规元的交换表示证明 \(\displaystyle\sigma(f(a))=f(\sigma(a))\)，再对 \(\displaystyle g\in C(f(\sigma(a)))\) 证明 \(\displaystyle g(f(a))=(g\circ f)(a)\). 明确指出两次使用函数演算唯一性的对象分别是什么.
+\end{FAExercise}
+
+\begin{FAExercise}[正泛函范数]{ex:ii03-13}
+设 \(\displaystyle\Lambda:C(K)\to\mathbb C\) 正. 先证明实值函数上的估计，再用相位 \(\displaystyle\alpha\in\mathbb T\) 证明 \(\displaystyle|\Lambda(f)|\leqslant\Lambda(1)\|f\|_\infty\)，从而得到 \(\displaystyle\|\Lambda\|=\Lambda(1)\).
+\end{FAExercise}
+
+\begin{FAExercise}[RMK外测度与正则性]{ex:ii03-14}
+从正文 \(\displaystyle\mu_0(U)\) 出发证明开集次可加性与不交开集可加性，再证明 \(\displaystyle\mu^*\) 的度量分离性质、Borel可测性、外正则性与内正则性. 不得引用未证明的单位分解或一般Riesz表示定理.
+\end{FAExercise}
+
+\begin{FAExercise}[连续函数在 \(\displaystyle L^2\) 中稠密]{ex:ii03-15}
+由有限正则性取 \(\displaystyle F\subseteq E\subseteq U\)，用距离函数构造 \(\displaystyle0\leqslant g\leqslant1\) 且 \(\displaystyle g|_F=1\)、\(\displaystyle g|_{K\setminus U}=0\)，证明 \(\displaystyle1_E\) 可在 \(\displaystyle L^2\) 中由连续函数逼近，再完成简单函数到一般 \(\displaystyle L^2\) 函数的闭合.
+\end{FAExercise}
+
+\begin{FAExercise}[第一变量线性的极化符号]{ex:ii03-16}
+在内积第一变量线性的约定下直接展开 \(\displaystyle q(x+y),q(x-y),q(x+\mathrm{i}y),q(x-\mathrm{i}y)\)，验证正文极化公式中两个 \(\displaystyle\mathrm{i}\) 的符号，随后推出 \(\displaystyle\mu_{x,y}\) 的连续函数表示.
+\end{FAExercise}
+
+\begin{FAExercise}[由Riesz表示定理重建谱投影]{ex:ii03-17}
+从 \(\displaystyle\beta_B(x,y)=\mu_{x,y}(B)\) 的Cauchy--Schwarz估计出发，对固定 \(\displaystyle x\) 把 \(\displaystyle y\mapsto\overline{\beta_B(x,y)}\) 交给\autoref{fa:HIL-A02}，严格证明 \(\displaystyle E(B)\) 的存在、线性、唯一性与 \(\displaystyle\|E(B)\|\leqslant1\).
+\end{FAExercise}
+
+\begin{FAExercise}[循环模型与投影值测度的强可数可加性]{ex:ii03-18}
+证明 \(\displaystyle U_x:L^2(\mu_x)\to H_x\) 为酉，并证明 \(\displaystyle E(B)|_{H_x}=U_xM_{1_B}U_x^{-1}\). 对两两不交 \(\displaystyle B_n\)，直接计算尾部 \(\displaystyle L^2\) 范数，得到 \(\displaystyle E(\cup B_n)x=\sum E(B_n)x\) 的 \(\displaystyle H\)-范数收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[有界Borel谱积分]{ex:ii03-19}
+先对不交简单函数证明 \(\displaystyle\|\int s\,\mathrm{d}E\|\leqslant\|s\|_\infty\)，再显式构造有界Borel函数的一致简单逼近，并把线性、乘法与伴随公式传递到算子范数极限. 说明这里没有使用Bochner积分.
+\end{FAExercise}
+
+\begin{FAExercise}[谱原子与非原子谱]{ex:ii03-20}
+用循环乘法模型证明 \(\displaystyle E(\{\lambda\})H=\ker(\mathcal T-\lambda\mathcal I)\). 再取 \(\displaystyle\mathcal M_t\) 于 \(\displaystyle L^2([0,1])\)，证明其全部单点谱投影为零但谱为 \(\displaystyle[0,1]\)，并解释为何有界正规谱定理不是特征向量基定理.
+\end{FAExercise}
+
+\begin{FAExercise}[乘法算子模型的本质值域与投影值测度]{ex:ii03-21}
+对 \(\displaystyle h\in L^\infty([0,1])\) 证明 \(\displaystyle\sigma(\mathcal M_h)=\operatorname{ess\,ran}(h)\). 用复平面的可数有理球基证明 \(\displaystyle h(t)\) 几乎处处属于本质值域，再证明 \(\displaystyle f(\mathcal M_h)=\mathcal M_{f\circ h}\) 与 \(\displaystyle E(B)=\mathcal M_{1_{h^{-1}(B)}}\).
+\end{FAExercise}
+
+\begin{FAExercise}[I-14原子桥与移位算子模型边界]{ex:ii03-22}
+对复Hilbert空间上的紧自伴 \(\displaystyle\mathcal K\)，由I-14特征展开构造正文的原子PVM并用\autoref{fa:CSTAR-A02}唯一性识别它. 随后复用I-11证明单边右移不正规，并结合I-12的谱不等于特征值集合的反例说明为什么不能把本章结论扩张到一般有界算子.
+\end{FAExercise}

@@ -1,0 +1,359 @@
+\chapter{变分法直接法}\label{chap:III-07}
+\FAChapterOpening
+{以弱紧性、弱下半连续性与强制性闭合变分法直接法：先建立极小化网与紧空间上的下半连续极小化工具，再在实自反 Banach 空间中证明无约束与约束极小元存在性，并把 III-06 的椭圆能量泛函推进到存在唯一性与 Euler--Lagrange 弱形式.}
+{I-01 的紧性与网/子网接口\autoref{fa:FND-C01}、\autoref{fa:FND-B02}；I-10 的自反弱紧性\autoref{fa:REF-A01}；III-06 的弱下半连续、强制性与有限子水平集有界性\autoref{fa:VAR-A01}、\autoref{fa:VAR-B02}. 第五节继续复用 II-13 的 \(\displaystyle H_0^1\) 能量空间模型/Poincaré 能量空间接口与 III-06 已冻结的椭圆能量泛函模型、Fréchet 导数.}
+{\begin{center}
+\begin{tikzpicture}[x=0.90cm,y=0.82cm]
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (vara) at (0.6,3.2) {凸/下半连续/强制性};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (refa) at (3.5,3.2) {自反球弱紧};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (fndb) at (6.4,3.2) {紧性的网刻画};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (varb2) at (9.3,3.2) {强制性/子水平集};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (ii13) at (12.0,3.2) {II-13 / III-06};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (directc) at (1.2,1.8) {紧空间极小化};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (directa) at (5.3,1.8) {直接法};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (directb1) at (9.0,1.8) {弱闭约束直接法};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (directb2) at (12.0,1.8) {严格凸唯一性};
+\node[font=\scriptsize] (weakc) at (9.0,0.8) {弱闭 \(\displaystyle C\)};
+\node[font=\scriptsize] (strictc) at (12.0,0.8) {严格凸性};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (energy) at (10.4,-0.2) {\(\displaystyle H_0^1\)能量空间 / 椭圆能量模型};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (future) at (5.2,-0.2) {III-08 / III-09 / III-10};
+\draw[fa/arrow] (vara) -- (directc);
+\draw[fa/arrow] (vara) -- (directa);
+\draw[fa/arrow] (refa) -- (directa);
+\draw[fa/arrow] (fndb) -- (directa);
+\draw[fa/arrow] (varb2) -- (directa);
+\draw[fa/arrow] (directa) -- (directb1);
+\draw[fa/arrow] (weakc) -- (directb1);
+\draw[fa/arrow] (strictc) -- (directb2);
+\draw[fa/arrow] (directa.south east) -- (energy.north west);
+\draw[fa/arrow] (directb1.east) -| (energy.north);
+\draw[fa/arrow] (directb2.west) -| (energy.north);
+\draw[fa/arrow] (ii13.east) -- (13.5,3.2) -- (13.5,-0.2) -- (energy.east);
+\draw[fa/arrow,dashed] (directa.south west) -- (future.north);
+\end{tikzpicture}
+\end{center}}
+
+本章主线固定在实 Banach 空间. 直接法的三套机制必须分开：强制性或有界子水平集阻止极小化对象逃向无穷；自反性把有界闭球变为弱紧集合；弱下半连续保证弱极限不抬高泛函值. 本章从不以“标准直接法”替代这些步骤，也不调用 Eberlein--Šmulian 把弱紧性偷换成弱序列紧性.
+
+\section{极小化网与紧空间极小化}\label{sec:iii07-minimizing}
+\index{direct method@直接法}\index{minimizing net@极小化网}\index{infimum@下确界}
+
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle C\subseteq X\) 非空，且 \(\displaystyle\Phi:X\to(-\infty,+\infty]\) 满足 \(\displaystyle C\cap\operatorname{dom}\Phi\neq\varnothing\). 记
+\(\displaystyle m_C:=\inf_{x\in C}\Phi(x)\).
+由于值域不含 \(\displaystyle-\infty\)，单个泛函值不会等于 \(\displaystyle-\infty\)，但下确界仍可能为 \(\displaystyle-\infty\). 因而在构造标准极小化网前必须先确认 \(\displaystyle m_C\in\mathbb R\)，或显式处理 \(\displaystyle m_C=-\infty\) 的情形.
+
+\begin{FAProposition}[C][极小化网与紧空间上的下半连续极小化]{fa:DIRECT-C01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle C\subseteq X\) 非空，\(\displaystyle\Phi:X\to(-\infty,+\infty]\)，且 \(\displaystyle C\cap\operatorname{dom}\Phi\neq\varnothing\). 记 \(\displaystyle m_C=\inf_C\Phi\). 以下两条成立.
+\begin{enumerate}
+\item 若 \(\displaystyle m_C\in\mathbb R\)，则存在以 \(\displaystyle(0,\infty)\) 为指标的网 \(\displaystyle(x_\varepsilon)_{\varepsilon>0}\subseteq C\)，其中序关系定义为 \(\displaystyle\varepsilon_1\preceq\varepsilon_2\iff\varepsilon_1\geqslant\varepsilon_2\)，并满足 \(\displaystyle\Phi(x_\varepsilon)\to m_C\). 任意子网仍满足泛函值收敛到 \(\displaystyle m_C\).
+\item 若 \(\displaystyle K\) 为非空紧拓扑空间，\(\displaystyle\Psi:K\to(-\infty,+\infty]\) 真且下半连续，则 \(\displaystyle\inf_K\Psi\in\mathbb R\)，并存在 \(\displaystyle u\in K\) 使 \(\displaystyle\Psi(u)=\inf_K\Psi\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+先证（1）. 对任意 \(\displaystyle\varepsilon_1,\varepsilon_2>0\)，取 \(\displaystyle\varepsilon_3=\min\{\varepsilon_1,\varepsilon_2\}\)，则 \(\displaystyle\varepsilon_1\preceq\varepsilon_3\) 且 \(\displaystyle\varepsilon_2\preceq\varepsilon_3\)，故该序关系确实使 \(\displaystyle(0,\infty)\) 成为有向集. 由下确界定义，对每个 \(\displaystyle\varepsilon>0\) 可取 \(\displaystyle x_\varepsilon\in C\) 使
+\(\displaystyle m_C \leqslant \Phi(x_\varepsilon) < m_C+\varepsilon\).
+于是 \(\displaystyle0\leqslant\Phi(x_\varepsilon)-m_C<\varepsilon\). 给定 \(\displaystyle\delta>0\)，当 \(\displaystyle\delta\preceq\varepsilon\)（等价于 \(\displaystyle\varepsilon\succeq\delta\)），即 \(\displaystyle\varepsilon\leqslant\delta\) 时，有 \(\displaystyle|\Phi(x_\varepsilon)-m_C|<\delta\)，故 \(\displaystyle\Phi(x_\varepsilon)\to m_C\). 子网保持原网的极限，因此任意子网的泛函值仍趋于 \(\displaystyle m_C\).
+
+再证（2）. 记 \(\displaystyle m=\inf_K\Psi\). 真性给出某个 \(\displaystyle x_0\in K\) 使 \(\displaystyle\Psi(x_0)<+\infty\)，所以 \(\displaystyle m<+\infty\). 若 \(\displaystyle m=-\infty\)，则对每个 \(\displaystyle n\in\mathbb N\)，闭子水平集
+\(\displaystyle F_n:=\{x\in K:\Psi(x)\leqslant-n\}\)
+非空. 这些集合递减，故具有有限交性质. 由紧性的闭集有限交性质刻画\autoref{fa:FND-C01}，存在 \(\displaystyle u\in\bigcap_{n\in\mathbb N}F_n\). 于是 \(\displaystyle\Psi(u)\leqslant-n\) 对全部 \(\displaystyle n\) 成立，只能推出 \(\displaystyle\Psi(u)=-\infty\)，与值域约定矛盾. 因而 \(\displaystyle m\in\mathbb R\).
+
+对每个 \(\displaystyle\varepsilon>0\)，令 \(\displaystyle F_\varepsilon=\{x\in K:\Psi(x)\leqslant m+\varepsilon\}\). 由下确界定义 \(\displaystyle F_\varepsilon\neq\varnothing\)，由下半连续它闭. 任意有限多个 \(\displaystyle F_{\varepsilon_j}\) 的交等于其中阈值最小的一个，因此非空；故族 \(\displaystyle\{F_\varepsilon:\varepsilon>0\}\) 具有有限交性质. 再由\autoref{fa:FND-C01}取 \(\displaystyle u\) 属于所有 \(\displaystyle F_\varepsilon\). 对每个 \(\displaystyle\varepsilon>0\) 都有 \(\displaystyle\Psi(u)\leqslant m+\varepsilon\)，故 \(\displaystyle\Psi(u)\leqslant m\). 而 \(\displaystyle m\leqslant\Psi(u)\) 来自下确界定义，所以 \(\displaystyle\Psi(u)=m\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[极小化序列与极小化网]
+当 \(\displaystyle m_C\in\mathbb R\) 时，取 \(\displaystyle\varepsilon=\frac{1}{n}\) 当然得到极小化序列. 但本章的紧性步骤必须服从一般弱拓扑的网/子网语言：序列可以作为网使用，而由紧性得到的是收敛子网，不得未经额外定理把它改写为子序列.
+\end{FARemark}
+
+\section{弱紧性抽取}\label{sec:iii07-weak-compactness}
+\index{reflexivity@自反性!直接法}\index{weak compactness@弱紧性!直接法}
+
+设 \(\displaystyle X\) 自反. 由\autoref{fa:REF-A01}，闭单位球弱紧；对任意 \(\displaystyle R>0\)，标量乘法给出弱同胚，从而 \(\displaystyle\overline B_X(0,R)\) 也弱紧. 再由\autoref{fa:FND-B02}，其中任意网都有弱收敛子网.
+
+这里必须区分“整个网有界”与“某个尾网有界”. 任意收敛网的整个值域未必有界. 在直接法中真正需要的是：先由泛函值最终落入一个有限子水平集，再由强制性得到该尾网有界；随后只对这个尾网使用弱紧性. 因而证明不需要也不会声称任意弱收敛网的完整值域有界.
+
+若 \(\displaystyle\Phi:X\to(-\infty,+\infty]\) 真且强制，则 III-06 的\autoref{fa:VAR-B02}给出每个有限子水平集 \(\displaystyle[\Phi\leqslant a]\) 有界. 因此一旦极小化网 \(\displaystyle(u_\alpha)\) 满足 \(\displaystyle\Phi(u_\alpha)\to m\in\mathbb R\)，任选 \(\displaystyle a>m\)，就存在 \(\displaystyle\alpha_0\) 使 \(\displaystyle\alpha\succeq\alpha_0\) 时
+\(\displaystyle u_\alpha\in[\Phi\leqslant a]\).
+该尾网是有界网，因而包含在某个弱紧闭球中，并可由\autoref{fa:FND-B02}抽取弱收敛子网. 这一抽取是下一节变分法直接法的紧性核心.
+
+\begin{FARemark}[三机制的第一、第二层]
+强制性只负责把足够低的子水平集放进有界区域；自反性只负责把包含该尾网的闭球变为弱紧集合. 二者都不比较弱极限的泛函值. 该最后一步只属于弱下半连续.
+\end{FARemark}
+
+\section{弱下半连续极限}\label{sec:iii07-wlsc-limit}
+\index{weak lower semicontinuity@弱下半连续!直接法}\index{minimizer@极小元}
+
+\begin{FATheorem}[A][变分法直接法]{fa:DIRECT-A01}
+设 \(\displaystyle X\) 为实自反 Banach 空间，\(\displaystyle\Phi:X\to(-\infty,+\infty]\) 真、弱下半连续且强制，其中弱拓扑为 \(\displaystyle\sigma(X,X^*)\). 则存在 \(\displaystyle u\in X\) 使
+\(\displaystyle \Phi(u) = \inf_{x\in X}\Phi(x)\).
+\end{FATheorem}
+
+\begin{FAProof}
+记 \(\displaystyle m=\inf_X\Phi\). 真性给出某个 \(\displaystyle x_0\in X\) 满足 \(\displaystyle\Phi(x_0)<+\infty\)，故 \(\displaystyle m<+\infty\). 先排除 \(\displaystyle m=-\infty\).
+
+若 \(\displaystyle m=-\infty\)，则对每个 \(\displaystyle n\in\mathbb N\) 可取 \(\displaystyle x_n\in X\) 使 \(\displaystyle\Phi(x_n)\leqslant-n\). 对所有 \(\displaystyle n\geqslant1\)，有 \(\displaystyle x_n\in[\Phi\leqslant-1]\)；由强制性与\autoref{fa:VAR-B02}，该有限子水平集有界. 因而存在 \(\displaystyle R>0\) 使视作网的序列 \(\displaystyle(x_n)\) 全部落在 \(\displaystyle\overline B_X(0,R)\). 由自反性与\autoref{fa:REF-A01}，该闭球弱紧；由\autoref{fa:FND-B02}，存在子网 \(\displaystyle(x_{n_\beta})\) 与 \(\displaystyle u\in\overline B_X(0,R)\) 使 \(\displaystyle x_{n_\beta}\rightharpoonup u\).
+
+子网映射的共尾性给 \(\displaystyle n_\beta\to\infty\). 因此 \(\displaystyle\Phi(x_{n_\beta})\leqslant-n_\beta\to-\infty\)，于是
+\(\displaystyle \liminf_\beta\Phi(x_{n_\beta})=-\infty\).
+III-06 已证明弱下半连续的网判据，故
+\[
+\Phi(u)
+\leqslant
+\liminf_\beta\Phi(x_{n_\beta})
+=
+-\infty,
+\]
+这与 \(\displaystyle\Phi\) 的值域不含 \(\displaystyle-\infty\) 矛盾. 所以 \(\displaystyle m> -\infty\)，从而 \(\displaystyle m\in\mathbb R\).
+
+由\autoref{fa:DIRECT-C01}构造极小化网 \(\displaystyle(u_\varepsilon)_{\varepsilon>0}\) 使 \(\displaystyle\Phi(u_\varepsilon)\to m\). 任选 \(\displaystyle a>m\). 存在 \(\displaystyle\varepsilon_0>0\)，使在反向序的尾网 \(\displaystyle\varepsilon\succeq\varepsilon_0\)，即 \(\displaystyle0<\varepsilon\leqslant\varepsilon_0\) 上有 \(\displaystyle\Phi(u_\varepsilon)\leqslant a\). 由\autoref{fa:VAR-B02}，\(\displaystyle[\Phi\leqslant a]\) 有界，故该尾网包含于某个 \(\displaystyle\overline B_X(0,R)\).
+
+由\autoref{fa:REF-A01}，\(\displaystyle\overline B_X(0,R)\) 弱紧. 对上述尾网应用\autoref{fa:FND-B02}，得到子网 \(\displaystyle(u_{\varepsilon_\beta})\) 与某个 \(\displaystyle u\in\overline B_X(0,R)\) 使 \(\displaystyle u_{\varepsilon_\beta}\rightharpoonup u\). 由于子网保持极小化网的泛函值极限，
+\(\displaystyle \Phi(u_{\varepsilon_\beta}) \longrightarrow m\).
+由弱下半连续的网判据，
+\[
+\Phi(u)
+\leqslant
+\liminf_\beta\Phi(u_{\varepsilon_\beta})
+=
+m.
+\]
+另一方面，\(\displaystyle m=\inf_X\Phi\leqslant\Phi(u)\). 因此 \(\displaystyle\Phi(u)=m\)，即 \(\displaystyle u\) 为全局极小元.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[直接法的三套不可替代机制]
+\autoref{fa:DIRECT-A01}的证明链可以逐项定位：\(\displaystyle\text{强制性}\Rightarrow\text{有界的极小化尾网}\)；\(\displaystyle\text{自反性}\Rightarrow\text{弱紧闭球}\)；\(\displaystyle\text{弱下半连续}\Rightarrow\Phi(u)\leqslant\liminf\Phi(u_\beta)\). 删除任一机制都不能由另外两项自动补回.
+\end{FARemark}
+
+\begin{FACounterexample}[弱紧性不能替代弱下半连续]
+沿用 III-06 的规范对象：\(\displaystyle X=\ell^2\)，闭单位球 \(\displaystyle C=\{x:\|x\|_2\leqslant1\}\)，以及 \(\displaystyle\Phi(x)=-\|x\|_2\). 由 \(\displaystyle\ell^2\) 自反与\autoref{fa:REF-A01}，\(\displaystyle C\) 弱紧. 对标准基有 \(\displaystyle e_n\rightharpoonup0\)，且
+\(\displaystyle \Phi(e_n)=-1, \; \Phi(0)=0\).
+因此 \(\displaystyle e_n\) 是 \(\displaystyle C\) 上极小化序列，而弱极限 \(\displaystyle0\) 不是极小元. 紧性已经存在，失败点恰是弱下半连续的下极限传递. 本例只复用范数连续但非弱下半连续的反例，不创建新反例 ID.
+\end{FACounterexample}
+
+\begin{FACounterexample}[下半连续与自反性不能阻止逃逸]
+沿用 III-06 的 \(\displaystyle X=\mathbb R\) 与 \(\displaystyle\Phi(x)=\mathrm{e}^{-x}\). 该泛函连续、严格凸、有下界，且 \(\displaystyle\mathbb R\) 自反；但它非强制. 序列 \(\displaystyle x_n=n\) 满足 \(\displaystyle\Phi(x_n)=\mathrm{e}^{-n}\to0=\inf_{\mathbb R}\Phi\)，同时 \(\displaystyle x_n\to+\infty\)，而 \(\displaystyle\Phi(x)>0\) 对每个有限 \(\displaystyle x\) 成立，所以下确界不取得. 这里失败点恰是极小化序列逃离所有有界区域.
+\end{FACounterexample}
+
+\section{约束}\label{sec:iii07-constraints}
+\index{constrained minimization@约束极小化}\index{indicator functional@示性泛函}
+
+\begin{FATheorem}[B][弱闭约束上的直接法]{fa:DIRECT-B01}
+设 \(\displaystyle X\) 为实自反 Banach 空间，\(\displaystyle C\subseteq X\) 非空且弱闭，\(\displaystyle\Phi:X\to(-\infty,+\infty]\) 弱下半连续，并满足 \(\displaystyle C\cap\operatorname{dom}\Phi\neq\varnothing\). 假设 \(\displaystyle\Phi\) 沿 \(\displaystyle C\) 强制，即对任意 \(\displaystyle x_\alpha\in C\)，若 \(\displaystyle\|x_\alpha\|\to\infty\)，则 \(\displaystyle\Phi(x_\alpha)\to+\infty\). 则存在 \(\displaystyle u\in C\) 使
+\(\displaystyle \Phi(u) = \inf_{x\in C}\Phi(x)\).
+\end{FATheorem}
+
+\begin{FAProof}
+先证明沿约束集的有限子水平集有界. 固定 \(\displaystyle a\in\mathbb R\). 若 \(\displaystyle C\cap[\Phi\leqslant a]\) 无界，则可逐个选择 \(\displaystyle y_n\in C\cap[\Phi\leqslant a]\) 使 \(\displaystyle\|y_n\|\geqslant n\). 沿约束集强制性给 \(\displaystyle\Phi(y_n)\to+\infty\)，与 \(\displaystyle\Phi(y_n)\leqslant a\) 矛盾. 故每个 \(\displaystyle C\cap[\Phi\leqslant a]\) 有界.
+
+记 \(\displaystyle m=\inf_C\Phi\). 由 \(\displaystyle C\cap\operatorname{dom}\Phi\neq\varnothing\)，有 \(\displaystyle m<+\infty\). 若 \(\displaystyle m=-\infty\)，取 \(\displaystyle x_n\in C\) 使 \(\displaystyle\Phi(x_n)\leqslant-n\). 于是 \(\displaystyle x_n\in C\cap[\Phi\leqslant-1]\)，故 \(\displaystyle(x_n)\) 有界. 取闭球 \(\displaystyle\overline B_X(0,R)\) 包含该序列. 由\autoref{fa:REF-A01}与\autoref{fa:FND-B02}，存在子网 \(\displaystyle x_{n_\beta}\rightharpoonup u\). 因 \(\displaystyle C\) 弱闭且子网全部位于 \(\displaystyle C\)，有 \(\displaystyle u\in C\). 又 \(\displaystyle n_\beta\to\infty\)，弱下半连续给
+\[
+\Phi(u)
+\leqslant
+\liminf_\beta\Phi(x_{n_\beta})
+=
+-\infty,
+\]
+矛盾. 因而 \(\displaystyle m\in\mathbb R\).
+
+由\autoref{fa:DIRECT-C01}在 \(\displaystyle C\) 中取极小化网 \(\displaystyle(u_\varepsilon)\) 使 \(\displaystyle\Phi(u_\varepsilon)\to m\). 取 \(\displaystyle a>m\)，则某个尾网完全落在 \(\displaystyle C\cap[\Phi\leqslant a]\)，故有界. 取包含该尾网的闭球；由\autoref{fa:REF-A01}与\autoref{fa:FND-B02}，该尾网有弱收敛子网 \(\displaystyle u_{\varepsilon_\beta}\rightharpoonup u\). 弱闭性给 \(\displaystyle u\in C\). 再由弱下半连续与子网保持极小化泛函极限，
+\[
+\Phi(u)
+\leqslant
+\liminf_\beta\Phi(u_{\varepsilon_\beta})
+=
+m.
+\]
+而 \(\displaystyle m\leqslant\Phi(u)\)，故 \(\displaystyle\Phi(u)=m\).
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{示性泛函改写与弱闭约束}
+
+对任意 \(\displaystyle C\subseteq X\)，定义示性泛函
+\[
+I_C(x)
+:=
+\begin{cases}
+0,&x\in C,\\
++\infty,&x\notin C.
+\end{cases}
+\]
+若 \(\displaystyle C\) 弱闭，则 \(\displaystyle I_C\) 弱下半连续：对任意 \(\displaystyle a\in\mathbb R\)，\(\displaystyle[I_C\leqslant a]=\varnothing\) 当 \(\displaystyle a<0\)，而 \(\displaystyle[I_C\leqslant a]=C\) 当 \(\displaystyle a\geqslant0\)，故所有有限子水平集弱闭. 更直接地，对任意 \(\displaystyle a\in\mathbb R\)，\(\displaystyle[\Phi+I_C\leqslant a]=C\cap[\Phi\leqslant a]\)，故当 \(\displaystyle\Phi\) 弱下半连续时 \(\displaystyle\Phi+I_C\) 弱下半连续. 于是约束极小化等价于在 \(\displaystyle X\) 上最小化 \(\displaystyle\Phi+I_C\). 若 \(\displaystyle C\) 凸，则 \(\displaystyle I_C\) 凸. 该改写只重写问题，不替代\autoref{fa:DIRECT-B01}中沿约束集强制性、弱收敛子网与约束闭性的证明.
+
+I-10 已证明范数闭凸集合弱闭，见\autoref{i10:norm-closed-convex-weak-closed}. 另若 \(\displaystyle L\in X^*\) 与 \(\displaystyle c\in\mathbb R\)，则仿射超平面
+\(\displaystyle C_{L,c}:=\{x\in X:L(x)=c\}\)
+弱闭，因为 \(\displaystyle L:(X,\sigma(X,X^*))\to\mathbb R\) 连续，且 \(\displaystyle\{c\}\) 闭；它也凸.
+
+\begin{FATheorem}[B][严格凸性给出唯一性]{fa:DIRECT-B02}
+设 \(\displaystyle C\) 为实向量空间中非空凸集合，\(\displaystyle\Phi:C\to(-\infty,+\infty]\)，且 \(\displaystyle C\cap\operatorname{dom}\Phi\neq\varnothing\). 若 \(\displaystyle\Phi\) 在 \(\displaystyle C\cap\operatorname{dom}\Phi\) 上严格凸，则 \(\displaystyle\Phi\) 在 \(\displaystyle C\) 上的极小元至多一个.
+\end{FATheorem}
+
+\begin{FAProof}
+反设存在不同极小元 \(\displaystyle u,v\in C\)，其共同最小值记为 \(\displaystyle m\). 因 \(\displaystyle C\) 凸，中点 \(\displaystyle w=\frac{u+v}{2}\in C\). 又 \(\displaystyle u,v\in\operatorname{dom}\Phi\) 且 \(\displaystyle u\neq v\)，严格凸性给
+\[
+\Phi(w)
+<
+\frac{1}{2}\Phi(u)+\frac{1}{2}\Phi(v)
+=
+m,
+\]
+与 \(\displaystyle m=\inf_C\Phi\) 矛盾. 因而极小元至多一个. 该条件只给唯一性，不承担存在性.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAApplication}[仿射约束上的能量极小化]
+令 \(\displaystyle\Omega\subseteq\mathbb R^d\) 为非空有界 Lipschitz 区域，\(\displaystyle X=H_0^1(\Omega;\mathbb R)\)，并取非零 \(\displaystyle L\in X^*\)、\(\displaystyle c\in\mathbb R\). 因 \(\displaystyle L\neq0\)，存在 \(\displaystyle w\in X\) 使 \(\displaystyle L(w)\neq0\)；令 \(\displaystyle x_0=\frac{c}{L(w)}w\)，则 \(\displaystyle L(x_0)=c\)，所以
+\(\displaystyle C:=\{u\in X:L(u)=c\}\)
+非空. 上述弱连续性论证给出 \(\displaystyle C\) 弱闭，且仿射结构给出凸性.
+
+对 III-06 的能量 \(\displaystyle\mathcal E\)，其弱下半连续与全局强制性已冻结，因此沿 \(\displaystyle C\) 也强制；并且 \(\displaystyle\mathcal E\) 有限定义在整个 \(\displaystyle X\)，故 \(\displaystyle C\cap\operatorname{dom}\mathcal E=C\neq\varnothing\). \autoref{fa:DIRECT-B01}给出约束极小元. III-06 已证明 \(\displaystyle\mathcal E\) 严格凸，故\autoref{fa:DIRECT-B02}给出该约束极小元唯一. 这里不建立 Lagrange 乘子定理.
+\end{FAApplication}
+
+\begin{FARemark}[集中紧性的边界]
+当极小化对象的紧性因平移、伸缩或临界嵌入等机制失效时，需要更精细的集中紧性分析. 本章只把它标为延后结果；不定义集中函数，不陈述分解定理，也不在任何当前证明中调用该理论.
+\end{FARemark}
+
+\section{偏微分方程能量}\label{sec:iii07-pde-energy}
+\index{energy functional@能量泛函!直接法}\index{Euler--Lagrange equation@Euler--Lagrange 方程}\index{weak solution@弱解!能量极小化}
+\begingroup
+\tcbset{ignore nobreak=true}
+\begin{FAApplication}[椭圆能量的直接法存在性]
+固定 \(\displaystyle d\in\mathbb N\)，令 \(\displaystyle\Omega\subseteq\mathbb R^d\) 为非空有界 Lipschitz 区域，
+\(\displaystyle X:=H_0^1(\Omega;\mathbb R), \; \|u\|_X:=\|\nabla u\|_{L^2(\Omega)}\),
+并取 \(\displaystyle f\in L^2(\Omega)\). III-06 已冻结同一个泛函
+\[
+\mathcal E(u)
+:=
+\frac{1}{2}\int_\Omega|\nabla u|^2\,\mathrm{d}x
+-
+\int_\Omega fu\,\mathrm{d}x.
+\]
+这里不重新证明上一章的全部估计，只调用已建立事实：\(\displaystyle\mathcal E\) 良定义、严格凸、范数连续、弱下半连续、强制、Fréchet 可微，且
+\[
+\mathcal E'(u)[v]
+=
+\int_\Omega\nabla u\cdot\nabla v\,\mathrm{d}x
+-
+\int_\Omega fv\,\mathrm{d}x.
+\]
+
+II-13 的 \(\displaystyle H_0^1\) 能量空间模型已证明 \(\displaystyle X\) 关于能量内积为实 Hilbert 空间，因此 \(\displaystyle X\) 自反. 于是 \(\displaystyle\mathcal E\) 满足\autoref{fa:DIRECT-A01}的全部假设，故存在 \(\displaystyle u\in X\) 使
+\(\displaystyle \mathcal E(u) = \inf_{v\in X}\mathcal E(v)\).
+再由严格凸性与\autoref{fa:DIRECT-B02}，该极小元唯一. 这里的存在性实际来自直接法，不使用\autoref{fa:LM-A01}或\autoref{fa:ELL-A01}作为捷径.
+
+对任意 \(\displaystyle v\in X\)，标量函数 \(\displaystyle g(t)=\mathcal E(u+tv)\) 在 \(\displaystyle t=0\) 取最小值. 由 III-06 已冻结的 Fréchet 导数，\(\displaystyle g'(0)=\mathcal E'(u)[v]=0\). 因此
+\[
+\int_\Omega
+\nabla u\cdot\nabla v
+\,\mathrm{d}x
+=
+\int_\Omega
+fv
+\,\mathrm{d}x,
+\quad
+\forall\,v\in H_0^1(\Omega).
+\]
+这就是齐次 Dirichlet Poisson 问题的弱 Euler--Lagrange 恒等式.
+
+若 \(\displaystyle u_1,u_2\in X\) 都满足该弱恒等式，令 \(\displaystyle w=u_1-u_2\)，并以 \(\displaystyle v=w\) 测试两式之差，得到
+\(\displaystyle \int_\Omega|\nabla w|^2\,\mathrm{d}x=0\).
+故 \(\displaystyle\|w\|_X=0\)，由 \(\displaystyle H_0^1\) 能量空间模型/Poincaré 能量范数的正定性得到 \(\displaystyle w=0\). 因而弱解唯一. 这与 II-15 的\autoref{fa:ELL-A01}结论一致，但这里只把它作为一致性参照；当前存在性证明没有调用 Lax--Milgram.
+\end{FAApplication}
+\endgroup
+
+\begin{FARemark}[从 III-06 到 III-07的最小增量]
+III-06 已经完成分析性假设：弱下半连续控制弱极限，强制性控制有限子水平集，严格凸性控制唯一性，Fréchet 导数给出一阶变分. III-07 新增的核心不是重新计算这些事实，而是把自反弱紧性与一般网/子网抽取接入，从而真正闭合极小元存在性.
+\end{FARemark}
+
+\subsection*{本章习题}\label{sec:iii07-exercises}
+
+\begin{FAExercise}[下确界与极小化网]{ex:iii07-01}
+设 \(\displaystyle C\neq\varnothing\)、\(\displaystyle C\cap\operatorname{dom}\Phi\neq\varnothing\)，且 \(\displaystyle m_C=\inf_C\Phi\in\mathbb R\). 按反向序 \(\displaystyle\varepsilon_1\preceq\varepsilon_2\iff\varepsilon_1\geqslant\varepsilon_2\) 完整构造 \(\displaystyle x_\varepsilon\in C\)，并直接由 \(\displaystyle0\leqslant\Phi(x_\varepsilon)-m_C<\varepsilon\) 证明极小化性质.
+\end{FAExercise}
+
+\begin{FAExercise}[子网保持极小化性质]{ex:iii07-02}
+证明\autoref{fa:DIRECT-C01}中任意子网 \(\displaystyle x_{\varepsilon_\beta}\) 仍满足 \(\displaystyle\Phi(x_{\varepsilon_\beta})\to m_C\). 不得把子网自动替换为子序列.
+\end{FAExercise}
+
+\begin{FAExercise}[紧空间下半连续最小值的有限交性质证明]{ex:iii07-03}
+设 \(\displaystyle K\) 紧、\(\displaystyle\Psi:K\to(-\infty,+\infty]\) 真且下半连续. 先用闭子水平集 \(\displaystyle[\Psi\leqslant-n]\) 排除 \(\displaystyle\inf_K\Psi=-\infty\)，再用 \(\displaystyle[\Psi\leqslant m+\varepsilon]\) 的有限交性质证明最小值取得.
+\end{FAExercise}
+
+\begin{FAExercise}[强制有界尾网]{ex:iii07-04}
+设 \(\displaystyle\Phi(u_\alpha)\to m\in\mathbb R\) 且 \(\displaystyle\Phi\) 强制. 固定 \(\displaystyle a>m\)，用\autoref{fa:VAR-B02}证明某个尾网有界，并解释为什么不能由“网收敛”直接声称整个值域有界.
+\end{FAExercise}
+
+\begin{FAExercise}[自反弱紧闭球]{ex:iii07-05}
+由\autoref{fa:REF-A01}与标量乘法的弱同胚，证明实自反 Banach 空间的任意以原点为中心的闭球弱紧.
+\end{FAExercise}
+
+\begin{FAExercise}[紧性的子网抽取]{ex:iii07-06}
+给定一个完全落在弱紧闭球中的网，只使用\autoref{fa:FND-B02}抽取弱收敛子网，并明确极限仍在该闭球.
+\end{FAExercise}
+
+\begin{FAExercise}[弱下半连续下极限传递]{ex:iii07-07}
+设 \(\displaystyle u_\beta\rightharpoonup u\)、\(\displaystyle\Phi\) 弱下半连续、\(\displaystyle\Phi(u_\beta)\to m\). 只用 III-06 的网判据推出 \(\displaystyle\Phi(u)\leqslant m\).
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建变分法直接法]{ex:iii07-08}
+从真性开始，依次证明下确界有限、极小化网尾网有界、弱收敛子网存在性与弱下半连续极限不等式，完整重建\autoref{fa:DIRECT-A01}. 不得写“由标准直接法”.
+\end{FAExercise}
+
+\begin{FAExercise}[范数连续但非弱下半连续反例的复用]{ex:iii07-09}
+对 \(\displaystyle\ell^2\) 闭单位球上的 \(\displaystyle\Phi(x)=-\|x\|_2\)，验证闭球弱紧、\(\displaystyle e_n\rightharpoonup0\)、\(\displaystyle\Phi(e_n)=-1\) 与 \(\displaystyle\Phi(0)=0\)，并指出直接法链的唯一失败位置.
+\end{FAExercise}
+
+\begin{FAExercise}[非强制性导致极小元逃逸反例的复用]{ex:iii07-10}
+对 \(\displaystyle\Phi(x)=\mathrm{e}^{-x}\) 验证连续性、严格凸性、有下界与非强制性，并证明 \(\displaystyle x_n=n\) 是逃逸的极小化序列且下确界不取得.
+\end{FAExercise}
+
+\begin{FAExercise}[弱闭约束]{ex:iii07-11}
+设 \(\displaystyle C\subseteq X\) 弱闭，\(\displaystyle u_\alpha\in C\) 且 \(\displaystyle u_\alpha\rightharpoonup u\). 证明 \(\displaystyle u\in C\)，并说明该一步在约束直接法中为何不可由弱下半连续替代.
+\end{FAExercise}
+
+\begin{FAExercise}[示性泛函]{ex:iii07-12}
+证明当 \(\displaystyle C\) 弱闭时 \(\displaystyle I_C\) 弱下半连续；再证明 \(\displaystyle[\Phi+I_C\leqslant a]=C\cap[\Phi\leqslant a]\). 若 \(\displaystyle C\) 凸，再验证 \(\displaystyle I_C\) 凸.
+\end{FAExercise}
+
+\begin{FAExercise}[范数闭凸蕴含弱闭]{ex:iii07-13}
+复用\autoref{i10:norm-closed-convex-weak-closed}，说明范数闭凸约束为什么满足\autoref{fa:DIRECT-B01}的弱闭性假设；不得重证不必要的 Hahn--Banach 分离.
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建弱闭约束上的直接法]{ex:iii07-14}
+先由沿约束集强制性证明每个 \(\displaystyle C\cap[\Phi\leqslant a]\) 有界，再排除 \(\displaystyle\inf_C\Phi=-\infty\)，最后用极小化网、弱收敛子网、弱闭性与弱下半连续完整重建\autoref{fa:DIRECT-B01}.
+\end{FAExercise}
+
+\begin{FAExercise}[严格凸唯一性]{ex:iii07-15}
+设 \(\displaystyle C\) 凸、\(\displaystyle C\cap\operatorname{dom}\Phi\neq\varnothing\)，且 \(\displaystyle\Phi\) 在 \(\displaystyle C\cap\operatorname{dom}\Phi\) 上严格凸. 假设两个不同极小元存在，用中点严格不等式导出矛盾，并说明该论证为什么不产生存在性.
+\end{FAExercise}
+
+\begin{FAExercise}[严格凸性给出唯一性的任意参数版本]{ex:iii07-16}
+把\autoref{fa:DIRECT-B02}的中点证明改写为任意 \(\displaystyle0<t<1\) 的凸组合，并验证每一步只使用凸性的 \(\displaystyle C\) 与严格凸性的 \(\displaystyle\Phi\).
+\end{FAExercise}
+
+\begin{FAExercise}[仿射约束弱闭性]{ex:iii07-17}
+设 \(\displaystyle L\in X^*\setminus\{0\}\)、\(\displaystyle c\in\mathbb R\). 构造 \(\displaystyle x_0\) 使 \(\displaystyle L(x_0)=c\)，并证明 \(\displaystyle\{x:L(x)=c\}\) 非空、弱闭、仿射且凸.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle H_0^1\)能量空间的约束极小化]{ex:iii07-18}
+在 \(\displaystyle X=H_0^1(\Omega;\mathbb R)\) 与仿射超平面约束上，对 III-06 的 \(\displaystyle\mathcal E\) 核对\autoref{fa:DIRECT-B01}的所有假设，并用\autoref{fa:DIRECT-B02}给出唯一性. 不得使用 Lagrange 乘子定理.
+\end{FAExercise}
+
+\begin{FAExercise}[椭圆能量泛函的直接法存在性]{ex:iii07-19}
+逐项列出 \(\displaystyle X=H_0^1(\Omega;\mathbb R)\) 自反、\(\displaystyle\mathcal E\) 真、弱下半连续与强制的已冻结来源，并只通过\autoref{fa:DIRECT-A01}证明能量极小元存在性.
+\end{FAExercise}
+
+\begin{FAExercise}[Euler--Lagrange方程]{ex:iii07-20}
+设 \(\displaystyle u\) 为 \(\displaystyle\mathcal E\) 极小元. 对任意 \(\displaystyle v\in X\)，令 \(\displaystyle g(t)=\mathcal E(u+tv)\)，由 \(\displaystyle g'(0)=0\) 与 III-06 导数公式推出完整弱 Euler--Lagrange 恒等式.
+\end{FAExercise}
+
+\begin{FAExercise}[能量唯一性]{ex:iii07-21}
+若 \(\displaystyle u_1,u_2\in H_0^1(\Omega)\) 都满足同一弱 Euler--Lagrange 恒等式，以 \(\displaystyle v=u_1-u_2\) 测试两式之差，证明 \(\displaystyle u_1=u_2\). 指出 Poincaré/能量范数正定性在最后一步的作用.
+\end{FAExercise}
+
+\begin{FAExercise}[后续集中紧性边界]{ex:iii07-22}
+说明本章直接法依赖的紧性是弱紧性的自反空间中的有界集合. 只作概念性比较：当该紧性机制在临界问题中不足时，集中紧性可能成为后续工具；不得陈述或调用 III-08、III-09、III-10 的正式定理.
+\end{FAExercise}

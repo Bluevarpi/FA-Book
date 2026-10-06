@@ -1,0 +1,566 @@
+\chapter{Banach 逆函数与隐函数定理}\label{chap:III-02}
+\FAChapterOpening
+{由 Fréchet 微分、Banach 压缩映射原理与有界逆定理建立定量局部可逆性，完整证明 Banach 逆函数定理与隐函数定理，并明确普通 Fréchet 空间中的失效边界.}
+{III-01 的 Fréchet 微分与链式法则\autoref{fa:DIFF-A01}、\autoref{fa:DIFF-A02}；I-02 的 Banach 压缩映射原理\autoref{fa:FP-A01}；I-09 的有界逆定理\autoref{fa:BIT-A01}.}
+{\begin{center}
+\begin{tikzpicture}[x=0.90cm,y=1.0cm]
+\node[fa/node] (diff) at (0,1.0) {Fréchet链式法则};
+\node[fa/node] (fp) at (0,0) {Banach压缩原理};
+\node[fa/node] (bit) at (0,-1.0) {有界逆定理};
+\node[fa/node] (c01) at (3.5,0.6) {局部可逆半径};
+\node[fa/node] (b01) at (6.8,0.6) {定量逆函数估计};
+\node[fa/node] (a01) at (9.9,0.6) {Banach逆函数定理};
+\node[fa/node] (imp) at (12.9,0.6) {隐函数定理};
+\draw[fa/arrow] (diff) -- (c01);
+\draw[fa/arrow] (fp) -- (c01);
+\draw[fa/arrow] (bit) -- (c01);
+\draw[fa/arrow] (c01) -- (b01);
+\draw[fa/arrow] (b01) -- (a01);
+\draw[fa/arrow] (diff.north) -- (0,1.7) -- (9.9,1.7) -- (a01.north);
+\draw[fa/arrow] (bit) -- (a01);
+\draw[fa/arrow] (a01) -- (imp);
+\end{tikzpicture}
+\end{center}}
+
+全章固定 \(\displaystyle\mathbb K\in\{\mathbb R,\mathbb C\}\)，\(\displaystyle X,Y,Z\) 为 \(\displaystyle\mathbb K\)-Banach 空间. 复数情形中的 Fréchet 微分均按 III-01 的约定取复线性有界算子. “Fréchet 微分”是 Banach 空间上的微分概念，“Fréchet 空间”则是 II-01 建立的局部凸拓扑线性空间类型；二者不得混同.
+
+\section{Newton 局部方案}\label{sec:iii02-newton}
+\index{inverse function theorem@逆函数定理!定量局部工具}\index{contraction mapping@压缩映射!Newton局部方案}
+
+本节只复用已经冻结的\autoref{fa:DIFF-A01}、\autoref{fa:DIFF-A02}、III-01 的算子范数 \(\displaystyle C^1\) 定义、\autoref{fa:FP-A01}与\autoref{fa:BIT-A01}. 不重证压缩映射原理或有界逆定理，也不调用 Bochner 积分、Hahn--Banach 标量化或 I-12 的 Neumann 级数.
+
+\begin{FALemma}[C][Banach 值一维均值不等式]{iii02:banach-mvi}
+设 \(\displaystyle\gamma:[a,b]\to Y\) 连续，在 \(\displaystyle(a,b)\) 可微，并满足 \(\displaystyle\|\gamma'(t)\|_Y\leqslant L\) 对全部 \(\displaystyle t\in(a,b)\) 成立. 则
+\(\displaystyle \|\gamma(b)-\gamma(a)\|_Y \leqslant L(b-a).\)
+\end{FALemma}
+
+\begin{FAProof}
+固定 \(\displaystyle\varepsilon>0\) 与 \(\displaystyle a<c<d<b\). 对每个 \(\displaystyle t\in[c,d)\)，由 \(\displaystyle\gamma\) 在 \(\displaystyle t\) 可微且 \(\displaystyle\|\gamma'(t)\|_Y\leqslant L\)，存在 \(\displaystyle\delta_t>0\)，使 \(\displaystyle0<h<\delta_t\) 且 \(\displaystyle t+h\leqslant d\) 时
+\(\displaystyle \|\gamma(t+h)-\gamma(t)\|_Y \leqslant (L+\varepsilon)h.\)
+令 \(\displaystyle S\) 为所有满足下述性质的 \(\displaystyle s\in[c,d]\) 的集合：对每个 \(\displaystyle u\in[c,s]\)，均有
+\(\displaystyle \|\gamma(u)-\gamma(c)\|_Y \leqslant (L+\varepsilon)(u-c).\)
+由定义有 \(\displaystyle c\in S\). 令 \(\displaystyle\tau=\sup S\). 由 \(\displaystyle\gamma\) 连续性与上确界定义，上述不等式对全部 \(\displaystyle u\in[c,\tau]\) 成立. 若 \(\displaystyle\tau<d\)，则 \(\displaystyle\tau\in(c,d)\)，由 \(\displaystyle\tau\) 处的局部右增量估计，可取 \(\displaystyle0<\eta<\min\{\delta_\tau,d-\tau\}\)，使对 \(\displaystyle0<h\leqslant\eta\)，
+\[
+\begin{aligned}
+\|\gamma(\tau+h)-\gamma(c)\|_Y
+&\leqslant
+\|\gamma(\tau+h)-\gamma(\tau)\|_Y
++
+\|\gamma(\tau)-\gamma(c)\|_Y\\
+&\leqslant
+(L+\varepsilon)h+(L+\varepsilon)(\tau-c)\\
+&=
+(L+\varepsilon)(\tau+h-c).
+\end{aligned}
+\]
+因此 \(\displaystyle\tau+\eta\in S\)，与 \(\displaystyle\tau=\sup S\) 矛盾. 故 \(\displaystyle\tau=d\)，从而
+\(\displaystyle \|\gamma(d)-\gamma(c)\|_Y \leqslant (L+\varepsilon)(d-c).\)
+先令 \(\displaystyle c\downarrow a\)，再令 \(\displaystyle d\uparrow b\)，利用端点连续性得
+\(\displaystyle \|\gamma(b)-\gamma(a)\|_Y \leqslant (L+\varepsilon)(b-a).\)
+最后令 \(\displaystyle\varepsilon\downarrow0\) 即得结论. 整个论证只使用范数、标量上确界与一维微分定义.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FAProposition}[C][Banach 映射的局部均值不等式]{iii02:map-mvi}
+设 \(\displaystyle\Omega\subseteq X\) 开，\(\displaystyle W\subseteq\Omega\) 凸，\(\displaystyle H\in C^1(\Omega,Y)\)，并且
+\[
+\sup_{z\in W}\|DH(z)\|_{\mathcal B(X,Y)}
+\leqslant
+L.
+\]
+则对全部 \(\displaystyle x,y\in W\)，
+\(\displaystyle \|H(x)-H(y)\|_Y \leqslant L\|x-y\|_X.\)
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle x,y\in W\)，令 \(\displaystyle\gamma(t)=H(y+t(x-y))\)，\(\displaystyle0\leqslant t\leqslant1\). 由 \(\displaystyle W\) 凸，整条线段留在 \(\displaystyle W\).\autoref{fa:DIFF-A02}给出对 \(\displaystyle0<t<1\)，
+\(\displaystyle \gamma'(t) = DH(y+t(x-y))(x-y),\)
+故 \(\displaystyle\|\gamma'(t)\|_Y\leqslant L\|x-y\|_X\). 应用\autoref{iii02:banach-mvi}于区间 \(\displaystyle[0,1]\) 得结论.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FAProposition}[C][可逆算子的压缩稳定性]{iii02:operator-stability}
+设 \(\displaystyle A\in\mathcal B(X,Y)\) 为有界线性同构，记 \(\displaystyle M=\|A^{-1}\|\). 若 \(\displaystyle B\in\mathcal B(X,Y)\) 且
+\(\displaystyle \|\mathcal I_X-A^{-1}B\|_{\mathcal B(X)} \leqslant q<1,\)
+则 \(\displaystyle B\) 为有界线性同构，并且
+\(\displaystyle \|B^{-1}\|_{\mathcal B(Y,X)} \leqslant \frac{M}{1-q}.\)
+\end{FAProposition}
+
+\begin{FAProof}
+对任意 \(\displaystyle y\in Y\)，定义
+\(\displaystyle \mathcal S_y(h) := A^{-1}y+(\mathcal I_X-A^{-1}B)h, \; h\in X.\)
+由假设，\(\displaystyle\mathcal S_y\) 是 \(\displaystyle X\) 上的压缩映射，常数不超过 \(\displaystyle q\). 因 \(\displaystyle X\) 完备，\autoref{fa:FP-A01}给出唯一不动点 \(\displaystyle h_y\). 不动点方程等价于
+\(\displaystyle A^{-1}Bh_y=A^{-1}y,\)
+即 \(\displaystyle Bh_y=y\)，所以 \(\displaystyle B\) 满射. 当 \(\displaystyle y=0\) 时，\(\displaystyle0\) 是 \(\displaystyle\mathcal S_0\) 的不动点，而不动点唯一，故 \(\displaystyle Bh=0\) 只可能有 \(\displaystyle h=0\)，所以 \(\displaystyle B\) 单射.
+
+对不动点 \(\displaystyle h_y\)，由其定义直接有
+\(\displaystyle \|h_y\|_X \leqslant M\|y\|_Y+q\|h_y\|_X,\)
+故
+\(\displaystyle \|B^{-1}y\|_X = \|h_y\|_X \leqslant \frac{M}{1-q}\|y\|_Y.\)
+这个估计也覆盖 \(\displaystyle X=Y=\{0\}\) 的退化情形，不需要除以 \(\displaystyle M\). 已知 \(\displaystyle B\) 有界且双射后，\autoref{fa:BIT-A01}也确认 \(\displaystyle B^{-1}\) 有界；上述不动点估计给出其显式范数界.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FATheorem}[C][局部可逆性半径工具]{fa:IFT-C01}
+设 \(\displaystyle U\subseteq X\) 开，\(\displaystyle F\in C^1(U,Y)\)，\(\displaystyle x_0\in U\)，并设
+\(\displaystyle A:=DF(x_0):X\to Y\)
+为有界线性同构. 记 \(\displaystyle M=\|A^{-1}\|\)，固定 \(\displaystyle q\in(0,1)\). 若 \(\displaystyle X=\{0\}\)，以下结论平凡；否则 \(\displaystyle M>0\)，且存在 \(\displaystyle r>0\)，使
+\(\displaystyle \overline B_X(x_0,r) \subseteq U\)
+并且对全部 \(\displaystyle x\in\overline B_X(x_0,r)\)，
+\(\displaystyle \|\mathcal I_X-A^{-1}DF(x)\|_{\mathcal B(X)} \leqslant q.\)
+特别地，每个 \(\displaystyle DF(x)\) 都是有界线性同构，且
+\(\displaystyle \|DF(x)^{-1}\|_{\mathcal B(Y,X)} \leqslant \frac{M}{1-q}.\)
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle X=\{0\}\)，则 \(\displaystyle A\) 为同构蕴含 \(\displaystyle Y=\{0\}\)，结论立即成立. 以下设 \(\displaystyle X\neq\{0\}\)，于是 \(\displaystyle M>0\). 由 \(\displaystyle U\) 开，存在 \(\displaystyle r_0>0\) 使 \(\displaystyle B_X(x_0,r_0)\subseteq U\). 又由 \(\displaystyle F\in C^1(U,Y)\)，映射 \(\displaystyle DF:U\to\mathcal B(X,Y)\) 在 \(\displaystyle x_0\) 算子范数连续，故存在 \(\displaystyle\delta>0\)，使
+\[
+\|x-x_0\|_X<\delta
+\Longrightarrow
+\|DF(x)-A\|_{\mathcal B(X,Y)}
+<
+\frac{q}{M}.
+\]
+取 \(\displaystyle0<r<\min\{r_0,\delta\}\). 则闭球包含在 \(\displaystyle U\)，并且对球中每个 \(\displaystyle x\)，
+\[
+\|\mathcal I_X-A^{-1}DF(x)\| = \|A^{-1}(A-DF(x))\| \leqslant M\|A-DF(x)\| <q.
+\]
+最后对 \(\displaystyle B=DF(x)\) 应用\autoref{iii02:operator-stability}，即得可逆性与统一逆算子范数界.\hfill\(\square\)
+
+\end{FAProof}
+
+以后固定\autoref{fa:IFT-C01}给出的 \(\displaystyle r\)，记 \(\displaystyle y_0=F(x_0)\)，并定义 Newton 局部映射
+\(\displaystyle \mathcal R(x) := x-A^{-1}(F(x)-y_0).\)
+由 III-01 的线性规则与链式法则，
+\(\displaystyle D\mathcal R(x) = \mathcal I_X-A^{-1}DF(x).\)
+因此\autoref{iii02:map-mvi}与\autoref{fa:IFT-C01}给出 \(\displaystyle\mathcal R\) 在 \(\displaystyle\overline B_X(x_0,r)\) 上 \(\displaystyle q\)-Lipschitz. 注意 \(\displaystyle\mathcal R(x_0)=x_0\).
+
+对参数 \(\displaystyle y\in Y\)，定义
+\(\displaystyle \mathcal T_y(x) := x-A^{-1}(F(x)-y) = \mathcal R(x)+A^{-1}(y-y_0).\)
+若
+\(\displaystyle M\|y-y_0\|_Y \leqslant (1-q)r,\)
+则对 \(\displaystyle x\in\overline B_X(x_0,r)\)，
+\[
+\begin{aligned}
+\|\mathcal T_y(x)-x_0\|_X
+&\leqslant
+\|\mathcal R(x)-\mathcal R(x_0)\|_X
++
+\|A^{-1}(y-y_0)\|_X\\
+&\leqslant
+qr+M\|y-y_0\|_Y\\
+&\leqslant
+r.
+\end{aligned}
+\]
+故 \(\displaystyle\mathcal T_y\) 把该闭球映入自身. 同时平移项与 \(\displaystyle x\) 无关，所以
+\[
+\|\mathcal T_y(x)-\mathcal T_y(z)\|_X
+=
+\|\mathcal R(x)-\mathcal R(z)\|_X
+\leqslant
+q\|x-z\|_X.
+\]
+因此 \(\displaystyle\mathcal T_y\) 确为 \(\displaystyle q\)-压缩映射，而不是仅由形式上的 Newton 写法推断其压缩性.
+
+\begin{FATheorem}[B][定量逆函数估计]{fa:IFT-B01}
+在上述记号与\autoref{fa:IFT-C01}的条件下，并设 \(\displaystyle X\neq\{0\}\). 则有以下结论.
+\begin{enumerate}[label=(\roman*)]
+\item \(\displaystyle F\) 在 \(\displaystyle\overline B_X(x_0,r)\) 上单射.
+\item 对全部 \(\displaystyle x,z\in\overline B_X(x_0,r)\)，
+\(\displaystyle \|F(x)-F(z)\|_Y \geqslant (1-q)M^{-1}\|x-z\|_X.\)
+\item 对全部 \(\displaystyle x,z\in\overline B_X(x_0,r)\)，
+\(\displaystyle \|F(x)-F(z)\|_Y \leqslant \|A\|(1+q)\|x-z\|_X.\)
+\item 对每个 \(\displaystyle0<\rho<\frac{(1-q)r}{M}\)，
+\(\displaystyle B_Y(y_0,\rho) \subseteq F(B_X(x_0,r)).\)
+\item 若 \(\displaystyle y_1,y_2\in B_Y(y_0,\rho)\)，并记该球中唯一原像为 \(\displaystyle x_j=F^{-1}(y_j)\)，则
+\(\displaystyle \|x_1-x_2\|_X \leqslant \frac{M}{1-q}\|y_1-y_2\|_Y.\)
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+由 Newton 映射恒等式，
+\(\displaystyle A^{-1}(F(x)-F(z)) = (x-z)-(\mathcal R(x)-\mathcal R(z)).\)
+故对闭球中 \(\displaystyle x,z\)，
+\[
+\begin{aligned}
+M\|F(x)-F(z)\|_Y
+&\geqslant
+\|A^{-1}(F(x)-F(z))\|_X\\
+&\geqslant
+\|x-z\|_X-
+\|\mathcal R(x)-\mathcal R(z)\|_X\\
+&\geqslant
+(1-q)\|x-z\|_X.
+\end{aligned}
+\]
+这给出第二项，并立即推出单射性.
+
+另一方面，上式也可改写为
+\(\displaystyle F(x)-F(z) = A\bigl((x-z)-(\mathcal R(x)-\mathcal R(z))\bigr),\)
+所以
+\(\displaystyle \|F(x)-F(z)\|_Y \leqslant \|A\|(1+q)\|x-z\|_X,\)
+得到第三项.
+
+固定 \(\displaystyle0<\rho<\frac{(1-q)r}{M}\) 与 \(\displaystyle y\in B_Y(y_0,\rho)\). 则
+\(\displaystyle M\|y-y_0\|_Y < (1-q)r.\)
+前面的自映射与压缩估计表明 \(\displaystyle\mathcal T_y\) 是完备度量空间 \(\displaystyle\overline B_X(x_0,r)\) 上的压缩映射. 由\autoref{fa:FP-A01}，存在唯一 \(\displaystyle x\) 满足 \(\displaystyle\mathcal T_y(x)=x\)，等价于 \(\displaystyle F(x)=y\). 而不动点方程与严格自映射的严格余量给出
+\(\displaystyle \|x-x_0\|_X \leqslant qr+M\|y-y_0\|_Y <r,\)
+故实际有 \(\displaystyle x\in B_X(x_0,r)\). 于是第四项成立.
+
+最后，若 \(\displaystyle F(x_j)=y_j\)，把第二项用于 \(\displaystyle x_1,x_2\) 得
+\(\displaystyle (1-q)M^{-1}\|x_1-x_2\|_X \leqslant \|y_1-y_2\|_Y,\)
+即第五项.\hfill\(\square\)
+
+\end{FAProof}
+
+\section{逆函数定理}\label{sec:iii02-inverse}
+\index{inverse function theorem@逆函数定理}\index{local diffeomorphism@局部微分同胚}
+
+\begin{FADefinition}[C][Banach 空间中的局部 \(\displaystyle C^1\) 微分同胚]{iii02:local-diffeomorphism}
+设 \(\displaystyle U\subseteq X\)、\(\displaystyle V\subseteq Y\) 开. 若 \(\displaystyle F:U\to V\) 为双射、\(\displaystyle F\in C^1(U,Y)\)，且 \(\displaystyle F^{-1}\in C^1(V,X)\)，则称 \(\displaystyle F\) 为 \(\displaystyle C^1\) 微分同胚. 若每个基点都有这样的局部限制，则称相应映射局部为 \(\displaystyle C^1\) 微分同胚.
+\end{FADefinition}
+
+\begin{FATheorem}[A][Banach 逆函数定理]{fa:IFT-A01}
+设 \(\displaystyle U\subseteq X\) 开，\(\displaystyle F\in C^1(U,Y)\)，\(\displaystyle x_0\in U\). 若
+\(\displaystyle DF(x_0):X\to Y\)
+为有界线性同构，记 \(\displaystyle y_0=F(x_0)\)，则存在 \(\displaystyle x_0\) 的开邻域 \(\displaystyle U_0\subseteq U\) 与 \(\displaystyle y_0\) 的开邻域 \(\displaystyle V_0\subseteq Y\)，使
+\(\displaystyle F|_{U_0}:U_0\to V_0\)
+为双射，且逆映射\(\displaystyle G=(F|_{U_0})^{-1}:V_0\to U_0\) 属于 \(\displaystyle C^1\). 对全部 \(\displaystyle y\in V_0\)，
+\(\displaystyle DG(y) = DF(G(y))^{-1}.\)
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle X=\{0\}\)，则 \(\displaystyle DF(x_0)\) 为同构蕴含 \(\displaystyle Y=\{0\}\)，定理平凡. 以下设 \(\displaystyle X\neq\{0\}\). 取\autoref{fa:IFT-C01}与\autoref{fa:IFT-B01}的 \(\displaystyle r,q,M\)，再固定
+\(\displaystyle 0<\rho<\frac{(1-q)r}{M}.\)
+令
+\(\displaystyle V_0:=B_Y(y_0,\rho), \; U_0:=B_X(x_0,r)\cap F^{-1}(V_0).\)
+由 Fréchet 可微性蕴含连续性，\(\displaystyle F\) 连续，所以 \(\displaystyle U_0\) 开.\autoref{fa:IFT-B01}的单射性与局部满射性表明 \(\displaystyle F|_{U_0}:U_0\to V_0\) 双射. 同一定理的逆映射 Lipschitz 估计给出
+\(\displaystyle \|G(y_1)-G(y_2)\|_X \leqslant \frac{M}{1-q}\|y_1-y_2\|_Y,\)
+故 \(\displaystyle G\) 连续.
+
+现独立证明 \(\displaystyle G\) 可微，不能先对 \(\displaystyle F\circ G=\mathcal I_Y\) 使用链式法则. 固定 \(\displaystyle y\in V_0\)，令 \(\displaystyle x=G(y)\). 对足够小的 \(\displaystyle k\in Y\) 使 \(\displaystyle y+k\in V_0\)，记
+\(\displaystyle h:=G(y+k)-G(y).\)
+由上面的 Lipschitz 估计，
+\(\displaystyle \|h\|_X \leqslant \frac{M}{1-q}\|k\|_Y,\)
+故 \(\displaystyle h=O(\|k\|_Y)\) 且 \(\displaystyle h\to0\). 因 \(\displaystyle F(x+h)-F(x)=k\)，在 \(\displaystyle x\) 的 Fréchet 展开给出
+\[
+k
+=
+DF(x)h+r_x(h),
+\quad
+\frac{\|r_x(h)\|_Y}{\|h\|_X}
+\longrightarrow0.
+\]
+由\autoref{fa:IFT-C01}，\(\displaystyle DF(x)\) 可逆且 \(\displaystyle\|DF(x)^{-1}\|\leqslant \frac{M}{1-q}\). 因此
+\[
+h = DF(x)^{-1}k-DF(x)^{-1}r_x(h).
+\]
+并且对 \(\displaystyle k\neq0\)，由 \(\displaystyle y+k\neq y\) 及 \(\displaystyle G\) 单射可知 \(\displaystyle h\neq0\)，故
+\[
+\frac{\|DF(x)^{-1}r_x(h)\|_X}{\|k\|_Y}
+\leqslant
+\|DF(x)^{-1}\|
+\frac{\|r_x(h)\|_Y}{\|h\|_X}
+\frac{\|h\|_X}{\|k\|_Y}
+\longrightarrow0.
+\]
+这严格证明 \(\displaystyle G\) 在 \(\displaystyle y\) Fréchet 可微，且
+\(\displaystyle DG(y)=DF(x)^{-1}=DF(G(y))^{-1}.\)
+
+最后证明微分映射连续. 对任意可逆有界算子 \(\displaystyle B,C:X\to Y\)，恒有
+\(\displaystyle B^{-1}-C^{-1} = B^{-1}(C-B)C^{-1}.\)
+在 \(\displaystyle U_0\subseteq B_X(x_0,r)\) 上，\autoref{fa:IFT-C01}给出统一估计 \(\displaystyle\|DF(x)^{-1}\|\leqslant \frac{M}{1-q}\). 因而对 \(\displaystyle x,z\in U_0\)，
+\[
+\|DF(x)^{-1}-DF(z)^{-1}\|
+\leqslant
+\left(\frac{M}{1-q}\right)^2
+\|DF(x)-DF(z)\|.
+\]
+因为 \(\displaystyle DF\) 算子范数连续，所以 \(\displaystyle x\mapsto DF(x)^{-1}\) 算子范数连续. 又因 \(\displaystyle G\) 连续，复合
+\(\displaystyle y\longmapsto DG(y)=DF(G(y))^{-1}\)
+算子范数连续. 故 \(\displaystyle G\in C^1(V_0,X)\)，定理闭合.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FAApplication}[有界二次非线性方程]
+设 \(\displaystyle X\) 为 Banach 空间，\(\displaystyle B:X\times X\to X\) 为有界双线性映射，并定义
+\(\displaystyle \mathcal F(x) := x+B(x,x).\)
+由 III-01 的有界双线性微分公式，
+\(\displaystyle D\mathcal F(x)h = h+B(h,x)+B(x,h),\)
+从而 \(\displaystyle D\mathcal F(0)=\mathcal I_X\).\autoref{fa:IFT-A01}因此给出 \(\displaystyle0\) 的邻域 \(\displaystyle U,V\)，使对每个 \(\displaystyle y\in V\)，方程
+\(\displaystyle x+B(x,x)=y\)
+在 \(\displaystyle U\) 中有唯一解 \(\displaystyle x=x(y)\)，且解映射 \(\displaystyle y\mapsto x(y)\) 属于 \(\displaystyle C^1(V,X)\). 这个结论只使用局部可逆性，不涉及度、Schauder 不动点或单调算子理论.
+\end{FAApplication}
+
+\subsection{普通 Fréchet 空间中的失效边界}
+\index{Frechet space@Fréchet 空间!逆函数定理失效}
+
+本小节只复用 II-01 的 Fréchet 空间接口\autoref{ii01:frechet-definition}. 取实向量空间
+\(\displaystyle E:=\mathbb R^{\mathbb N}\)
+带乘积拓扑，并取半范数
+\(\displaystyle p_m(x) := \max_{1\leqslant n\leqslant m}|x_n|.\)
+II-01 已证明这类可数乘积在这些半范数生成的拓扑下是 Fréchet 空间. 同章也证明该拓扑不可由范数诱导，因此它不是当前拓扑意义下的 Banach 空间.
+
+为本反例只建立最小一阶 Bastiani 型接口：若 \(\displaystyle\Psi:E\to E\) 对全部 \(\displaystyle x,h\in E\) 的方向导数
+\(\displaystyle d\Psi(x)h := \lim_{t\to0} \frac{\Psi(x+th)-\Psi(x)}{t}\)
+存在，并且映射 \(\displaystyle(x,h)\mapsto d\Psi(x)h\) 从 \(\displaystyle E\times E\) 到 \(\displaystyle E\) 连续，则称本小节中 \(\displaystyle\Psi\) 具有连续的一阶微分. 这只是反例所需的局部定义，不是本章新增的形式化 Fréchet 微积分，也不替代\autoref{fa:DIFF-A01}的 Banach-空间 Fréchet 微分.
+
+\begin{FACounterexample}[普通 Fréchet 空间中逆函数定理失效的反例]
+定义 \(\displaystyle\Phi:E\to E\) 为
+\(\displaystyle \Phi(x)_n = \mathrm{e}^{x_n}-1.\)
+则 \(\displaystyle\Phi(0)=0\)，且在上述一阶意义下
+\(\displaystyle d\Phi(x)h = (\mathrm{e}^{x_n}h_n)_{n\in\mathbb N}.\)
+特别地，\(\displaystyle d\Phi(0)=\mathcal I_E\) 是连续线性同构. 但是 \(\displaystyle\Phi\) 在 \(\displaystyle0\) 附近不局部满射，因此 Banach 逆函数定理的局部微分同胚结论不能无条件推广到任意 Fréchet 空间.
+\end{FACounterexample}
+
+\begin{FAProof}
+固定 \(\displaystyle x,h\in E\). 对每个固定 \(\displaystyle m\)，
+\[
+\begin{aligned}
+&p_m\left(
+\frac{\Phi(x+th)-\Phi(x)}{t}
+-
+(\mathrm{e}^{x_n}h_n)_n
+\right)\\[12pt]
+&=
+\max_{1\leqslant n\leqslant m}
+\left|
+\frac{\mathrm{e}^{x_n+th_n}-\mathrm{e}^{x_n}}{t}
+-
+\mathrm{e}^{x_n}h_n
+\right|
+\longrightarrow0,
+\end{aligned}
+\]
+因为右端只是有限多个一维指数函数微分余项的最大值. 故方向导数存在并等于所给公式.
+
+再证联合连续性. 固定 \(\displaystyle m\). 映射
+\[
+(x_1,\dots,x_m,h_1,\dots,h_m)
+\longmapsto
+(\mathrm{e}^{x_1}h_1,\dots,\mathrm{e}^{x_m}h_m)
+\]
+是有限维连续映射，而 \(\displaystyle p_m\) 只读取前 \(\displaystyle m\) 个坐标. 因此对每个 \(\displaystyle p_m\)-邻域，\(\displaystyle(x,h)\mapsto d\Phi(x)h\) 的原像都由有限坐标的连续条件给出，故该微分映射在乘积拓扑中联合连续. 在 \(\displaystyle x=0\) 时，公式化为 \(\displaystyle d\Phi(0)h=h\)，所以 \(\displaystyle d\Phi(0)=\mathcal I_E\).
+
+逐坐标观察指数函数的值域得到
+\(\displaystyle \Phi(E) = (-1,\infty)^{\mathbb N}.\)
+反过来，若 \(\displaystyle y_n>-1\) 对全部 \(\displaystyle n\) 成立，则取 \(\displaystyle x_n=\log(1+y_n)\) 即有 \(\displaystyle\Phi(x)=y\)，故该像集刻画精确.
+
+现证 \(\displaystyle\Phi(E)\) 不包含 \(\displaystyle0\) 的任何邻域. 任取 \(\displaystyle0\)-邻域 \(\displaystyle N\). 由乘积拓扑，可取 \(\displaystyle m\in\mathbb N\) 与 \(\displaystyle\eta>0\)，使
+\(\displaystyle \{x\in E:p_m(x)<\eta\} \subseteq N.\)
+令 \(\displaystyle v\in E\) 的前 \(\displaystyle m\) 个坐标均为零，而 \(\displaystyle v_{m+1}=-2\)，其余坐标任取零. 则 \(\displaystyle p_m(v)=0<\eta\)，所以 \(\displaystyle v\in N\)，但 \(\displaystyle v\notin(-1,\infty)^{\mathbb N}=\Phi(E)\). 因而任何 \(\displaystyle0\)-邻域都不可能包含在 \(\displaystyle\Phi(E)\) 中.
+
+更强地，对 \(\displaystyle0\) 的任意邻域 \(\displaystyle U\subseteq E\)，恒有 \(\displaystyle\Phi(U)\subseteq\Phi(E)\). 若 \(\displaystyle\Phi(U)\) 包含某个 \(\displaystyle0\)-邻域，则该邻域也包含于 \(\displaystyle\Phi(E)\)，与上一段矛盾. 所以局部满射性失败. 这里失败的是从普通 Fréchet 空间一阶微分同构推出 Banach 型局部可逆性的无条件推广，而不是\autoref{fa:IFT-A01}在 Banach 空间中的结论.\hfill\(\square\)
+
+\end{FAProof}
+
+普通 Fréchet 空间一般没有一个能够同时控制全部方向与全部局部尺度的单一 Banach 范数，因而上面 Banach 空间中的证明中的一致压缩半径与逆算子范数估计不能直接照搬. Nash--Moser 理论需要额外的驯服结构与光滑化结构；其形式化理论只属于后续的驯顺 Fréchet 与 Nash--Moser 专题，本章不建立也不使用.
+
+\section{隐函数定理}\label{sec:iii02-implicit}
+\index{implicit function theorem@隐函数定理}\index{partial derivative@偏微分!Banach 空间}
+
+对 Banach 空间 \(\displaystyle X,Y\)，本节在乘积空间\(\displaystyle X\times Y\) 上固定最大值范数
+\(\displaystyle \|(x,y)\|_{X\times Y} := \max\{\|x\|_X,\|y\|_Y\}.\)
+若 \(\displaystyle U\subseteq X\times Y\) 开，\(\displaystyle F:U\to Z\) 在 \(\displaystyle(x,y)\) Fréchet 可微，则定义
+\(\displaystyle D_xF(x,y)h := DF(x,y)(h,0), \; D_yF(x,y)k := DF(x,y)(0,k).\)
+两个映射都是有界线性算子，因为典型嵌入 \(\displaystyle h\mapsto(h,0)\) 与 \(\displaystyle k\mapsto(0,k)\) 在最大值范数下范数为 \(\displaystyle1\). 由 \(\displaystyle(h,k)=(h,0)+(0,k)\) 与 \(\displaystyle DF(x,y)\) 线性，
+\(\displaystyle DF(x,y)(h,k) = D_xF(x,y)h+D_yF(x,y)k.\)
+若 \(\displaystyle F\in C^1(U,Z)\)，则
+\[
+\|D_xF(p)-D_xF(q)\|
+\leqslant
+\|DF(p)-DF(q)\|,
+\quad
+\|D_yF(p)-D_yF(q)\|
+\leqslant
+\|DF(p)-DF(q)\|,
+\]
+故两个偏微分映射都在相应算子范数中连续.
+
+\begin{FATheorem}[A][Banach 隐函数定理]{fa:IMPLICIT-A01}
+设 \(\displaystyle U\subseteq X\times Y\) 开，\(\displaystyle F\in C^1(U,Z)\)，\(\displaystyle(x_0,y_0)\in U\)，且
+\(\displaystyle F(x_0,y_0)=0.\)
+若
+\(\displaystyle D_yF(x_0,y_0):Y\to Z\)
+为有界线性同构，则存在 \(\displaystyle x_0\) 的开邻域 \(\displaystyle P\subseteq X\)、\(\displaystyle y_0\) 的开邻域 \(\displaystyle Q\subseteq Y\)，以及唯一 \(\displaystyle\varphi\in C^1(P,Q)\)，使
+\(\displaystyle \varphi(x_0)=y_0, \; F(x,\varphi(x))=0\)
+对全部 \(\displaystyle x\in P\) 成立. 通过缩小 \(\displaystyle P,Q\)，还可保证 \(\displaystyle P\times Q\) 内的全部零点恰为该图像. 并且
+\(\displaystyle D\varphi(x) = -[D_yF(x,\varphi(x))]^{-1}D_xF(x,\varphi(x)).\)
+\end{FATheorem}
+
+\begin{FAProof}
+定义
+\(\displaystyle \mathcal H(x,y) := (x,F(x,y))\)
+作为从 \(\displaystyle U\subseteq X\times Y\) 到 \(\displaystyle X\times Z\) 的映射，两端都取最大值范数. 由乘积空间微分分解，
+\[
+D\mathcal H(x_0,y_0)(h,k)
+=
+\bigl(h,D_xF(x_0,y_0)h+D_yF(x_0,y_0)k\bigr).
+\]
+记
+\[
+B:=D_yF(x_0,y_0)\in\mathcal B(Y,Z),
+\quad
+C:=D_xF(x_0,y_0)\in\mathcal B(X,Z).
+\]
+对任意 \(\displaystyle(a,b)\in X\times Z\)，方程
+\(\displaystyle D\mathcal H(x_0,y_0)(h,k) = (a,b)\)
+显式解为
+\(\displaystyle h=a, \; k=B^{-1}(b-Ca).\)
+因此该分块算子双射. 其逆算子线性，并满足
+\(\displaystyle \|h\|_X \leqslant \max\{\|a\|_X,\|b\|_Z\}\)
+以及
+\(\displaystyle \|k\|_Y \leqslant \|B^{-1}\|(1+\|C\|) \max\{\|a\|_X,\|b\|_Z\},\)
+故逆算子有界. 因而 \(\displaystyle D\mathcal H(x_0,y_0)\) 是有界线性同构.
+
+由\autoref{fa:IFT-A01}，存在 \(\displaystyle(x_0,y_0)\) 的开邻域 \(\displaystyle\mathcal O\subseteq U\) 与 \(\displaystyle(x_0,0)\) 的开邻域 \(\displaystyle\mathcal N\subseteq X\times Z\)，使
+\(\displaystyle \mathcal H|_{\mathcal O}:\mathcal O\to\mathcal N\)
+为 \(\displaystyle C^1\) 微分同胚. 因 \(\displaystyle\mathcal N\) 开，可取 \(\displaystyle x_0\) 的开邻域 \(\displaystyle P_1\) 与 \(\displaystyle0\) 的开邻域 \(\displaystyle W\subseteq Z\)，使
+\(\displaystyle P_1\times W \subseteq \mathcal N.\)
+对 \(\displaystyle x\in P_1\)，定义
+\(\displaystyle \mathcal H^{-1}(x,0) = (x,\varphi(x)).\)
+第一坐标必为 \(\displaystyle x\)，因为 \(\displaystyle\mathcal H(u,v)\) 的第一坐标就是 \(\displaystyle u\). 由 \(\displaystyle\mathcal H^{-1}\in C^1\)，\(\displaystyle\varphi\in C^1(P_1,Y)\)，且
+\(\displaystyle F(x,\varphi(x))=0, \; \varphi(x_0)=y_0.\)
+再由 \(\displaystyle\varphi\) 连续性与 \(\displaystyle\mathcal O\) 开，缩小 \(\displaystyle P_1\) 为 \(\displaystyle P\)，并取 \(\displaystyle y_0\) 的开邻域 \(\displaystyle Q\)，使 \(\displaystyle\varphi(P)\subseteq Q\) 且 \(\displaystyle P\times Q\subseteq\mathcal O\).
+
+若 \(\displaystyle(x,y)\in P\times Q\) 且 \(\displaystyle F(x,y)=0\)，则
+\(\displaystyle \mathcal H(x,y)=(x,0)=\mathcal H(x,\varphi(x)).\)
+由于 \(\displaystyle\mathcal H|_{\mathcal O}\) 单射，必有 \(\displaystyle y=\varphi(x)\). 因而局部零集正是图像，且满足定理所需唯一性.
+
+还需证明微分公式. 固定 \(\displaystyle q_1\in(0,1)\). 由 \(\displaystyle(x,y)\mapsto D_yF(x,y)\) 算子范数连续，且 \(\displaystyle B=D_yF(x_0,y_0)\) 可逆，可再次缩小 \(\displaystyle P,Q\)，使对全部 \(\displaystyle(x,y)\in P\times Q\)，
+\(\displaystyle \|\mathcal I_Y-B^{-1}D_yF(x,y)\| \leqslant q_1.\)
+于是由\autoref{iii02:operator-stability}，算子 \(\displaystyle D_yF(x,y):Y\to Z\) 保持可逆. 对恒等式 \(\displaystyle F(x,\varphi(x))=0\)，对映射 \(\displaystyle x\mapsto(x,\varphi(x))\) 应用\autoref{fa:DIFF-A02}，得到
+\(\displaystyle D_xF(x,\varphi(x)) + D_yF(x,\varphi(x))D\varphi(x) = 0\)
+作为 \(\displaystyle X\to Z\) 的有界算子恒等映射. 左乘 \(\displaystyle[D_yF(x,\varphi(x))]^{-1}:Z\to Y\)，得到
+\(\displaystyle D\varphi(x) = -[D_yF(x,\varphi(x))]^{-1}D_xF(x,\varphi(x)).\)
+这里算子类型分别为 \(\displaystyle D_xF:X\to Z\)、\(\displaystyle D_yF:Y\to Z\)、\(\displaystyle D\varphi:X\to Y\)，复合完全匹配.\hfill\(\square\)
+
+\end{FAProof}
+
+\section{参数依赖}\label{sec:iii02-parameter}
+\index{parameter dependence@参数依赖}\index{solution branch@局部解支}
+
+\autoref{fa:IMPLICIT-A01}本身就是局部参数依赖定理：\(\displaystyle x\) 扮演参数，\(\displaystyle y\) 作为未知变量. 只要关于未知变量的微分在基点可逆，零集就在局部成为唯一 \(\displaystyle C^1\) 图像.
+
+\begin{FAApplication}[二次型局部解支]
+设 \(\displaystyle X\) 为 \(\displaystyle\mathbb K\)-Banach 空间，\(\displaystyle B:X\times X\to X\) 为有界 \(\displaystyle\mathbb K\)-双线性映射，固定 \(\displaystyle u_0\in X\). 定义
+\[
+\mathcal F(\lambda,u)
+:=
+u+\lambda B(u,u)-u_0,
+\quad
+(\lambda,u)\in\mathbb K\times X.
+\]
+在 \(\displaystyle(0,u_0)\) 有 \(\displaystyle\mathcal F(0,u_0)=0\). 由 III-01 的双线性微分公式，
+\(\displaystyle D_u\mathcal F(\lambda,u)h = h+\lambda\bigl(B(h,u)+B(u,h)\bigr),\)
+故
+\(\displaystyle D_u\mathcal F(0,u_0) = \mathcal I_X.\)
+由\autoref{fa:IMPLICIT-A01}，存在 \(\displaystyle0\) 的邻域\(\displaystyle P\subseteq\mathbb K\) 与 \(\displaystyle u_0\) 的邻域\(\displaystyle Q\subseteq X\)，以及唯一局部解支 \(\displaystyle u\in C^1(P,Q)\)，使
+\(\displaystyle u(0)=u_0, \; u(\lambda)+\lambda B(u(\lambda),u(\lambda))-u_0=0.\)
+由隐函数微分公式，在 \(\displaystyle\lambda=0\)，
+\[
+u'(0)
+=
+-[D_u\mathcal F(0,u_0)]^{-1}D_\lambda\mathcal F(0,u_0)
+=
+-B(u_0,u_0).
+\]
+若 \(\displaystyle\mathbb K=\mathbb C\)，这里把 \(\displaystyle\lambda\) 视为一维复 Banach 参数；若 \(\displaystyle\mathbb K=\mathbb R\)，则为通常实参数. 该结果只给出局部解支，不进入分岔理论.
+\end{FAApplication}
+
+\subsection{后续接口与边界}
+
+\autoref{fa:IFT-A01}为后续局部非线性方程提供局部可逆工具，\autoref{fa:IMPLICIT-A01}为约束与参数问题提供局部图像结构. III-03 的 Brouwer/Schauder 不动点理论、III-04 的度、III-05 的单调算子、III-06--III-10 的变分/临界点理论均需要新的紧性、拓扑或变分工具，本章不调用这些未来结果. 普通 Fréchet 空间失效只说明额外结构是必要问题之一；它不建立后续的驯顺 Fréchet 与 Nash--Moser 专题的 Nash--Moser 定理.
+
+\subsection*{本章习题}\label{sec:iii02-exercises}
+
+\begin{FAExercise}[Banach 值一维均值不等式]{ex:iii02-01}
+在\autoref{iii02:banach-mvi}中固定 \(\displaystyle a<c<d<b\). 逐步重建上确界延拓论证，并解释为什么先在内部区间证明、再令 \(\displaystyle c\downarrow a\)、\(\displaystyle d\uparrow b\) 可以避免假设端点可微.
+\end{FAExercise}
+
+\begin{FAExercise}[算子扰动的不动点求逆]{ex:iii02-02}
+在\autoref{iii02:operator-stability}中，对固定 \(\displaystyle y\in Y\) 证明 \(\displaystyle\mathcal S_y\) 是压缩映射，并从不动点方程同时推出满射性、单射性与 \(\displaystyle\|B^{-1}\|\leqslant \frac{M}{1-q}\). 不得使用 Neumann 级数.
+\end{FAExercise}
+
+\begin{FAExercise}[局部可逆性半径的选择]{ex:iii02-03}
+从 \(\displaystyle U\) 开与 \(\displaystyle DF\) 在 \(\displaystyle x_0\) 算子范数连续出发，给定 \(\displaystyle q\in(0,1)\)，完整构造 \(\displaystyle r>0\)，使\autoref{fa:IFT-C01}的闭球包含关系与微分扰动界同时成立.
+\end{FAExercise}
+
+\begin{FAExercise}[Newton 映射微分]{ex:iii02-04}
+对 \(\displaystyle\mathcal R(x)=x-A^{-1}(F(x)-y_0)\) 使用 III-01 的线性规则与链式法则，严格证明 \(\displaystyle D\mathcal R(x)=\mathcal I_X-A^{-1}DF(x)\)，并核对算子类型.
+\end{FAExercise}
+
+\begin{FAExercise}[Newton 压缩]{ex:iii02-05}
+使用\autoref{iii02:map-mvi}与\autoref{fa:IFT-C01}证明 \(\displaystyle\mathcal R\) 在闭球上 \(\displaystyle q\)-Lipschitz，再证明 \(\displaystyle M\|y-y_0\|\leqslant(1-q)r\) 时 \(\displaystyle\mathcal T_y\) 是闭球上的自映射压缩.
+\end{FAExercise}
+
+\begin{FAExercise}[局部单射性]{ex:iii02-06}
+从恒等映射 \(\displaystyle A^{-1}(F(x)-F(z))=(x-z)-(\mathcal R(x)-\mathcal R(z))\) 推出 \(\displaystyle F\) 在闭球上单射.
+\end{FAExercise}
+
+\begin{FAExercise}[局部满射半径]{ex:iii02-07}
+固定 \(\displaystyle0<\rho<\frac{(1-q)r}{M}\)，对每个 \(\displaystyle y\in B_Y(y_0,\rho)\) 用\autoref{fa:FP-A01}找到唯一不动点，并证明该点实际属于开球 \(\displaystyle B_X(x_0,r)\).
+\end{FAExercise}
+
+\begin{FAExercise}[逆映射 Lipschitz 估计]{ex:iii02-08}
+由\autoref{fa:IFT-B01}的下界估计直接推出局部逆映射的 Lipschitz 常数不超过 \(\displaystyle \frac{M}{1-q}\).
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建定量逆函数估计]{ex:iii02-09}
+不引用\autoref{fa:IFT-B01}的证明，按下界估计、单射性、上界估计、不动点满射性、逆映射的 Lipschitz 估计的顺序完整重建全部五项结论.
+\end{FAExercise}
+
+\begin{FAExercise}[无循环论证的逆映射微分]{ex:iii02-10}
+设 \(\displaystyle G\) 已由局部双射性定义且已知 Lipschitz. 从 \(\displaystyle k=DF(x)h+r_x(h)\) 出发证明 \(\displaystyle DG(y)=DF(G(y))^{-1}\)，并明确说明为什么这里没有预先使用 \(\displaystyle G\) 可微.
+\end{FAExercise}
+
+\begin{FAExercise}[逆算子恒等式]{ex:iii02-11}
+对可逆有界算子 \(\displaystyle B,C:X\to Y\)，验证
+\(\displaystyle B^{-1}-C^{-1}=B^{-1}(C-B)C^{-1},\)
+并写出相应算子范数估计.
+\end{FAExercise}
+
+\begin{FAExercise}[逆映射 \(\displaystyle C^1\) 连续性]{ex:iii02-12}
+利用上一题、\autoref{fa:IFT-C01}的一致逆算子界与 \(\displaystyle DF\) 连续性，证明 \(\displaystyle x\mapsto DF(x)^{-1}\) 算子范数连续，再与 \(\displaystyle G\) 连续性复合得到 \(\displaystyle DG\) 连续.
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建 Banach 逆函数定理]{ex:iii02-13}
+从\autoref{fa:IFT-B01}开始构造 \(\displaystyle V_0=B_Y(y_0,\rho)\) 与 \(\displaystyle U_0=B_X(x_0,r)\cap F^{-1}(V_0)\)，证明局部双射性、逆映射可微性与逆映射 \(\displaystyle C^1\) 连续性，完整重建\autoref{fa:IFT-A01}.
+\end{FAExercise}
+
+\begin{FAExercise}[二次非线性方程]{ex:iii02-14}
+设 \(\displaystyle B:X\times X\to X\) 有界双线性. 计算 \(\displaystyle D(x+B(x,x))\)，验证基点 \(\displaystyle0\) 的微分为恒等映射，并用\autoref{fa:IFT-A01}得到小 \(\displaystyle y\) 的唯一小解与 \(\displaystyle C^1\) 解映射.
+\end{FAExercise}
+
+\begin{FAExercise}[乘积 Banach 空间微分]{ex:iii02-15}
+在最大值范数下证明典型嵌入 \(\displaystyle X\to X\times Y\)、\(\displaystyle Y\to X\times Y\) 的算子范数为 \(\displaystyle1\)，并据此证明 \(\displaystyle D_xF,D_yF\) 有界以及 \(\displaystyle DF(h,k)=D_xFh+D_yFk\).
+\end{FAExercise}
+
+\begin{FAExercise}[分块三角算子求逆]{ex:iii02-16}
+设 \(\displaystyle B:Y\to Z\) 有界可逆、\(\displaystyle C:X\to Z\) 有界. 对 \(\displaystyle L(h,k)=(h,Ch+Bk)\) 显式求 \(\displaystyle L^{-1}\)，并在最大值范数下给出有界性估计.
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建 Banach 隐函数定理]{ex:iii02-17}
+从 \(\displaystyle\mathcal H(x,y)=(x,F(x,y))\) 出发，证明其基点微分可逆，应用\autoref{fa:IFT-A01}构造局部逆映射，并严格证明 \(\displaystyle P\times Q\) 中零集恰为唯一图像 \(\displaystyle y=\varphi(x)\).
+\end{FAExercise}
+
+\begin{FAExercise}[隐函数微分公式]{ex:iii02-18}
+先由算子稳定性证明沿局部解支的 \(\displaystyle D_yF\) 保持可逆，再对 \(\displaystyle F(x,\varphi(x))=0\) 使用链式法则，推导 \(\displaystyle D\varphi=-[D_yF]^{-1}D_xF\) 并核对三个算子空间.
+\end{FAExercise}
+
+\begin{FAExercise}[参数解支]{ex:iii02-19}
+对 \(\displaystyle\mathcal F(\lambda,u)=u+\lambda B(u,u)-u_0\) 验证 \(\displaystyle\mathcal F\in C^1\)，计算 \(\displaystyle D_u\mathcal F\)，并由\autoref{fa:IMPLICIT-A01}建立 \(\displaystyle\lambda=0\) 附近的唯一局部 \(\displaystyle C^1\) 解支.
+\end{FAExercise}
+
+\begin{FAExercise}[零点处的参数微分]{ex:iii02-20}
+对上一题的解支使用隐函数微分公式，逐步计算 \(\displaystyle D_\lambda\mathcal F(0,u_0)\)，证明 \(\displaystyle u'(0)=-B(u_0,u_0)\).
+\end{FAExercise}
+
+\begin{FAExercise}[普通 Fréchet 空间中逆函数定理失效反例的乘积拓扑验证]{ex:iii02-21}
+对 \(\displaystyle E=\mathbb R^{\mathbb N}\) 与 \(\displaystyle\Phi(x)_n=\mathrm{e}^{x_n}-1\)，用每个有限半范数 \(\displaystyle p_m\) 验证方向导数与联合连续性，证明 \(\displaystyle d\Phi(0)=\mathcal I_E\)，并证明 \(\displaystyle\Phi(E)\) 不包含 \(\displaystyle0\) 的任何邻域.
+\end{FAExercise}
+
+\begin{FAExercise}[后续边界]{ex:iii02-22}
+分别说明为什么本章结果不能直接推出 Brouwer 不动点、拓扑度或 Nash--Moser 定理. 对每项只指出缺失的形式化工具，不得调用 III-03、III-04 或后续的驯顺 Fréchet 与 Nash--Moser 专题的未来结果补证明.
+\end{FAExercise}

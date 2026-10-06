@@ -1,0 +1,421 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{style/fa-book}[2026/10/04 Functional analysis book style]
+
+\RequirePackage[a4paper,inner=28mm,outer=24mm,top=25mm,bottom=27mm,headheight=24pt,headsep=7mm,footskip=13mm]{geometry}
+\RequirePackage{fontspec}
+\RequirePackage{amsmath,amssymb,mathtools,amsthm}
+\RequirePackage{aliascnt}
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+\RequirePackage{xcolor}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{enumitem}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{graphicx}
+\RequirePackage{caption}
+\RequirePackage{fancyhdr}
+\RequirePackage{makeidx}
+\RequirePackage{titletoc}
+\RequirePackage[backend=biber,style=numeric,sorting=none]{biblatex}
+\RequirePackage{hyperref}
+\let\cleardoublepage\clearpage
+
+% ---------- Typography ----------
+\setmainfont{cmunrm.otf}[BoldFont=cmunbx.otf,ItalicFont=cmunti.otf,BoldItalicFont=cmunbi.otf,Ligatures=TeX]
+\setsansfont{cmunss.otf}[BoldFont=cmunsx.otf,ItalicFont=cmunsi.otf,BoldItalicFont=cmunso.otf,Ligatures=TeX]
+\setmonofont{cmuntt.otf}[BoldFont=cmuntb.otf,ItalicFont=cmunit.otf,Scale=0.90]
+\setCJKfamilyfont{fahei}{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf]
+\setCJKfamilyfont{fakai}{FandolKai-Regular.otf}[BoldFont=FandolKai-Regular.otf]
+\newcommand{\FAHei}{\CJKfamily{fahei}}
+\newcommand{\FAKai}{\CJKfamily{fakai}}
+\newcommand{\FAKeyword}[1]{{\FAHei\bfseries #1}}
+\linespread{1.055}
+\setlength{\emergencystretch}{1.2em}
+
+% ---------- Palette ----------
+\definecolor{FANavy}{HTML}{0B1F3A}
+% Scheme D environment text ink. Non-environment uses retain their frozen R12A tone
+% through FATextInkFrozen below.
+\definecolor{FAInk}{HTML}{1D2733}
+\definecolor{FATextInkFrozen}{HTML}{0F172A}
+\definecolor{FASlate}{HTML}{475569}
+\definecolor{FAGray}{HTML}{64748B}
+\definecolor{FALine}{HTML}{CBD5E1}
+\definecolor{FAMist}{HTML}{F8FAFC}
+\definecolor{FAWhite}{HTML}{FFFFFF}
+\definecolor{FARoyal}{HTML}{2563EB}
+\definecolor{FACyan}{HTML}{0891B2}
+\definecolor{FAEmerald}{HTML}{059669}
+\definecolor{FAViolet}{HTML}{6D5BD0}
+\definecolor{FARose}{HTML}{C2415A}
+\definecolor{FAAmber}{HTML}{B7791F}
+\definecolor{FAIce}{HTML}{F3F7FC}
+\definecolor{FACyanPale}{HTML}{F2F9FA}
+\definecolor{FAMint}{HTML}{F2F8F5}
+\definecolor{FALavender}{HTML}{F5F4FA}
+\definecolor{FARosePale}{HTML}{FBF4F5}
+\definecolor{FAAmberPale}{HTML}{FBF8F0}
+\definecolor{FASlatePale}{HTML}{F5F7F9}
+
+
+% R12V Scheme D environment palette: clear modern academic semantic colors.
+% Geometry and all non-environment visual systems remain frozen.
+\colorlet{FAEnvInk}{FAInk}
+\definecolor{FABorder}{HTML}{D4DCE6}
+\definecolor{FABack}{HTML}{F8FAFC}
+\definecolor{FATheorem}{HTML}{356FAF}
+\colorlet{FATheoremBack}{FATheorem!6!white}
+\definecolor{FADefinition}{HTML}{32838D}
+\colorlet{FADefinitionBack}{FADefinition!6!white}
+\definecolor{FAProposition}{HTML}{7559B2}
+\colorlet{FAPropositionBack}{FAProposition!6!white}
+\definecolor{FAExample}{HTML}{7E9046}
+\colorlet{FAExampleBack}{FAExample!6!white}
+\definecolor{FAApplication}{HTML}{438B64}
+\colorlet{FAApplicationBack}{FAApplication!6!white}
+\definecolor{FACounterexample}{HTML}{B45161}
+\colorlet{FACounterexampleBack}{FACounterexample!6!white}
+\definecolor{FAWarning}{HTML}{C08730}
+\colorlet{FAWarningBack}{FAWarning!7!white}
+\definecolor{FARemark}{HTML}{557E9E}
+\colorlet{FARemarkBack}{FARemark!5!white}
+\definecolor{FAExercise}{HTML}{586CB7}
+\colorlet{FAExerciseBack}{FAExercise!6!white}
+\definecolor{FASolution}{HTML}{8A639D}
+\colorlet{FASolutionBack}{FASolution!6!white}
+% Retained legacy names for source/API compatibility. Priority D no longer owns
+% a separate hue; it remains in the theorem family whenever used directly.
+\colorlet{FADeferred}{FATheorem!82!white}
+\colorlet{FADeferredBack}{FATheoremBack}
+
+% Backward-compatible names used by existing chapter sources.
+\colorlet{FADeep}{FANavy}
+\colorlet{FAMid}{FASlate}
+\colorlet{FALight}{FAIce}
+\colorlet{FAPale}{FAMist}
+\colorlet{FADarkGray}{FASlate}
+
+\hypersetup{
+  unicode=true,
+  colorlinks=true,
+  linkcolor=FARoyal,
+  citecolor=FAViolet,
+  urlcolor=FACyan!75!FANavy,
+  pdfborder={0 0 0},
+  bookmarksopen=true,
+  bookmarksnumbered=true
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\setlist{nosep,leftmargin=2em}
+\captionsetup{font={small,sf},labelfont={bf,color=FARoyal},textfont={color=FATextInkFrozen}}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+% ---------- Chapter and section hierarchy ----------
+\ctexset{
+  chapter={
+    format=\raggedright\sffamily\FAHei\bfseries\zihao{2}\color{FANavy},
+    name={第,章},
+    number=\arabic{chapter},
+    beforeskip=0pt,
+    afterskip=15pt
+  },
+  section={format=\sffamily\FAHei\bfseries\zihao{4}\color{FARoyal},beforeskip=2.2ex plus .4ex,afterskip=.8ex},
+  subsection={format=\FAKai\zihao{-4}\color{FASlate},beforeskip=1.7ex plus .3ex,afterskip=.55ex}
+}
+
+% ---------- Running heads ----------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\sffamily\FAHei\small\bfseries\color{FARoyal}\thepage\enspace\color{FASlate}\nouppercase{\leftmark}}
+\fancyhead[RO]{\sffamily\FAHei\small\color{FASlate}\nouppercase{\rightmark}\enspace\bfseries\color{FARoyal}\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{FALine}\leaders\hrule height 0.35pt\hfill}\vskip-0.35pt}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[C]{\sffamily\small\color{FASlate}\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% ---------- TOC typography ----------
+\contentsmargin{3.8em}
+\titlecontents{part}[0pt]
+  {\addvspace{1.25em}\sffamily\FAHei\bfseries\large\color{FARoyal}}
+  {}
+  {}
+  {\hfill\sffamily\bfseries\color{FARoyal}\contentspage}
+  [\vspace{3pt}\color{FARoyal!30}\titlerule]
+\titlecontents{chapter}[0pt]
+  {\addvspace{0.75em}\sffamily\FAHei\bfseries\color{FANavy}}
+  {\contentslabel{4.6em}}
+  {}
+  {\hfill\color{FARoyal}\contentspage}
+\titlecontents{section}[2.0em]
+  {\small\sffamily\FAHei\color{FATextInkFrozen}}
+  {\contentslabel{3.3em}}
+  {}
+  {\titlerule*[0.55em]{\color{FALine}.}\color{FASlate}\contentspage}
+\titlecontents{subsection}[5.2em]
+  {\small\FAKai\color{FASlate}}
+  {\contentslabel{4.0em}}
+  {}
+  {\titlerule*[0.6em]{\color{FALine!80}.}\contentspage}
+
+% ---------- Shared result sequence ----------
+\newtheoremstyle{faresultstyle}
+  {.45em}{.45em}{\normalfont}{}%
+  {\sffamily\FAHei\bfseries\color{FAEnvInk}}{.}{.55em}%
+  {\thmname{#1}\thmnumber{ #2}\thmnote{：#3}}
+\theoremstyle{faresultstyle}
+\newtheorem{faresult}{结果}[section]
+\newaliascnt{definition}{faresult}
+\newtheorem{definition}[definition]{定义}
+\aliascntresetthe{definition}
+\newaliascnt{theorem}{faresult}
+\newtheorem{theorem}[theorem]{定理}
+\aliascntresetthe{theorem}
+\newaliascnt{lemma}{faresult}
+\newtheorem{lemma}[lemma]{引理}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{faresult}
+\newtheorem{proposition}[proposition]{命题}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{faresult}
+\newtheorem{corollary}[corollary]{推论}
+\aliascntresetthe{corollary}
+
+\def\definitionautorefname{定义}
+\def\theoremautorefname{定理}
+\def\lemmaautorefname{引理}
+\def\propositionautorefname{命题}
+\def\corollaryautorefname{推论}
+\def\chapterautorefname{章}
+\def\sectionautorefname{节}
+\def\equationautorefname{式}
+\def\figureautorefname{图}
+\def\tableautorefname{表}
+
+\numberwithin{equation}{section}
+\counterwithin{figure}{chapter}
+\counterwithin{table}{chapter}
+
+% ---------- Environment system ----------
+% R12A geometry invariant: the west accent is the only west border. All visible
+% edges belong to the same tcolorbox; no overlay/TikZ seam patches are used.
+\tcbset{
+  fa/boxbase/.style n args={4}{
+    enhanced jigsaw,
+    breakable,
+    frame hidden,
+    boxrule=0pt,
+    arc=1.25mm,
+    outer arc=1.25mm,
+    sharp corners=west,
+    colback=#2,
+    colbacktitle=#2,
+    coltext=FAEnvInk,
+    coltitle=#1,
+    borderline west={#4}{0pt}{#1},
+    borderline north={0.50pt}{0pt}{FABorder},
+    borderline east={0.50pt}{0pt}{FABorder},
+    borderline south={0.50pt}{0pt}{FABorder},
+    left=10pt,right=10pt,top=8.5pt,bottom=8pt,
+    before skip=10.5pt,after skip=10.5pt,
+    fonttitle=#3,
+    halign title=flush left,
+    lefttitle=10pt,righttitle=10pt,toptitle=3.2pt,bottomtitle=3.2pt,
+    titlerule=0pt
+  },
+  fa/lightbase/.style n args={3}{
+    fa/boxbase={#1}{#2}{\FAKai\bfseries\small}{#3},
+    before skip=10pt,after skip=10pt
+  },
+  fa/example/.style={fa/lightbase={FAExample}{FAExampleBack}{2.60pt}},
+  fa/counterexample/.style={fa/lightbase={FACounterexample}{FACounterexampleBack}{2.65pt}},
+  fa/remark/.style={fa/lightbase={FARemark}{FARemarkBack}{2.50pt}},
+  fa/application/.style={fa/lightbase={FAApplication}{FAApplicationBack}{2.60pt}},
+  fa/warning/.style={fa/lightbase={FAWarning}{FAWarningBack}{2.65pt}},
+  fa/exercise/.style={fa/boxbase={FAExercise}{FAExerciseBack}{\sffamily\FAHei\bfseries\small}{2.60pt}},
+  fa/solution/.style={fa/boxbase={FASolution}{FASolutionBack}{\sffamily\FAHei\bfseries\small}{2.50pt}},
+  % Direct priority styles are retained for the reader-guide legend and any
+  % existing source that uses fa/A--fa/D without a theorem wrapper.
+  fa/A/.style={fa/boxbase={FATheorem}{FATheoremBack}{\sffamily\FAHei\bfseries\small}{2.80pt}},
+  fa/B/.style={fa/boxbase={FATheorem!94!white}{FATheoremBack}{\sffamily\FAHei\bfseries\small}{2.70pt}},
+  fa/C/.style={fa/boxbase={FATheorem!88!white}{FATheoremBack}{\sffamily\FAHei\bfseries\small}{2.60pt}},
+  fa/D/.style={fa/boxbase={FATheorem!82!white}{FATheoremBack}{\sffamily\FAHei\bfseries\small}{2.50pt}},
+  fa/front/.style={
+    fa/boxbase={FATheorem}{FABack}{\sffamily\FAHei\bfseries\small}{2.70pt},
+    left=12pt,right=12pt,top=9pt,bottom=9pt,
+    before skip=10pt,after skip=11pt
+  }
+}
+
+% Formal-result semantic families. Priority changes remain deliberately subtle:
+% A/B/C progressively mute the same family accent; D uses a neutral grey-purple.
+\def\fa@accent@definition{FADefinition}
+\def\fa@back@definition{FADefinitionBack}
+\def\fa@accent@theorem{FATheorem}
+\def\fa@back@theorem{FATheoremBack}
+\def\fa@accent@lemma{FAProposition}
+\def\fa@back@lemma{FAPropositionBack}
+\def\fa@accent@proposition{FAProposition}
+\def\fa@back@proposition{FAPropositionBack}
+\def\fa@accent@corollary{FAProposition}
+\def\fa@back@corollary{FAPropositionBack}
+
+\newcommand{\fa@preparelevel}[2]{%
+  \edef\fa@baseaccent{\csname fa@accent@#1\endcsname}%
+  \edef\fa@baseback{\csname fa@back@#1\endcsname}%
+  \edef\fa@accent{\fa@baseaccent}%
+  \edef\fa@back{\fa@baseback}%
+  \def\fa@barwidth{2.80pt}%
+  \ifstrequal{#2}{B}{%
+    \edef\fa@accent{\fa@baseaccent!94!white}%
+    \def\fa@barwidth{2.70pt}%
+  }{}%
+  \ifstrequal{#2}{C}{%
+    \edef\fa@accent{\fa@baseaccent!88!white}%
+    \def\fa@barwidth{2.60pt}%
+  }{}%
+  \ifstrequal{#2}{D}{%
+    \edef\fa@accent{\fa@baseaccent!82!white}%
+    \def\fa@barwidth{2.50pt}%
+  }{}%
+}
+
+\def\fa@level@A{A级·主线核心}
+\def\fa@level@B{B级·重要支撑}
+\def\fa@level@C{C级·局部工具}
+\def\fa@level@D{D级·高级选读}
+\newcommand{\fa@leveltitle}[1]{\ifcsname fa@level@#1\endcsname\csname fa@level@#1\endcsname\else 未知层级\fi}
+
+% Kept source-compatible for any future direct use of the priority wrapper.
+\NewDocumentEnvironment{FAPriorityBox}{m}{%
+  \fa@preparelevel{theorem}{#1}%
+  \begin{tcolorbox}[fa/boxbase={\fa@accent}{\fa@back}{\sffamily\FAHei\bfseries\small}{\fa@barwidth},title={\fa@leveltitle{#1}}]
+}{%
+  \end{tcolorbox}
+}
+
+\NewDocumentEnvironment{FAStatement}{m O{A} O{} m}{%
+  \fa@preparelevel{#1}{#2}%
+  \begin{tcolorbox}[fa/boxbase={\fa@accent}{\fa@back}{\sffamily\FAHei\bfseries\small}{\fa@barwidth},title={\fa@leveltitle{#2}}]
+  \ifstrempty{#3}{\begin{#1}}{\begin{#1}[#3]}%
+  \label{#4}%
+}{%
+  \end{#1}%
+  \end{tcolorbox}%
+}
+
+\NewDocumentEnvironment{FADefinition}{O{A} O{} m}{\begin{FAStatement}{definition}[#1][#2]{#3}}{\end{FAStatement}}
+\NewDocumentEnvironment{FATheorem}{O{A} O{} m}{\begin{FAStatement}{theorem}[#1][#2]{#3}}{\end{FAStatement}}
+\NewDocumentEnvironment{FALemma}{O{A} O{} m}{\begin{FAStatement}{lemma}[#1][#2]{#3}}{\end{FAStatement}}
+\NewDocumentEnvironment{FAProposition}{O{A} O{} m}{\begin{FAStatement}{proposition}[#1][#2]{#3}}{\end{FAStatement}}
+\NewDocumentEnvironment{FACorollary}{O{A} O{} m}{\begin{FAStatement}{corollary}[#1][#2]{#3}}{\end{FAStatement}}
+
+% Proofs remain unboxed; the explanatory label uses Kai type consistently.
+\RenewDocumentEnvironment{proof}{O{证明}}{%
+  \par\smallskip\noindent{\FAKai\bfseries\color{FASlate}#1.}\enspace\ignorespaces
+}{%
+  \par\smallskip
+}
+\NewDocumentEnvironment{FAProof}{O{证明}}{\begin{proof}[#1]}{\end{proof}}
+
+\NewDocumentEnvironment{FALightBox}{m O{}}{%
+  \begin{tcolorbox}[fa/remark,title={#1\ifstrempty{#2}{}{：#2}}]
+}{\end{tcolorbox}}
+\NewDocumentEnvironment{FAExample}{O{}}{\begin{tcolorbox}[fa/example,title={例\ifstrempty{#1}{}{：#1}}]}{\end{tcolorbox}}
+\NewDocumentEnvironment{FACounterexample}{O{}}{\begin{tcolorbox}[fa/counterexample,title={反例\ifstrempty{#1}{}{：#1}}]}{\end{tcolorbox}}
+\NewDocumentEnvironment{FARemark}{O{}}{\begin{tcolorbox}[fa/remark,title={注\ifstrempty{#1}{}{：#1}}]}{\end{tcolorbox}}
+\NewDocumentEnvironment{FAApplication}{O{}}{\begin{tcolorbox}[fa/application,title={应用\ifstrempty{#1}{}{：#1}}]}{\end{tcolorbox}}
+\NewDocumentEnvironment{FAWarning}{O{}}{\begin{tcolorbox}[fa/warning,title={警示\ifstrempty{#1}{}{：#1}}]}{\end{tcolorbox}}
+
+\newcounter{exercise}[section]
+\renewcommand{\theexercise}{\thesection.\arabic{exercise}}
+\def\exerciseautorefname{习题}
+\NewDocumentEnvironment{FAExercise}{O{} m}{%
+  \refstepcounter{exercise}\label{#2}%
+  \begin{tcolorbox}[fa/exercise,title={习题 \theexercise\ifstrempty{#1}{}{：#1}}]
+}{\end{tcolorbox}}
+\NewDocumentEnvironment{FASolution}{O{解答}}{\begin{tcolorbox}[fa/solution,title={#1}]}{\end{tcolorbox}}
+\NewDocumentEnvironment{FAAnswer}{O{答案}}{\begin{tcolorbox}[fa/solution,title={#1}]}{\end{tcolorbox}}
+
+\NewDocumentCommand{\FAChapterOpening}{m m m}{%
+  \begin{tcolorbox}[fa/front,title={本章导航}]
+  \noindent{\sffamily\FAHei\bfseries\color{FANavy}学习目标}\enspace #1\par\smallskip
+  \noindent{\sffamily\FAHei\bfseries\color{FANavy}先修依赖}\enspace #2\par\smallskip
+  \noindent{\sffamily\FAHei\bfseries\color{FANavy}依赖图}\par\smallskip
+  #3
+  \end{tcolorbox}
+}
+
+\tikzset{
+  fa/node/.style={draw=FALine,rounded corners=2pt,inner xsep=7pt,inner ysep=4pt,fill=FAMist,font=\small\sffamily,text=FATextInkFrozen},
+  fa/arrow/.style={-{Stealth[length=2mm]},line width=0.75pt,draw=FARoyal}
+}
+
+% ---------- Front matter helpers ----------
+\NewDocumentCommand{\FAFrontHeading}{m m}{%
+  \par\noindent
+  {\sffamily\FAHei\bfseries\zihao{2}\color{FANavy}#1\par}
+  \vspace{4pt}
+  {\FAKai\small\color{FASlate}#2\par}
+  \vspace{9pt}
+  {\color{FARoyal}\rule{0.16\textwidth}{1.8pt}\hspace{6pt}\color{FALine}\rule{0.30\textwidth}{0.6pt}\par}
+  \vspace{12pt}
+}
+
+\NewDocumentCommand{\FAFrontSubheading}{m}{%
+  \par\addvspace{1.15em}\noindent
+  {\sffamily\FAHei\bfseries\zihao{-3}\color{FANavy}#1\par}
+  \vspace{3pt}{\noindent\color{FALine}\rule{\textwidth}{0.45pt}\par}\vspace{6pt}
+}
+
+% Retained for source compatibility; ordinary front-matter prose should prefer normal layout.
+\NewDocumentCommand{\FAInfoBox}{m m m m}{%
+  \par\addvspace{.8em}\noindent{\sffamily\FAHei\bfseries\color{FANavy}#1}\par\smallskip
+  #4\par\addvspace{.6em}
+}
+
+\NewDocumentCommand{\FAVolumeDivider}{m m m m}{%
+  \cleardoublepage
+  \phantomsection
+  \addcontentsline{toc}{part}{#1·#2}
+  \thispagestyle{empty}
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[FANavy] (current page.south west) rectangle (current page.north east);
+    \fill[#4,opacity=.14] ([xshift=-1.5cm,yshift=-1.8cm]current page.north east) circle (4.5cm);
+    \draw[#4,opacity=.55,line width=1.2pt] ([yshift=2.2cm]current page.west) -- ([yshift=2.2cm]current page.east);
+  \end{tikzpicture}
+  \vspace*{0.22\textheight}
+  \noindent{\sffamily\FAHei\bfseries\zihao{1}\color{#4}#1\par}
+  \vspace{12pt}
+  \noindent{\sffamily\FAHei\bfseries\zihao{1}\color{white}#2\par}
+  \vspace{16pt}
+  \noindent{\FAKai\zihao{-3}\color{white!78}#3\par}
+  \vfill
+  \noindent{\sffamily\FAHei\small\color{white!62}泛函分析·三卷自学体系\par}
+  \clearpage
+}
+
+% Custom TOC wrapper with a designed header while preserving standard .toc data.
+\makeatletter
+\NewDocumentCommand{\FATableOfContents}{}{
+  \cleardoublepage
+  \phantomsection
+  \thispagestyle{plain}
+  \markboth{目录}{目录}
+  \FAFrontHeading{目录}{三卷结构与阅读路径}
+  {\FAKai\small\color{FASlate}
+  目录按“卷—章—节—小节”展开. 卷级条目标示三卷主结构，章标题用于快速定位，节与小节保留页码引导；既可按依赖顺序阅读，也可按主题回查.\par}
+  \vspace{8pt}
+  \@starttoc{toc}
+}
+\makeatother

@@ -1,0 +1,817 @@
+\chapter{无界算子：定义域、闭性、可闭性与图范数}\label{chap:II-05}
+\FAChapterOpening
+{建立可能无界线性算子的定义域治理、图、闭性、可闭性、闭包与图范数；证明无界Hilbert伴随的闭性、可闭判据与双伴随闭包定理；最后用乘法、微分与二阶微分算子检验全部定义域机制.}
+{I-04，特别是\autoref{fa:HIL-A02}；I-09，特别是\autoref{fa:CGT-A01}；I-11，特别是\autoref{fa:ADJ-A02}；I-12 的预解与谱接口.}
+{\begin{center}
+\begin{tikzpicture}[x=0.90cm,y=1.00cm]
+\node[fa/node] (cgt) at (0,1.3) {闭图像定理};
+\node[fa/node] (ban) at (0,-0.2) {赋范/Banach空间};
+\node[fa/node] (hil) at (0,-2.0) {Riesz表示定理};
+\node[fa/node] (a01) at (4.0,0.6) {无界算子基础};
+\node[fa/node] (b01) at (7.4,1.6) {闭性/图范数};
+\node[fa/node] (c01) at (7.4,0.0) {闭算子工具};
+\node[fa/node] (b02) at (7.4,-1.6) {可闭性判据};
+\node[fa/node] (a02) at (10.8,-1.0) {无界伴随};
+\draw[fa/arrow] (cgt) -- (a01);
+\draw[fa/arrow] (ban) -- (a01);
+\draw[fa/arrow] (a01) -- (b01);
+\draw[fa/arrow] (a01) -- (c01);
+\draw[fa/arrow] (a01) -- (b02);
+\draw[fa/arrow] (hil.south east) -- (9.5,-2.2) -- (a02.south);
+\draw[fa/arrow] (a01.south east) -- (6.1,-0.75) -- (9.3,-0.75) -- (a02.west);
+\end{tikzpicture}
+\end{center}}
+
+本章的首要规则是定义域先于作用公式. 对每个可能无界的线性算子都显式写成
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to Y,\)
+其中 \(\displaystyle D(\mathcal A)\) 是 \(\displaystyle X\) 的线性子空间. 只有在已经证明 \(\displaystyle D(\mathcal A)=X\) 时，才允许把它视为处处定义算子. 两个算子相等不仅要求作用公式相同，还要求定义域相同；复合、伴随与谱的正确语义都依赖这一点.
+
+\section{稠密定义与图}\label{sec:ii05-domain-graph}
+\index{unbounded operator@无界算子}\index{domain@定义域}\index{graph@图}\index{densely defined@稠密定义}\index{operator extension@算子延拓}
+
+设 \(\displaystyle X,Y,Z\) 为Banach空间. 若
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to Y, \; \mathcal B:D(\mathcal B)\subseteq X\to Y,\)
+则 \(\displaystyle\mathcal A=\mathcal B\) 的含义固定为
+\(\displaystyle D(\mathcal A)=D(\mathcal B), \; \mathcal Ax=\mathcal Bx\;\forall\,x\in D(\mathcal A).\)
+若 \(\displaystyle D(\mathcal A)\subseteq D(\mathcal B)\) 且 \(\displaystyle\mathcal Bx=\mathcal Ax\) 对全部 \(\displaystyle x\in D(\mathcal A)\) 成立，则记 \(\displaystyle\mathcal A\subseteq\mathcal B\)，称 \(\displaystyle\mathcal B\) 为 \(\displaystyle\mathcal A\) 的延拓，也称 \(\displaystyle\mathcal A\) 为 \(\displaystyle\mathcal B\) 的限制.
+
+无界算子的代数运算必须同时给出定义域. 对同一 \(\displaystyle X\to Y\) 型的两个算子，
+\[
+D(\mathcal A+\mathcal B)=D(\mathcal A)\cap D(\mathcal B),
+\;
+(\mathcal A+\mathcal B)x=\mathcal Ax+\mathcal Bx.
+\]
+若
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to Y, \; \mathcal B:D(\mathcal B)\subseteq Y\to Z,\)
+则
+\[
+D(\mathcal B\mathcal A)
+=
+\{x\in D(\mathcal A):\mathcal Ax\in D(\mathcal B)\},
+\;
+(\mathcal B\mathcal A)x=\mathcal B(\mathcal Ax).
+\]
+即使两个作用公式都很简单，也不能把上述定义域条件省略.
+
+在 \(\displaystyle X\times Y\) 上固定积范数
+\(\displaystyle \|(x,y)\|_{X\times Y}=\|x\|_X+\|y\|_Y.\)
+该范数下 \(\displaystyle X\times Y\) 完备：若 \(\displaystyle(x_n,y_n)\) 为 Cauchy 列，则 \(\displaystyle(x_n)\) 与 \(\displaystyle(y_n)\) 分别在 \(\displaystyle X,Y\) 中为 Cauchy 列，故分别收敛，其坐标极限给出积空间极限.
+
+\begin{FADefinition}[A][稠密定义、图、闭性、可闭性、闭包、图范数与延拓]{fa:UNB-A01}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to Y\) 为线性算子.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 若 \(\displaystyle\overline{D(\mathcal A)}^{\,X}=X\)，则称 \(\displaystyle\mathcal A\) 稠密定义.
+\item \(\displaystyle\mathcal A\) 的图为
+\(\displaystyle G(\mathcal A)=\{(x,\mathcal Ax):x\in D(\mathcal A)\}\subseteq X\times Y.\)
+\item 若 \(\displaystyle G(\mathcal A)\) 在 \(\displaystyle X\times Y\) 中闭，则称 \(\displaystyle\mathcal A\) 为闭算子.
+\item 若 \(\displaystyle\overline{G(\mathcal A)}^{\,X\times Y}\) 仍是某个线性算子的图，则称 \(\displaystyle\mathcal A\) 可闭. 该唯一算子记为 \(\displaystyle\overline{\mathcal A}\)，称为 \(\displaystyle\mathcal A\) 的闭包.
+\item \(\displaystyle D(\mathcal A)\) 上的图范数定义为
+\(\displaystyle \|x\|_{\mathcal A}=\|x\|_X+\|\mathcal Ax\|_Y, \; x\in D(\mathcal A).\)
+它只定义在 \(\displaystyle D(\mathcal A)\) 上，而不是自动定义在全部 \(\displaystyle X\) 上.
+\item 若 \(\displaystyle\mathcal B:D(\mathcal B)\subseteq X\to Y\) 满足 \(\displaystyle D(\mathcal A)\subseteq D(\mathcal B)\) 且 \(\displaystyle\mathcal Bx=\mathcal Ax\) 对全部 \(\displaystyle x\in D(\mathcal A)\) 成立，则记 \(\displaystyle\mathcal A\subseteq\mathcal B\).
+\end{enumerate}
+\end{FADefinition}
+
+\begin{FAProposition}[C][闭算子的序列判据]{ii05:closed-sequence-criterion}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to Y\) 线性. 则 \(\displaystyle\mathcal A\) 闭当且仅当对任意 \(\displaystyle x_n\in D(\mathcal A)\)，若 \(\displaystyle x_n\to x\) 于 \(\displaystyle X\) 且 \(\displaystyle\mathcal Ax_n\to y\) 于 \(\displaystyle Y\)，则
+\(\displaystyle x\in D(\mathcal A), \; \mathcal Ax=y.\)
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle\mathcal A\) 闭，则 \(\displaystyle(x_n,\mathcal Ax_n)\in G(\mathcal A)\) 且
+\[
+\|(x_n,\mathcal Ax_n)-(x,y)\|_{X\times Y}
+=
+\|x_n-x\|_X+\|\mathcal Ax_n-y\|_Y
+\longrightarrow0.
+\]
+图的闭性给 \(\displaystyle(x,y)\in G(\mathcal A)\)，故 \(\displaystyle x\in D(\mathcal A)\) 且 \(\displaystyle\mathcal Ax=y\).
+
+反之，设序列条件成立. 若 \(\displaystyle(x_n,\mathcal Ax_n)\in G(\mathcal A)\) 在 \(\displaystyle X\times Y\) 中收敛到 \(\displaystyle(x,y)\)，则两坐标分别收敛，即 \(\displaystyle x_n\to x\) 与 \(\displaystyle\mathcal Ax_n\to y\). 序列条件给 \(\displaystyle(x,y)\in G(\mathcal A)\). 由于 \(\displaystyle X\times Y\) 为度量空间，序列闭等价于闭，故 \(\displaystyle G(\mathcal A)\) 闭.\hfill\(\square\)
+\end{FAProof}
+
+映射
+\(\displaystyle J_{\mathcal A}:D(\mathcal A)\to X\times Y, \; J_{\mathcal A}x=(x,\mathcal Ax)\)
+满足
+\(\displaystyle \|J_{\mathcal A}x\|_{X\times Y}=\|x\|_{\mathcal A},\)
+故它是 \(\displaystyle(D(\mathcal A),\|\cdot\|_{\mathcal A})\) 到 \(\displaystyle G(\mathcal A)\) 上的线性等距双射. 这一观察把闭算子问题转化为闭子空间完备性问题.
+
+\section{闭算子}\label{sec:ii05-closed-operators}
+\index{closed operator@闭算子}\index{graph norm@图范数}\index{closed graph theorem@闭图像定理}\index{resolvent@预解}
+
+\begin{FATheorem}[B][闭性与图范数完备性]{fa:UNB-B01}
+设 \(\displaystyle X,Y\) 为Banach空间，且 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to Y\) 线性. 则
+\(\displaystyle \mathcal A\text{ 闭} \iff (D(\mathcal A),\|\cdot\|_{\mathcal A})\text{ 为Banach空间}.\)
+\end{FATheorem}
+
+\begin{FAProof}
+由上一节，\(\displaystyle J_{\mathcal A}\) 是图范数空间到 \(\displaystyle G(\mathcal A)\) 的等距双射. 若 \(\displaystyle\mathcal A\) 闭，则 \(\displaystyle G(\mathcal A)\) 是Banach空间 \(\displaystyle X\times Y\) 的闭线性子空间，故完备，所以 \(\displaystyle D(\mathcal A)\) 在图范数下完备.
+
+反之，若 \(\displaystyle(D(\mathcal A),\|\cdot\|_{\mathcal A})\) 完备，则 \(\displaystyle G(\mathcal A)\) 在积范数下完备. 任取 \(\displaystyle z\in\overline{G(\mathcal A)}\)，可取 \(\displaystyle z_n\in G(\mathcal A)\) 使 \(\displaystyle z_n\to z\). 则 \(\displaystyle(z_n)\) 在 \(\displaystyle G(\mathcal A)\) 中为 Cauchy 列，完备性给某个 \(\displaystyle w\in G(\mathcal A)\) 使 \(\displaystyle z_n\to w\). 积空间极限唯一，故 \(\displaystyle z=w\in G(\mathcal A)\). 因而图闭，\(\displaystyle\mathcal A\) 闭.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[A][处处定义的闭算子必有界]{ii05:cgt-boundary}
+设 \(\displaystyle X,Y\) 为Banach空间，且
+\(\displaystyle \mathcal A:D(\mathcal A)=X\to Y\)
+线性且闭. 则 \(\displaystyle\mathcal A\in\mathcal B(X,Y)\).
+\end{FACorollary}
+
+\begin{FAProof}
+此时 \(\displaystyle\mathcal A:X\to Y\) 是Banach空间之间处处定义的线性算子，并且其图闭. 直接应用 I-09 的闭图像定理\autoref{fa:CGT-A01}即得 \(\displaystyle\mathcal A\in\mathcal B(X,Y)\).\hfill\(\square\)
+\end{FAProof}
+
+因此真正的闭无界算子必有真定义域 \(\displaystyle D(\mathcal A)\neq X\). 这不是闭图像定理的反例，而是其处处定义假设的精确边界.
+
+\begin{FAProposition}[B][稠密定义上的一致有界估计给出唯一有界延拓]{ii05:dense-bounded-extension}
+设 \(\displaystyle D(\mathcal A)\) 在Banach空间 \(\displaystyle X\) 中稠密，\(\displaystyle Y\) 为Banach空间，且
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to Y\)
+线性. 若存在 \(\displaystyle C>0\) 使
+\(\displaystyle \|\mathcal Ax\|_Y\leqslant C\|x\|_X \;\forall\,x\in D(\mathcal A),\)
+则存在唯一 \(\displaystyle\widetilde{\mathcal A}\in\mathcal B(X,Y)\) 满足 \(\displaystyle\mathcal A\subseteq\widetilde{\mathcal A}\)，且 \(\displaystyle\|\widetilde{\mathcal A}\|\leqslant C\).
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in X\). 由稠密性可取 \(\displaystyle x_n\in D(\mathcal A)\) 使 \(\displaystyle x_n\to x\). 估计
+\(\displaystyle \|\mathcal Ax_n-\mathcal Ax_m\|_Y \leqslant C\|x_n-x_m\|_X\)
+说明 \(\displaystyle(\mathcal Ax_n)\) 在 \(\displaystyle Y\) 中为 Cauchy 列. 由 \(\displaystyle Y\) 完备，极限存在. 若 \(\displaystyle u_n\in D(\mathcal A)\) 也满足 \(\displaystyle u_n\to x\)，则
+\(\displaystyle \|\mathcal Ax_n-\mathcal Au_n\|_Y \leqslant C\|x_n-u_n\|_X \longrightarrow0,\)
+所以极限与逼近列无关. 定义 \(\displaystyle\widetilde{\mathcal A}x=\lim_n\mathcal Ax_n\). 线性由分别逼近两点并取极限得到；取极限于 \(\displaystyle\|\mathcal Ax_n\|_Y\leqslant C\|x_n\|_X\) 得 \(\displaystyle\|\widetilde{\mathcal A}x\|_Y\leqslant C\|x\|_X\). 若 \(\displaystyle x\in D(\mathcal A)\)，取常值列 \(\displaystyle x_n=x\) 即得 \(\displaystyle\widetilde{\mathcal A}x=\mathcal Ax\). 最后，任何连续延拓都由稠密子空间上的取值唯一决定，故延拓唯一.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][闭算子计算工具]{fa:UNB-C01}
+设 \(\displaystyle X,Y\) 为Banach空间，\(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to Y\) 闭.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 若 \(\displaystyle\mathcal B\in\mathcal B(X,Y)\)，则
+\(\displaystyle \mathcal A+\mathcal B:D(\mathcal A)\subseteq X\to Y\)
+闭.
+\item 若 \(\displaystyle X=Y\) 且 \(\displaystyle\lambda\in\mathbb K\)，则 \(\displaystyle\mathcal A-\lambda\mathcal I\) 在 \(\displaystyle D(\mathcal A)\) 上闭.
+\item 对 \(\displaystyle\mathcal B\in\mathcal B(X,Y)\)，范数 \(\displaystyle\|\cdot\|_{\mathcal A}\) 与 \(\displaystyle\|\cdot\|_{\mathcal A+\mathcal B}\) 在共同定义域 \(\displaystyle D(\mathcal A)\) 上等价.
+\item \(\displaystyle\ker\mathcal A=\{x\in D(\mathcal A):\mathcal Ax=0\}\) 是 \(\displaystyle X\) 的闭线性子空间.
+\item 若 \(\displaystyle X=Y\) 且 \(\displaystyle\lambda\mathcal I-\mathcal A:D(\mathcal A)\to X\) 双射，则
+\(\displaystyle (\lambda\mathcal I-\mathcal A)^{-1}:X\to X\)
+属于 \(\displaystyle\mathcal B(X)\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+对（i），若 \(\displaystyle x_n\in D(\mathcal A)\)、\(\displaystyle x_n\to x\) 且 \(\displaystyle(\mathcal A+\mathcal B)x_n\to y\)，则 \(\displaystyle\mathcal Bx_n\to\mathcal Bx\)，故
+\(\displaystyle \mathcal Ax_n =(\mathcal A+\mathcal B)x_n-\mathcal Bx_n \longrightarrow y-\mathcal Bx.\)
+由 \(\displaystyle\mathcal A\) 闭，\(\displaystyle x\in D(\mathcal A)\) 且 \(\displaystyle\mathcal Ax=y-\mathcal Bx\)，即 \(\displaystyle(\mathcal A+\mathcal B)x=y\). 由序列判据，\(\displaystyle\mathcal A+\mathcal B\) 闭. （ii）取 \(\displaystyle\mathcal B=-\lambda\mathcal I\) 即得.
+
+对（iii），对全部 \(\displaystyle x\in D(\mathcal A)\)，
+\[
+\|x\|_{\mathcal A+\mathcal B}
+\leqslant
+\|x\|_X+\|\mathcal Ax\|_Y+\|\mathcal B\|\|x\|_X
+\leqslant
+(1+\|\mathcal B\|)\|x\|_{\mathcal A}.
+\]
+又 \(\displaystyle\mathcal A=(\mathcal A+\mathcal B)-\mathcal B\) 在该共同定义域上成立，将刚才的估计应用于 \(\displaystyle\mathcal A+\mathcal B\) 与有界算子 \(\displaystyle-\mathcal B\)，得到
+\(\displaystyle \|x\|_{\mathcal A} \leqslant (1+\|\mathcal B\|)\|x\|_{\mathcal A+\mathcal B}.\)
+故两图范数等价.
+
+对（iv），若 \(\displaystyle x_n\in\ker\mathcal A\) 且 \(\displaystyle x_n\to x\) 于 \(\displaystyle X\)，则 \(\displaystyle\mathcal Ax_n=0\to0\). 闭性给 \(\displaystyle x\in D(\mathcal A)\) 且 \(\displaystyle\mathcal Ax=0\)，故核闭.
+
+对（v），令 \(\displaystyle\mathcal T=\lambda\mathcal I-\mathcal A\). 由（ii），\(\displaystyle\mathcal T\) 闭. 由于 \(\displaystyle\mathcal T\) 双射，\(\displaystyle\mathcal T^{-1}:X\to X\) 处处定义. 若 \(\displaystyle y_n\to y\) 且 \(\displaystyle\mathcal T^{-1}y_n\to x\)，则
+\(\displaystyle (\mathcal T^{-1}y_n,y_n)\in G(\mathcal T), \; (\mathcal T^{-1}y_n,y_n)\to(x,y).\)
+图闭给 \(\displaystyle(x,y)\in G(\mathcal T)\)，即 \(\displaystyle\mathcal T^{-1}y=x\). 因而 \(\displaystyle\mathcal T^{-1}\) 图闭. 由\autoref{fa:CGT-A01}，\(\displaystyle\mathcal T^{-1}\in\mathcal B(X)\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[C][闭算子的最小预解接口]{ii05:unbounded-resolvent-interface}
+设 \(\displaystyle X\) 为复Banach空间，且
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X\)
+闭. 定义
+\[
+\rho(\mathcal A)
+=
+\{\lambda\in\mathbb C:\lambda\mathcal I-\mathcal A:D(\mathcal A)\to X\text{ 为双射}\}.
+\]
+若 \(\displaystyle\lambda\in\rho(\mathcal A)\)，由\autoref{fa:UNB-C01}自动有
+\(\displaystyle R(\lambda,\mathcal A) =(\lambda\mathcal I-\mathcal A)^{-1}\in\mathcal B(X).\)
+定义 \(\displaystyle\sigma(\mathcal A)=\mathbb C\setminus\rho(\mathcal A)\).
+\end{FADefinition}
+
+这只是把 I-12 的\autoref{fa:SPEC-A01}预解与谱语言扩展到闭的可能无界算子. 本章不声称该谱总是非空、有界或紧，也不使用谱半径公式. 后文的 \(\displaystyle\mathcal M\) 将直接给出无界谱的例子.
+
+\section{可闭与闭包}\label{sec:ii05-closable-closure}
+\index{closable operator@可闭算子}\index{closure of operator@算子闭包}\index{closed linear relation@闭线性关系}
+
+\begin{FATheorem}[B][可闭性的零序列判据]{fa:UNB-B02}
+设 \(\displaystyle X,Y\) 为Banach空间，且 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to Y\) 线性. 则 \(\displaystyle\mathcal A\) 可闭当且仅当对任意 \(\displaystyle x_n\in D(\mathcal A)\)，
+\(\displaystyle x_n\to0\text{ 于 }X, \; \mathcal Ax_n\to y\text{ 于 }Y\)
+蕴含 \(\displaystyle y=0\).
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle\mathcal A\) 可闭，则
+\(\displaystyle \overline{G(\mathcal A)}=G(\overline{\mathcal A}).\)
+当 \(\displaystyle x_n\to0\) 且 \(\displaystyle\mathcal Ax_n\to y\) 时，\(\displaystyle(x_n,\mathcal Ax_n)\to(0,y)\)，故
+\(\displaystyle (0,y)\in\overline{G(\mathcal A)}=G(\overline{\mathcal A}).\)
+线性算子在零向量处取值为零，因此 \(\displaystyle y=\overline{\mathcal A}0=0\).
+
+反之，设零序列条件成立. 要证明 \(\displaystyle\overline{G(\mathcal A)}\) 是算子图，只需证明同一第一坐标不能对应两个不同第二坐标. 设
+\(\displaystyle (x,y),(x,z)\in\overline{G(\mathcal A)}.\)
+取 \(\displaystyle x_n,u_n\in D(\mathcal A)\) 使
+\(\displaystyle (x_n,\mathcal Ax_n)\to(x,y), \; (u_n,\mathcal Au_n)\to(x,z).\)
+令 \(\displaystyle v_n=x_n-u_n\in D(\mathcal A)\). 则
+\(\displaystyle v_n\to0, \; \mathcal Av_n=\mathcal Ax_n-\mathcal Au_n\to y-z.\)
+由假设 \(\displaystyle y-z=0\)，故 \(\displaystyle y=z\). 又 \(\displaystyle\overline{G(\mathcal A)}\) 是线性子空间，于是它确为某个线性算子的图，故 \(\displaystyle\mathcal A\) 可闭.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][闭包的序列刻画与最小闭延拓]{ii05:closure-characterization}
+若 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to Y\) 可闭，则
+\[
+D(\overline{\mathcal A})
+=
+\{x\in X:\exists\,x_n\in D(\mathcal A),\ x_n\to x,\ \mathcal Ax_n\text{ 在 }Y\text{ 中收敛}\},
+\]
+且对任何这样的序列，
+\[
+\overline{\mathcal A}x=\lim_{n\to\infty}\mathcal Ax_n.
+\]
+此外，\(\displaystyle\mathcal A\subseteq\overline{\mathcal A}\)，\(\displaystyle\overline{\mathcal A}\) 闭，并且它是 \(\displaystyle\mathcal A\) 的最小闭延拓：若 \(\displaystyle\mathcal A\subseteq\mathcal B\) 且 \(\displaystyle\mathcal B\) 闭，则 \(\displaystyle\overline{\mathcal A}\subseteq\mathcal B\).
+\end{FAProposition}
+
+\begin{FAProof}
+由定义，\(\displaystyle(x,y)\in G(\overline{\mathcal A})\) 当且仅当 \(\displaystyle(x,y)\in\overline{G(\mathcal A)}\). 在度量空间 \(\displaystyle X\times Y\) 中，这又当且仅当存在 \(\displaystyle x_n\in D(\mathcal A)\) 使
+\(\displaystyle (x_n,\mathcal Ax_n)\to(x,y),\)
+即 \(\displaystyle x_n\to x\) 且 \(\displaystyle\mathcal Ax_n\to y\). 因而给出所述定义域刻画与极限公式. 若同一 \(\displaystyle x\) 由两列得到极限 \(\displaystyle y,z\)，则把两列作差后应用\autoref{fa:UNB-B02}，得到 \(\displaystyle y=z\)，所以公式良定义.
+
+因为 \(\displaystyle G(\mathcal A)\subseteq\overline{G(\mathcal A)}\)，有 \(\displaystyle\mathcal A\subseteq\overline{\mathcal A}\). 又 \(\displaystyle G(\overline{\mathcal A})=\overline{G(\mathcal A)}\) 闭，故 \(\displaystyle\overline{\mathcal A}\) 闭. 若 \(\displaystyle\mathcal A\subseteq\mathcal B\) 且 \(\displaystyle\mathcal B\) 闭，则
+\(\displaystyle G(\mathcal A)\subseteq G(\mathcal B).\)
+取闭包并用 \(\displaystyle G(\mathcal B)\) 闭，得
+\(\displaystyle G(\overline{\mathcal A}) = \overline{G(\mathcal A)} \subseteq G(\mathcal B).\)
+这恰是 \(\displaystyle\overline{\mathcal A}\subseteq\mathcal B\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][可闭算子的图范数完备化]{ii05:graph-norm-completion}
+若 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to Y\) 可闭，则 \(\displaystyle D(\mathcal A)\) 在 \(\displaystyle D(\overline{\mathcal A})\) 的图范数 \(\displaystyle\|\cdot\|_{\overline{\mathcal A}}\) 下稠密，且
+\(\displaystyle (D(\overline{\mathcal A}),\|\cdot\|_{\overline{\mathcal A}})\)
+是
+\(\displaystyle (D(\mathcal A),\|\cdot\|_{\mathcal A})\)
+的完备化.
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in D(\overline{\mathcal A})\). 由\autoref{ii05:closure-characterization}，存在 \(\displaystyle x_n\in D(\mathcal A)\) 使 \(\displaystyle x_n\to x\) 且 \(\displaystyle\mathcal Ax_n\to\overline{\mathcal A}x\). 因 \(\displaystyle\overline{\mathcal A}x_n=\mathcal Ax_n\)，有
+\(\displaystyle \|x_n-x\|_{\overline{\mathcal A}} = \|x_n-x\|_X+\|\mathcal Ax_n-\overline{\mathcal A}x\|_Y \longrightarrow0.\)
+所以稠密性成立. 另一方面，\(\displaystyle\overline{\mathcal A}\) 闭，由\autoref{fa:UNB-B01}，其图范数空间完备. 在 \(\displaystyle D(\mathcal A)\) 上，\(\displaystyle\overline{\mathcal A}\) 与 \(\displaystyle\mathcal A\) 取值相同，因此两图范数相同. 故该完备空间正是所述完备化.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[可闭但不闭的稠密定义算子]
+令 \(\displaystyle X=\ell^2\)、\(\displaystyle D(\mathcal A)=c_{00}\)，并定义
+\(\displaystyle \mathcal Ax=x.\)
+则 \(\displaystyle\|\mathcal Ax\|=\|x\|\) 对全部 \(\displaystyle x\in c_{00}\) 成立. 由于 \(\displaystyle c_{00}\) 在 \(\displaystyle\ell^2\) 中稠密，\autoref{ii05:dense-bounded-extension}给出唯一有界延拓 \(\displaystyle\mathcal I_{\ell^2}\). 因而 \(\displaystyle\mathcal A\) 可闭且
+\(\displaystyle \overline{\mathcal A}=\mathcal I_{\ell^2}, \; D(\overline{\mathcal A})=\ell^2.\)
+但 \(\displaystyle G(\mathcal A)=\{(x,x):x\in c_{00}\}\) 不闭，因为 \(\displaystyle c_{00}\) 不是 \(\displaystyle\ell^2\) 的闭子空间. 故 \(\displaystyle\mathcal A\) 可闭但不闭.
+\end{FAExample}
+
+\begin{FACounterexample}[稠密定义但不可闭]
+令 \(\displaystyle X=Y=\ell^2\)、\(\displaystyle D(\mathcal A)=c_{00}\)，并定义
+\[
+\mathcal Ax
+=
+\left(\sum_{k=1}^{\infty}x_k\right)e_1,
+\;
+x\in c_{00},
+\]
+其中该和对 \(\displaystyle c_{00}\) 中元素总为有限和. 取
+\[
+x^{(n)}=\frac1n\sum_{k=1}^{n}e_k.
+\]
+则
+\[
+\|x^{(n)}\|_2=n^{-\frac{1}{2}}\longrightarrow0,
+\;
+\mathcal Ax^{(n)}=e_1.
+\]
+由\autoref{fa:UNB-B02}，\(\displaystyle\mathcal A\) 不可闭.
+\end{FACounterexample}
+
+\begin{FARemark}[闭线性关系的边界]
+对不可闭的 \(\displaystyle\mathcal A\)，集合 \(\displaystyle\overline{G(\mathcal A)}\) 仍是 \(\displaystyle X\times Y\) 的闭线性子空间，但可能不是任何单值算子的图. 更一般的这种对象称为闭线性关系. 本章只记录这一边界，不建立线性关系的运算或伴随理论.
+\end{FARemark}
+
+\section{无界伴随}\label{sec:ii05-unbounded-adjoint}
+\index{adjoint!unbounded operator@无界算子伴随}\index{densely defined adjoint@稠密定义伴随}\index{double adjoint@双伴随}
+
+本节固定 \(\displaystyle H,K\) 为复Hilbert空间，内积继续采用 I-04 的约定：第一变量线性，第二变量共轭线性. 设
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq H\to K\)
+稠密定义. 本章只对稠密定义算子建立规范的单值Hilbert伴随；若定义域不稠密，则下述表示向量不再由原定义域上的取值唯一确定.
+
+\begin{FADefinition}[A][无界Hilbert伴随]{ii05:unbounded-adjoint-definition}
+对 \(\displaystyle y\in K\)，考虑定义在 \(\displaystyle D(\mathcal A)\) 上的线性泛函
+\(\displaystyle x\longmapsto\langle\mathcal Ax,y\rangle_K.\)
+定义
+\[
+D(\mathcal A^*)
+=
+\left\{
+y\in K:
+\exists\,C_y<\infty\text{ 使 }
+|\langle\mathcal Ax,y\rangle_K|
+\leqslant
+C_y\|x\|_H
+\ \forall\,x\in D(\mathcal A)
+\right\}.
+\]
+若 \(\displaystyle y\in D(\mathcal A^*)\)，则该泛函由 \(\displaystyle D(\mathcal A)\) 的稠密性唯一连续延拓到 \(\displaystyle H\). 由\autoref{fa:HIL-A02}，存在唯一 \(\displaystyle z\in H\) 使
+\(\displaystyle \langle\mathcal Ax,y\rangle_K = \langle x,z\rangle_H \;\forall\,x\in D(\mathcal A).\)
+定义 \(\displaystyle\mathcal A^*y=z\). 因而
+\(\displaystyle \mathcal A^*:D(\mathcal A^*)\subseteq K\to H.\)
+\end{FADefinition}
+
+\begin{FAProposition}[C][伴随定义域与线性结构]{ii05:adjoint-linearity}
+集合 \(\displaystyle D(\mathcal A^*)\) 是 \(\displaystyle K\) 的线性子空间，且 \(\displaystyle\mathcal A^*:D(\mathcal A^*)\subseteq K\to H\) 线性.
+\end{FAProposition}
+
+\begin{FAProof}
+取 \(\displaystyle y_1,y_2\in D(\mathcal A^*)\) 与 \(\displaystyle\alpha,\beta\in\mathbb C\). 因内积第二变量共轭线性，对全部 \(\displaystyle x\in D(\mathcal A)\)，
+\[
+\langle\mathcal Ax,\alpha y_1+\beta y_2\rangle_K
+=
+\overline\alpha\langle\mathcal Ax,y_1\rangle_K
++
+\overline\beta\langle\mathcal Ax,y_2\rangle_K.
+\]
+故
+\(\displaystyle |\langle\mathcal Ax,\alpha y_1+\beta y_2\rangle_K| \leqslant (|\alpha|C_{y_1}+|\beta|C_{y_2})\|x\|_H,\)
+所以 \(\displaystyle\alpha y_1+\beta y_2\in D(\mathcal A^*)\). 再由定义恒等式，
+\[
+\langle\mathcal Ax,\alpha y_1+\beta y_2\rangle_K
+=
+\overline\alpha\langle x,\mathcal A^*y_1\rangle_H
++
+\overline\beta\langle x,\mathcal A^*y_2\rangle_H
+=
+\langle x,\alpha\mathcal A^*y_1+\beta\mathcal A^*y_2\rangle_H.
+\]
+表示向量唯一，故
+\(\displaystyle \mathcal A^*(\alpha y_1+\beta y_2) = \alpha\mathcal A^*y_1+\beta\mathcal A^*y_2.\)
+这证明了 \(\displaystyle\mathcal A^*\) 的线性.\hfill\(\square\)
+\end{FAProof}
+
+在Hilbert直和 \(\displaystyle H\oplus K\) 上取积内积
+\(\displaystyle \langle(x_1,y_1),(x_2,y_2)\rangle = \langle x_1,x_2\rangle_H+\langle y_1,y_2\rangle_K.\)
+
+\begin{FAProposition}[B][伴随的图正交恒等式]{ii05:adjoint-graph-orthogonal}
+有
+\(\displaystyle G(\mathcal A)^\perp = \{(-\mathcal A^*y,y):y\in D(\mathcal A^*)\}.\)
+\end{FAProposition}
+
+\begin{FAProof}
+先取 \(\displaystyle y\in D(\mathcal A^*)\). 对全部 \(\displaystyle x\in D(\mathcal A)\)，
+\[
+\langle(x,\mathcal Ax),(-\mathcal A^*y,y)\rangle
+=
+-\langle x,\mathcal A^*y\rangle_H
++
+\langle\mathcal Ax,y\rangle_K
+=
+0.
+\]
+故 \(\displaystyle(-\mathcal A^*y,y)\in G(\mathcal A)^\perp\).
+
+反之，设 \(\displaystyle(u,v)\in G(\mathcal A)^\perp\). 则对全部 \(\displaystyle x\in D(\mathcal A)\)，
+\(\displaystyle 0 = \langle(x,\mathcal Ax),(u,v)\rangle = \langle x,u\rangle_H+\langle\mathcal Ax,v\rangle_K.\)
+于是
+\(\displaystyle \langle\mathcal Ax,v\rangle_K = \langle x,-u\rangle_H,\)
+从而
+\(\displaystyle |\langle\mathcal Ax,v\rangle_K| \leqslant \|u\|_H\|x\|_H ,\;\forall\,x\in D(\mathcal A).\)
+故 \(\displaystyle v\in D(\mathcal A^*)\)，且表示向量唯一性给 \(\displaystyle\mathcal A^*v=-u\). 因而 \(\displaystyle(u,v)=(-\mathcal A^*v,v)\)，得到反向包含.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[A][无界伴随总是闭]{ii05:adjoint-closed}
+若 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to K\) 稠密定义，则
+\(\displaystyle \mathcal A^*:D(\mathcal A^*)\subseteq K\to H\)
+闭.
+\end{FAProposition}
+
+\begin{FAProof}
+设 \(\displaystyle y_n\in D(\mathcal A^*)\)、\(\displaystyle y_n\to y\) 于 \(\displaystyle K\)，且 \(\displaystyle\mathcal A^*y_n\to z\) 于 \(\displaystyle H\). 固定 \(\displaystyle x\in D(\mathcal A)\). 内积连续性给
+\[
+\langle\mathcal Ax,y\rangle_K
+=
+\lim_{n\to\infty}\langle\mathcal Ax,y_n\rangle_K
+=
+\lim_{n\to\infty}\langle x,\mathcal A^*y_n\rangle_H
+=
+\langle x,z\rangle_H.
+\]
+故
+\(\displaystyle |\langle\mathcal Ax,y\rangle_K| \leqslant \|z\|_H\|x\|_H ,\;\forall\,x\in D(\mathcal A),\)
+所以 \(\displaystyle y\in D(\mathcal A^*)\)，且定义给 \(\displaystyle\mathcal A^*y=z\). 由\autoref{ii05:closed-sequence-criterion}，\(\displaystyle\mathcal A^*\) 闭.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][无界伴随、可闭性与双伴随]{fa:UNB-A02}
+设
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq H\to K\)
+稠密定义. 则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle\mathcal A^*\) 闭；
+\item \(\displaystyle\mathcal A\) 可闭当且仅当 \(\displaystyle D(\mathcal A^*)\) 在 \(\displaystyle K\) 中稠密；
+\item 若 \(\displaystyle\mathcal A\) 可闭，则 \(\displaystyle\mathcal A^{**}\) 有定义并满足算子等式
+\(\displaystyle \overline{\mathcal A}=\mathcal A^{**},\)
+即两者定义域相同且在共同定义域上取值相同；
+\item 若 \(\displaystyle\mathcal A\) 可闭，则
+\(\displaystyle (\overline{\mathcal A})^*=\mathcal A^*\)
+作为算子等式成立.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+（i）已由\autoref{ii05:adjoint-closed}证明.
+
+先证（ii）. 假设 \(\displaystyle D(\mathcal A^*)\) 在 \(\displaystyle K\) 中稠密. 若
+\(\displaystyle (0,y)\in\overline{G(\mathcal A)},\)
+则 \(\displaystyle(0,y)\) 与 \(\displaystyle G(\mathcal A)^\perp\) 中每个向量正交. 由\autoref{ii05:adjoint-graph-orthogonal}，对全部 \(\displaystyle v\in D(\mathcal A^*)\)，
+\(\displaystyle 0 = \langle(0,y),(-\mathcal A^*v,v)\rangle = \langle y,v\rangle_K.\)
+稠密性给 \(\displaystyle y=0\). 于是 \(\displaystyle\overline{G(\mathcal A)}\) 中第一坐标为零时第二坐标只能为零；等价地，若同一第一坐标出现两个第二坐标，作差后得到它们相等. 故 \(\displaystyle\overline{G(\mathcal A)}\) 是算子图，\(\displaystyle\mathcal A\) 可闭.
+
+反之，假设 \(\displaystyle\mathcal A\) 可闭. 若 \(\displaystyle y\perp D(\mathcal A^*)\)，则对每个 \(\displaystyle v\in D(\mathcal A^*)\)，
+\(\displaystyle \langle(0,y),(-\mathcal A^*v,v)\rangle = \langle y,v\rangle_K = 0.\)
+由\autoref{ii05:adjoint-graph-orthogonal}，这说明
+\(\displaystyle (0,y)\in G(\mathcal A)^{\perp\perp}.\)
+由 I-04 的双正交补定理\autoref{i04:double-orthogonal-complement}，
+\(\displaystyle G(\mathcal A)^{\perp\perp}=\overline{G(\mathcal A)}.\)
+可闭性给 \(\displaystyle(0,y)\in G(\overline{\mathcal A})\)，故 \(\displaystyle y=\overline{\mathcal A}0=0\). 因此 \(\displaystyle D(\mathcal A^*)^\perp=\{0\}\)，再次由双正交补定理得到 \(\displaystyle\overline{D(\mathcal A^*)}=K\). 于是（ii）成立.
+
+现在设 \(\displaystyle\mathcal A\) 可闭. 由（ii），\(\displaystyle D(\mathcal A^*)\) 在 \(\displaystyle K\) 中稠密，所以 \(\displaystyle\mathcal A^{**}\) 可按本节定义形成. 对任意 \(\displaystyle(x,y)\in H\oplus K\)，由\autoref{i04:double-orthogonal-complement}与\autoref{ii05:adjoint-graph-orthogonal}，
+\(\displaystyle (x,y)\in\overline{G(\mathcal A)}\)
+当且仅当它正交于全部 \(\displaystyle(-\mathcal A^*v,v)\)，其中 \(\displaystyle v\in D(\mathcal A^*)\). 这等价于
+\(\displaystyle -\langle x,\mathcal A^*v\rangle_H + \langle y,v\rangle_K = 0 ,\;\forall\,v\in D(\mathcal A^*).\)
+取共轭并使用第一变量线性约定，等价于
+\(\displaystyle \langle\mathcal A^*v,x\rangle_H = \langle v,y\rangle_K ,\;\forall\,v\in D(\mathcal A^*).\)
+这正是 \(\displaystyle x\in D(\mathcal A^{**})\) 且 \(\displaystyle\mathcal A^{**}x=y\). 因而
+\(\displaystyle G(\mathcal A^{**})=\overline{G(\mathcal A)}=G(\overline{\mathcal A}).\)
+图相等同时给出定义域相等与取值相等，所以 \(\displaystyle\mathcal A^{**}=\overline{\mathcal A}\). 这证明（iii）.
+
+最后证（iv）. 因 \(\displaystyle\mathcal A\subseteq\overline{\mathcal A}\)，若 \(\displaystyle y\in D((\overline{\mathcal A})^*)\)，则其伴随恒等式限制到 \(\displaystyle D(\mathcal A)\) 仍成立，故 \(\displaystyle y\in D(\mathcal A^*)\)，并且
+\(\displaystyle (\overline{\mathcal A})^*y=\mathcal A^*y.\)
+因此 \(\displaystyle(\overline{\mathcal A})^*\subseteq\mathcal A^*\).
+
+反之，取 \(\displaystyle y\in D(\mathcal A^*)\) 与任意 \(\displaystyle x\in D(\overline{\mathcal A})\). 由\autoref{ii05:closure-characterization}，存在 \(\displaystyle x_n\in D(\mathcal A)\) 使
+\(\displaystyle x_n\to x, \; \mathcal Ax_n\to\overline{\mathcal A}x.\)
+于是
+\[
+\langle\overline{\mathcal A}x,y\rangle_K
+=
+\lim_{n\to\infty}\langle\mathcal Ax_n,y\rangle_K
+=
+\lim_{n\to\infty}\langle x_n,\mathcal A^*y\rangle_H
+=
+\langle x,\mathcal A^*y\rangle_H.
+\]
+所以 \(\displaystyle y\in D((\overline{\mathcal A})^*)\) 且 \(\displaystyle(\overline{\mathcal A})^*y=\mathcal A^*y\). 两方向合并给出定义域与取值都相同，即（iv）成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][伴随反转延拓包含]{ii05:adjoint-extension-reversal}
+设
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq H\to K, \; \mathcal B:D(\mathcal B)\subseteq H\to K\)
+都稠密定义，且 \(\displaystyle\mathcal A\subseteq\mathcal B\). 则
+\(\displaystyle \mathcal B^*\subseteq\mathcal A^*.\)
+特别地，\(\displaystyle D(\mathcal B^*)\subseteq D(\mathcal A^*)\)，并且两者在 \(\displaystyle D(\mathcal B^*)\) 上取值相同.
+\end{FAProposition}
+
+\begin{FAProof}
+取 \(\displaystyle y\in D(\mathcal B^*)\). 对全部 \(\displaystyle x\in D(\mathcal A)\subseteq D(\mathcal B)\)，
+\(\displaystyle \langle\mathcal Ax,y\rangle_K = \langle\mathcal Bx,y\rangle_K = \langle x,\mathcal B^*y\rangle_H.\)
+因此 \(\displaystyle y\in D(\mathcal A^*)\)，且定义中的唯一表示向量给
+\(\displaystyle \mathcal A^*y=\mathcal B^*y.\)
+故 \(\displaystyle\mathcal B^*\subseteq\mathcal A^*\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][与有界Hilbert伴随的兼容性]{ii05:bounded-adjoint-compatibility}
+若
+\(\displaystyle \mathcal A:D(\mathcal A)=H\to K\)
+且 \(\displaystyle\mathcal A\in\mathcal B(H,K)\)，则按本节定义得到
+\(\displaystyle D(\mathcal A^*)=K,\)
+并且该 \(\displaystyle\mathcal A^*\) 与 I-11 的\autoref{fa:ADJ-A02}所定义的有界Hilbert伴随完全相同.
+\end{FAProposition}
+
+\begin{FAProof}
+对任意 \(\displaystyle y\in K\) 与 \(\displaystyle x\in H\)，Cauchy--Schwarz 给
+\(\displaystyle |\langle\mathcal Ax,y\rangle_K| \leqslant \|\mathcal A\|\|x\|_H\|y\|_K.\)
+故每个 \(\displaystyle y\in K\) 都属于当前定义的 \(\displaystyle D(\mathcal A^*)\)，即 \(\displaystyle D(\mathcal A^*)=K\). 当前定义与\autoref{fa:ADJ-A02}都以唯一向量 \(\displaystyle z\in H\) 满足
+\(\displaystyle \langle\mathcal Ax,y\rangle_K=\langle x,z\rangle_H ,\;\forall\,x\in H\)
+来定义 \(\displaystyle\mathcal A^*y\)，所以两者逐点相同且定义域相同.\hfill\(\square\)
+\end{FAProof}
+
+Banach对偶算子仍记为 \(\displaystyle\mathcal T'\)，Hilbert伴随记为 \(\displaystyle\mathcal A^*\). 两者来自不同的配对结构，本章不混同这两个符号.
+
+\begin{FAExample}[不可闭算子的伴随定义域审计]
+回到上一节不可闭算子
+\[
+D(\mathcal A)=c_{00},
+\;
+\mathcal Ax=\left(\sum_kx_k\right)e_1
+\]
+于 \(\displaystyle\ell^2\). 对 \(\displaystyle y\in D(\mathcal A^*)\)，存在 \(\displaystyle z\in\ell^2\) 使对全部 \(\displaystyle x\in c_{00}\)，
+\[
+\left(\sum_kx_k\right)\overline{y_1}
+=
+\sum_kx_k\overline{z_k}.
+\]
+取 \(\displaystyle x=e_k\) 得 \(\displaystyle z_k=y_1\) 对全部 \(\displaystyle k\geqslant1\) 成立. 常值序列 \(\displaystyle(y_1,y_1,\dots)\) 属于 \(\displaystyle\ell^2\) 当且仅当 \(\displaystyle y_1=0\). 因此
+\(\displaystyle D(\mathcal A^*) = \{y\in\ell^2:y_1=0\} = e_1^\perp, \; \mathcal A^*y=0.\)
+这是闭的真子空间，因而不稠密，与\autoref{fa:UNB-A02}中的可闭判据完全一致.
+\end{FAExample}
+
+\section{典型微分算子}\label{sec:ii05-differential-operators}
+\index{multiplication operator@乘法算子}\index{derivative operator@微分算子}\index{Laplacian@Laplacian}\index{boundary condition@边界条件}
+
+本节先用离散乘法算子给出最透明的闭无界模型，再进入一阶与二阶微分表达式. 三类例子共同说明：作用公式不能代替定义域，闭性必须同时控制输入与输出的极限.
+
+\subsection{无界乘法算子模型}
+
+令 \(\displaystyle\mathbb N=\{1,2,\dots\}\)、\(\displaystyle H=\ell^2(\mathbb N)\)，并定义
+\(\displaystyle D(\mathcal M) = \{x=(x_n)\in\ell^2:(nx_n)\in\ell^2\}, \; \mathcal Mx=(nx_n).\)
+
+\begin{FAProposition}[B][定义域、无界性与闭性]{ii05:mult-unb-basic}
+算子
+\(\displaystyle \mathcal M:D(\mathcal M)\subseteq\ell^2\to\ell^2\)
+满足：\(\displaystyle D(\mathcal M)\) 稠密且为 \(\displaystyle\ell^2\) 的真线性子空间；\(\displaystyle\mathcal M\) 无界；\(\displaystyle\mathcal M\) 闭.
+\end{FAProposition}
+
+\begin{FAProof}
+因为 \(\displaystyle c_{00}\subseteq D(\mathcal M)\) 且 \(\displaystyle c_{00}\) 在 \(\displaystyle\ell^2\) 中稠密，所以 \(\displaystyle D(\mathcal M)\) 稠密. 取
+\(\displaystyle x=\bigl(\frac{1}{n}\bigr)_{n\geqslant1}.\)
+有 \(\displaystyle x\in\ell^2\)，但 \(\displaystyle(nx_n)=(1,1,\dots)\notin\ell^2\)，故 \(\displaystyle D(\mathcal M)\neq\ell^2\). 对标准基向量 \(\displaystyle e_n\in D(\mathcal M)\)，
+\(\displaystyle \|e_n\|_2=1, \; \|\mathcal Me_n\|_2=n,\)
+所以不存在统一常数 \(\displaystyle C\) 使 \(\displaystyle\|\mathcal Mx\|_2\leqslant C\|x\|_2\)，即 \(\displaystyle\mathcal M\) 无界.
+
+最后证明闭性. 设 \(\displaystyle x^{(k)}\in D(\mathcal M)\)、\(\displaystyle x^{(k)}\to x\) 于 \(\displaystyle\ell^2\)，且 \(\displaystyle\mathcal Mx^{(k)}\to y\) 于 \(\displaystyle\ell^2\). 对每个固定 \(\displaystyle n\)，坐标泛函 \(\displaystyle z\mapsto z_n\) 连续，因此
+\(\displaystyle x_n^{(k)}\to x_n, \; n x_n^{(k)}\to y_n.\)
+于是 \(\displaystyle y_n=nx_n\) 对全部 \(\displaystyle n\) 成立. 因 \(\displaystyle y\in\ell^2\)，得到 \(\displaystyle(nx_n)\in\ell^2\)，即 \(\displaystyle x\in D(\mathcal M)\)，且 \(\displaystyle\mathcal Mx=y\). 由\autoref{ii05:closed-sequence-criterion}，\(\displaystyle\mathcal M\) 闭.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][伴随的精确计算]{ii05:mult-unb-adjoint}
+在本节第一变量线性的内积约定下，
+\(\displaystyle D(\mathcal M^*)=D(\mathcal M), \; \mathcal M^*y=\mathcal My \;\forall\,y\in D(\mathcal M).\)
+因此 \(\displaystyle\mathcal M^*=\mathcal M\) 作为算子等式成立，包括定义域相等. 本章不为这一等式引入下一章的正式术语.
+\end{FAProposition}
+
+\begin{FAProof}
+先设 \(\displaystyle y\in D(\mathcal M^*)\) 且 \(\displaystyle\mathcal M^*y=z\in\ell^2\). 对每个 \(\displaystyle n\)，取 \(\displaystyle x=e_n\in D(\mathcal M)\). 伴随恒等式给
+\(\displaystyle n\overline{y_n} = \langle\mathcal Me_n,y\rangle = \langle e_n,z\rangle = \overline{z_n}.\)
+故 \(\displaystyle z_n=ny_n\). 因 \(\displaystyle z\in\ell^2\)，有 \(\displaystyle(ny_n)\in\ell^2\)，即 \(\displaystyle y\in D(\mathcal M)\)，并且 \(\displaystyle z=\mathcal My\). 所以 \(\displaystyle\mathcal M^*\subseteq\mathcal M\).
+
+反之，若 \(\displaystyle y\in D(\mathcal M)\)，则对全部 \(\displaystyle x\in D(\mathcal M)\)，
+\[
+\langle\mathcal Mx,y\rangle
+=
+\sum_{n=1}^{\infty}nx_n\overline{y_n}
+=
+\sum_{n=1}^{\infty}x_n\overline{ny_n}
+=
+\langle x,\mathcal My\rangle.
+\]
+右端满足
+\(\displaystyle |\langle x,\mathcal My\rangle| \leqslant \|x\|_2\|\mathcal My\|_2,\)
+故 \(\displaystyle y\in D(\mathcal M^*)\) 且 \(\displaystyle\mathcal M^*y=\mathcal My\). 因此 \(\displaystyle\mathcal M\subseteq\mathcal M^*\). 两包含合并得到算子等式.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][直接预解与谱]{ii05:mult-unb-spectrum}
+对上述闭算子 \(\displaystyle\mathcal M\)，
+\(\displaystyle \sigma(\mathcal M)=\mathbb N.\)
+特别地，闭无界算子的谱可以是无界集合.
+\end{FAProposition}
+
+\begin{FAProof}
+先取 \(\displaystyle\lambda\in\mathbb C\setminus\mathbb N\). 对 \(\displaystyle y=(y_n)\in\ell^2\)，定义
+\(\displaystyle (R_\lambda y)_n=\frac{y_n}{\lambda-n}.\)
+因为 \(\displaystyle|\lambda-n|\to\infty\)，且 \(\displaystyle\lambda\neq n\) 对全部 \(\displaystyle n\in\mathbb N\) 成立，有限个初始距离的最小值为正，而尾部距离趋于无穷. 因而
+\(\displaystyle \sup_{n\geqslant1}\frac1{|\lambda-n|}<\infty.\)
+更具体地，取整数 \(\displaystyle N>2|\lambda|\). 当 \(\displaystyle n\geqslant N\) 时，
+\(\displaystyle |\lambda-n|\geqslant n-|\lambda|\geqslant\frac n2,\)
+故 \(\displaystyle \frac{n}{|\lambda-n|}\leqslant2\). 对有限多个 \(\displaystyle1\leqslant n<N\)，分母均非零，所以
+\(\displaystyle \sup_{n\geqslant1}\frac n{|\lambda-n|}<\infty.\)
+第一式给 \(\displaystyle R_\lambda\in\mathcal B(\ell^2)\). 第二式给
+\[
+\sum_{n=1}^{\infty}n^2|(R_\lambda y)_n|^2
+=
+\sum_{n=1}^{\infty}\frac{n^2|y_n|^2}{|\lambda-n|^2}
+<\infty,
+\]
+故 \(\displaystyle R_\lambda y\in D(\mathcal M)\). 逐坐标计算得到
+\(\displaystyle (\lambda\mathcal I-\mathcal M)R_\lambda y=y ,\;\forall\,y\in\ell^2,\)
+并且对全部 \(\displaystyle x\in D(\mathcal M)\)，
+\(\displaystyle R_\lambda(\lambda\mathcal I-\mathcal M)x=x.\)
+所以
+\(\displaystyle R_\lambda=(\lambda\mathcal I-\mathcal M)^{-1},\)
+即 \(\displaystyle\lambda\in\rho(\mathcal M)\).
+
+反之，若 \(\displaystyle\lambda=m\in\mathbb N\)，则 \(\displaystyle e_m\in D(\mathcal M)\) 且
+\(\displaystyle (m\mathcal I-\mathcal M)e_m=0.\)
+故 \(\displaystyle m\mathcal I-\mathcal M\) 非单射，\(\displaystyle m\in\sigma(\mathcal M)\). 两方向合并得到 \(\displaystyle\sigma(\mathcal M)=\mathbb N\)，该集合无界.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[闭无界算子的真定义域]
+\autoref{ii05:mult-unb-basic}给出
+\(\displaystyle \mathcal M:D(\mathcal M)\subsetneq\ell^2\to\ell^2\)
+闭且无界. 这与\autoref{ii05:cgt-boundary}完全一致：闭图像定理只有在定义域等于整个Banach空间时才强制有界. 若忽略 \(\displaystyle D(\mathcal A)\)，则算子相等、复合、伴随和谱都失去正确语义.
+\end{FACounterexample}
+
+\subsection{一阶微分算子模型}
+
+取 \(\displaystyle X=C[0,1]\)，赋一致范数 \(\displaystyle\|f\|_\infty=\sup_{t\in[0,1]}|f(t)|\). 定义
+\(\displaystyle D(\mathcal D)=C^1[0,1], \; \mathcal Df=f'.\)
+
+\begin{FAProposition}[B][经典实现闭且无界]{ii05:deriv-classical}
+算子
+\(\displaystyle \mathcal D:D(\mathcal D)\subseteq C[0,1]\to C[0,1]\)
+闭且无界.
+\end{FAProposition}
+
+\begin{FAProof}
+设 \(\displaystyle f_n\in C^1[0,1]\)、\(\displaystyle f_n\to f\) 一致，且 \(\displaystyle f_n'\to g\) 一致. 对每个 \(\displaystyle x\in[0,1]\)，微积分基本定理给
+\[
+f_n(x)-f_n(0)=\int_0^x f_n'(t)\,\mathrm{d}t.
+\]
+一致收敛允许直接估计极限：
+\[
+\left|
+\int_0^x(f_n'(t)-g(t))\,\mathrm{d}t
+\right|
+\leqslant
+\|f_n'-g\|_\infty.
+\]
+令 \(\displaystyle n\to\infty\)，得
+\[
+f(x)-f(0)=\int_0^x g(t)\,\mathrm{d}t.
+\]
+因 \(\displaystyle g\) 连续，右端对 \(\displaystyle x\) 可微且导数为 \(\displaystyle g(x)\). 故 \(\displaystyle f\in C^1[0,1]\) 且 \(\displaystyle f'=g\). 由闭算子序列判据，\(\displaystyle\mathcal D\) 闭.
+
+对 \(\displaystyle f_n(t)=t^n\)，有
+\(\displaystyle \|f_n\|_\infty=1, \; \|\mathcal Df_n\|_\infty=n.\)
+故 \(\displaystyle\mathcal D\) 无界.\hfill\(\square\)
+\end{FAProof}
+
+这给出本章第一遍最初等的微分算子实现. Hilbert空间中的边界条件、伴随域与下一层结构留到 II-06.
+
+\begin{FAProposition}[B][同一微分表达式与不同定义域给出不同算子]{ii05:same-formula-different-domain}
+定义
+\(\displaystyle D(\mathcal D_0)=\{f\in C^1[0,1]:f(0)=0\}, \; \mathcal D_0f=f'.\)
+则 \(\displaystyle\mathcal D_0:D(\mathcal D_0)\subseteq C[0,1]\to C[0,1]\) 闭，但
+\(\displaystyle D(\mathcal D_0)\neq D(\mathcal D),\)
+所以 \(\displaystyle\mathcal D_0\neq\mathcal D\)，即使二者的作用公式都是 \(\displaystyle f\mapsto f'\).
+\end{FAProposition}
+
+\begin{FAProof}
+设 \(\displaystyle f_n\in D(\mathcal D_0)\)、\(\displaystyle f_n\to f\) 一致，且 \(\displaystyle f_n'\to g\) 一致.\autoref{ii05:deriv-classical}的闭性证明给 \(\displaystyle f\in C^1[0,1]\) 且 \(\displaystyle f'=g\). 又由点值连续性，
+\(\displaystyle f(0)=\lim_{n\to\infty}f_n(0)=0.\)
+故 \(\displaystyle f\in D(\mathcal D_0)\) 且 \(\displaystyle\mathcal D_0f=g\)，所以 \(\displaystyle\mathcal D_0\) 闭. 常值函数 \(\displaystyle1\) 属于 \(\displaystyle D(\mathcal D)\) 但不属于 \(\displaystyle D(\mathcal D_0)\)，故两个定义域不同，从而两个算子不相等.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Dirichlet Laplace 算子模型}
+
+仍取 \(\displaystyle X=C[0,1]\)，定义Dirichlet型经典实现
+\(\displaystyle D(\mathcal L_D) = \{f\in C^2[0,1]:f(0)=f(1)=0\}, \; \mathcal L_Df=-f''.\)
+
+\begin{FAProposition}[B][经典Dirichlet实现闭且无界]{ii05:laplacian-classical}
+算子
+\(\displaystyle \mathcal L_D:D(\mathcal L_D)\subseteq C[0,1]\to C[0,1]\)
+闭且无界.
+\end{FAProposition}
+
+\begin{FAProof}
+设 \(\displaystyle f_n\in D(\mathcal L_D)\)、\(\displaystyle f_n\to f\) 一致，且 \(\displaystyle\mathcal L_Df_n\to g\) 一致. 则
+\(\displaystyle f_n''\longrightarrow-g\)
+一致. 因 \(\displaystyle f_n(0)=f_n(1)=0\)，两次积分给
+\[
+0
+=
+f_n(1)-f_n(0)
+=
+f_n'(0)+\int_0^1(1-t)f_n''(t)\,\mathrm{d}t.
+\]
+因此
+\[
+f_n'(0)
+=
+-\int_0^1(1-t)f_n''(t)\,\mathrm{d}t
+\]
+收敛，记极限为 \(\displaystyle a\). 再由
+\[
+f_n'(x)
+=
+f_n'(0)+\int_0^x f_n''(t)\,\mathrm{d}t
+\]
+以及 \(\displaystyle f_n''\to-g\) 一致，得到 \(\displaystyle f_n'\) 一致收敛到连续函数
+\[
+h(x)=a-\int_0^x g(t)\,\mathrm{d}t.
+\]
+对恒等式
+\[
+f_n(x)-f_n(0)=\int_0^x f_n'(t)\,\mathrm{d}t
+\]
+取极限，得
+\[
+f(x)-f(0)=\int_0^x h(t)\,\mathrm{d}t.
+\]
+所以 \(\displaystyle f\in C^1[0,1]\) 且 \(\displaystyle f'=h\). 由于 \(\displaystyle g\) 连续，\(\displaystyle h\in C^1[0,1]\) 且 \(\displaystyle h'=-g\)，故 \(\displaystyle f\in C^2[0,1]\) 且 \(\displaystyle-f''=g\). 一致收敛同时给
+\(\displaystyle f(0)=\lim_nf_n(0)=0, \; f(1)=\lim_nf_n(1)=0.\)
+因此 \(\displaystyle f\in D(\mathcal L_D)\) 且 \(\displaystyle\mathcal L_Df=g\)，所以 \(\displaystyle\mathcal L_D\) 闭.
+
+对 \(\displaystyle f_n(t)=\sin(n\pi t)\)，有 \(\displaystyle f_n\in D(\mathcal L_D)\) 且
+\(\displaystyle \|f_n\|_\infty=1, \; \|\mathcal L_Df_n\|_\infty=n^2\pi^2.\)
+故 \(\displaystyle\mathcal L_D\) 无界.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[对称但非自伴的反例的定义域预告]
+同一微分表达式改变边界条件或定义域，会改变算子本身，也会改变其伴随定义域. 下一章才正式定义对称、自伴与本质自伴，并在那里正式建立对称但非自伴的反例. 本章只保留这一定义域预告，不使用这些概念参与任何证明.
+\end{FARemark}
+
+\begin{FARemark}[后续章节边界]
+II-06才建立对称、自伴、本质自伴、闭二次型以及相关值域与预解判据；II-07 才建立无界自伴谱定理、PVM 定义域刻画与无界可测函数演算；II-08 才建立 \(\displaystyle C_0\) 半群及其生成元理论. 本章的闭算子、伴随与最小预解接口只是这些理论的输入，不反向调用任何后续定理.
+\end{FARemark}
+
+\subsection*{本章习题}\label{sec:ii05-exercises}
+
+\begin{FAExercise}[算子相等与定义域]{ex:ii05-01}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to Y\) 与 \(\displaystyle\mathcal B:D(\mathcal B)\subseteq X\to Y\) 具有相同作用公式. 给出两个具体不同定义域，使 \(\displaystyle\mathcal A\neq\mathcal B\)，并写出证明中必须出现的定义域不等式.
+\end{FAExercise}
+
+\begin{FAExercise}[延拓与限制]{ex:ii05-02}
+从 \(\displaystyle\mathcal A\subseteq\mathcal B\) 的定义出发，证明算子包含具有传递性. 若 \(\displaystyle\mathcal A\subseteq\mathcal B\) 且 \(\displaystyle\mathcal B\subseteq\mathcal A\)，证明两个算子相等，包括定义域相等.
+\end{FAExercise}
+
+\begin{FAExercise}[和与复合的定义域]{ex:ii05-03}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to Y\)、\(\displaystyle\mathcal B:D(\mathcal B)\subseteq X\to Y\)、\(\displaystyle\mathcal C:D(\mathcal C)\subseteq Y\to Z\). 严格写出 \(\displaystyle D(\mathcal A+\mathcal B)\) 与 \(\displaystyle D(\mathcal C\mathcal A)\)，并构造一个例子说明 \(\displaystyle D(\mathcal C\mathcal A)\) 可以严格小于 \(\displaystyle D(\mathcal A)\).
+\end{FAExercise}
+
+\begin{FAExercise}[闭图的序列判据]{ex:ii05-04}
+完整重建\autoref{ii05:closed-sequence-criterion}的两个方向，并指出为何积范数下的坐标收敛恰好等价于输入与输出同时收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[图范数与等距图嵌入]{ex:ii05-05}
+证明 \(\displaystyle\|\cdot\|_{\mathcal A}\) 是 \(\displaystyle D(\mathcal A)\) 上的范数，并证明 \(\displaystyle J_{\mathcal A}x=(x,\mathcal Ax)\) 是到 \(\displaystyle G(\mathcal A)\) 上的线性等距双射. 不得把图范数写成全部 \(\displaystyle X\) 上的范数.
+\end{FAExercise}
+
+\begin{FAExercise}[闭性与图范数完备性的两个方向]{ex:ii05-06}
+不直接引用结论，利用 \(\displaystyle J_{\mathcal A}\) 与闭子空间完备性完整证明\autoref{fa:UNB-B01}. 反向必须说明为什么完备子空间在度量环境中闭.
+\end{FAExercise}
+
+\begin{FAExercise}[闭图像定理的定义域边界]{ex:ii05-07}
+设 \(\displaystyle X,Y\) 为Banach空间，\(\displaystyle D(\mathcal A)=X\) 且 \(\displaystyle\mathcal A\) 闭. 用\autoref{fa:CGT-A01}证明 \(\displaystyle\mathcal A\) 有界，再解释为什么\autoref{ii05:mult-unb-basic}不构成反例.
+\end{FAExercise}
+
+\begin{FAExercise}[稠密定义上的有界延拓]{ex:ii05-08}
+重建\autoref{ii05:dense-bounded-extension}. 必须证明极限存在、与逼近列无关、线性、有界、确为延拓以及唯一性.
+\end{FAExercise}
+
+\begin{FAExercise}[有界扰动与图范数等价]{ex:ii05-09}
+设 \(\displaystyle\mathcal A\) 闭且 \(\displaystyle\mathcal B\in\mathcal B(X,Y)\). 证明 \(\displaystyle\mathcal A+\mathcal B\) 在 \(\displaystyle D(\mathcal A)\) 上闭，并给出 \(\displaystyle\|\cdot\|_{\mathcal A}\) 与 \(\displaystyle\|\cdot\|_{\mathcal A+\mathcal B}\) 的双向显式估计.
+\end{FAExercise}
+
+\begin{FAExercise}[核的闭性与预解逆]{ex:ii05-10}
+先用闭算子序列判据证明 \(\displaystyle\ker\mathcal A\) 在 \(\displaystyle X\) 中闭. 再设 \(\displaystyle X=Y\) 且 \(\displaystyle\lambda\mathcal I-\mathcal A:D(\mathcal A)\to X\) 双射，证明其逆的图闭，并用闭图像定理推出逆有界.
+\end{FAExercise}
+
+\begin{FAExercise}[可闭性的零序列判据]{ex:ii05-11}
+完整证明\autoref{fa:UNB-B02}. 反向不得只写“图闭包单值”，而要取 \(\displaystyle(x,y),(x,z)\in\overline{G(\mathcal A)}\)，构造两组图序列并作差得到零序列条件.
+\end{FAExercise}
+
+\begin{FAExercise}[闭包的序列刻画与最小性]{ex:ii05-12}
+证明\autoref{ii05:closure-characterization}的定义域公式、极限公式与良定义性，再从 \(\displaystyle G(\mathcal A)\subseteq G(\mathcal B)\) 推出闭包是最小闭延拓.
+\end{FAExercise}
+
+\begin{FAExercise}[图范数完备化]{ex:ii05-13}
+若 \(\displaystyle\mathcal A\) 可闭，证明 \(\displaystyle D(\mathcal A)\) 在 \(\displaystyle D(\overline{\mathcal A})\) 的 \(\displaystyle\|\cdot\|_{\overline{\mathcal A}}\) 中稠密，并说明\autoref{fa:UNB-B01}如何给出完备化结论.
+\end{FAExercise}
+
+\begin{FAExercise}[可闭但不闭]{ex:ii05-14}
+对 \(\displaystyle D(\mathcal A)=c_{00}\subseteq\ell^2\)、\(\displaystyle\mathcal Ax=x\)，证明 \(\displaystyle\overline{\mathcal A}=\mathcal I_{\ell^2}\)，并直接构造图中收敛到图外的序列，验证 \(\displaystyle\mathcal A\) 不闭.
+\end{FAExercise}
+
+\begin{FAExercise}[不可闭的 \(\displaystyle c_{00}\) 算子]{ex:ii05-15}
+对 \(\displaystyle\mathcal Ax=(\sum_kx_k)e_1\)，用 \(\displaystyle x^{(n)}=n^{-1}\sum_{k=1}^ne_k\) 证明不可闭，再独立计算 \(\displaystyle D(\mathcal A^*)=e_1^\perp\)，核对\autoref{fa:UNB-A02}的稠密性判据.
+\end{FAExercise}
+
+\begin{FAExercise}[无界伴随的定义与标量约定]{ex:ii05-16}
+从\autoref{ii05:unbounded-adjoint-definition}出发，解释稠密定义为何保证表示向量唯一，并在第一变量线性、第二变量共轭线性约定下重新证明 \(\displaystyle D(\mathcal A^*)\) 与 \(\displaystyle\mathcal A^*\) 的线性. 必须正确处理复标量共轭.
+\end{FAExercise}
+
+\begin{FAExercise}[图正交恒等式与伴随闭性]{ex:ii05-17}
+证明 \(\displaystyle G(\mathcal A)^\perp=\{(-\mathcal A^*y,y):y\in D(\mathcal A^*)\}\) 的两个包含，再用定义恒等式的极限过程证明 \(\displaystyle\mathcal A^*\) 闭.
+\end{FAExercise}
+
+\begin{FAExercise}[可闭性、双伴随与闭包]{ex:ii05-18}
+完整重建\autoref{fa:UNB-A02}的（ii）与（iii）. 证明 \(\displaystyle\mathcal A\) 可闭当且仅当 \(\displaystyle D(\mathcal A^*)\) 稠密，并逐步推出 \(\displaystyle G(\mathcal A^{**})=\overline{G(\mathcal A)}\)，不得引用未证明的“标准双伴随定理”.
+\end{FAExercise}
+
+\begin{FAExercise}[伴随反转包含与有界兼容性]{ex:ii05-19}
+若 \(\displaystyle\mathcal A\subseteq\mathcal B\) 且二者稠密定义，证明 \(\displaystyle\mathcal B^*\subseteq\mathcal A^*\)，包括定义域包含. 再在 \(\displaystyle\mathcal A\in\mathcal B(H,K)\)、\(\displaystyle D(\mathcal A)=H\) 时证明当前伴随定义退化为 I-11 的\autoref{fa:ADJ-A02}.
+\end{FAExercise}
+
+\begin{FAExercise}[无界乘法算子模型与无界谱]{ex:ii05-20}
+对 \(\displaystyle\mathcal Mx=(nx_n)\) 完整证明定义域稠密且真、算子无界且闭、\(\displaystyle D(\mathcal M^*)=D(\mathcal M)\)、\(\displaystyle\mathcal M^*=\mathcal M\). 再对 \(\displaystyle\lambda\notin\mathbb N\) 证明两个上确界估计并直接得到 \(\displaystyle\sigma(\mathcal M)=\mathbb N\).
+\end{FAExercise}
+
+\begin{FAExercise}[一阶微分算子模型与同公式不同域]{ex:ii05-21}
+证明 \(\displaystyle\mathcal D:C^1[0,1]\subseteq C[0,1]\to C[0,1]\)、\(\displaystyle\mathcal Df=f'\) 闭且无界. 再证明加上 \(\displaystyle f(0)=0\) 得到的 \(\displaystyle\mathcal D_0\) 仍闭但不是同一算子，并明确指出差异来自定义域而非作用公式.
+\end{FAExercise}
+
+\begin{FAExercise}[Dirichlet Laplace 算子模型与后续术语边界]{ex:ii05-22}
+对 \(\displaystyle D(\mathcal L_D)=\{f\in C^2[0,1]:f(0)=f(1)=0\}\)、\(\displaystyle\mathcal L_Df=-f''\) 重建闭性与无界性证明. 最后只从定义域角度说明边界条件为何可能改变伴随域，并列出对称、自伴、本质自伴、无界谱定理与半群生成元理论均属于后续章节；本题不得调用这些后续定理.
+\end{FAExercise}

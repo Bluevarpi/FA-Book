@@ -1,0 +1,75 @@
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{读者指南}
+\markboth{读者指南}{读者指南}
+\FAFrontHeading{读者指南}{结构、目标与学习路线}
+
+本书按\textbf{依赖关系}组织学习路线：先建立反复调用的基础接口，再依次进入对偶、弱拓扑、算子谱论、无界算子、半群、Sobolev 空间与偏微分方程，以及非线性与变分方法. 每章开头的“本章导航”给出学习目标、先修依赖与局部依赖图；正文中的 A/B/C/D 级环境表示不同学习优先级.
+
+\section*{一、三卷总览}
+\FAFrontSubheading{第一卷·14 章·线性主干}
+\FAKeyword{目标：}建立第一遍泛函分析所需的 Banach、Hilbert 基础、连续线性算子、Hahn--Banach 定理、弱拓扑与弱*拓扑、Baire 方法、弱紧性、对偶与伴随、谱及紧算子理论.\par\smallskip
+\FAKeyword{完成标志：}能够解释无限维紧性、弱拓扑与谱结构为何显著区别于有限维线性代数，并能沿依赖链独立读取紧自伴谱定理.
+
+\FAFrontSubheading{第二卷·15 章·高级线性理论与偏微分方程桥梁}
+\FAKeyword{目标：}扩展到局部凸空间、Banach 与 \(\displaystyle C^*\) 结构、Bochner 积分、无界算子、自伴谱论、半群生成理论、抽象 Cauchy 问题、分布、Sobolev 空间、嵌入与椭圆弱解.\par\smallskip
+\FAKeyword{完成标志：}能够处理“定义域—闭性—伴随—谱—演化”的完整链条，并理解泛函分析进入偏微分方程与演化方程的主要接口.
+
+\FAFrontSubheading{第三卷·11 章·非线性分析与变分法}
+\FAKeyword{目标：}从 Fréchet 微分、逆函数与隐函数理论、紧映射与拓扑度出发，进入单调算子、弱下半连续性与强制性、变分直接法、Ekeland 变分原理、Palais--Smale 条件、变形方法与山路定理.\par\smallskip
+\FAKeyword{完成标志：}能够识别非线性存在性证明中“几何结构、紧性、变形、极小化与极小极大”各自承担的角色. III-11 的 Morse 与 Conley 内容只作为高级选读边界，不承担主线前置.
+
+\section*{二、环境类型与学习优先级}
+\begin{tcolorbox}[fa/A,title={A级·主线核心}]第一遍主线必须掌握. 定义、定理或核心结构会被后续章节反复调用.\end{tcolorbox}
+\begin{tcolorbox}[fa/B,title={B级·重要支撑}]支撑主线的重要结果. 若进入某个 A 级证明链，就应完整理解.\end{tcolorbox}
+\begin{tcolorbox}[fa/C,title={C级·局部工具}]局部工具、计算模板或技术接口. 可先掌握用途，再回看证明.\end{tcolorbox}
+\begin{tcolorbox}[fa/D,title={D级·高级选读}]高级选读或延伸主题. 不阻塞 A/B 主线，可在核心路线完成后再进入.\end{tcolorbox}
+
+\section*{三、建议的主学习路线}
+\begin{center}
+\begin{tikzpicture}[node distance=7mm]
+\node[fa/node,text width=.78\textwidth,align=center] (r1) {\textbf{阶段 1·I-01--I-06}\enspace 拓扑与完备性 \(\displaystyle \to\) Banach、Hilbert 空间 \(\displaystyle \to\) 算子与 Hahn--Banach 定理};
+\node[fa/node,text width=.78\textwidth,align=center,below=of r1] (r2) {\textbf{阶段 2·I-07--I-14}\enspace 对偶与弱拓扑 \(\displaystyle \to\) Baire 方法三大原理 \(\displaystyle \to\) 弱紧性 \(\displaystyle \to\) 谱与紧算子};
+\node[fa/node,text width=.78\textwidth,align=center,below=of r2] (r3) {\textbf{阶段 3·II-01--II-15}\enspace 高级线性理论 \(\displaystyle \to\) 无界算子与谱论 \(\displaystyle \to\) 半群 \(\displaystyle \to\) Sobolev 空间与偏微分方程};
+\node[fa/node,text width=.78\textwidth,align=center,below=of r3] (r4) {\textbf{阶段 4·III-01--III-10}\enspace 非线性微分 \(\displaystyle \to\) 拓扑度与单调算子 \(\displaystyle \to\) 直接法 \(\displaystyle \to\) Palais--Smale 条件、变形与山路定理};
+\node[fa/node,text width=.78\textwidth,align=center,below=of r4] (r5) {\textbf{阶段 5·III-11}\enspace Morse 与 Conley 高级选读：建立概念视野，不作为主线闭包要求};
+\draw[fa/arrow] (r1) -- (r2);
+\draw[fa/arrow] (r2) -- (r3);
+\draw[fa/arrow] (r3) -- (r4);
+\draw[fa/arrow] (r4) -- (r5);
+\end{tikzpicture}
+\end{center}
+
+\section*{四、不同目标的路线选择}
+\renewcommand{\arraystretch}{1.32}
+{\small\setlength{\tabcolsep}{4pt}%
+\noindent\begin{tabularx}{\textwidth}{@{}>{\sffamily\bfseries\color{FANavy}\raggedright\arraybackslash}p{.18\textwidth} >{\raggedright\arraybackslash}p{.30\textwidth} X@{}}
+\toprule
+目标 & 推荐路线 & 阅读策略 \\
+\midrule
+第一次系统学习 & I-01--I-14 \(\displaystyle \to\) II-04/II-08--II-15 \(\displaystyle \to\) III-01--III-10 & A 级全部读；B 级跟随实际调用；C 级先掌握用途；D 级可跳过. \\
+偏算子与谱论 & I-03--I-14 \(\displaystyle \to\) II-02--II-10 & 重点关注对偶与伴随、谱、紧算子、\(\displaystyle C^*\) 结构、无界自伴、函数演算与 Stone 定理. \\
+偏偏微分方程与演化方程 & I-03/\allowbreak I-04/\allowbreak I-07--I-10 \(\displaystyle \to\) II-04 \(\displaystyle \to\) II-08--II-15 \(\displaystyle \to\) III-06--III-10 & 将 Bochner 积分、半群、Sobolev 空间、弱解、紧性与变分法连成一条链. \\
+偏非线性与变分 & I-03/\allowbreak I-04/\allowbreak I-06/\allowbreak I-07/\allowbreak I-10 \(\displaystyle \to\) III-01--III-10 & 先补弱拓扑与紧性，再读微分、拓扑度、直接法、Ekeland 变分原理、Palais--Smale 条件与极小极大方法. \\
+\bottomrule
+\end{tabularx}}
+
+\section*{五、每章建议采用“四遍法”}
+\begin{enumerate}[leftmargin=2.4em,itemsep=.38em,topsep=.35em]
+  \item \FAKeyword{导航遍：}只读章首目标、先修依赖、依赖图与 A 级环境，先回答“为什么学”与“后面在哪里使用”.
+  \item \FAKeyword{结构遍：}读定义、定理陈述、规范例与反例；可以暂时跳过长证明，但应把对象、假设与结论整理成自己的提纲.
+  \item \FAKeyword{证明遍：}沿实际依赖链逐步复核负重证明；遇到极限、紧性、可测性、定义域与弱收敛时尤其不能只记结论.
+  \item \FAKeyword{输出遍：}完成本章习题，至少选择一项定理自行复述证明骨架，并用一个例或反例解释该章最容易误用的有限维直觉.
+\end{enumerate}
+
+\FAFrontSubheading{建议的进度记录}
+每章可记录四类状态：\textbf{陈述可复述}、\textbf{证明链可解释}、\textbf{典型例与反例可独立重建}、\textbf{习题已完成}. 不必追求一次性全部完成；主线 A 级章节优先推进前三项，工具型 C 级内容可以先达到“知道何时调用”.
+
+\section*{六、阅读时需要长期保持的边界意识}
+\begin{itemize}[leftmargin=2.2em,itemsep=.25em,topsep=.25em]
+  \item 无限维情形不能机械套用有限维紧性、谱分解或范数等价直觉；反例环境用于明确这些边界.
+  \item Banach 对偶算子与 Hilbert 伴随、弱拓扑与弱*拓扑、对称与自伴、紧算子与一般有界算子必须始终分流.
+  \item 无界算子问题首先检查定义域，再讨论闭性、伴随、谱与生成元；偏微分方程与半群中不能省略积分合法性与函数空间条件.
+  \item 变分法中“几何条件”与“紧性条件”承担不同职责；直接法、Palais--Smale 条件与山路定理不应混成同一种存在性模板.
+  \item 本书由人工智能生成且未经独立人类专家逐条审校；遇到关键结论时，应按前页声明执行外部核验.
+\end{itemize}

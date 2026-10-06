@@ -1,0 +1,775 @@
+\chapter{酉群与 Stone 定理}\label{chap:II-10}
+\FAChapterOpening
+{建立复 Hilbert 空间上的 \(\displaystyle C_0\) 酉群、正向与反向生成元、双侧轨道微分；从无界自伴谱演算构造酉群并精确识别生成元；反向证明酉群生成元斜自伴，构造唯一自伴 Stone 算子，最终闭合 Stone 一一对应；最后处理 \(\displaystyle L^2(\mathbb R)\) 平移群、动量算子与 Schrödinger 轨道接口.}
+{II-06 的自伴算子与伴随定义域框架；II-07 的无界自伴谱定理与可测函数演算；II-08 的 \(\displaystyle C_0\) 半群、生成元闭稠密性与轨道微分接口.}
+{\begin{center}
+\begin{tikzpicture}[x=0.72cm,y=1.00cm]
+\node[fa/node] (ust) at (0,1.35) {可测函数演算};
+\node[fa/node] (sa) at (0,-1.35) {对称/自伴};
+\node[fa/node] (c01) at (4.0,1.35) {谱演算酉群};
+\node[fa/node] (sg) at (4.0,-1.35) {生成元闭稠密/预解};
+\node[fa/node] (b01) at (8.0,-1.35) {生成元斜自伴};
+\node[fa/node] (a01) at (11.8,0) {Stone定理};
+\draw[fa/arrow] (ust) -- (c01);
+\draw[fa/arrow] (sa) -- (c01);
+\draw[fa/arrow] (sg) -- (b01);
+\draw[fa/arrow] (sa) to[bend right=12] (b01);
+\draw[fa/arrow] (c01) -- (a01);
+\draw[fa/arrow] (b01) -- (a01);
+\end{tikzpicture}
+\end{center}}
+
+若 \(\displaystyle H=\{0\}\)，本章全部结论平凡；以下固定 \(\displaystyle H\neq\{0\}\) 为复 Hilbert 空间，内积对第一变量线性、对第二变量共轭线性，自伴概念沿用 II-06 的\autoref{fa:SA-A01}. 自伴 Stone 算子始终记为 \(\displaystyle\mathcal A\)，酉群记为 \(\displaystyle\mathcal U(t)\)，而把 \(\displaystyle\mathcal U|_{[0,\infty)}\) 看作 \(\displaystyle C_0\) 半群时的生成元记为 \(\displaystyle\mathcal G\). 全章固定符号约定
+\[
+\mathcal U_{\mathcal A}(t)
+=
+\mathrm{e}^{-\mathrm{i}t\mathcal A},
+\;
+\mathcal G=-\mathrm{i}\mathcal A,
+\;
+\mathcal A=\mathrm{i}\mathcal G.
+\]
+Stone 理论以 Reed--Simon、Conway 为标准参考，Yosida 为次级核对来源；以下证明均依照 II-06、II-07、II-08 已建立的接口独立重构\cite{reed-simon1980,conway1990,yosida}.
+
+\newpage
+\section{酉群}\label{sec:ii10-unitary-groups}
+\index{unitary group@酉群}\index{strong continuity@强连续}\index{skew-adjoint generator@斜自伴生成元}
+
+\begin{FADefinition}[A][\(\displaystyle C_0\) 酉群]{ii10:c0-unitary-group}
+算子族 \(\displaystyle (\mathcal U(t))_{t\in\mathbb R}\subseteq\mathcal B(H)\)
+称为 \(\displaystyle C_0\) 酉群，当且仅当 \(\displaystyle \mathcal U(0)=\mathcal I,\) \(\displaystyle \mathcal U(t+s)=\mathcal U(t)\mathcal U(s) \; \forall\,s,t\in\mathbb R,\)
+每个 \(\displaystyle\mathcal U(t)\) 都是酉算子，并且对全部 \(\displaystyle x\in H\)， \(\displaystyle \mathcal U(t)x\longrightarrow x \;(t\to0).\)
+\end{FADefinition}
+
+\begin{FAProposition}[B][群逆元、伴随与全时间强连续]{ii10:unitary-inverse-continuity}
+若 \(\displaystyle(\mathcal U(t))_{t\in\mathbb R}\) 为 \(\displaystyle C_0\) 酉群，则对全部 \(\displaystyle t\in\mathbb R\)， \(\displaystyle \mathcal U(-t) = \mathcal U(t)^{-1} = \mathcal U(t)^*.\)
+并且对任意 \(\displaystyle x\in H\) 与 \(\displaystyle t\in\mathbb R\)， \(\displaystyle \|\mathcal U(t+h)x-\mathcal U(t)x\| = \|\mathcal U(h)x-x\|,\)
+故 \(\displaystyle t\mapsto\mathcal U(t)x\) 在全部 \(\displaystyle\mathbb R\) 上连续.
+\end{FAProposition}
+
+\begin{FAProof}
+由群律， \(\displaystyle \mathcal U(t)\mathcal U(-t) = \mathcal U(0) = \mathcal I = \mathcal U(-t)\mathcal U(t),\)
+故 \(\displaystyle\mathcal U(-t)=\mathcal U(t)^{-1}\). 酉算子的逆等于伴随，所以 \(\displaystyle\mathcal U(t)^{-1}=\mathcal U(t)^*\).
+
+再由群律与酉性，\(\displaystyle \|\mathcal U(t+h)x-\mathcal U(t)x\|=\|\mathcal U(t)(\mathcal U(h)x-x)\|=\|\mathcal U(h)x-x\|.\)
+右端在 \(\displaystyle h\to0\) 时趋于零，因此零点强连续自动传播到全部实时间.
+\hfill\(\square\)
+\end{FAProof}
+
+令 \(\displaystyle \mathcal U_+(t)=\mathcal U(t), \; t\geqslant0.\)
+由\autoref{ii10:c0-unitary-group}与 \(\displaystyle\|\mathcal U(t)\|=1\)，\(\displaystyle(\mathcal U_+(t))_{t\geqslant0}\) 是 II-08 意义下的收缩 \(\displaystyle C_0\) 半群. 定义其生成元 \(\displaystyle \mathcal G:D(\mathcal G)\subseteq H\to H\)
+为
+\[
+D(\mathcal G)
+=
+\left\{
+ x\in H:
+ \lim_{h\downarrow0}\frac{\mathcal U(h)x-x}{h}
+ \text{ 在 }H\text{ 中存在}
+\right\},
+\]
+\[
+\mathcal Gx
+=
+\lim_{h\downarrow0}\frac{\mathcal U(h)x-x}{h}.
+\]
+由 II-08 的\autoref{fa:SG-A02}，\(\displaystyle D(\mathcal G)\) 稠密，且 \(\displaystyle\mathcal G\) 闭.
+
+\begin{FAProposition}[B][反向半群的生成元]{ii10:backward-generator}
+定义 \(\displaystyle \mathcal V(t)=\mathcal U(-t), \; t\geqslant0.\)
+则 \(\displaystyle(\mathcal V(t))_{t\geqslant0}\) 是收缩 \(\displaystyle C_0\) 半群，而且 \(\displaystyle D(\operatorname{Gen}\mathcal V)=D(\mathcal G),\) \(\displaystyle \operatorname{Gen}\mathcal V=-\mathcal G.\)
+\end{FAProposition}
+
+\begin{FAProof}
+由群律，\(\displaystyle\mathcal V(t+s)=\mathcal U(-(t+s))=\mathcal U(-t)\mathcal U(-s)=\mathcal V(t)\mathcal V(s)\). 每个 \(\displaystyle\mathcal V(t)\) 酉，故范数为 \(\displaystyle1\). 又由\autoref{ii10:unitary-inverse-continuity}，\(\displaystyle\mathcal V(t)x\to x\) 当 \(\displaystyle t\downarrow0\)，所以它是收缩 \(\displaystyle C_0\) 半群.
+
+若 \(\displaystyle x\in D(\mathcal G)\)，则对 \(\displaystyle h>0\)， \(\displaystyle \frac{\mathcal U(-h)x-x}{h} = -\mathcal U(-h) \frac{\mathcal U(h)x-x}{h}.\)
+右侧在 \(\displaystyle h\downarrow0\) 时趋于 \(\displaystyle-\mathcal Gx\)，故 \(\displaystyle x\in D(\operatorname{Gen}\mathcal V)\)，且 \(\displaystyle\operatorname{Gen}\mathcal Vx=-\mathcal Gx\).
+
+反之，若 \(\displaystyle x\in D(\operatorname{Gen}\mathcal V)\)，则 \(\displaystyle \frac{\mathcal U(h)x-x}{h} = -\mathcal U(h) \frac{\mathcal U(-h)x-x}{h}.\)
+令 \(\displaystyle h\downarrow0\)，右侧趋于 \(\displaystyle-\operatorname{Gen}\mathcal Vx\)，故 \(\displaystyle x\in D(\mathcal G)\)，并且 \(\displaystyle\mathcal Gx=-\operatorname{Gen}\mathcal Vx\). 两个定义域包含合并即得精确算子等式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][双侧轨道微分与生成元交换]{ii10:two-sided-differentiability}
+若 \(\displaystyle x\in D(\mathcal G)\)，则
+\[
+\lim_{h\to0}
+\frac{\mathcal U(h)x-x}{h}
+=
+\mathcal Gx.
+\]
+对全部 \(\displaystyle t\in\mathbb R\)， \(\displaystyle \mathcal U(t)x\in D(\mathcal G),\)
+且 \(\displaystyle \frac{\mathrm{d}}{\mathrm{d}t}\mathcal U(t)x = \mathcal U(t)\mathcal Gx = \mathcal G\mathcal U(t)x.\)
+\end{FAProposition}
+
+\begin{FAProof}
+正侧极限就是生成元定义. 对 \(\displaystyle h<0\)，令 \(\displaystyle k=-h>0\). 由\autoref{ii10:backward-generator}， \(\displaystyle \frac{\mathcal U(h)x-x}{h} = -\frac{\mathcal U(-k)x-x}{k} \longrightarrow \mathcal Gx,\)
+故零点差商存在双侧极限.
+
+固定 \(\displaystyle t\in\mathbb R\). 对 \(\displaystyle h\downarrow0\)，群律与交换性给
+\[
+\frac{\mathcal U(h)\mathcal U(t)x-\mathcal U(t)x}{h}
+=
+\mathcal U(t)
+\frac{\mathcal U(h)x-x}{h}
+\longrightarrow
+\mathcal U(t)\mathcal Gx.
+\]
+因此 \(\displaystyle\mathcal U(t)x\in D(\mathcal G)\)，并且 \(\displaystyle \mathcal G\mathcal U(t)x=\mathcal U(t)\mathcal Gx.\)
+最后对任意双侧 \(\displaystyle h\to0\)，
+\[
+\frac{\mathcal U(t+h)x-\mathcal U(t)x}{h}
+=
+\mathcal U(t)
+\frac{\mathcal U(h)x-x}{h}
+\longrightarrow
+\mathcal U(t)\mathcal Gx.
+\]
+这给出全部实时间的轨道微分公式与生成元交换关系.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{自伴算子到酉群}\label{sec:ii10-selfadjoint-to-group}
+\index{spectral calculus@谱演算!Stone 理论}\index{Stone theorem@Stone 定理}
+
+\begin{FAProposition}[C][自伴谱演算产生 \(\displaystyle C_0\) 酉群]{fa:STONE-C01}
+设 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq H\to H\)
+自伴. 对 \(\displaystyle t\in\mathbb R\) 定义
+\[
+u_t(\lambda)=\mathrm{e}^{-\mathrm{i}t\lambda},
+\;
+\mathcal U_{\mathcal A}(t)=u_t(\mathcal A)=\mathrm{e}^{-\mathrm{i}t\mathcal A}
+\]
+，其中函数演算取自 II-07 的\autoref{fa:UST-A02}. 则 \(\displaystyle(\mathcal U_{\mathcal A}(t))_{t\in\mathbb R}\) 是 \(\displaystyle C_0\) 酉群，并满足 \(\displaystyle \|\mathcal U_{\mathcal A}(t)\|=1,\) \(\displaystyle \mathcal U_{\mathcal A}(t)^*=\mathcal U_{\mathcal A}(-t),\) \(\displaystyle \mathcal U_{\mathcal A}(t+s) = \mathcal U_{\mathcal A}(t)\mathcal U_{\mathcal A}(s).\)
+对任意 \(\displaystyle x\in H\) 与 \(\displaystyle s,t\in\mathbb R\)，
+\[
+\|\mathcal U_{\mathcal A}(t)x-\mathcal U_{\mathcal A}(s)x\|^2
+=
+\int_{\mathbb R}
+|\mathrm{e}^{-\mathrm{i}(t-s)\lambda}-1|^2
+\,\mathrm{d}\mu_x^{\mathcal A}(\lambda).
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由 \(\displaystyle|u_t|=1\)，有界可测函数演算给 \(\displaystyle \mathcal U_{\mathcal A}(t)^* = \overline{u_t}(\mathcal A) = u_{-t}(\mathcal A) = \mathcal U_{\mathcal A}(-t).\)
+又 \(\displaystyle u_tu_s=u_{t+s}\)，故乘法公式给 \(\displaystyle \mathcal U_{\mathcal A}(t)\mathcal U_{\mathcal A}(s) = \mathcal U_{\mathcal A}(t+s).\)
+特别地， \(\displaystyle \mathcal U_{\mathcal A}(t)^*\mathcal U_{\mathcal A}(t) = \mathcal U_{\mathcal A}(-t)\mathcal U_{\mathcal A}(t) = \mathcal I,\)
+且反向乘积同样等于 \(\displaystyle\mathcal I\)，所以每个 \(\displaystyle\mathcal U_{\mathcal A}(t)\) 酉. 因 \(\displaystyle H\neq\{0\}\)，酉算子范数等于 \(\displaystyle1\).
+
+固定 \(\displaystyle x\in H\). 群律与酉性给 \(\displaystyle \|\mathcal U_{\mathcal A}(t)x-\mathcal U_{\mathcal A}(s)x\| = \|\mathcal U_{\mathcal A}(t-s)x-x\|.\)
+由 II-07 的\autoref{fa:UST-C01}在有界函数上的谱积分范数恒等式，
+\[
+\|\mathcal U_{\mathcal A}(t-s)x-x\|^2
+=
+\int_{\mathbb R}
+|\mathrm{e}^{-\mathrm{i}(t-s)\lambda}-1|^2
+\,\mathrm{d}\mu_x^{\mathcal A}(\lambda).
+\]
+当 \(\displaystyle t\to s\) 时，被积函数逐点趋于零，且恒由 \(\displaystyle4\) 控制. 因 \(\displaystyle\mu_x^{\mathcal A}(\mathbb R)=\|x\|^2<\infty\)，标量控制收敛定理给积分趋于零. 因而该群强连续.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[C][谱差商的逐点估计]{ii10:spectral-difference-quotient}
+对 \(\displaystyle h\neq0\) 定义 \(\displaystyle q_h(\lambda) = \frac{\mathrm{e}^{-\mathrm{i}h\lambda}-1}{h}.\)
+则 \(\displaystyle |q_h(\lambda)|\leqslant|\lambda|\)
+对全部实 \(\displaystyle\lambda\) 成立，且 \(\displaystyle q_h(\lambda)\longrightarrow-\mathrm{i}\lambda \;(h\to0).\)
+\end{FALemma}
+
+\begin{FAProof}
+由恒等式 \(\displaystyle |\mathrm{e}^{-\mathrm{i}\theta}-1| = 2|\sin\!\left(\frac{\theta}{2}\right)| \leqslant |\theta|,\)
+取 \(\displaystyle\theta=h\lambda\) 得 \(\displaystyle|q_h(\lambda)|\leqslant|\lambda|\). 逐点极限由标量指数函数在零点的导数直接得到.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][自伴域上的谱差商极限]{ii10:selfadjoint-domain-to-derivative}
+若 \(\displaystyle x\in D(\mathcal A)\)，则 \(\displaystyle \frac{\mathcal U_{\mathcal A}(h)x-x}{h} \longrightarrow -\mathrm{i}\mathcal Ax \;(h\to0).\)
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{fa:UST-B01}的定义域刻画，
+\[
+\int_{\mathbb R}\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}(\lambda)<\infty.
+\]
+对固定 \(\displaystyle h\neq0\)，函数 \(\displaystyle q_h\) 有界，故 \(\displaystyle \frac{\mathcal U_{\mathcal A}(h)-\mathcal I}{h} = q_h(\mathcal A).\)
+又 \(\displaystyle-\mathrm{i}\mathcal A=(-\mathrm{i}\operatorname{id})(\mathcal A)\). 因此 II-07 的\autoref{fa:UST-C01}给
+\[
+\left\|
+\frac{\mathcal U_{\mathcal A}(h)x-x}{h}
++\mathrm{i}\mathcal Ax
+\right\|^2
+=
+\int_{\mathbb R}
+|q_h(\lambda)+\mathrm{i}\lambda|^2
+\,\mathrm{d}\mu_x^{\mathcal A}(\lambda).
+\]
+由\autoref{ii10:spectral-difference-quotient}，被积函数逐点趋于零，并且 \(\displaystyle |q_h(\lambda)+\mathrm{i}\lambda|^2 \leqslant 4\lambda^2.\)
+右侧控制函数可积，故标量控制收敛定理给所需 \(\displaystyle H\)-范数极限.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][差商极限反推自伴定义域]{ii10:derivative-to-selfadjoint-domain}
+设 \(\displaystyle x\in H\). 若右差商
+\[
+\lim_{h\downarrow0}
+\frac{\mathcal U_{\mathcal A}(h)x-x}{h}
+\]
+在 \(\displaystyle H\) 中存在，则 \(\displaystyle x\in D(\mathcal A)\). 因而更强地，若双侧极限 \(\displaystyle h\to0\) 存在，同样有 \(\displaystyle x\in D(\mathcal A)\)，且该极限等于 \(\displaystyle-\mathrm{i}\mathcal Ax\).
+\end{FAProposition}
+
+\begin{FAProof}
+右差商收敛蕴含其范数在某个 \(\displaystyle0<h<\delta\) 上有界. 任取 \(\displaystyle h_n\downarrow0\). 由\autoref{fa:UST-C01}的谱积分范数恒等式，
+\[
+\left\|
+\frac{\mathcal U_{\mathcal A}(h_n)x-x}{h_n}
+\right\|^2
+=
+\int_{\mathbb R}|q_{h_n}(\lambda)|^2
+\,\mathrm{d}\mu_x^{\mathcal A}(\lambda).
+\]
+由\autoref{ii10:spectral-difference-quotient}，\(\displaystyle|q_{h_n}(\lambda)|^2\to\lambda^2\). Fatou 引理给
+\[
+\int_{\mathbb R}\lambda^2
+\,\mathrm{d}\mu_x^{\mathcal A}(\lambda)
+\leqslant
+\liminf_{n\to\infty}
+\int_{\mathbb R}|q_{h_n}(\lambda)|^2
+\,\mathrm{d}\mu_x^{\mathcal A}(\lambda)
+<\infty.
+\]
+由\autoref{fa:UST-B01}的定义域刻画，\(\displaystyle x\in D(\mathcal A)\). 此后\autoref{ii10:selfadjoint-domain-to-derivative}识别任意双侧或右侧差商极限均为 \(\displaystyle-\mathrm{i}\mathcal Ax\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][自伴算子产生群的精确生成元]{ii10:selfadjoint-generator-exact}
+设 \(\displaystyle\mathcal A\) 自伴，并令
+\[
+\mathcal G_{\mathcal A}
+=
+\operatorname{Gen}(\mathcal U_{\mathcal A}|_{[0,\infty)}).
+\]
+则 \(\displaystyle D(\mathcal G_{\mathcal A})=D(\mathcal A),\)
+并且作为包含定义域等式的算子等式， \(\displaystyle \mathcal G_{\mathcal A}=-\mathrm{i}\mathcal A.\)
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle x\in D(\mathcal A)\)，\autoref{ii10:selfadjoint-domain-to-derivative}给出右差商极限 \(\displaystyle-\mathrm{i}\mathcal Ax\)，故 \(\displaystyle x\in D(\mathcal G_{\mathcal A})\) 且 \(\displaystyle\mathcal G_{\mathcal A}x=-\mathrm{i}\mathcal Ax\).
+
+反之，若 \(\displaystyle x\in D(\mathcal G_{\mathcal A})\)，右差商按定义存在，因此\autoref{ii10:derivative-to-selfadjoint-domain}给 \(\displaystyle x\in D(\mathcal A)\). 双向包含给出定义域相等，作用公式随即给出完整算子等式.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{酉群到生成元}\label{sec:ii10-group-to-generator}
+\index{skew-adjoint@斜自伴}\index{generator uniqueness@生成元唯一性}
+
+\begin{FATheorem}[B][酉群生成元的斜自伴性]{fa:STONE-B01}
+设 \(\displaystyle(\mathcal U(t))_{t\in\mathbb R}\) 为 \(\displaystyle C_0\) 酉群，\(\displaystyle\mathcal G\) 为 \(\displaystyle\mathcal U|_{[0,\infty)}\) 的生成元. 则 \(\displaystyle\mathcal G\) 闭且稠密定义，反向半群 \(\displaystyle\mathcal U(-t)\) 的生成元为 \(\displaystyle-\mathcal G\)，并且对全部 \(\displaystyle x\in D(\mathcal G)\) 的轨道存在双侧导数. 此外， \(\displaystyle \mathcal G^*=-\mathcal G\)
+作为包含定义域等式的算子等式成立，即 \(\displaystyle\mathcal G\) 斜自伴.
+\end{FATheorem}
+
+\begin{FAProof}
+闭性与稠密性由 II-08 的\autoref{fa:SG-A02}应用于正向半群得到；反向生成元与定义域等式由\autoref{ii10:backward-generator}得到；双侧轨道微分由\autoref{ii10:two-sided-differentiability}得到. 只需证明斜自伴性.
+
+先证斜对称. 任取 \(\displaystyle x,y\in D(\mathcal G)\). 酉性给 \(\displaystyle \langle\mathcal U(t)x,\mathcal U(t)y\rangle = \langle x,y\rangle \; \forall\,t\in\mathbb R.\)
+由\autoref{ii10:two-sided-differentiability}在 \(\displaystyle t=0\) 求实参数导数，并使用内积对第一变量线性、对第二变量共轭线性的约定，得到 \(\displaystyle \langle\mathcal Gx,y\rangle + \langle x,\mathcal Gy\rangle = 0.\)
+于是对每个 \(\displaystyle y\in D(\mathcal G)\) 与全部 \(\displaystyle x\in D(\mathcal G)\)， \(\displaystyle \langle\mathcal Gx,y\rangle = \langle x,-\mathcal Gy\rangle.\)
+按 II-05 的无界伴随定义，这说明 \(\displaystyle D(\mathcal G)\subseteq D(\mathcal G^*), \; \mathcal G^*y=-\mathcal Gy \; \forall\,y\in D(\mathcal G),\)
+即 \(\displaystyle \mathcal G\subseteq-\mathcal G^*.\)
+
+再证两个实点值域满射. 正向半群与反向半群都满足算子范数 \(\displaystyle1\). 对正向半群应用 II-08 的\autoref{fa:SG-A02}在 \(\displaystyle\lambda=1\) 的预解结论，得到 \(\displaystyle \operatorname{Ran}(\mathcal I-\mathcal G)=H.\)
+反向半群的生成元是 \(\displaystyle-\mathcal G\)，同一结论给 \(\displaystyle \operatorname{Ran}(\mathcal I+\mathcal G)=H.\)
+特别地，\(\displaystyle1\in\rho(\mathcal G)\) 且 \(\displaystyle1\in\rho(-\mathcal G)\).
+
+最后证伴随定义域没有更大部分. 任取 \(\displaystyle y\in D(\mathcal G^*)\). 由 \(\displaystyle\operatorname{Ran}(\mathcal I-\mathcal G)=H\)，可取 \(\displaystyle x\in D(\mathcal G)\) 使 \(\displaystyle (\mathcal I-\mathcal G)x = (\mathcal I+\mathcal G^*)y.\)
+由于 \(\displaystyle x\in D(\mathcal G)\subseteq D(\mathcal G^*)\) 且 \(\displaystyle\mathcal G^*x=-\mathcal Gx\)，有 \(\displaystyle (\mathcal I+\mathcal G^*)x = (\mathcal I-\mathcal G)x.\)
+令 \(\displaystyle h=y-x\). 则 \(\displaystyle (\mathcal I+\mathcal G^*)h=0.\)
+对任意 \(\displaystyle z\in D(\mathcal G)\)，伴随恒等式给 \(\displaystyle \langle(\mathcal I+\mathcal G)z,h\rangle = \langle z,(\mathcal I+\mathcal G^*)h\rangle = 0.\)
+而 \(\displaystyle\operatorname{Ran}(\mathcal I+\mathcal G)=H\)，故 \(\displaystyle h\) 与全部 \(\displaystyle H\) 正交，从而 \(\displaystyle h=0\). 因此 \(\displaystyle y=x\in D(\mathcal G)\)，得到 \(\displaystyle D(\mathcal G^*)=D(\mathcal G), \; \mathcal G^*=-\mathcal G.\)
+斜自伴性得证.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][非零标量与无界伴随]{ii10:scalar-adjoint-rule}
+若 \(\displaystyle\mathcal T:D(\mathcal T)\subseteq H\to H\) 稠密定义，\(\displaystyle c\in\mathbb C\setminus\{0\}\)，则 \(\displaystyle D((c\mathcal T)^*)=D(\mathcal T^*),\)
+并且 \(\displaystyle (c\mathcal T)^*=\overline c\,\mathcal T^*.\)
+\end{FALemma}
+
+\begin{FAProof}
+设 \(\displaystyle y\in D(\mathcal T^*)\). 对全部 \(\displaystyle x\in D(\mathcal T)\)，由第一变量线性与第二变量共轭线性，
+\[
+\langle c\mathcal Tx,y\rangle
+=
+c\langle\mathcal Tx,y\rangle
+=
+c\langle x,\mathcal T^*y\rangle
+=
+\langle x,\overline c\,\mathcal T^*y\rangle.
+\]
+故 \(\displaystyle y\in D((c\mathcal T)^*)\)，且 \(\displaystyle(c\mathcal T)^*y=\overline c\,\mathcal T^*y\).
+
+反之，若 \(\displaystyle y\in D((c\mathcal T)^*)\)，则存在 \(\displaystyle z\in H\) 使对全部 \(\displaystyle x\in D(\mathcal T)\)， \(\displaystyle \langle c\mathcal Tx,y\rangle=\langle x,z\rangle.\)
+除以非零标量 \(\displaystyle c\)，并利用 \(\displaystyle c^{-1}\langle x,z\rangle=\langle x,\overline{c^{-1}}z\rangle\)，得到 \(\displaystyle y\in D(\mathcal T^*)\). 两个定义域包含合并即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][由斜自伴生成元构造自伴 Stone 算子]{ii10:group-to-selfadjoint}
+在\autoref{fa:STONE-B01}的条件下定义 \(\displaystyle \mathcal A=\mathrm{i}\mathcal G, \; D(\mathcal A)=D(\mathcal G).\)
+则 \(\displaystyle\mathcal A\) 自伴.
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii10:scalar-adjoint-rule}与\autoref{fa:STONE-B01}，
+\[
+\mathcal A^*
+=
+(\mathrm{i}\mathcal G)^*
+=
+-\mathrm{i}\mathcal G^*
+=
+-\mathrm{i}(-\mathcal G)
+=
+\mathrm{i}\mathcal G
+=
+\mathcal A.
+\]
+这里每一步都是算子等式；特别地，\(\displaystyle D(\mathcal A^*)=D(\mathcal G^*)=D(\mathcal G)=D(\mathcal A)\). 因而 \(\displaystyle\mathcal A\) 自伴.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][同一生成元决定唯一 \(\displaystyle C_0\) 半群]{ii10:generator-uniqueness}
+设 \(\displaystyle(\mathcal T(t))_{t\geqslant0}\) 与 \(\displaystyle(\mathcal S(t))_{t\geqslant0}\) 是 \(\displaystyle H\) 上两个 \(\displaystyle C_0\) 半群，且具有同一生成元 \(\displaystyle\mathcal G\). 则 \(\displaystyle \mathcal T(t)=\mathcal S(t) \; \forall\,t\geqslant0.\)
+\end{FALemma}
+
+\begin{FAProof}
+固定 \(\displaystyle t>0\) 与 \(\displaystyle x\in D(\mathcal G)\). 对 \(\displaystyle0\leqslant s\leqslant t\) 定义 \(\displaystyle F(s)=\mathcal T(t-s)\mathcal S(s)x.\)
+由 II-08 的\autoref{fa:SG-B02}，\(\displaystyle\mathcal S(s)x\in D(\mathcal G)\)、\(\displaystyle\mathcal G\mathcal S(s)x=\mathcal S(s)\mathcal Gx\)，同样结论对 \(\displaystyle\mathcal T\) 成立. 固定 \(\displaystyle0<s<t\). 对充分小的实数 \(\displaystyle h\)，
+\[
+\begin{aligned}
+\displaystyle \frac{F(s+h)-F(s)}{h}
+&\displaystyle =
+\mathcal T(t-s-h)
+\frac{\mathcal S(s+h)x-\mathcal S(s)x}{h}\\[12pt]
+&\displaystyle \mathrel{\phantom{=}}+
+\frac{\mathcal T(t-s-h)-\mathcal T(t-s)}{h}
+\mathcal S(s)x.
+\end{aligned}
+\]
+第一项由轨道连续性与 \(\displaystyle\mathcal S(s)x\in D(\mathcal G)\) 收敛到 \(\displaystyle\mathcal T(t-s)\mathcal G\mathcal S(s)x\). 第二项把 \(\displaystyle r=t-s>0\) 固定后，正是 \(\displaystyle r\) 处轨道对时间变量的反向差商，因此由\autoref{fa:SG-B02}收敛到 \(\displaystyle-\mathcal T(t-s)\mathcal G\mathcal S(s)x\). 故 \(\displaystyle F'(s)=0.\)
+所以 \(\displaystyle F\) 在 \(\displaystyle[0,t]\) 上常值，进而 \(\displaystyle \mathcal T(t)x=F(0)=F(t)=\mathcal S(t)x \; \forall\,x\in D(\mathcal G).\)
+由 II-08 的\autoref{fa:SG-A02}，\(\displaystyle D(\mathcal G)\) 在 \(\displaystyle H\) 中稠密. 对任意 \(\displaystyle x\in H\)，取 \(\displaystyle x_n\in D(\mathcal G)\) 且 \(\displaystyle x_n\to x\). 固定 \(\displaystyle t\) 时 \(\displaystyle\mathcal T(t),\mathcal S(t)\in\mathcal B(H)\)，故
+\[
+\mathcal T(t)x
+=
+\lim_n\mathcal T(t)x_n
+=
+\lim_n\mathcal S(t)x_n
+=
+\mathcal S(t)x.
+\]
+于是两个半群在全部非负时间相同.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][由生成元恢复原酉群]{ii10:recover-unitary-group}
+设 \(\displaystyle(\mathcal U(t))_{t\in\mathbb R}\) 为 \(\displaystyle C_0\) 酉群，\(\displaystyle\mathcal G\) 为其正向生成元，并定义 \(\displaystyle\mathcal A=\mathrm{i}\mathcal G\). 则 \(\displaystyle \mathcal U(t)=\mathrm{e}^{-\mathrm{i}t\mathcal A} \; \forall\,t\in\mathbb R.\)
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii10:group-to-selfadjoint}，\(\displaystyle\mathcal A\) 自伴. 由\autoref{fa:STONE-C01}， \(\displaystyle \mathcal W(t)=\mathrm{e}^{-\mathrm{i}t\mathcal A}\)
+是 \(\displaystyle C_0\) 酉群. 由\autoref{ii10:selfadjoint-generator-exact}，其正向生成元为 \(\displaystyle -\mathrm{i}\mathcal A = -\mathrm{i}(\mathrm{i}\mathcal G) = \mathcal G.\)
+因此 \(\displaystyle\mathcal U|_{[0,\infty)}\) 与 \(\displaystyle\mathcal W|_{[0,\infty)}\) 有同一生成元. 由\autoref{ii10:generator-uniqueness}， \(\displaystyle \mathcal U(t)=\mathcal W(t) \; \forall\,t\geqslant0.\)
+若 \(\displaystyle t>0\)，则由群逆元公式， \(\displaystyle \mathcal U(-t) = \mathcal U(t)^{-1} = \mathcal W(t)^{-1} = \mathcal W(-t).\)
+故等式扩展到全部 \(\displaystyle t\in\mathbb R\).
+\hfill\(\square\)
+\end{FAProof}
+
+\section{Stone 定理}\label{sec:ii10-stone-theorem}
+\index{Stone correspondence@Stone 对应}
+
+\begin{FATheorem}[A][Stone 定理]{fa:STONE-A01}
+在复 Hilbert 空间 \(\displaystyle H\) 上，以下两类对象一一对应：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 自伴算子 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\).
+\item \(\displaystyle C_0\) 酉群 \(\displaystyle(\mathcal U(t))_{t\in\mathbb R}\).
+\end{enumerate}
+对应关系为 \(\displaystyle \mathcal U(t)=\mathrm{e}^{-\mathrm{i}t\mathcal A}.\)
+若 \(\displaystyle\mathcal G\) 是 \(\displaystyle\mathcal U|_{[0,\infty)}\) 的生成元，则 \(\displaystyle D(\mathcal G)=D(\mathcal A),\) \(\displaystyle \mathcal G=-\mathrm{i}\mathcal A,\) \(\displaystyle \mathcal A=\mathrm{i}\mathcal G.\)
+自伴算子与对应酉群均唯一.
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle\mathcal A\) 自伴. \autoref{fa:STONE-C01}给出 \(\displaystyle\mathcal U_{\mathcal A}(t)=\mathrm{e}^{-\mathrm{i}t\mathcal A}\) 是 \(\displaystyle C_0\) 酉群，\autoref{ii10:selfadjoint-generator-exact}给出其正向生成元满足 \(\displaystyle D(\mathcal G)=D(\mathcal A), \; \mathcal G=-\mathrm{i}\mathcal A.\)
+因此正向对应成立.
+
+反之，给定 \(\displaystyle C_0\) 酉群 \(\displaystyle\mathcal U\)，\autoref{fa:STONE-B01}给出其生成元 \(\displaystyle\mathcal G\) 斜自伴，\autoref{ii10:group-to-selfadjoint}给出 \(\displaystyle \mathcal A=\mathrm{i}\mathcal G\)
+自伴. \autoref{ii10:recover-unitary-group}再给 \(\displaystyle \mathcal U(t)=\mathrm{e}^{-\mathrm{i}t\mathcal A} \; \forall\,t\in\mathbb R.\)
+因此反向对应成立.
+
+唯一性也同时闭合. 给定 \(\displaystyle\mathcal A\)，函数演算唯一确定 \(\displaystyle\mathrm{e}^{-\mathrm{i}t\mathcal A}\). 给定 \(\displaystyle\mathcal U\)，其正向生成元由差商定义唯一确定，而自伴算子必须满足 \(\displaystyle\mathcal A=\mathrm{i}\mathcal G\)，故也唯一. 这证明所述一一对应以及定义域等式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[Stone 定理要求自伴]
+II-06 的最小一阶微分算子 \(\displaystyle\mathcal A_0\) 在 \(\displaystyle L^2(0,1)\) 上稠密定义；\autoref{ii06:minimal-derivative-closed}已证明它闭，\autoref{ii06:minimal-derivative-symmetric}已证明它对称，而 II-06 的对称但非自伴反例与\autoref{ii06:minimal-derivative-not-essential}已证明它既不自伴也不本质自伴. 因此不能仅凭“对称”便把 \(\displaystyle\mathcal A_0\) 代入 Stone 定理并宣称 \(\displaystyle\mathrm{e}^{-\mathrm{i}t\mathcal A_0}\) 给出 Stone 对应. 本章不讨论它的自伴延拓分类，也不声称它不存在自伴延拓.
+\end{FACounterexample}
+
+\begin{FAWarning}[强连续不要求算子范数连续]
+令 \(\displaystyle H=\ell^2(\mathbb N)\)，并复用 II-05、II-07 的无界对角自伴算子
+\[
+\mathcal Mx=(nx_n),
+\;
+D(\mathcal M)=\left\{x\in\ell^2:\sum_{n=1}^{\infty}n^2|x_n|^2<\infty\right\}.
+\]
+由 Stone 定理， \(\displaystyle (\mathcal U(t)x)_n = \mathrm{e}^{-\mathrm{i}tn}x_n\)
+定义 \(\displaystyle C_0\) 酉群. 取 \(\displaystyle t_k=\frac{\pi}{k}\). 对第 \(\displaystyle k\) 个标准基向量 \(\displaystyle e_k\)， \(\displaystyle \|(\mathcal U(t_k)-\mathcal I)e_k\| = |\mathrm{e}^{-\mathrm{i}\pi}-1| = 2.\)
+故 \(\displaystyle\|\mathcal U(t_k)-\mathcal I\|\geqslant2\). 另一方面两个酉算子之差的范数不超过 \(\displaystyle2\)，所以 \(\displaystyle \|\mathcal U(t_k)-\mathcal I\|=2\)
+而 \(\displaystyle t_k\to0\). 因此 \(\displaystyle C_0\) 酉群可以在零点完全不具算子范数连续性.
+\end{FAWarning}
+
+\section{物理接口}\label{sec:ii10-physics-interface}
+\index{translation group@平移群}\index{momentum operator@动量算子}\index{Schrodinger equation@Schrödinger 方程}
+
+\subsection{\texorpdfstring{\(\displaystyle L^2(\mathbb R)\)}{L2R} 上的平移群}
+
+令 \(\displaystyle H=L^2(\mathbb R)\). 对 \(\displaystyle t\in\mathbb R\) 定义 \(\displaystyle (\mathcal U_{\mathrm{tr}}(t)f)(s)=f(s-t).\)
+这与 II-08 的平移半群模型不同：II-08 在 \(\displaystyle C_0(\mathbb R)\) 上只取非负时间，本节在 Hilbert 空间 \(\displaystyle L^2(\mathbb R)\) 上取全部实时间.
+
+\begin{FAProposition}[B][平移算子族为酉群]{ii10:translation-unitary}
+对全部 \(\displaystyle s,t\in\mathbb R\)，\(\displaystyle \mathcal U_{\mathrm{tr}}(t+s)=\mathcal U_{\mathrm{tr}}(t)\mathcal U_{\mathrm{tr}}(s)\)，\(\displaystyle \mathcal U_{\mathrm{tr}}(t)^{-1} = \mathcal U_{\mathrm{tr}}(-t),\)
+并且 \(\displaystyle \|\mathcal U_{\mathrm{tr}}(t)f\|_2=\|f\|_2.\)
+因此每个 \(\displaystyle\mathcal U_{\mathrm{tr}}(t)\) 酉.
+\end{FAProposition}
+
+\begin{FAProof}
+对几乎处处的 \(\displaystyle r\in\mathbb R\)， \(\displaystyle (\mathcal U_{\mathrm{tr}}(t)\mathcal U_{\mathrm{tr}}(s)f)(r) =f(r-s-t) =(\mathcal U_{\mathrm{tr}}(t+s)f)(r),\)
+故群律成立. 变量替换 \(\displaystyle u=r-t\) 给
+\[
+\|\mathcal U_{\mathrm{tr}}(t)f\|_2^2
+=
+\int_{\mathbb R}|f(r-t)|^2\,\mathrm{d}r
+=
+\int_{\mathbb R}|f(u)|^2\,\mathrm{d}u
+=
+\|f\|_2^2.
+\]
+群律又给 \(\displaystyle\mathcal U_{\mathrm{tr}}(t)\mathcal U_{\mathrm{tr}}(-t)=\mathcal I\). 因而该等距双射是酉算子.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[C][\(\displaystyle C_c(\mathbb R)\) 在 \(\displaystyle L^2(\mathbb R)\) 中稠密]{ii10:cc-dense-l2r}
+有 \(\displaystyle \overline{C_c(\mathbb R)}^{\|\cdot\|_2}=L^2(\mathbb R).\)
+\end{FALemma}
+
+\begin{FAProof}
+固定 \(\displaystyle f\in L^2(\mathbb R)\) 与 \(\displaystyle\varepsilon>0\). 令 \(\displaystyle f_N=f\mathbf{1}_{[-N,N]}.\)
+由标量单调收敛，\(\displaystyle\|f-f_N\|_2\to0\)，故可取 \(\displaystyle N\) 使 \(\displaystyle \|f-f_N\|_2<\frac{\varepsilon}{3}.\)
+在紧度量空间 \(\displaystyle K=[-N,N]\) 上，Lebesgue 测度有限且正则. 应用 II-03 的\autoref{ii03:ck-dense-l2}，可取 \(\displaystyle g\in C([-N,N])\) 使 \(\displaystyle \|f_N-g\|_{L^2([-N,N])}<\frac{\varepsilon}{3}.\)
+
+取 \(\displaystyle\delta>0\). 在 \(\displaystyle[-N-\delta,N+\delta]\) 上定义连续函数 \(\displaystyle G\)：在 \(\displaystyle[-N,N]\) 上令 \(\displaystyle G=g\)，在左右两个长度为 \(\displaystyle\delta\) 的过渡带上分别以线性函数把端点值 \(\displaystyle g(-N)\)、\(\displaystyle g(N)\) 降至零，并在外部令 \(\displaystyle G=0\). 则 \(\displaystyle G\in C_c(\mathbb R)\)，且 \(\displaystyle \|G\|_{L^2(\mathbb R\setminus[-N,N])}^2 \leqslant \delta\bigl(|g(-N)|^2+|g(N)|^2\bigr).\)
+选择充分小的 \(\displaystyle\delta\)，使右端平方根小于 \(\displaystyle\frac{\varepsilon}{3}\). 于是 \(\displaystyle \|f-G\|_2 \leqslant \|f-f_N\|_2 + \|f_N-g\|_{L^2([-N,N])} + \|G\|_{L^2(\mathbb R\setminus[-N,N])} <\varepsilon.\)
+故 \(\displaystyle C_c(\mathbb R)\) 稠密.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][平移群的强连续性]{ii10:translation-c0}
+\(\displaystyle(\mathcal U_{\mathrm{tr}}(t))_{t\in\mathbb R}\) 是 \(\displaystyle C_0\) 酉群.
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii10:translation-unitary}只需证明零点强连续. 先取 \(\displaystyle g\in C_c(\mathbb R)\). 设 \(\displaystyle\operatorname{supp}g\subseteq[-R,R]\). 当 \(\displaystyle|t|\leqslant1\) 时，\(\displaystyle g(\cdot-t)-g\) 的支撑包含于统一紧区间 \(\displaystyle[-R-1,R+1]\). 因 \(\displaystyle g\) 一致连续，\(\displaystyle \sup_{s\in\mathbb R}|g(s-t)-g(s)|\longrightarrow0 \;(t\to0)\). 故
+\[
+\|\mathcal U_{\mathrm{tr}}(t)g-g\|_2
+\leqslant
+\sqrt{2R+2}
+\sup_{s\in\mathbb R}|g(s-t)-g(s)|
+\longrightarrow0.
+\]
+这里统一有限测度支撑区间是从一致范数收敛推出 \(\displaystyle L^2\) 收敛的必要控制.
+
+再取任意 \(\displaystyle f\in L^2(\mathbb R)\). 由\autoref{ii10:cc-dense-l2r}，给定 \(\displaystyle\varepsilon>0\)，可取 \(\displaystyle g\in C_c(\mathbb R)\) 使 \(\displaystyle\|f-g\|_2<\varepsilon\). 由平移酉性，
+\[
+\begin{aligned}
+\|\mathcal U_{\mathrm{tr}}(t)f-f\|_2
+&\leqslant
+\|\mathcal U_{\mathrm{tr}}(t)(f-g)\|_2
++\|\mathcal U_{\mathrm{tr}}(t)g-g\|_2
++\|g-f\|_2\\
+&\leqslant
+2\varepsilon+\|\mathcal U_{\mathrm{tr}}(t)g-g\|_2.
+\end{aligned}
+\]
+令 \(\displaystyle t\to0\)，再令 \(\displaystyle\varepsilon\downarrow0\)，得到全部 \(\displaystyle f\) 的零点强连续性.
+\hfill\(\square\)
+\end{FAProof}
+
+定义
+\[
+\mathcal D_{\mathrm{AC}}
+=
+\left\{
+ f\in L^2(\mathbb R):
+ f\text{ 有一个局部绝对连续代表元 }F,
+\;F'\in L^2(\mathbb R)
+\right\}.
+\]
+本章不把该空间命名为 \(\displaystyle H^1(\mathbb R)\)，因为 Sobolev 正式理论直到 II-13 才建立.
+
+\begin{FAProposition}[B][局部绝对连续域包含于平移生成元域]{ii10:translation-ac-to-generator}
+若 \(\displaystyle f\in\mathcal D_{\mathrm{AC}}\)，则 \(\displaystyle f\in D(\mathcal G_{\mathrm{tr}})\)，且 \(\displaystyle \mathcal G_{\mathrm{tr}}f=-F'.\)
+\end{FAProposition}
+
+\begin{FAProof}
+取 \(\displaystyle f\) 的局部绝对连续代表元 \(\displaystyle F\). 对 \(\displaystyle h>0\)，对几乎处处 \(\displaystyle s\)，绝对连续函数的微积分基本定理给
+\[
+F(s-h)-F(s)
+=
+-\int_0^hF'(s-r)\,\mathrm{d}r.
+\]
+因此作为 \(\displaystyle L^2(\mathbb R)\) 中的 Bochner 积分恒等式，
+\[
+\frac{\mathcal U_{\mathrm{tr}}(h)f-f}{h}
+=
+-\frac1h\int_0^h\mathcal U_{\mathrm{tr}}(r)F'\,\mathrm{d}r.
+\]
+由\autoref{ii10:translation-c0}，\(\displaystyle r\mapsto\mathcal U_{\mathrm{tr}}(r)F'\) 在零点强连续. 因而
+\[
+\left\|
+\frac1h\int_0^h\mathcal U_{\mathrm{tr}}(r)F'\,\mathrm{d}r-F'
+\right\|_2
+\leqslant
+\frac1h\int_0^h
+\|\mathcal U_{\mathrm{tr}}(r)F'-F'\|_2
+\,\mathrm{d}r
+\longrightarrow0.
+\]
+故右差商趋于 \(\displaystyle-F'\)，即所述结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][平移生成元域反向包含]{ii10:translation-generator-reverse}
+若 \(\displaystyle f\in D(\mathcal G_{\mathrm{tr}})\)，则 \(\displaystyle f\in\mathcal D_{\mathrm{AC}}\). 更具体地，对任意固定 \(\displaystyle\lambda>0\)，存在 \(\displaystyle g\in L^2(\mathbb R)\) 使 \(\displaystyle f=R(\lambda,\mathcal G_{\mathrm{tr}})g,\)
+并且 \(\displaystyle f\) 有局部绝对连续代表元 \(\displaystyle u\) 满足 \(\displaystyle u'(s)=g(s)-\lambda u(s) \;\text{几乎处处},\)
+从而 \(\displaystyle \mathcal G_{\mathrm{tr}}f = \lambda f-g = -u'.\)
+\end{FAProposition}
+
+\begin{FAProof}
+由 II-08 的\autoref{fa:SG-A02}应用于收缩半群 \(\displaystyle\mathcal U_{\mathrm{tr}}|_{[0,\infty)}\)，每个 \(\displaystyle\lambda>0\) 都属于 \(\displaystyle\rho(\mathcal G_{\mathrm{tr}})\)，且 \(\displaystyle D(\mathcal G_{\mathrm{tr}}) = \operatorname{Ran}R(\lambda,\mathcal G_{\mathrm{tr}}).\)
+故存在 \(\displaystyle g\in L^2(\mathbb R)\) 使 \(\displaystyle f=R(\lambda,\mathcal G_{\mathrm{tr}})g\). 定义点态函数
+\[
+u(s)
+=
+\int_0^\infty\mathrm{e}^{-\lambda t}g(s-t)\,\mathrm{d}t
+=
+\int_{-\infty}^s
+\mathrm{e}^{-\lambda(s-r)}g(r)\,\mathrm{d}r.
+\]
+先证该积分合法并给出 \(\displaystyle L^2\) 元. 对每个 \(\displaystyle s\in\mathbb R\)，Cauchy--Schwarz 给
+\[
+\int_{-\infty}^s
+\mathrm{e}^{-\lambda(s-r)}|g(r)|\,\mathrm{d}r
+\leqslant
+\left(
+\int_{-\infty}^s
+\mathrm{e}^{-2\lambda(s-r)}\,\mathrm{d}r
+\right)^{\frac{1}{2}}
+\|g\|_2
+=
+\frac{\|g\|_2}{\sqrt{2\lambda}}.
+\]
+又由 Minkowski 积分不等式与平移等距性，
+\[
+\|u\|_2
+\leqslant
+\int_0^\infty
+\mathrm{e}^{-\lambda t}
+\|g(\cdot-t)\|_2
+\,\mathrm{d}t
+=
+\frac1\lambda\|g\|_2.
+\]
+所以 \(\displaystyle u\in L^2(\mathbb R)\).
+
+固定紧区间 \(\displaystyle[a,b]\). 令
+\[
+C_a=\int_{-\infty}^a\mathrm{e}^{\lambda r}g(r)\,\mathrm{d}r;
+\]
+该积分由 Cauchy--Schwarz 收敛. 对 \(\displaystyle s\in[a,b]\)，
+\[
+u(s)
+=
+\mathrm{e}^{-\lambda s}
+\left(
+C_a+\int_a^s\mathrm{e}^{\lambda r}g(r)\,\mathrm{d}r
+\right).
+\]
+因 \(\displaystyle g\in L^2(a,b)\subseteq L^1(a,b)\)，括号内函数绝对连续，故 \(\displaystyle u\) 在 \(\displaystyle[a,b]\) 上绝对连续，并且 \(\displaystyle u'(s)=g(s)-\lambda u(s) \;\text{几乎处处于 }[a,b].\)
+紧区间任意，故 \(\displaystyle u\) 局部绝对连续；又 \(\displaystyle u,g\in L^2\)，所以 \(\displaystyle u'=g-\lambda u\in L^2\). 因而 \(\displaystyle u\in\mathcal D_{\mathrm{AC}}\). 由\autoref{ii10:translation-ac-to-generator}，\(\displaystyle u\in D(\mathcal G_{\mathrm{tr}})\) 且 \(\displaystyle\mathcal G_{\mathrm{tr}}u=-u'\). 因此 \(\displaystyle (\lambda\mathcal I-\mathcal G_{\mathrm{tr}})u = \lambda u+u' = g.\)
+由于 \(\displaystyle\lambda\in\rho(\mathcal G_{\mathrm{tr}})\)，解唯一，故 \(\displaystyle u=R(\lambda,\mathcal G_{\mathrm{tr}})g=f.\)
+这同时证明了预解的点态代表公式. 最后 \(\displaystyle \mathcal G_{\mathrm{tr}}f = \lambda f-g = -u'.\)
+全程未使用分布、弱导数或 Sobolev 理论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][平移生成元的精确定义域与动量 Stone 算子]{ii10:translation-generator-exact}
+平移 \(\displaystyle C_0\) 酉群的生成元满足 \(\displaystyle D(\mathcal G_{\mathrm{tr}})=\mathcal D_{\mathrm{AC}},\) \(\displaystyle \mathcal G_{\mathrm{tr}}f=-f'.\)
+对应的 Stone 自伴算子为
+\[
+\mathcal P
+=
+\mathrm{i}\mathcal G_{\mathrm{tr}}
+=
+-\mathrm{i}\frac{\mathrm{d}}{\mathrm{d}s},
+\;
+D(\mathcal P)=\mathcal D_{\mathrm{AC}},
+\]
+且 \(\displaystyle \mathcal U_{\mathrm{tr}}(t) = \mathrm{e}^{-\mathrm{i}t\mathcal P}.\)
+\end{FATheorem}
+
+\begin{FAProof}
+\autoref{ii10:translation-ac-to-generator}与\autoref{ii10:translation-generator-reverse}给出两个定义域包含以及同一作用公式，因此 \(\displaystyle D(\mathcal G_{\mathrm{tr}})=\mathcal D_{\mathrm{AC}}, \; \mathcal G_{\mathrm{tr}}=-\frac{\mathrm{d}}{\mathrm{d}s}.\)
+由\autoref{fa:STONE-A01}，\(\displaystyle\mathcal P=\mathrm{i}\mathcal G_{\mathrm{tr}}\) 自伴，故 \(\displaystyle \mathcal P = -\mathrm{i}\frac{\mathrm{d}}{\mathrm{d}s}\)
+具有同一定义域，并且 \(\displaystyle\mathcal U_{\mathrm{tr}}(t)=\mathrm{e}^{-\mathrm{i}t\mathcal P}\). 符号检查为
+\[
+-\mathrm{i}\mathcal P
+=
+-\mathrm{i}
+\left(-\mathrm{i}\frac{\mathrm{d}}{\mathrm{d}s}\right)
+=
+-\frac{\mathrm{d}}{\mathrm{d}s}
+=
+\mathcal G_{\mathrm{tr}},
+\]
+与平移方向 \(\displaystyle f(s-t)\) 完全一致.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Schrödinger 轨道接口}
+
+\begin{FAProposition}[B][自伴算子的 Schrödinger 轨道]{ii10:schrodinger-orbit}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 自伴，\(\displaystyle\psi_0\in D(\mathcal A)\)，并定义 \(\displaystyle \psi(t)=\mathrm{e}^{-\mathrm{i}t\mathcal A}\psi_0.\)
+则对全部 \(\displaystyle t\in\mathbb R\)，\(\displaystyle\psi(t)\in D(\mathcal A)\)，且 \(\displaystyle \psi'(t)=-\mathrm{i}\mathcal A\psi(t),\)
+即 \(\displaystyle \mathrm{i}\psi'(t)=\mathcal A\psi(t), \; \psi(0)=\psi_0.\)
+此外， \(\displaystyle \|\psi(t)\|=\|\psi_0\|,\) \(\displaystyle \|\mathcal A\psi(t)\|=\|\mathcal A\psi_0\|,\)
+以及 \(\displaystyle \langle\mathcal A\psi(t),\psi(t)\rangle = \langle\mathcal A\psi_0,\psi_0\rangle.\)
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{fa:STONE-C01}与\autoref{ii10:selfadjoint-generator-exact}，\(\displaystyle\mathcal U_{\mathcal A}(t)=\mathrm{e}^{-\mathrm{i}t\mathcal A}\) 的生成元为 \(\displaystyle-\mathrm{i}\mathcal A\)，且定义域恰为 \(\displaystyle D(\mathcal A)\). 因而\autoref{ii10:two-sided-differentiability}应用于该群给出 \(\displaystyle\psi(t)\in D(\mathcal A)\) 以及 \(\displaystyle \psi'(t)=-\mathrm{i}\mathcal A\psi(t).\)
+初值在 \(\displaystyle t=0\) 直接成立.
+
+酉性立即给 \(\displaystyle\|\psi(t)\|=\|\psi_0\|\). 再由 II-07 的有界函数与恒等函数的乘法公式，\(\displaystyle u_t(\lambda)=\mathrm{e}^{-\mathrm{i}t\lambda}\) 有界，且对全部 \(\displaystyle x\in D(\mathcal A)\)， \(\displaystyle \mathcal A\mathcal U_{\mathcal A}(t)x = \mathcal U_{\mathcal A}(t)\mathcal Ax.\)
+因此 \(\displaystyle \|\mathcal A\psi(t)\| = \|\mathcal U_{\mathcal A}(t)\mathcal A\psi_0\| = \|\mathcal A\psi_0\|.\)
+同理，利用酉算子保持内积，
+\[
+\langle\mathcal A\psi(t),\psi(t)\rangle
+=
+\langle\mathcal U_{\mathcal A}(t)\mathcal A\psi_0,\mathcal U_{\mathcal A}(t)\psi_0\rangle
+=
+\langle\mathcal A\psi_0,\psi_0\rangle.
+\]
+这些结论只是 Stone 轨道的直接推论，不建立一般抽象 Cauchy 问题理论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAApplication}[Dirichlet Schrödinger 模型]
+复用 II-06、II-07 的 Dirichlet Laplace 算子 \(\displaystyle \mathcal L_D:D(\mathcal L_D)\subseteq L^2(0,1)\to L^2(0,1),\)
+它自伴且非负. 定义 \(\displaystyle \mathcal U_D(t)=\mathrm{e}^{-\mathrm{i}t\mathcal L_D}.\)
+由\autoref{fa:STONE-A01}，\(\displaystyle(\mathcal U_D(t))_{t\in\mathbb R}\) 是 \(\displaystyle C_0\) 酉群. 若 \(\displaystyle\psi_0\in D(\mathcal L_D)\)，则 \(\displaystyle \psi(t)=\mathcal U_D(t)\psi_0\)
+满足 \(\displaystyle \mathrm{i}\psi'(t)=\mathcal L_D\psi(t), \; \psi(0)=\psi_0.\)
+本节只使用函数演算，不计算完整特征函数展开.
+\end{FAApplication}
+
+\begin{FAWarning}[II-11、量子形式主义与 Trotter的边界]
+本章只建立酉演化、Schrödinger 轨道方程、范数守恒、\(\displaystyle\mathcal A\)-能量范数与期望守恒，以及平移群的动量算子接口. 一般经典抽象 Cauchy 问题、温和解、Duhamel 公式、常数变易公式与有界扰动定理全部留到 II-11. 本章也不建立可观测量形式主义、正则对易关系、不确定性原理、Heisenberg 绘景、含时 Hamilton 算子、Dyson 级数或量子测量理论. Trotter 乘积属于本章 D 级扩展；这里只预告它将在需要比较由不同生成元产生的演化时提供乘积逼近接口，不陈述或证明 Lie--Trotter 公式，也不讨论算子和的自伴性判据.
+\end{FAWarning}
+
+\subsection*{本章习题}\label{sec:ii10-exercises}
+
+\begin{FAExercise}[\(\displaystyle C_0\) 酉群的逆与伴随]{ex:ii10-01}
+从群律与酉性直接证明 \(\displaystyle\mathcal U(-t)=\mathcal U(t)^{-1}=\mathcal U(t)^*\)，再证明零点强连续等价于全部实时间的逐轨道强连续.
+\end{FAExercise}
+
+\begin{FAExercise}[反向生成元与定义域等式]{ex:ii10-02}
+完整证明\autoref{ii10:backward-generator}的两个定义域包含，不得只证明 \(\displaystyle D(\mathcal G)\subseteq D(\operatorname{Gen}\mathcal V)\).
+\end{FAExercise}
+
+\begin{FAExercise}[双侧导数与生成元交换]{ex:ii10-03}
+从正向与反向生成元出发证明零点差商的双侧极限，再对任意 \(\displaystyle t\in\mathbb R\) 证明 \(\displaystyle\mathcal U(t)D(\mathcal G)\subseteq D(\mathcal G)\) 与 \(\displaystyle\mathcal G\mathcal U(t)=\mathcal U(t)\mathcal G\) 于 \(\displaystyle D(\mathcal G)\).
+\end{FAExercise}
+
+\begin{FAExercise}[自伴谱演算产生 \(\displaystyle C_0\) 酉群的酉性]{ex:ii10-04}
+对自伴 \(\displaystyle\mathcal A\)，只用 II-07 的有界可测函数演算证明 \(\displaystyle\mathcal U_{\mathcal A}(t)^*=\mathcal U_{\mathcal A}(-t)\)、群律与酉性.
+\end{FAExercise}
+
+\begin{FAExercise}[自伴谱演算产生 \(\displaystyle C_0\) 酉群的强连续性]{ex:ii10-05}
+对固定 \(\displaystyle x\in H\)，从标量谱测度写出 \(\displaystyle\|\mathcal U_{\mathcal A}(t)x-\mathcal U_{\mathcal A}(s)x\|^2\) 的积分公式，并用标量控制收敛定理证明强连续性.
+\end{FAExercise}
+
+\begin{FAExercise}[谱差商估计]{ex:ii10-06}
+证明 \(\displaystyle|\mathrm{e}^{-\mathrm{i}\theta}-1|\leqslant|\theta|\)，再证明 \(\displaystyle|q_h(\lambda)|\leqslant|\lambda|\) 与 \(\displaystyle q_h(\lambda)\to-\mathrm{i}\lambda\).
+\end{FAExercise}
+
+\begin{FAExercise}[自伴域推出导数]{ex:ii10-07}
+对 \(\displaystyle x\in D(\mathcal A)\)，把差商误差范数平方写成谱积分，并以 \(\displaystyle4\lambda^2\) 为控制函数重建\autoref{ii10:selfadjoint-domain-to-derivative}.
+\end{FAExercise}
+
+\begin{FAExercise}[Fatou 反向定义域判据]{ex:ii10-08}
+假设右差商在 \(\displaystyle H\) 中收敛. 选取任意 \(\displaystyle h_n\downarrow0\)，用 Fatou 引理推出 \(\displaystyle\int\lambda^2\,\mathrm{d}\mu_x^{\mathcal A}<\infty\)，并由 II-07 的定义域公式得到 \(\displaystyle x\in D(\mathcal A)\).
+\end{FAExercise}
+
+\begin{FAExercise}[自伴算子的精确生成元]{ex:ii10-09}
+合并习题\autoref{ex:ii10-07}与\autoref{ex:ii10-08}，证明 \(\displaystyle D(\mathcal G_{\mathcal A})=D(\mathcal A)\) 以及 \(\displaystyle\mathcal G_{\mathcal A}=-\mathrm{i}\mathcal A\) 作为算子等式成立.
+\end{FAExercise}
+
+\begin{FAExercise}[酉生成元的斜对称性]{ex:ii10-10}
+在第一变量线性的约定下，对 \(\displaystyle\langle\mathcal U(t)x,\mathcal U(t)y\rangle\) 在零点求导，核对第二变量导数项的符号，并推出 \(\displaystyle\mathcal G\subseteq-\mathcal G^*\).
+\end{FAExercise}
+
+\begin{FAExercise}[正负值域满射]{ex:ii10-11}
+分别把 II-08 的\autoref{fa:SG-A02}应用于正向群与反向群，证明 \(\displaystyle\operatorname{Ran}(\mathcal I-\mathcal G)=H\) 与 \(\displaystyle\operatorname{Ran}(\mathcal I+\mathcal G)=H\).
+\end{FAExercise}
+
+\begin{FAExercise}[斜自伴定义域证明]{ex:ii10-12}
+从 \(\displaystyle\mathcal G\subseteq-\mathcal G^*\) 与两个满射值域出发，逐步重建\autoref{fa:STONE-B01}中 \(\displaystyle D(\mathcal G^*)\subseteq D(\mathcal G)\) 的证明.
+\end{FAExercise}
+
+\begin{FAExercise}[标量伴随规则与 \(\displaystyle\mathcal A=\mathrm{i}\mathcal G\)]{ex:ii10-13}
+对非零 \(\displaystyle c\in\mathbb C\) 证明 \(\displaystyle(c\mathcal G)^*=\overline c\,\mathcal G^*\)，包括定义域等式；再由 \(\displaystyle\mathcal G^*=-\mathcal G\) 证明 \(\displaystyle\mathrm{i}\mathcal G\) 自伴.
+\end{FAExercise}
+
+\begin{FAExercise}[同生成元半群唯一性]{ex:ii10-14}
+对 \(\displaystyle F(s)=\mathcal T(t-s)\mathcal S(s)x\) 完整计算导数，说明使用了哪些定义域不变性与生成元交换结论，再由 \(\displaystyle D(\mathcal G)\) 稠密推广到全部 \(\displaystyle H\).
+\end{FAExercise}
+
+\begin{FAExercise}[Stone 定理两方向与唯一性]{ex:ii10-15}
+画出 \(\displaystyle\mathrm{STONE\!-C01}\to\mathrm{STONE\!-A01}\) 与 \(\displaystyle\mathrm{STONE\!-B01}\to\mathrm{STONE\!-A01}\) 的依赖链，分别重建正向、反向与唯一性证明，并指出为什么定义域等式不能从作用公式中省略.
+\end{FAExercise}
+
+\begin{FAExercise}[对称但非自伴的边界]{ex:ii10-16}
+复用 II-06 的 \(\displaystyle\mathcal A_0\)，列出“闭、稠密定义、对称、非自伴、非本质自伴”五项已证事实，并解释为什么这些事实只否定把“仅对称”直接代入 Stone 定理，而不等价于“不存在任何自伴延拓”.
+\end{FAExercise}
+
+\begin{FAExercise}[强连续但非范数连续]{ex:ii10-17}
+对 \(\displaystyle\mathcal Mx=(nx_n)\) 的 Stone 群取 \(\displaystyle t_k=\frac{\pi}{k}\)，证明 \(\displaystyle\|\mathcal U(t_k)-\mathcal I\|=2\) 而 \(\displaystyle t_k\to0\).
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^2\) 平移群的 \(\displaystyle C_0\) 性]{ex:ii10-18}
+先证明 \(\displaystyle C_c(\mathbb R)\) 在 \(\displaystyle L^2(\mathbb R)\) 中稠密，构造端点外线性渐缩段 并显式控制新增 \(\displaystyle L^2\) 误差；再用统一紧支撑与一致连续性证明平移强连续，最后由酉性推广到全部 \(\displaystyle L^2\).
+\end{FAExercise}
+
+\begin{FAExercise}[平移生成元的精确定义域]{ex:ii10-19}
+分别重建 \(\displaystyle\mathcal D_{\mathrm{AC}}\subseteq D(\mathcal G_{\mathrm{tr}})\) 的平均平移证明与反向的 Laplace 预解证明；反向不得使用分布、弱导数或 Sobolev 定理.
+\end{FAExercise}
+
+\begin{FAExercise}[动量算子的符号]{ex:ii10-20}
+从 \(\displaystyle(\mathcal U_{\mathrm{tr}}(t)f)(s)=f(s-t)\) 直接核对 \(\displaystyle\mathcal G_{\mathrm{tr}}=-\frac{\mathrm{d}}{\mathrm{d}s}\)，再由 \(\displaystyle\mathcal P=\mathrm{i}\mathcal G_{\mathrm{tr}}\) 推出 \(\displaystyle\mathcal P=-\mathrm{i}\,\frac{\mathrm{d}}{\mathrm{d}s}\) 与 \(\displaystyle\mathcal U_{\mathrm{tr}}(t)=\mathrm{e}^{-\mathrm{i}t\mathcal P}\).
+\end{FAExercise}
+
+\begin{FAExercise}[Schrödinger 轨道与守恒量]{ex:ii10-21}
+对自伴 \(\displaystyle\mathcal A\) 与 \(\displaystyle\psi_0\in D(\mathcal A)\)，证明 \(\displaystyle\mathrm{i}\psi'(t)=\mathcal A\psi(t)\)，再分别证明范数、\(\displaystyle\|\mathcal A\psi(t)\|\) 与期望 \(\displaystyle\langle\mathcal A\psi(t),\psi(t)\rangle\) 守恒.
+\end{FAExercise}
+
+\begin{FAExercise}[II-11 与 Trotter 边界]{ex:ii10-22}
+说明本章为何已经可以处理自伴算子的 Schrödinger 轨道，却仍未建立一般抽象 Cauchy 问题、温和解、Duhamel 公式、常数变易公式或有界扰动定理；再说明 Trotter 乘积只能作为 D 级后续预告，不能在本章习题中调用完整 Lie--Trotter 定理.
+\end{FAExercise}

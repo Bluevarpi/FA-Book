@@ -1,0 +1,732 @@
+\chapter{生成定理：Hille--Yosida 与 Lumer--Phillips}\label{chap:II-09}
+\FAChapterOpening
+{建立 Yosida 逼近、Hille--Yosida 与 Lumer--Phillips 两条生成判据；证明一般指数增长情形所需的全部预解幂估计、收缩与拟收缩特例、耗散与极大耗散判据，并比较这些条件在平移与热半群模型中的作用.}
+{II-08 的 \(\displaystyle C_0\) 半群、生成元与 Laplace 预解；II-04 的 Bochner 积分与支配收敛；II-05 的闭算子、定义域与无界预解接口.}
+{\begin{center}
+\begin{tikzpicture}[x=1.05cm,y=1.0cm]
+\node[fa/node] (sga02) at (0,1.5) {生成元闭稠密/预解};
+\node[fa/node] (hyb01) at (3.2,1.5) {Yosida逼近};
+\node[fa/node] (hya01) at (6.4,1.5) {Hille--Yosida生成定理};
+\node[fa/node] (unba01) at (0,-1.5) {无界算子基础};
+\node[fa/node] (lpb01) at (3.2,-1.5) {极大耗散传播};
+\node[fa/node] (lpa01) at (6.4,-1.5) {Lumer--Phillips生成定理};
+\node[fa/node] (sgc02) at (9.7,0) {生成准则比较};
+\draw[fa/arrow] (sga02) -- (hyb01);
+\draw[fa/arrow] (hyb01) -- (hya01);
+\draw[fa/arrow] (unba01) -- (lpb01);
+\draw[fa/arrow] (hya01) -- (lpa01);
+\draw[fa/arrow] (lpb01) -- (lpa01);
+\draw[fa/arrow] (lpa01) -- (sgc02);
+\draw[fa/arrow] (hya01) -- (sgc02);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle X\) 为复 Banach 空间. 每个可能无界算子均显式写为 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X.\)
+II-08 的\autoref{fa:SG-C01}说明任意 \(\displaystyle C_0\) 半群都具有某个指数增长界；本章在 Hille--Yosida 判据中固定给定的 \(\displaystyle M\geqslant1\) 与 \(\displaystyle\omega\in\mathbb R\). II-06 的闭型结果只在最后的热半群模型中作辅助调用，不进入 HY 或 LP 的核心证明链. Stone 定理、抽象 Cauchy 问题、温和解、Duhamel 公式、解析半群与非线性半群均不在本章正式理论中.
+
+\section{Yosida 逼近}\label{sec:ii09-yosida}
+\index{Yosida approximation@Yosida 逼近}\index{generator shift@生成元平移}\index{resolvent identity@预解恒等式}
+
+\begin{FAProposition}[B][生成元平移与预解平移]{ii09:generator-shift}
+设 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X\)
+生成 \(\displaystyle C_0\) 半群 \(\displaystyle(\mathcal T(t))_{t\geqslant0}\)，且 \(\displaystyle\omega\in\mathbb R\). 定义 \(\displaystyle \mathcal B=\mathcal A-\omega\mathcal I, \; D(\mathcal B)=D(\mathcal A),\)
+以及 \(\displaystyle \mathcal S(t)=\mathrm{e}^{-\omega t}\mathcal T(t).\)
+则 \(\displaystyle(\mathcal S(t))_{t\geqslant0}\) 为 \(\displaystyle C_0\) 半群，生成元恰为 \(\displaystyle\mathcal B\). 反之，若 \(\displaystyle\mathcal B\) 生成 \(\displaystyle\mathcal S(t)\)，则 \(\displaystyle\mathcal A=\mathcal B+\omega\mathcal I\) 生成 \(\displaystyle\mathcal T(t)=\mathrm{e}^{\omega t}\mathcal S(t)\). 并且在相应预解域中 \(\displaystyle R(\mu,\mathcal B)=R(\mu+\omega,\mathcal A).\)
+\end{FAProposition}
+
+\begin{FAProof}
+标量因子连续且满足乘法律，因此 \(\displaystyle\mathcal S(0)=\mathcal I\)、\(\displaystyle\mathcal S(t+s)=\mathcal S(t)\mathcal S(s)\)，并且对每个 \(\displaystyle x\in X\)，\(\displaystyle\mathcal S(t)x\to x\) 当 \(\displaystyle t\downarrow0\). 故 \(\displaystyle\mathcal S\) 为 \(\displaystyle C_0\) 半群.
+
+若 \(\displaystyle x\in D(\mathcal A)\)，则
+\[
+\frac{\mathcal S(h)x-x}{h}
+=
+\mathrm{e}^{-\omega h}
+\frac{\mathcal T(h)x-x}{h}
++
+\frac{\mathrm{e}^{-\omega h}-1}{h}x
+\longrightarrow
+\mathcal Ax-\omega x.
+\]
+故 \(\displaystyle D(\mathcal A)\subseteq D(\operatorname{Gen}(\mathcal S))\)，且生成元在该定义域上等于 \(\displaystyle\mathcal A-\omega\mathcal I\). 反之，若 \(\displaystyle x\in D(\operatorname{Gen}(\mathcal S))\)，则 \(\displaystyle \frac{\mathcal T(h)x-x}{h} = \mathrm{e}^{\omega h} \frac{\mathcal S(h)x-x}{h} + \frac{\mathrm{e}^{\omega h}-1}{h}x,\)
+故右端有极限，且极限等于 \(\displaystyle\operatorname{Gen}(\mathcal S)x+\omega x\). 因而 \(\displaystyle D(\operatorname{Gen}(\mathcal S))\subseteq D(\mathcal A)\). 两个包含给出 \(\displaystyle D(\operatorname{Gen}(\mathcal S))=D(\mathcal A)=D(\mathcal B),\)
+并得到 \(\displaystyle\operatorname{Gen}(\mathcal S)=\mathcal B\). 反向结论用同一差商计算把 \(\displaystyle\omega\) 替换为 \(\displaystyle-\omega\) 即得.
+
+最后 \(\displaystyle \mu\mathcal I-\mathcal B = (\mu+\omega)\mathcal I-\mathcal A\)
+作为从共同定义域 \(\displaystyle D(\mathcal A)=D(\mathcal B)\) 到 \(\displaystyle X\) 的算子完全相同. 因而一个算子双射且逆有界当且仅当另一个如此，并且逆算子相同，即 \(\displaystyle R(\mu,\mathcal B)=R(\mu+\omega,\mathcal A).\)
+这同时证明生成元平移与预解平移恒等式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][预解交换与 Yosida 逼近代数]{ii09:yosida-algebra}
+设 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X\)
+为闭算子，且 \(\displaystyle\lambda,\mu\in\rho(\mathcal A)\). 则 \(\displaystyle R(\lambda,\mathcal A)-R(\mu,\mathcal A) = (\mu-\lambda)R(\lambda,\mathcal A)R(\mu,\mathcal A),\)
+并且 \(\displaystyle R(\lambda,\mathcal A)R(\mu,\mathcal A) = R(\mu,\mathcal A)R(\lambda,\mathcal A).\)
+对任意 \(\displaystyle\lambda\in\rho(\mathcal A)\) 定义 \(\displaystyle \mathcal J_\lambda = \lambda R(\lambda,\mathcal A),\)
+\[
+\mathcal A_\lambda
+=
+\lambda\mathcal A R(\lambda,\mathcal A)
+=
+\lambda(\mathcal J_\lambda-\mathcal I)
+=
+\lambda^2R(\lambda,\mathcal A)-\lambda\mathcal I.
+\]
+则 \(\displaystyle\mathcal A_\lambda\in\mathcal B(X)\)，且不同参数的 \(\displaystyle\mathcal J_\lambda\) 与 \(\displaystyle\mathcal A_\lambda\) 两两交换.
+\end{FAProposition}
+
+\begin{FAProof}
+由 \(\displaystyle (\lambda\mathcal I-\mathcal A)R(\lambda,\mathcal A)=\mathcal I, \; (\mu\mathcal I-\mathcal A)R(\mu,\mathcal A)=\mathcal I,\)
+对任意 \(\displaystyle x\in X\) 令 \(\displaystyle y=R(\mu,\mathcal A)x\in D(\mathcal A)\). 有 \(\displaystyle (\lambda\mathcal I-\mathcal A)y = x+(\lambda-\mu)y.\)
+左乘 \(\displaystyle R(\lambda,\mathcal A)\) 得 \(\displaystyle R(\mu,\mathcal A)x = R(\lambda,\mathcal A)x +(\lambda-\mu)R(\lambda,\mathcal A)R(\mu,\mathcal A)x,\)
+即所述预解恒等式. 交换 \(\displaystyle\lambda\) 与 \(\displaystyle\mu\) 后比较两式；若 \(\displaystyle\lambda\neq\mu\)，立即得到两个预解乘积相等；若 \(\displaystyle\lambda=\mu\)，两边同为 \(\displaystyle\mathcal R_\lambda^2\)，结论仍成立.
+
+由 \(\displaystyle \mathcal A R(\lambda,\mathcal A) = \lambda R(\lambda,\mathcal A)-\mathcal I\)
+可知 \(\displaystyle\mathcal A R(\lambda,\mathcal A)\in\mathcal B(X)\)，故 \(\displaystyle\mathcal A_\lambda\in\mathcal B(X)\). 又 \(\displaystyle\mathcal J_\lambda\) 与 \(\displaystyle\mathcal A_\lambda\) 都是 \(\displaystyle R(\lambda,\mathcal A)\) 与 \(\displaystyle\mathcal I\) 的线性组合，因此预解交换性直接推出所有不同参数的 Yosida 预解算子与逼近算子两两交换.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][Yosida 逼近与一致有界逼近半群]{fa:HY-B01}
+设 \(\displaystyle \mathcal B:D(\mathcal B)\subseteq X\to X\)
+闭且稠密定义. 假设存在 \(\displaystyle M\geqslant1\) 使对全部 \(\displaystyle\mu>0\) 与 \(\displaystyle n\in\mathbb N\)， \(\displaystyle \mu\in\rho(\mathcal B), \; \|R(\mu,\mathcal B)^n\| \leqslant \frac{M}{\mu^n}.\)
+定义 \(\displaystyle \mathcal J_\mu=\mu R(\mu,\mathcal B), \; \mathcal B_\mu=\mu(\mathcal J_\mu-\mathcal I).\)
+则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 对全部 \(\displaystyle n\in\mathbb N\)，\(\displaystyle\|\mathcal J_\mu^n\|\leqslant M\).
+\item 对全部 \(\displaystyle x\in X\)，\(\displaystyle\mathcal J_\mu x\to x\) 当 \(\displaystyle\mu\to\infty\).
+\item 对全部 \(\displaystyle x\in D(\mathcal B)\)， \(\displaystyle \mathcal B_\mu x = \mathcal J_\mu\mathcal Bx \longrightarrow \mathcal Bx.\)
+\item 有界算子 \(\displaystyle\mathcal B_\mu\) 生成一致连续半群
+\[
+\mathcal S_\mu(t)
+=
+\mathrm{e}^{t\mathcal B_\mu}
+=
+\mathrm{e}^{-\mu t}
+\sum_{n=0}^{\infty}
+\frac{(\mu t)^n}{n!}\mathcal J_\mu^n,
+\]
+且
+\[
+\|\mathcal S_\mu(t)\|
+\leqslant
+\mathrm{e}^{-\mu t}
+\left(1+M(\mathrm{e}^{\mu t}-1)\right)
+\leqslant M
+\;
+\forall\,t\geqslant0.
+\]
+\item 对任意 \(\displaystyle T>0\) 与 \(\displaystyle x\in X\)，族 \(\displaystyle\mathcal S_\mu(\cdot)x\) 在 \(\displaystyle[0,T]\) 上关于上确界范数为 Cauchy.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+由假设直接有 \(\displaystyle \|\mathcal J_\mu^n\| = \mu^n\|R(\mu,\mathcal B)^n\| \leqslant M,\)
+故（i）成立.
+
+若 \(\displaystyle x\in D(\mathcal B)\)，则预解左逆给 \(\displaystyle R(\mu,\mathcal B)(\mu\mathcal I-\mathcal B)x=x,\)
+从而 \(\displaystyle \mathcal J_\mu x-x = R(\mu,\mathcal B)\mathcal Bx.\)
+因此 \(\displaystyle \|\mathcal J_\mu x-x\| \leqslant \frac{M}{\mu}\|\mathcal Bx\| \longrightarrow0.\)
+现取任意 \(\displaystyle x\in X\). 因 \(\displaystyle D(\mathcal B)\) 稠密，给定 \(\displaystyle\varepsilon>0\)，可取 \(\displaystyle y\in D(\mathcal B)\) 使 \(\displaystyle\|x-y\|<\frac{\varepsilon}{2M+2}\). 由 \(\displaystyle\|\mathcal J_\mu\|\leqslant M\)， \(\displaystyle \|\mathcal J_\mu x-x\| \leqslant M\|x-y\|+\|\mathcal J_\mu y-y\|+\|y-x\|.\)
+令 \(\displaystyle\mu\to\infty\)，右端上极限小于 \(\displaystyle\varepsilon\). 故（ii）成立.
+
+对 \(\displaystyle x\in D(\mathcal B)\)，预解与原算子在定义域上满足 \(\displaystyle \mathcal B R(\mu,\mathcal B)(\mu\mathcal I-\mathcal B)x = \mathcal Bx.\)
+等价地， \(\displaystyle \mathcal B_\mu x = \mu\mathcal B R(\mu,\mathcal B)x = \mu R(\mu,\mathcal B)\mathcal Bx = \mathcal J_\mu\mathcal Bx.\)
+这里第二个等号也可由 \(\displaystyle\mathcal B R(\mu,\mathcal B)=\mu R(\mu,\mathcal B)-\mathcal I\) 与预解左逆直接核验. 由（ii）应用于向量 \(\displaystyle\mathcal Bx\in X\)，得到 \(\displaystyle\mathcal B_\mu x\to\mathcal Bx\)，故（iii）成立.
+
+因为 \(\displaystyle\mathcal B_\mu=\mu\mathcal J_\mu-\mu\mathcal I\) 且两个有界算子交换，算子指数级数给
+\[
+\mathrm{e}^{t\mathcal B_\mu}
+=
+\mathrm{e}^{-\mu t}\mathrm{e}^{\mu t\mathcal J_\mu}
+=
+\mathrm{e}^{-\mu t}
+\sum_{n=0}^{\infty}
+\frac{(\mu t)^n}{n!}\mathcal J_\mu^n.
+\]
+由（i）和 \(\displaystyle\|\mathcal I\|=1\)，
+\[
+\|\mathcal S_\mu(t)\|
+\leqslant
+\mathrm{e}^{-\mu t}
+\left(
+1+M\sum_{n=1}^{\infty}\frac{(\mu t)^n}{n!}
+\right)
+=
+\mathrm{e}^{-\mu t}\left(1+M(\mathrm{e}^{\mu t}-1)\right).
+\]
+最后一个量等于 \(\displaystyle M-(M-1)\mathrm{e}^{-\mu t}\leqslant M\)，故（iv）成立.
+
+由\autoref{ii09:yosida-algebra}，\(\displaystyle\mathcal B_\mu\mathcal B_\nu=\mathcal B_\nu\mathcal B_\mu\)，故两个指数半群也交换. 固定 \(\displaystyle x\in D(\mathcal B)\) 与 \(\displaystyle t\geqslant0\)，令 \(\displaystyle F(s)=\mathcal S_\mu(t-s)\mathcal S_\nu(s)x \; (0\leqslant s\leqslant t).\)
+有界生成元的指数级数可逐项求导，因此 \(\displaystyle F'(s) = \mathcal S_\mu(t-s)\mathcal S_\nu(s) (\mathcal B_\nu-\mathcal B_\mu)x.\)
+对连续 Banach 值函数应用 II-04 的积分基本公式，得到
+\[
+\mathcal S_\mu(t)x-\mathcal S_\nu(t)x
+=
+\int_0^t
+\mathcal S_\mu(t-s)\mathcal S_\nu(s)
+(\mathcal B_\mu-\mathcal B_\nu)x
+\,\mathrm{d}s.
+\]
+由\autoref{fa:BOCH-C01}与（iv），对 \(\displaystyle0\leqslant t\leqslant T\)， \(\displaystyle \|\mathcal S_\mu(t)x-\mathcal S_\nu(t)x\| \leqslant M^2T\|(\mathcal B_\mu-\mathcal B_\nu)x\|.\)
+由（iii），右端当 \(\displaystyle\mu,\nu\to\infty\) 时趋于 \(\displaystyle0\). 因而结论先在 \(\displaystyle D(\mathcal B)\) 上成立.
+
+对任意 \(\displaystyle x\in X\) 与 \(\displaystyle y\in D(\mathcal B)\)，由（iv），
+\[
+\sup_{0\leqslant t\leqslant T}
+\|\mathcal S_\mu(t)x-\mathcal S_\nu(t)x\|
+\leqslant
+2M\|x-y\|
++
+\sup_{0\leqslant t\leqslant T}
+\|\mathcal S_\mu(t)y-\mathcal S_\nu(t)y\|.
+\]
+先用稠密性使第一项任意小，再令 \(\displaystyle\mu,\nu\to\infty\)，得到（v）.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{Hille--Yosida生成定理}\label{sec:ii09-hille-yosida}
+\index{Hille--Yosida theorem@Hille--Yosida 定理}\index{resolvent power@预解幂}
+
+\begin{FALemma}[B][预解的算子范数微分]{ii09:resolvent-differentiation}
+设 \(\displaystyle\mathcal A\) 为 \(\displaystyle C_0\) 半群生成元，且 \(\displaystyle\lambda>\omega\) 为实数，其中 \(\displaystyle\|\mathcal T(t)\|\leqslant M\mathrm{e}^{\omega t}\). 则实变量映射 \(\displaystyle\lambda\mapsto R(\lambda,\mathcal A)\) 在算子范数中可无限次微分，并且 \(\displaystyle \frac{\mathrm{d}}{\mathrm{d}\lambda}R(\lambda,\mathcal A) = -R(\lambda,\mathcal A)^2,\)
+以及对 \(\displaystyle n\in\mathbb N\)，
+\[
+\frac{\mathrm{d}^{\,n-1}}{\mathrm{d}\lambda^{n-1}}R(\lambda,\mathcal A)
+=
+(-1)^{n-1}(n-1)!R(\lambda,\mathcal A)^n.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+由\autoref{fa:SG-A02}，全部实 \(\displaystyle\lambda>\omega\) 都属于 \(\displaystyle\rho(\mathcal A)\). 对充分小的实 \(\displaystyle h\)，预解恒等式给 \(\displaystyle \frac{R(\lambda+h,\mathcal A)-R(\lambda,\mathcal A)}{h} = -R(\lambda+h,\mathcal A)R(\lambda,\mathcal A).\)
+又由同一恒等式与局部有界性，\(\displaystyle R(\lambda+h,\mathcal A)\to R(\lambda,\mathcal A)\) 于算子范数，故一阶导数为 \(\displaystyle-R(\lambda,\mathcal A)^2\).
+
+由预解交换性，若对某 \(\displaystyle k\geqslant1\) 已知 \(\displaystyle R^{(k-1)}(\lambda)=(-1)^{k-1}(k-1)!R(\lambda)^k\)，则有限乘积法则与 \(\displaystyle R'=-R^2\) 给
+\[
+\frac{\mathrm{d}}{\mathrm{d}\lambda}R(\lambda)^k
+=
+\sum_{j=0}^{k-1}R(\lambda)^jR'(\lambda)R(\lambda)^{k-1-j}
+=
+-kR(\lambda)^{k+1}.
+\]
+因此归纳得到全部阶数的公式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][指数矩积分]{ii09:gamma-integral}
+对全部 \(\displaystyle a>0\) 与 \(\displaystyle n\in\mathbb N\)，
+\[
+\int_0^\infty t^{n-1}\mathrm{e}^{-at}\,\mathrm{d}t
+=
+\frac{(n-1)!}{a^n}.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+当 \(\displaystyle n=1\) 时结论为 \(\displaystyle\int_0^\infty\mathrm{e}^{-at}\,\mathrm{d}t=a^{-1}\). 若 \(\displaystyle n\geqslant2\)，先在 \(\displaystyle[0,b]\) 上分部积分：
+\[
+\int_0^b t^{n-1}\mathrm{e}^{-at}\,\mathrm{d}t
+=
+-\frac{b^{n-1}\mathrm{e}^{-ab}}{a}
++
+\frac{n-1}{a}
+\int_0^b t^{n-2}\mathrm{e}^{-at}\,\mathrm{d}t.
+\]
+因为 \(\displaystyle b^{n-1}\mathrm{e}^{-ab}\to0\)，令 \(\displaystyle b\to\infty\) 并归纳得到
+\[
+\int_0^\infty t^{n-1}\mathrm{e}^{-at}\,\mathrm{d}t
+=
+\frac{n-1}{a}\frac{(n-2)!}{a^{n-1}}
+=
+\frac{(n-1)!}{a^n}.\]
+\hfill\(\square\)
+
+
+\end{FAProof}
+
+\begin{FAProposition}[B][预解幂的 Laplace 公式与必要估计]{ii09:resolvent-power-laplace}
+设 \(\displaystyle\mathcal A\) 生成 \(\displaystyle C_0\) 半群 \(\displaystyle\mathcal T(t)\)，且 \(\displaystyle \|\mathcal T(t)\| \leqslant M\mathrm{e}^{\omega t} \; \forall\,t\geqslant0.\)
+则对全部实 \(\displaystyle\lambda>\omega\)、\(\displaystyle n\in\mathbb N\) 与 \(\displaystyle x\in X\)，
+\[
+R(\lambda,\mathcal A)^n x
+=
+\frac1{(n-1)!}
+\int_0^\infty
+t^{n-1}\mathrm{e}^{-\lambda t}\mathcal T(t)x
+\,\mathrm{d}t,
+\]
+并且 \(\displaystyle \|R(\lambda,\mathcal A)^n\| \leqslant \frac{M}{(\lambda-\omega)^n}.\)
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{fa:SG-A02}，
+\[
+R(\lambda,\mathcal A)x
+=
+\int_0^\infty
+\mathrm{e}^{-\lambda t}\mathcal T(t)x
+\,\mathrm{d}t.
+\]
+固定 \(\displaystyle\lambda_0>\omega\) 与 \(\displaystyle k\in\mathbb N_0\). 取 \(\displaystyle\delta>0\) 使 \(\displaystyle\lambda_0-\delta>\omega\). 当 \(\displaystyle|\lambda-\lambda_0|<\delta\) 时， \(\displaystyle \|t^k\mathrm{e}^{-\lambda t}\mathcal T(t)x\| \leqslant M t^k\mathrm{e}^{-(\lambda_0-\delta-\omega)t}\|x\|.\)
+由\autoref{ii09:gamma-integral}，右端关于 \(\displaystyle t\in[0,\infty)\) 可积. 因而可以逐次应用 II-04 的 Bochner 支配收敛定理\autoref{fa:BOCH-B01}于差商，得到
+\[
+\frac{\mathrm{d}^{\,n-1}}{\mathrm{d}\lambda^{n-1}}
+R(\lambda,\mathcal A)x
+=
+(-1)^{n-1}
+\int_0^\infty
+t^{n-1}\mathrm{e}^{-\lambda t}\mathcal T(t)x
+\,\mathrm{d}t.
+\]
+这里没有使用 Bochner--Fubini，只对单一积分参数作支配微分.
+
+另一方面，\autoref{ii09:resolvent-differentiation}给 \(\displaystyle \frac{\mathrm{d}^{\,n-1}}{\mathrm{d}\lambda^{n-1}} R(\lambda,\mathcal A)x = (-1)^{n-1}(n-1)!R(\lambda,\mathcal A)^n x.\)
+比较两式即得预解幂公式. 再由\autoref{fa:BOCH-C01}、半群增长界与\autoref{ii09:gamma-integral}，
+\[
+\begin{aligned}
+\displaystyle \|R(\lambda,\mathcal A)^n x\|
+&\displaystyle \leqslant
+\frac{M}{(n-1)!}
+\int_0^\infty
+t^{n-1}\mathrm{e}^{-(\lambda-\omega)t}\,\mathrm{d}t\,\|x\|\\[12pt]
+&\displaystyle =
+\frac{M}{(\lambda-\omega)^n}\|x\|.
+\end{aligned}
+\]
+取 \(\displaystyle\|x\|\leqslant1\) 的上确界得到所需幂估计.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][Hille--Yosida 充分性的极限构造]{ii09:hy-sufficiency}
+设 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X\)
+闭且稠密定义. 假设存在 \(\displaystyle M\geqslant1\)、\(\displaystyle\omega\in\mathbb R\) 使 \(\displaystyle(\omega,\infty)\subseteq\rho(\mathcal A)\)，且对全部实 \(\displaystyle\lambda>\omega\) 与 \(\displaystyle n\in\mathbb N\)， \(\displaystyle \|R(\lambda,\mathcal A)^n\| \leqslant \frac{M}{(\lambda-\omega)^n}.\)
+则 \(\displaystyle\mathcal A\) 生成 \(\displaystyle C_0\) 半群 \(\displaystyle\mathcal T(t)\)，并且 \(\displaystyle \|\mathcal T(t)\| \leqslant M\mathrm{e}^{\omega t} \; \forall\,t\geqslant0.\)
+\end{FAProposition}
+
+\begin{FAProof}
+置 \(\displaystyle \mathcal B=\mathcal A-\omega\mathcal I, \; D(\mathcal B)=D(\mathcal A).\)
+由\autoref{ii09:generator-shift}的预解平移恒等式，\(\displaystyle(0,\infty)\subseteq\rho(\mathcal B)\)，并且对全部 \(\displaystyle\mu>0\)、\(\displaystyle n\in\mathbb N\)， \(\displaystyle \|R(\mu,\mathcal B)^n\| \leqslant \frac{M}{\mu^n}.\)
+因此\autoref{fa:HY-B01}适用于 \(\displaystyle\mathcal B\). 记其 Yosida 逼近算子与有界逼近半群为 \(\displaystyle\mathcal B_\mu\) 与 \(\displaystyle\mathcal S_\mu(t)\). 对任意 \(\displaystyle x\in X\) 与 \(\displaystyle T>0\)，\autoref{fa:HY-B01}给出 \(\displaystyle\mathcal S_\mu(\cdot)x\) 在 \(\displaystyle C([0,T];X)\) 中为 Cauchy. 定义 \(\displaystyle \mathcal S(t)x=\lim_{\mu\to\infty}\mathcal S_\mu(t)x\). 极限在每个紧时间区间上一致，并且由 \(\displaystyle\|\mathcal S_\mu(t)\|\leqslant M\)， \(\displaystyle \|\mathcal S(t)x\| \leqslant M\|x\|, \; \|\mathcal S(t)\|\leqslant M.\)
+由指数级数在 \(\displaystyle t=0\) 处的定义，\(\displaystyle\mathcal S(0)=\mathrm e^{0\mathcal A_\lambda}=\mathcal I\).
+
+现证半群律. 固定 \(\displaystyle s,t\geqslant0\) 与 \(\displaystyle x\in X\). 因 \(\displaystyle\mathcal S_\mu(t+s)=\mathcal S_\mu(t)\mathcal S_\mu(s)\)，有
+\[
+\begin{aligned}
+&\|\mathcal S_\mu(t)\mathcal S_\mu(s)x-\mathcal S(t)\mathcal S(s)x\|\\
+&\leqslant
+M\|\mathcal S_\mu(s)x-\mathcal S(s)x\|
++
+\|\mathcal S_\mu(t)\mathcal S(s)x-\mathcal S(t)\mathcal S(s)x\|.
+\end{aligned}
+\]
+右端趋于 \(\displaystyle0\). 同时左侧第一项的乘积等于 \(\displaystyle\mathcal S_\mu(t+s)x\to\mathcal S(t+s)x\)，故 \(\displaystyle \mathcal S(t+s)=\mathcal S(t)\mathcal S(s).\)
+
+再证零点强连续. 若 \(\displaystyle x\in D(\mathcal B)\)，则有界生成元积分公式给
+\[
+\mathcal S_\mu(t)x-x
+=
+\int_0^t\mathcal S_\mu(s)\mathcal B_\mu x\,\mathrm{d}s.
+\]
+由\autoref{fa:HY-B01}，\(\displaystyle\mathcal B_\mu x\to\mathcal Bx\)，故存在 \(\displaystyle C_x<\infty\) 使充分大的 \(\displaystyle\mu\) 满足 \(\displaystyle\|\mathcal B_\mu x\|\leqslant C_x\). 因而 \(\displaystyle \|\mathcal S(t)x-x\| \leqslant MC_xt.\)
+所以 \(\displaystyle\mathcal S(t)x\to x\) 对 \(\displaystyle x\in D(\mathcal B)\) 成立. 对任意 \(\displaystyle x\in X\)，取 \(\displaystyle y\in D(\mathcal B)\)，则 \(\displaystyle \|\mathcal S(t)x-x\| \leqslant M\|x-y\|+\|\mathcal S(t)y-y\|+\|y-x\|.\)
+利用 \(\displaystyle D(\mathcal B)\) 稠密并先后令 \(\displaystyle t\downarrow0\)、\(\displaystyle y\to x\)，得到零点强连续. 对固定 \(\displaystyle t\geqslant0\) 与 \(\displaystyle h>0\)，半群律及 \(\displaystyle\|\mathcal S(r)\|\leqslant M\) 给出 \(\displaystyle \|\mathcal S(t+h)x-\mathcal S(t)x\| \leqslant M\|\mathcal S(h)x-x\| \longrightarrow0.\)
+若 \(\displaystyle 0<h<t\)，则 \(\displaystyle \|\mathcal S(t)x-\mathcal S(t-h)x\| \leqslant M\|\mathcal S(h)x-x\| \longrightarrow0.\)
+故 \(\displaystyle\mathcal S\) 在全部 \(\displaystyle t\geqslant0\) 强连续，是 \(\displaystyle C_0\) 半群.
+
+记 \(\displaystyle\mathcal G\) 为 \(\displaystyle\mathcal S\) 的生成元. 固定 \(\displaystyle x\in D(\mathcal B)\). 对每个 \(\displaystyle t\geqslant0\)，由紧时间一致收敛、\(\displaystyle\mathcal B_\mu x\to\mathcal Bx\) 与 \(\displaystyle\|\mathcal S_\mu(s)\|\leqslant M\)，有
+\[
+\sup_{0\leqslant s\leqslant t}
+\|\mathcal S_\mu(s)\mathcal B_\mu x-\mathcal S(s)\mathcal Bx\|
+\longrightarrow0.
+\]
+因此由 II-04 的 Bochner 范数连续性，令 \(\displaystyle\mu\to\infty\) 于逼近积分恒等式，得到
+\[
+\mathcal S(t)x-x
+=
+\int_0^t\mathcal S(s)\mathcal Bx\,\mathrm{d}s.
+\]
+除以 \(\displaystyle t>0\) 并令 \(\displaystyle t\downarrow0\)，由 \(\displaystyle\mathcal S(s)\mathcal Bx\to\mathcal Bx\) 得
+\[
+\lim_{t\downarrow0}\frac{\mathcal S(t)x-x}{t}
+=
+\mathcal Bx.
+\]
+故 \(\displaystyle\mathcal B\subseteq\mathcal G\).
+
+取任意固定 \(\displaystyle\mu_0>0\). 假设给出 \(\displaystyle\mu_0\in\rho(\mathcal B)\)；这事实上由前述 \(\displaystyle(0,\infty)\subseteq\rho(\mathcal B)\) 已满足. 因 \(\displaystyle\|\mathcal S(t)\|\leqslant M\)，\autoref{fa:SG-A02}对生成元 \(\displaystyle\mathcal G\) 给出 \(\displaystyle\mu_0\in\rho(\mathcal G)\). 对任意 \(\displaystyle y\in X\)，令 \(\displaystyle x=R(\mu_0,\mathcal B)y\in D(\mathcal B)\subseteq D(\mathcal G).\)
+由 \(\displaystyle\mathcal B\subseteq\mathcal G\)， \(\displaystyle (\mu_0\mathcal I-\mathcal G)x = (\mu_0\mathcal I-\mathcal B)x = y.\)
+而 \(\displaystyle\mu_0\mathcal I-\mathcal G\) 单射，故 \(\displaystyle R(\mu_0,\mathcal B)y = R(\mu_0,\mathcal G)y.\)
+因此两个预解算子相同. 取其值域得到 \(\displaystyle D(\mathcal B) = R(\mu_0,\mathcal B)X = R(\mu_0,\mathcal G)X = D(\mathcal G).\)
+结合 \(\displaystyle\mathcal B\subseteq\mathcal G\)，得到 \(\displaystyle\mathcal G=\mathcal B\).
+
+最后定义 \(\displaystyle \mathcal T(t)=\mathrm{e}^{\omega t}\mathcal S(t).\)
+由\autoref{ii09:generator-shift}，其生成元为 \(\displaystyle \mathcal B+\omega\mathcal I = \mathcal A,\)
+并且 \(\displaystyle \|\mathcal T(t)\| \leqslant M\mathrm{e}^{\omega t}.\)
+充分性完全闭合.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][Hille--Yosida 生成定理]{fa:HY-A01}
+设 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X\)
+为线性算子，给定 \(\displaystyle M\geqslant1\) 与 \(\displaystyle\omega\in\mathbb R\). 以下等价：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle\mathcal A\) 生成 \(\displaystyle C_0\) 半群 \(\displaystyle\mathcal T(t)\)，且 \(\displaystyle \|\mathcal T(t)\| \leqslant M\mathrm{e}^{\omega t} \; \forall\,t\geqslant0.\)
+\item \(\displaystyle\mathcal A\) 闭且稠密定义，\(\displaystyle(\omega,\infty)\subseteq\rho(\mathcal A)\)，并且对全部实 \(\displaystyle\lambda>\omega\) 与 \(\displaystyle n\in\mathbb N\)， \(\displaystyle \|R(\lambda,\mathcal A)^n\| \leqslant \frac{M}{(\lambda-\omega)^n}.\)
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+若（i）成立，则\autoref{fa:SG-A02}给出 \(\displaystyle\mathcal A\) 闭且稠密定义以及 \(\displaystyle(\omega,\infty)\subseteq\rho(\mathcal A)\)，而\autoref{ii09:resolvent-power-laplace}给出全部预解幂估计，故（ii）成立.
+
+反之，若（ii）成立，则\autoref{ii09:hy-sufficiency}直接构造生成元恰为 \(\displaystyle\mathcal A\) 的 \(\displaystyle C_0\) 半群，并给出指定增长界，故（i）成立. 证明链只使用 II-08 的半群与预解结果以及本节 Yosida 构造，没有调用耗散理论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[A][Hille--Yosida的收缩特例]{ii09:hy-contraction}
+设 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X\)
+为线性算子. 则 \(\displaystyle\mathcal A\) 生成收缩 \(\displaystyle C_0\) 半群，即 \(\displaystyle \|\mathcal T(t)\|\leqslant1 \; \forall\,t\geqslant0,\)
+当且仅当 \(\displaystyle\mathcal A\) 闭且稠密定义，\(\displaystyle(0,\infty)\subseteq\rho(\mathcal A)\)，且 \(\displaystyle \|\lambda R(\lambda,\mathcal A)\| \leqslant1 \; \forall\,\lambda>0.\)
+\end{FACorollary}
+
+\begin{FAProof}
+若 \(\displaystyle\mathcal A\) 生成收缩半群，则在\autoref{fa:HY-A01}中取 \(\displaystyle M=1\)、\(\displaystyle\omega=0\)，得到所述条件. 反之，若所述条件成立，则对任意 \(\displaystyle n\in\mathbb N\)， \(\displaystyle \|R(\lambda,\mathcal A)^n\| \leqslant \|R(\lambda,\mathcal A)\|^n \leqslant \lambda^{-n}.\)
+因此\autoref{fa:HY-A01}的 \(\displaystyle M=1\)、\(\displaystyle\omega=0\) 条件成立，故生成收缩半群.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[一般 \(\displaystyle M>1\) 不能只检查一次预解]
+在一般增长界 \(\displaystyle\|\mathcal T(t)\|\leqslant M\mathrm{e}^{\omega t}\) 且 \(\displaystyle M>1\) 时，Hille--Yosida 条件要求全部 \(\displaystyle n\in\mathbb N\) 的幂估计 \(\displaystyle \|R(\lambda,\mathcal A)^n\| \leqslant \frac{M}{(\lambda-\omega)^n}.\)
+仅有 \(\displaystyle n=1\) 时的 \(\displaystyle\|R(\lambda,\mathcal A)\|\leqslant \frac{M}{\lambda-\omega}\) 只推出 \(\displaystyle\|R(\lambda,\mathcal A)^n\|\leqslant \frac{M^n}{(\lambda-\omega)^n}\)，一般不能恢复同一个常数 \(\displaystyle M\).
+\end{FAWarning}
+
+\section{耗散性}\label{sec:ii09-dissipativity}
+\index{dissipative operator@耗散算子}\index{m-dissipative operator@极大耗散算子}
+
+\begin{FADefinition}[A][耗散与极大耗散]{ii09:dissipative-definition}
+设 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X.\)
+称 \(\displaystyle\mathcal A\) 为耗散算子，当且仅当对全部 \(\displaystyle\lambda>0\) 与 \(\displaystyle x\in D(\mathcal A)\)， \(\displaystyle \|(\lambda\mathcal I-\mathcal A)x\| \geqslant \lambda\|x\|.\)
+称 \(\displaystyle\mathcal A\) 为极大耗散算子，当且仅当 \(\displaystyle\mathcal A\) 耗散，且存在某个 \(\displaystyle\lambda_0>0\) 使 \(\displaystyle \operatorname{Ran}(\lambda_0\mathcal I-\mathcal A)=X.\)
+\end{FADefinition}
+
+\begin{FAProposition}[C][耗散性给出的单射与逆估计]{ii09:dissipative-basic}
+若 \(\displaystyle\mathcal A\) 耗散，则对每个 \(\displaystyle\lambda>0\)，算子 \(\displaystyle\lambda\mathcal I-\mathcal A\) 单射. 其逆在值域上定义时满足 \(\displaystyle \|(\lambda\mathcal I-\mathcal A)^{-1}y\| \leqslant \lambda^{-1}\|y\|.\)
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle(\lambda\mathcal I-\mathcal A)x=0\)，则耗散性给 \(\displaystyle0\geqslant\lambda\|x\|\)，故 \(\displaystyle x=0\). 若 \(\displaystyle y=(\lambda\mathcal I-\mathcal A)x\)，同一不等式给 \(\displaystyle \|x\| \leqslant \lambda^{-1}\|y\|.\)
+这正是定义在该值域上的逆估计.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[耗散不推出极大耗散]\label{ii09:ce-dissip-not-max}
+取 \(\displaystyle X=\ell^2, \; D(\mathcal A)=c_{00}, \; \mathcal Ax=0.\)
+则 \(\displaystyle c_{00}\) 在 \(\displaystyle\ell^2\) 中稠密，并且对全部 \(\displaystyle\lambda>0\)、\(\displaystyle x\in c_{00}\)， \(\displaystyle \|(\lambda\mathcal I-\mathcal A)x\| = \lambda\|x\|.\)
+因此 \(\displaystyle\mathcal A\) 耗散. 但 \(\displaystyle \operatorname{Ran}(\lambda\mathcal I-\mathcal A) = c_{00} \neq \ell^2,\)
+所以 \(\displaystyle\mathcal A\) 不是极大耗散算子. 此外其图为 \(\displaystyle c_{00}\times\{0\}\)，在 \(\displaystyle\ell^2\times\ell^2\) 中不闭；故耗散性本身甚至不保证闭性，更不能单独构成生成判据.
+\end{FACounterexample}
+
+\begin{FAProposition}[C][Hilbert 数值耗散性推出范数耗散性]{ii09:hilbert-dissipativity}
+设 \(\displaystyle H\) 为复 Hilbert 空间，内积对第一变量线性、对第二变量共轭线性. 若 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq H\to H\)
+稠密定义，且 \(\displaystyle \operatorname{Re}\langle\mathcal Ax,x\rangle \leqslant0 \; \forall\,x\in D(\mathcal A),\)
+则 \(\displaystyle\mathcal A\) 耗散.
+\end{FAProposition}
+
+\begin{FAProof}
+对 \(\displaystyle\lambda>0\) 与 \(\displaystyle x\in D(\mathcal A)\)，由第一变量线性及共轭对称性，
+\[
+\begin{aligned}
+\|(\lambda\mathcal I-\mathcal A)x\|^2
+&=
+\langle\lambda x-\mathcal Ax,\lambda x-\mathcal Ax\rangle\\
+&=
+\lambda^2\|x\|^2
+-\lambda\langle x,\mathcal Ax\rangle
+-\lambda\langle\mathcal Ax,x\rangle
++\|\mathcal Ax\|^2\\
+&=
+\lambda^2\|x\|^2
+-2\lambda\operatorname{Re}\langle\mathcal Ax,x\rangle
++\|\mathcal Ax\|^2\\
+&\geqslant
+\lambda^2\|x\|^2.
+\end{aligned}
+\]
+取平方根即得耗散不等式.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{Lumer--Phillips生成定理}\label{sec:ii09-lumer-phillips}
+\index{Lumer--Phillips theorem@Lumer--Phillips 定理}
+
+\begin{FAProposition}[B][单点值域条件的传播与极大性]{fa:LP-B01}
+设 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X\)
+稠密定义且耗散，并存在 \(\displaystyle\lambda_0>0\) 使 \(\displaystyle \operatorname{Ran}(\lambda_0\mathcal I-\mathcal A)=X.\)
+则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle\lambda_0\mathcal I-\mathcal A\) 双射，且 \(\displaystyle \|R(\lambda_0,\mathcal A)\| \leqslant \lambda_0^{-1}.\)
+\item \(\displaystyle\mathcal A\) 闭.
+\item \(\displaystyle(0,\infty)\subseteq\rho(\mathcal A)\)，且对全部 \(\displaystyle\lambda>0\)， \(\displaystyle \|R(\lambda,\mathcal A)\| \leqslant \lambda^{-1}.\)
+\item \(\displaystyle\mathcal A\) 没有真耗散延拓.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii09:dissipative-basic}，\(\displaystyle\lambda_0\mathcal I-\mathcal A\) 单射；结合假设的满射性可知其双射，而且逆算子在全部 \(\displaystyle X\) 上满足 \(\displaystyle \|R(\lambda_0,\mathcal A)y\| \leqslant \lambda_0^{-1}\|y\|.\)
+故（i）成立.
+
+证明闭性. 设 \(\displaystyle x_n\in D(\mathcal A)\)、\(\displaystyle x_n\to x\)、\(\displaystyle\mathcal Ax_n\to y\). 则 \(\displaystyle (\lambda_0\mathcal I-\mathcal A)x_n \longrightarrow \lambda_0x-y.\)
+由有界逆的连续性， \(\displaystyle x_n = R(\lambda_0,\mathcal A)(\lambda_0\mathcal I-\mathcal A)x_n \longrightarrow R(\lambda_0,\mathcal A)(\lambda_0x-y).\)
+极限唯一性给 \(\displaystyle x = R(\lambda_0,\mathcal A)(\lambda_0x-y) \in D(\mathcal A).\)
+再作用 \(\displaystyle\lambda_0\mathcal I-\mathcal A\)，得到 \(\displaystyle\mathcal Ax=y\). 故 \(\displaystyle\mathcal A\) 闭.
+
+定义 \(\displaystyle \Omega = \{\lambda>0:\lambda\in\rho(\mathcal A)\}.\)
+由（i），\(\displaystyle\Omega\neq\varnothing\). 若 \(\displaystyle\lambda\in\Omega\)，则在 \(\displaystyle D(\mathcal A)\) 上 \(\displaystyle \mu\mathcal I-\mathcal A = [\mathcal I+(\mu-\lambda)R(\lambda,\mathcal A)] (\lambda\mathcal I-\mathcal A).\)
+当 \(\displaystyle|\mu-\lambda|\|R(\lambda,\mathcal A)\|<1\) 时，方括号由 Neumann 级数可逆，故 \(\displaystyle\mu\in\rho(\mathcal A)\). 因而 \(\displaystyle\Omega\) 在 \(\displaystyle(0,\infty)\) 中开.
+
+现证相对闭. 设 \(\displaystyle\lambda_n\in\Omega\)、\(\displaystyle\lambda_n\to\lambda>0\). 耗散性给 \(\displaystyle \|R(\lambda_n,\mathcal A)\| \leqslant \lambda_n^{-1}.\)
+固定 \(\displaystyle y\in X\)，令 \(\displaystyle x_n=R(\lambda_n,\mathcal A)y\). 预解恒等式给 \(\displaystyle \|x_n-x_m\| \leqslant \frac{|\lambda_m-\lambda_n|}{\lambda_n\lambda_m}\|y\|,\)
+故 \(\displaystyle x_n\) 为 Cauchy，记 \(\displaystyle x_n\to x\). 又 \(\displaystyle \mathcal Ax_n = \lambda_nx_n-y \longrightarrow \lambda x-y.\)
+由已证闭性，\(\displaystyle x\in D(\mathcal A)\) 且 \(\displaystyle\mathcal Ax=\lambda x-y\)，即 \(\displaystyle (\lambda\mathcal I-\mathcal A)x=y.\)
+因此 \(\displaystyle\lambda\mathcal I-\mathcal A\) 满射，而 耗散性给单射及逆估计 \(\displaystyle \|x\| \leqslant \lambda^{-1}\|y\|.\)
+故 \(\displaystyle\lambda\in\rho(\mathcal A)\). 所以 \(\displaystyle\Omega\) 相对闭. 由于 \(\displaystyle(0,\infty)\) 连通，非空且开闭的 \(\displaystyle\Omega\) 必为整个 \(\displaystyle(0,\infty)\). 同时上述逆估计给出所有正 \(\displaystyle\lambda\) 的预解界，故（iii）成立.
+
+最后设 \(\displaystyle\mathcal A\subseteq\mathcal C\)，其中 \(\displaystyle \mathcal C:D(\mathcal C)\subseteq X\to X\)
+也耗散. 取任意 \(\displaystyle\lambda>0\) 与 \(\displaystyle y\in D(\mathcal C)\). 由（iii）的满射性，存在 \(\displaystyle x\in D(\mathcal A)\) 使 \(\displaystyle (\lambda\mathcal I-\mathcal A)x = (\lambda\mathcal I-\mathcal C)y.\)
+因 \(\displaystyle\mathcal A\subseteq\mathcal C\)， \(\displaystyle (\lambda\mathcal I-\mathcal C)(y-x)=0.\)
+对 \(\displaystyle y-x\in D(\mathcal C)\) 使用耗散性，得到 \(\displaystyle\lambda\|y-x\|\leqslant0\)，故 \(\displaystyle y=x\in D(\mathcal A)\). 因而 \(\displaystyle D(\mathcal C)\subseteq D(\mathcal A)\)，与原包含合并得到 \(\displaystyle\mathcal C=\mathcal A\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][Lumer--Phillips 生成定理]{fa:LP-A01}
+设 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X\)
+稠密定义. 以下等价：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle\mathcal A\) 生成收缩 \(\displaystyle C_0\) 半群.
+\item \(\displaystyle\mathcal A\) 极大耗散，即 \(\displaystyle\mathcal A\) 耗散，并且存在某个 \(\displaystyle\lambda_0>0\) 使 \(\displaystyle \operatorname{Ran}(\lambda_0\mathcal I-\mathcal A)=X.\)
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+先证必要性. 若 \(\displaystyle\mathcal A\) 生成收缩 \(\displaystyle C_0\) 半群，则\autoref{fa:SG-A02}对 \(\displaystyle M=1\)、\(\displaystyle\omega=0\) 给
+\[
+(0,\infty)\subseteq\rho(\mathcal A),
+\;
+\|R(\lambda,\mathcal A)\|
+\leqslant
+\lambda^{-1}.
+\]
+固定 \(\displaystyle\lambda>0\) 与 \(\displaystyle x\in D(\mathcal A)\)，令 \(\displaystyle y=(\lambda\mathcal I-\mathcal A)x\). 则 \(\displaystyle x=R(\lambda,\mathcal A)y,\)
+从而 \(\displaystyle \|x\| \leqslant \lambda^{-1}\|y\|.\)
+即 \(\displaystyle\|(\lambda\mathcal I-\mathcal A)x\|\geqslant\lambda\|x\|\)，故 \(\displaystyle\mathcal A\) 耗散. 同时 \(\displaystyle\lambda\in\rho(\mathcal A)\) 给出值域为 \(\displaystyle X\)，故为极大耗散算子.
+
+再证充分性. 若 \(\displaystyle\mathcal A\) 极大耗散，则\autoref{fa:LP-B01}给
+\[
+\mathcal A\text{ 闭},
+\;
+(0,\infty)\subseteq\rho(\mathcal A),
+\;
+\|\lambda R(\lambda,\mathcal A)\|
+\leqslant1.
+\]
+再应用已独立证明的 Hille--Yosida 收缩特例\autoref{ii09:hy-contraction}，得到 \(\displaystyle\mathcal A\) 生成收缩 \(\displaystyle C_0\) 半群. 因此 LP 的充分性建立在已经闭合的 HY 上，不反向参与 HY 的证明，不存在依赖循环.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{判据比较}\label{sec:ii09-criteria-comparison}
+\index{generation criterion@生成判据}\index{quasi-contraction@拟收缩半群}
+
+\begin{FAProposition}[C][生成准则比较]{fa:SG-C02}
+设 \(\displaystyle \mathcal A:D(\mathcal A)\subseteq X\to X\)
+稠密定义.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 以下三项等价：\(\displaystyle\mathcal A\) 生成收缩 \(\displaystyle C_0\) 半群；\(\displaystyle\mathcal A\) 满足收缩型 Hille--Yosida 条件
+\[
+\mathcal A\text{ 闭},
+\;
+(0,\infty)\subseteq\rho(\mathcal A),
+\;
+\|\lambda R(\lambda,\mathcal A)\|\leqslant1
+\;
+\forall\,\lambda>0;
+\]
+\(\displaystyle\mathcal A\) 为极大耗散算子.
+\item 给定 \(\displaystyle\omega\in\mathbb R\)，\(\displaystyle\mathcal A\) 生成满足 \(\displaystyle \|\mathcal T(t)\| \leqslant \mathrm{e}^{\omega t} \; \forall\,t\geqslant0\)
+的拟收缩半群，当且仅当 \(\displaystyle\mathcal A-\omega\mathcal I\) 极大耗散. 这又等价于
+\[
+\mathcal A\text{ 闭且稠密定义},
+\;
+(\omega,\infty)\subseteq\rho(\mathcal A),
+\]
+以及 \(\displaystyle \|(\lambda-\omega)R(\lambda,\mathcal A)\| \leqslant1 \; \forall\,\lambda>\omega.\)
+\item 若目标增长界为 \(\displaystyle \|\mathcal T(t)\| \leqslant M\mathrm{e}^{\omega t}\)
+且 \(\displaystyle M>1\)，则一般 Hille--Yosida 判据必须保留全部预解幂估计，不能只保留 \(\displaystyle n=1\) 的单次预解界.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+（i）中第一项与第二项由\autoref{ii09:hy-contraction}等价，第一项与第三项由\autoref{fa:LP-A01}等价，故三者等价.
+
+对（ii），由\autoref{ii09:generator-shift}，\(\displaystyle\mathcal A\) 生成 \(\displaystyle\mathcal T(t)\) 且 \(\displaystyle\|\mathcal T(t)\|\leqslant\mathrm{e}^{\omega t}\) 当且仅当 \(\displaystyle\mathcal B=\mathcal A-\omega\mathcal I\) 生成收缩半群 \(\displaystyle\mathcal S(t)=\mathrm{e}^{-\omega t}\mathcal T(t)\). 由\autoref{fa:LP-A01}，这当且仅当 \(\displaystyle\mathcal B\) 极大耗散. 再由\autoref{ii09:hy-contraction}与预解平移恒等式 \(\displaystyle R(\mu,\mathcal B) = R(\mu+\omega,\mathcal A),\)
+取 \(\displaystyle\mu=\lambda-\omega>0\)，即得到平移后的收缩预解判据.
+
+（iii）正是\autoref{fa:HY-A01}与本节一般 \(\displaystyle M>1\) 警示的区别. 单次预解界的幂只产生常数 \(\displaystyle M^n\)，不能替代定理要求的统一常数 \(\displaystyle M\).
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{平移半群模型的生成准则复核}
+
+复用 II-08 的 \(\displaystyle X=C_0(\mathbb R), \; \mathcal A_{\mathrm{tr}}f=f', \; D(\mathcal A_{\mathrm{tr}})=C_0^1(\mathbb R).\)
+II-08 已证明对应平移算子族为等距 \(\displaystyle C_0\) 半群，并且对 \(\displaystyle\operatorname{Re}\lambda>0\)，
+\[
+R(\lambda,\mathcal A_{\mathrm{tr}})f
+=
+\int_0^\infty
+\mathrm{e}^{-\lambda t}\mathcal T_{\mathrm{tr}}(t)f
+\,\mathrm{d}t.
+\]
+
+\begin{FAProposition}[C][平移生成元的 HY 与 LP 复核]{ii09:translation-criteria}
+对全部实 \(\displaystyle\lambda>0\)，
+\[
+\|R(\lambda,\mathcal A_{\mathrm{tr}})\|
+\leqslant
+\lambda^{-1},
+\;
+\operatorname{Ran}(\lambda\mathcal I-\mathcal A_{\mathrm{tr}})=C_0(\mathbb R).
+\]
+因此 \(\displaystyle\mathcal A_{\mathrm{tr}}\) 耗散、极大耗散，并满足收缩型 Hille--Yosida 条件.
+\end{FAProposition}
+
+\begin{FAProof}
+由 II-08 的显式预解公式与 Bochner 范数估计，
+\[
+\|R(\lambda,\mathcal A_{\mathrm{tr}})f\|_\infty
+\leqslant
+\int_0^\infty\mathrm{e}^{-\lambda t}\|f\|_\infty\,\mathrm{d}t
+=
+\lambda^{-1}\|f\|_\infty.
+\]
+II-08 已有 \(\displaystyle\lambda\in\rho(\mathcal A_{\mathrm{tr}})\)，故值域为全部 \(\displaystyle C_0(\mathbb R)\). 对 \(\displaystyle f\in D(\mathcal A_{\mathrm{tr}})\)，令 \(\displaystyle g=(\lambda\mathcal I-\mathcal A_{\mathrm{tr}})f\)，则
+\[
+\|f\|_\infty
+=
+\|R(\lambda,\mathcal A_{\mathrm{tr}})g\|_\infty
+\leqslant
+\lambda^{-1}\|g\|_\infty.
+\]
+所以生成元耗散；结合值域条件即极大耗散. 收缩型 HY 条件同时由正半轴预解与同一范数界得到. 本段只审计生成判据，不重复 II-08 的 \(\displaystyle C_0\) 性证明.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Dirichlet 热半群模型的算子性质生成证明}
+
+令 \(\displaystyle H=L^2(0,1)\). 复用 II-06 的 Dirichlet Laplace 算子 \(\displaystyle \mathcal L_D:D(\mathcal L_D)\subseteq H\to H.\)
+由\autoref{fa:FORM-B01}及其 Dirichlet 模型，\(\displaystyle\mathcal L_D\) 自伴、非负、稠密定义，且 \(\displaystyle \operatorname{Ran}(\mathcal L_D+\mathcal I)=H.\)
+定义 \(\displaystyle \mathcal A_{\mathrm{heat}} =-\mathcal L_D, \; D(\mathcal A_{\mathrm{heat}})=D(\mathcal L_D).\)
+
+\begin{FAProposition}[C][热生成元的极大耗散性与 LP 生成]{ii09:heat-lp-generation}
+算子 \(\displaystyle\mathcal A_{\mathrm{heat}}\) 极大耗散，因此由 Lumer--Phillips 定理生成收缩 \(\displaystyle C_0\) 半群.
+\end{FAProposition}
+
+\begin{FAProof}
+对全部 \(\displaystyle x\in D(\mathcal L_D)\)，由 \(\displaystyle\mathcal L_D\) 非负， \(\displaystyle \operatorname{Re}\langle\mathcal A_{\mathrm{heat}}x,x\rangle = -\langle\mathcal L_Dx,x\rangle \leqslant0.\)
+II-06 固定内积对第一变量线性，因此\autoref{ii09:hilbert-dissipativity}可直接应用，得到 \(\displaystyle\mathcal A_{\mathrm{heat}}\) 耗散. 又 \(\displaystyle \operatorname{Ran}(\mathcal I-\mathcal A_{\mathrm{heat}}) = \operatorname{Ran}(\mathcal I+\mathcal L_D) = H.\)
+故 \(\displaystyle\mathcal A_{\mathrm{heat}}\) 极大耗散. 由\autoref{fa:LP-A01}，它生成收缩 \(\displaystyle C_0\) 半群.
+
+这条证明只从算子性质推出热演化存在. II-08 已通过谱函数演算显式构造 Dirichlet 热半群模型并识别其生成元为 \(\displaystyle-\mathcal L_D\)；两种结论相容，而本证明不把 II-08 的谱构造作为 Lumer--Phillips 生成的输入.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[II-10、II-11 与更后理论的边界]
+II-10 才正式建立 Stone 定理；本章不证明也不使用酉群与自伴 Stone 算子的对应. II-11 才建立抽象 Cauchy 问题、经典解、温和解及 Duhamel 公式/常数变易公式；本章只回答给定算子何时生成半群. 解析半群与非线性半群仍只保留为后续扩展，不在本章建立正式理论.
+\end{FAWarning}
+
+\subsection*{本章习题}\label{sec:ii09-exercises}
+
+\begin{FAExercise}[生成元与预解的平移]{ex:ii09-01}
+对固定 \(\displaystyle\omega\in\mathbb R\)，从差商定义完整证明 \(\displaystyle\mathcal A\leftrightarrow\mathcal A-\omega\mathcal I\) 的双向生成元平移，并由定义域相同直接证明 \(\displaystyle R(\mu,\mathcal A-\omega\mathcal I)=R(\mu+\omega,\mathcal A)\).
+\end{FAExercise}
+
+\begin{FAExercise}[Yosida 代数恒等式]{ex:ii09-02}
+从预解恒等式出发证明不同参数的预解交换，再证明 \(\displaystyle\mathcal J_\lambda\)、\(\displaystyle\mathcal A_\lambda\) 的全部代数表达式与两两交换性.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle\mathcal J_\mu\)的强收敛]{ex:ii09-03}
+在\autoref{fa:HY-B01}的假设下，先对 \(\displaystyle D(\mathcal B)\) 证明 \(\displaystyle\mathcal J_\mu x-x=R(\mu,\mathcal B)\mathcal Bx\)，再只用稠密性与 \(\displaystyle\|\mathcal J_\mu\|\leqslant M\) 推广到全部 \(\displaystyle X\).
+\end{FAExercise}
+
+\begin{FAExercise}[逼近生成元与指数半群界]{ex:ii09-04}
+证明 \(\displaystyle\mathcal B_\mu x=\mathcal J_\mu\mathcal Bx\) 对 \(\displaystyle x\in D(\mathcal B)\) 成立，并从指数级数逐项推出 \(\displaystyle\|\mathcal S_\mu(t)\|\leqslant M\).
+\end{FAExercise}
+
+\begin{FAExercise}[紧时间 Cauchy 恒等式]{ex:ii09-05}
+对 \(\displaystyle x\in D(\mathcal B)\) 直接微分 \(\displaystyle s\mapsto\mathcal S_\mu(t-s)\mathcal S_\nu(s)x\)，核对符号并推出\autoref{fa:HY-B01}中的积分恒等式；再用稠密性完成对全部 \(\displaystyle X\) 的紧时间一致 Cauchy 证明.
+\end{FAExercise}
+
+\begin{FAExercise}[预解算子范数导数]{ex:ii09-06}
+只用预解恒等式证明 \(\displaystyle R'(\lambda)=-R(\lambda)^2\)，再归纳证明 \(\displaystyle R^{(n-1)}(\lambda)=(-1)^{n-1}(n-1)!R(\lambda)^n\).
+\end{FAExercise}
+
+\begin{FAExercise}[预解幂 Laplace 公式]{ex:ii09-07}
+使用 II-04 的 Bochner 支配收敛逐次对 Laplace 预解积分求导，不得使用 Bochner--Fubini；随后与习题\autoref{ex:ii09-06}比较得到预解幂积分公式.
+\end{FAExercise}
+
+\begin{FAExercise}[Hille--Yosida 必要性]{ex:ii09-08}
+用分部积分归纳证明指数矩积分公式，并据此从预解幂 Laplace 公式推出 \(\displaystyle\|R(\lambda,\mathcal A)^n\|\leqslant \frac{M}{(\lambda-\omega)^n}\).
+\end{FAExercise}
+
+\begin{FAExercise}[Hille--Yosida 充分性的半群律]{ex:ii09-09}
+从 \(\displaystyle\mathcal S_\mu(t+s)=\mathcal S_\mu(t)\mathcal S_\mu(s)\) 出发，显式写出乘积极限估计，并说明为什么统一界 \(\displaystyle\|\mathcal S_\mu(t)\|\leqslant M\) 足以把半群律传到极限.
+\end{FAExercise}
+
+\begin{FAExercise}[极限半群的强连续与生成元识别]{ex:ii09-10}
+先在 \(\displaystyle D(\mathcal B)\) 上用逼近积分公式证明零点强连续，再由稠密性推广到 \(\displaystyle X\)；随后证明 \(\displaystyle\mathcal B\subseteq\mathcal G\)，并用共同预解点证明 \(\displaystyle\mathcal B=\mathcal G\).
+\end{FAExercise}
+
+\begin{FAExercise}[收缩型 Hille--Yosida]{ex:ii09-11}
+证明收缩情形中单个估计 \(\displaystyle\|\lambda R(\lambda,\mathcal A)\|\leqslant1\) 自动推出全部预解幂估计，并完整重建\autoref{ii09:hy-contraction}.
+\end{FAExercise}
+
+\begin{FAExercise}[一般 \(\displaystyle M\)的幂条件警示]{ex:ii09-12}
+从 \(\displaystyle\|R(\lambda,\mathcal A)\|\leqslant \frac{M}{\lambda-\omega}\) 只能推出常数 \(\displaystyle M^n\) 的幂估计这一事实出发，解释为什么 \(\displaystyle M>1\) 时不能把\autoref{fa:HY-A01}缩成 \(\displaystyle n=1\) 条件.
+\end{FAExercise}
+
+\begin{FAExercise}[耗散性的基本逆估计]{ex:ii09-13}
+从耗散性定义证明 \(\displaystyle\lambda\mathcal I-\mathcal A\) 单射，并证明其逆在值域上的范数至多为 \(\displaystyle\lambda^{-1}\).
+\end{FAExercise}
+
+\begin{FAExercise}[单点值域传播]{ex:ii09-14}
+在\autoref{fa:LP-B01}的假设下，先证明 \(\displaystyle\mathcal A\) 闭，再证明 \(\displaystyle\Omega=\{\lambda>0:\lambda\in\rho(\mathcal A)\}\) 相对开且相对闭；闭性证明必须用预解恒等式构造 Cauchy 序列.
+\end{FAExercise}
+
+\begin{FAExercise}[极大耗散的闭性与极大性]{ex:ii09-15}
+分别重建\autoref{fa:LP-B01}中“一个满射点推出闭性”与“没有真耗散延拓”两段证明，并指出两段分别使用了有界逆与正参数单射性.
+\end{FAExercise}
+
+\begin{FAExercise}[耗散但非极大耗散的反例]{ex:ii09-16}
+对 \(\displaystyle X=\ell^2\)、\(\displaystyle D(\mathcal A)=c_{00}\)、\(\displaystyle\mathcal A=0\)，证明定义域稠密、耗散不等式取等、正参数值域始终为 \(\displaystyle c_{00}\)，并证明算子不闭.
+\end{FAExercise}
+
+\begin{FAExercise}[Lumer--Phillips 必要性]{ex:ii09-17}
+从收缩半群的生成元闭稠密与 Laplace 预解界出发，不使用 Hille--Yosida 的充分性，直接证明生成元耗散且每个 \(\displaystyle\lambda>0\) 的值域为 \(\displaystyle X\).
+\end{FAExercise}
+
+\begin{FAExercise}[Lumer--Phillips 充分性的非循环性]{ex:ii09-18}
+从极大耗散性出发，只用单点值域条件的传播与极大性得到闭性、正半轴预解与收缩预解界，再调用已经独立证明的收缩型 Hille--Yosida 完成生成；画出该证明依赖图并验证不存在 Hille--Yosida\(\displaystyle\leftrightarrow\)Lumer--Phillips 循环.
+\end{FAExercise}
+
+\begin{FAExercise}[拟收缩的平移判据]{ex:ii09-19}
+证明 \(\displaystyle\|\mathcal T(t)\|\leqslant\mathrm{e}^{\omega t}\) 与 \(\displaystyle\mathcal A-\omega\mathcal I\) 极大耗散等价，并把该条件改写为平移后的预解判据.
+\end{FAExercise}
+
+\begin{FAExercise}[平移半群的双准则审计]{ex:ii09-20}
+只复用 II-08 的显式平移预解公式，证明 \(\displaystyle\mathcal A_{\mathrm{tr}}\) 同时满足收缩型 HY 与 LP 条件；不得重新证明平移半群的 \(\displaystyle C_0\) 性.
+\end{FAExercise}
+
+\begin{FAExercise}[热生成元的极大耗散性]{ex:ii09-21}
+从 II-06 的 \(\displaystyle\mathcal L_D\) 自伴非负性与 \(\displaystyle\operatorname{Ran}(\mathcal L_D+\mathcal I)=H\) 出发，先用第一变量线性的内积约定证明 \(\displaystyle-\mathcal L_D\) 耗散，再用 Lumer--Phillips 得到收缩半群存在.
+\end{FAExercise}
+
+\begin{FAExercise}[HY、LP 与后续章节边界]{ex:ii09-22}
+整理收缩 HY、极大耗散、拟收缩平移判据与一般 \(\displaystyle M>1\) Hille--Yosida 的逻辑关系；再明确说明 Stone 定理属于 II-10，经典解/温和解与 Duhamel 公式/常数变易公式属于 II-11，本章不得调用这些后续结果.
+\end{FAExercise}

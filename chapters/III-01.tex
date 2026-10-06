@@ -1,0 +1,533 @@
+\chapter{Banach 空间上的 Gâteaux/Fréchet 微分}\label{chap:III-01}
+\FAChapterOpening
+{建立 Banach 空间中可用于非线性分析的微分概念，严格区分逐方向极限与范数一致余项，并以 Fréchet 链式法则、高阶微分及典型非线性映射闭合第三卷的微积分入口.}
+{I-03 的 Banach 空间结构\autoref{fa:BAN-A01}；I-05 的有界线性算子与算子范数接口\autoref{fa:OP-A01}.}
+{\begin{center}
+\begin{tikzpicture}[x=1.15cm,y=1.0cm]
+\node[fa/node] (ban) at (0,0.9) {赋范/Banach空间};
+\node[fa/node] (op) at (0,-0.7) {连续/有界等价};
+\node[fa/node] (a01) at (3.2,0.1) {Fréchet微分};
+\node[fa/node] (c01) at (6.2,1.1) {Fréchet余项};
+\node[fa/node] (b01) at (6.2,-1.0) {Gâteaux/Fréchet差异};
+\node[fa/node] (a02) at (9.2,0.8) {Fréchet链式法则};
+\node[fa/node] (b02) at (9.2,-1.0) {高阶微分};
+\draw[fa/arrow] (ban) -- (a01);
+\draw[fa/arrow] (op) -- (a01);
+\draw[fa/arrow] (a01) -- (c01);
+\draw[fa/arrow] (a01) -- (b01);
+\draw[fa/arrow] (c01) -- (b01);
+\draw[fa/arrow] (a01) -- (a02);
+\draw[fa/arrow] (c01) -- (a02);
+\draw[fa/arrow] (a01) -- (b02);
+\end{tikzpicture}
+\end{center}}
+
+全章固定 \(\displaystyle\mathbb K\in\{\mathbb R,\mathbb C\}\)，除非局部明确限制到实数域，\(\displaystyle X,Y,Z\) 均为 \(\displaystyle\mathbb K\)-Banach 空间，\(\displaystyle U\subseteq X\)、\(\displaystyle V\subseteq Y\) 默认为开集. 复数域上的 Fréchet 微分必须是复线性的有界算子；实微分与复微分不作混同. 本章统一用 \(\displaystyle DF(x)\) 表示 Fréchet 微分，避免撇号记号与 Banach 对偶空间产生歧义.
+
+\section{Gâteaux 微分}\label{sec:iii01-gateaux}
+\index{Gateaux derivative@Gâteaux 微分}\index{directional derivative@方向导数}
+
+\begin{FADefinition}[B][方向导数与本书采用的 Gâteaux 微分]{iii01:gateaux-definition}
+设 \(\displaystyle F:U\to Y\)、\(\displaystyle x\in U\)、\(\displaystyle h\in X\). 若极限
+\(\displaystyle \partial_hF(x) = \lim_{t\to0}\frac{F(x+th)-F(x)}{t}\)
+存在，则称其为 \(\displaystyle F\) 在 \(\displaystyle x\) 沿 \(\displaystyle h\) 的方向导数. 这里 \(\displaystyle t\to0\) 按当前标量域取极限；在明确标为实数域的例中，\(\displaystyle t\in\mathbb R\).
+
+称 \(\displaystyle F\) 在 \(\displaystyle x\) Gâteaux 可微，当且仅当存在 \(\displaystyle A\in\mathcal B(X,Y)\)，使每个 \(\displaystyle h\in X\) 的方向导数都存在且
+\(\displaystyle \partial_hF(x)=Ah.\)
+此时记 \(\displaystyle D_GF(x)=A\).
+\end{FADefinition}
+
+这个定义把“每个方向各自有极限”与“这些极限由一个有界线性算子同时表示”分开. 有些文献把更弱的逐方向存在性也称为 Gâteaux 可微性；本书固定采用\autoref{iii01:gateaux-definition}的有界线性候选版本，以便与 Fréchet 微分进行精确比较.
+
+\begin{FAProposition}[C][Gâteaux 微分的唯一性与基本模型]{iii01:gateaux-basic}
+若 \(\displaystyle D_GF(x)\) 存在，则唯一. 若 \(\displaystyle\mathcal T\in\mathcal B(X,Y)\)、\(\displaystyle y_0\in Y\)，并定义 \(\displaystyle F(x)=\mathcal Tx+y_0\)，则 \(\displaystyle F\) 在每点 Gâteaux 可微，且 \(\displaystyle D_GF(x)=\mathcal T\).
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle A,B\in\mathcal B(X,Y)\) 都表示全部方向导数，则对任意 \(\displaystyle h\in X\)，有 \(\displaystyle Ah=\partial_hF(x)=Bh\)，故 \(\displaystyle A=B\). 对仿射映射，任取 \(\displaystyle h\in X\) 与非零且充分小的 \(\displaystyle t\in\mathbb K\)，直接计算
+\[
+\frac{F(x+th)-F(x)}{t}
+=
+\frac{\mathcal T(x+th)+y_0-\mathcal Tx-y_0}{t}
+=
+\mathcal Th.
+\]
+因此每个方向极限都等于 \(\displaystyle\mathcal Th\)，而 \(\displaystyle\mathcal T\in\mathcal B(X,Y)\)，故结论成立.\hfill\(\square\)
+\end{FAProof}
+
+Gâteaux 定义只要求对每个固定 \(\displaystyle h\) 分别令 \(\displaystyle t\to0\). 它本身不要求余项对 \(\displaystyle\|h\|=1\) 的方向集合一致，因此不能把逐方向极限自动改写成 \(\displaystyle o(\|h\|)\) 的一致余项.
+
+\begin{FATheorem}[B][Gâteaux 与 Fréchet的严格差异]{fa:DIFF-B01}
+设 \(\displaystyle F:U\to Y\)、\(\displaystyle x\in U\). 若 \(\displaystyle F\) 在 \(\displaystyle x\) Fréchet 可微，则 \(\displaystyle F\) 在 \(\displaystyle x\) Gâteaux 可微，且
+\(\displaystyle D_GF(x)=DF(x).\)
+同时 \(\displaystyle F\) 在 \(\displaystyle x\) 连续. 反之，即使采用\autoref{iii01:gateaux-definition}的有界线性 Gâteaux 定义，Gâteaux 可微性仍不推出 Fréchet 可微性，甚至不推出连续性.
+\end{FATheorem}
+
+\begin{FAProof}
+设 \(\displaystyle A=DF(x)\in\mathcal B(X,Y)\). 由 Fréchet 微分定义，存在余项 \(\displaystyle r(k)\) 使
+\(\displaystyle F(x+k)-F(x)=Ak+r(k), \; \frac{\|r(k)\|_Y}{\|k\|_X}\longrightarrow0.\)
+固定 \(\displaystyle h\in X\). 若 \(\displaystyle h=0\)，方向商恒为零. 若 \(\displaystyle h\neq0\)，令 \(\displaystyle k=th\)，则
+\(\displaystyle \frac{F(x+th)-F(x)}{t}-Ah = \frac{r(th)}{t},\)
+并且
+\[
+\left\|\frac{r(th)}{t}\right\|_Y
+=
+\frac{\|r(th)\|_Y}{\|th\|_X}\|h\|_X
+\longrightarrow0.
+\]
+故 \(\displaystyle\partial_hF(x)=Ah\) 对全部 \(\displaystyle h\) 成立，从而 \(\displaystyle D_GF(x)=A=DF(x)\).
+
+再由
+\(\displaystyle \|F(x+k)-F(x)\|_Y \leqslant \|A\|\|k\|_X+\|r(k)\|_Y\)
+以及 \(\displaystyle\|r(k)\|_Y=o(\|k\|_X)\)，右端随 \(\displaystyle k\to0\) 趋于零，所以 \(\displaystyle F\) 在 \(\displaystyle x\) 连续.
+
+为证明反向均失败，固定实映射 \(\displaystyle F:\mathbb R^2\to\mathbb R\)，令
+\[
+F(0,0)=0,
+\;
+F(x,y)=\frac{x^3y}{x^6+y^2}
+\quad
+\text{当 }(x,y)\neq(0,0).
+\]
+取任意固定方向 \(\displaystyle h=(a,b)\). 若 \(\displaystyle b=0\)，则 \(\displaystyle F(ta,0)=0\)，所以方向商恒为零. 若 \(\displaystyle b\neq0\)，则对 \(\displaystyle t\neq0\)，
+\[
+\frac{F(ta,tb)}{t}
+=
+\frac{t a^3b}{t^4a^6+b^2}
+\longrightarrow0.
+\]
+因此对每个 \(\displaystyle h\in\mathbb R^2\)，都有 \(\displaystyle\partial_hF(0)=0\). 候选方向映射就是零算子 \(\displaystyle0\in\mathcal B(\mathbb R^2,\mathbb R)\)，故 \(\displaystyle D_GF(0)=0\) 按本书的强 Gâteaux 定义成立.
+
+然而沿曲线 \(\displaystyle y=x^3\)，对每个 \(\displaystyle x\neq0\)，
+\(\displaystyle F(x,x^3) = \frac{x^6}{x^6+x^6} = \frac{1}{2}.\)
+当 \(\displaystyle x\to0\) 时，\(\displaystyle(x,x^3)\to(0,0)\)，但函数值恒为 \(\displaystyle\frac{1}{2}\neq F(0,0)\). 因而 \(\displaystyle F\) 在原点不连续，更不可能在原点 Fréchet 可微. 失败的根源正是方向极限只对固定方向成立，而不对方向一致控制.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[Gâteaux 可微不蕴含 Fréchet 可微的反例]\label{ce:CE-GATEAUX-NOT-FRECHET}
+上面实映射
+\[
+F(x,y)=
+\begin{cases}
+\dfrac{x^3y}{x^6+y^2},&(x,y)\neq(0,0),\\
+0,&(x,y)=(0,0),
+\end{cases}
+\]
+是本书典型反例 Gâteaux 可微不蕴含 Fréchet 可微的反例. 它满足 \(\displaystyle D_GF(0)=0\in\mathcal B(\mathbb R^2,\mathbb R)\)，但沿 \(\displaystyle y=x^3\) 不连续，因此不 Fréchet 可微. 该反例只用于实 Banach 空间，不作复可微性声明.
+\end{FACounterexample}
+
+\section{Fréchet 微分}\label{sec:iii01-frechet}
+\index{Frechet derivative@Fréchet 微分}\index{operator norm@算子范数!Fréchet 微分}
+
+\begin{FADefinition}[A][Fréchet 微分]{fa:DIFF-A01}
+设 \(\displaystyle F:U\to Y\)、\(\displaystyle x\in U\). 若存在 \(\displaystyle A\in\mathcal B(X,Y)\) 使
+\[
+\frac{\|F(x+h)-F(x)-Ah\|_Y}{\|h\|_X}
+\longrightarrow0
+\quad
+\text{当 }h\to0,\ h\neq0,
+\]
+则称 \(\displaystyle F\) 在 \(\displaystyle x\) Fréchet 可微，并记 \(\displaystyle DF(x)=A\). 若 \(\displaystyle\mathbb K=\mathbb C\)，这里的 \(\displaystyle A\) 必须是复线性有界算子.
+\end{FADefinition}
+
+Fréchet 微分的本质是一个有界线性主部对所有小增量同时成立，误差相对于 \(\displaystyle\|h\|_X\) 一致地消失. 这正是\autoref{fa:DIFF-B01}中固定方向极限所缺少的信息.
+
+\begin{FAProposition}[B][Fréchet 微分的唯一性、连续性与线性规则]{iii01:frechet-basic-rules}
+设 \(\displaystyle F,G:U\to Y\) 在 \(\displaystyle x\in U\) Fréchet 可微，\(\displaystyle\lambda\in\mathbb K\). 则有以下结论.
+\begin{enumerate}
+\item \(\displaystyle DF(x)\) 唯一，且 \(\displaystyle F\) 在 \(\displaystyle x\) 连续.
+\item 若 \(\displaystyle\mathcal T\in\mathcal B(X,Y)\)，则 \(\displaystyle D\mathcal T(x)=\mathcal T\)；常值映射的微分为零；仿射映射 \(\displaystyle x\mapsto\mathcal Tx+y_0\) 的微分为 \(\displaystyle\mathcal T\).
+\item \(\displaystyle D(F+G)(x)=DF(x)+DG(x)\)，且 \(\displaystyle D(\lambda F)(x)=\lambda DF(x)\).
+\item 若 \(\displaystyle Y=\mathbb K\)，则 \(\displaystyle DF(x)\in X^*\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+先证唯一性. 若 \(\displaystyle A,B\in\mathcal B(X,Y)\) 都满足\autoref{fa:DIFF-A01}，则对任意固定 \(\displaystyle u\in X\) 与充分小的非零 \(\displaystyle t\in\mathbb K\)，
+\(\displaystyle (A-B)u = \frac{A(tu)-B(tu)}{t}.\)
+当 \(\displaystyle u\neq0\) 时，由三角不等式得到
+\[
+\|(A-B)u\|_Y
+\leqslant
+\frac{\|F(x+tu)-F(x)-A(tu)\|_Y}{|t|}
++
+\frac{\|F(x+tu)-F(x)-B(tu)\|_Y}{|t|}.
+\]
+每一项都等于相应 Fréchet 商乘以 \(\displaystyle\|u\|_X\)，故 \(\displaystyle t\to0\) 时右端趋于零，从而 \(\displaystyle(A-B)u=0\). 对 \(\displaystyle u=0\) 同样成立，所以 \(\displaystyle A=B\).
+
+连续性已经在\autoref{fa:DIFF-B01}的正向证明中由余项估计得到. 对有界线性映射，
+\(\displaystyle \mathcal T(x+h)-\mathcal T(x)-\mathcal Th=0,\)
+因此微分就是 \(\displaystyle\mathcal T\). 常值映射与仿射映射情形立即由同一计算得到.
+
+写
+\(\displaystyle F(x+h)-F(x)=Ah+r_F(h), \; G(x+h)-G(x)=Bh+r_G(h),\)
+其中 \(\displaystyle A=DF(x)\)、\(\displaystyle B=DG(x)\)，且两个余项都是 \(\displaystyle o(\|h\|_X)\). 则
+\(\displaystyle (F+G)(x+h)-(F+G)(x)-(A+B)h = r_F(h)+r_G(h),\)
+其范数除以 \(\displaystyle\|h\|_X\) 后趋于零. 对标量乘法，\(\displaystyle\lambda F\) 的余项就是 \(\displaystyle\lambda r_F(h)\)，除以 \(\displaystyle\|h\|_X\) 后同样趋于零. 最后若 \(\displaystyle Y=\mathbb K\)，则定义本身给 \(\displaystyle DF(x)\in\mathcal B(X,\mathbb K)=X^*\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[B][\(\displaystyle C^1\) 与算子范数拓扑]{iii01:c1-definition}
+若 \(\displaystyle F:U\to Y\) 在每个 \(\displaystyle x\in U\) Fréchet 可微，并且
+\(\displaystyle DF:U\to\mathcal B(X,Y)\)
+关于 \(\displaystyle\mathcal B(X,Y)\) 的算子范数连续，则记 \(\displaystyle F\in C^1(U,Y)\). 这里的连续性是微分映射的算子范数连续性，不是只要求 \(\displaystyle F\) 本身连续，也不是 Gâteaux 微分的逐方向连续性.
+\end{FADefinition}
+
+\begin{FAProposition}[C][Fréchet 余项演算]{fa:DIFF-C01}
+设 \(\displaystyle F:U\to Y\) 在 \(\displaystyle x\in U\) Fréchet 可微，\(\displaystyle A=DF(x)\). 写
+\(\displaystyle F(x+h)=F(x)+Ah+r_F(h).\)
+则以下工具成立.
+\begin{enumerate}
+\item \(\displaystyle r_F(h)=o(\|h\|_X)\).
+\item 存在 \(\displaystyle\delta>0\) 与 \(\displaystyle C<\infty\)，使 \(\displaystyle0<\|h\|_X<\delta\) 时
+\(\displaystyle \|F(x+h)-F(x)\|_Y\leqslant C\|h\|_X,\)
+并可取 \(\displaystyle C=\|A\|+1\).
+\item 若 \(\displaystyle k(h)=Ah+r(h)\) 且 \(\displaystyle r(h)=o(\|h\|_X)\)，则 \(\displaystyle\|k(h)\|_Y=O(\|h\|_X)\)，并且 \(\displaystyle k(h)\to0\).
+\item 若 \(\displaystyle s(0)=0\)、\(\displaystyle s(k)=o(\|k\|_Y)\)，并且 \(\displaystyle k(h)=O(\|h\|_X)\)、\(\displaystyle k(h)\to0\)，则 \(\displaystyle s(k(h))=o(\|h\|_X)\).
+\item 若 \(\displaystyle\mathcal B\in\mathcal B(Y,Z)\) 且 \(\displaystyle r(h)=o(\|h\|_X)\)，则 \(\displaystyle\mathcal Br(h)=o(\|h\|_X)\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+第一项就是\autoref{fa:DIFF-A01}的余项重写. 因 \(\displaystyle\frac{\|r_F(h)\|_Y}{\|h\|_X}\to0\)，可取 \(\displaystyle\delta>0\) 使 \(\displaystyle0<\|h\|_X<\delta\) 时 \(\displaystyle\|r_F(h)\|_Y\leqslant\|h\|_X\). 因而
+\[
+\|F(x+h)-F(x)\|_Y
+\leqslant
+\|A\|\|h\|_X+\|r_F(h)\|_Y
+\leqslant
+(\|A\|+1)\|h\|_X,
+\]
+得到第二项.
+
+对第三项，同样可在充分小的 \(\displaystyle h\) 上令 \(\displaystyle\|r(h)\|_Y\leqslant\|h\|_X\)，于是
+\(\displaystyle \|k(h)\|_Y \leqslant (\|A\|+1)\|h\|_X.\)
+这同时给出 \(\displaystyle O(\|h\|_X)\) 与 \(\displaystyle k(h)\to0\).
+
+对第四项，存在 \(\displaystyle M<\infty\) 与邻域使 \(\displaystyle\|k(h)\|_Y\leqslant M\|h\|_X\). 任取 \(\displaystyle\varepsilon>0\). 由 \(\displaystyle s(k)=o(\|k\|_Y)\)，存在 \(\displaystyle\eta>0\) 使 \(\displaystyle0<\|k\|_Y<\eta\) 时 \(\displaystyle\|s(k)\|_Z\leqslant\varepsilon\|k\|_Y\). 又因 \(\displaystyle k(h)\to0\)，对充分小的 \(\displaystyle h\)，若 \(\displaystyle k(h)\neq0\)，则
+\[
+\|s(k(h))\|_Z
+\leqslant
+\varepsilon\|k(h)\|_Y
+\leqslant
+\varepsilon M\|h\|_X;
+\]
+若 \(\displaystyle k(h)=0\)，则 \(\displaystyle s(k(h))=s(0)=0\). 因 \(\displaystyle\varepsilon\) 任意，故 \(\displaystyle s(k(h))=o(\|h\|_X)\).
+
+最后，
+\[
+\frac{\|\mathcal Br(h)\|_Z}{\|h\|_X}
+\leqslant
+\|\mathcal B\|\frac{\|r(h)\|_Y}{\|h\|_X}
+\longrightarrow0,
+\]
+得到第五项.\hfill\(\square\)
+\end{FAProof}
+
+\section{链式法则}\label{sec:iii01-chain-rule}
+\index{chain rule@链式法则!Banach 空间}
+
+\begin{FATheorem}[A][Banach 空间 Fréchet 链式法则]{fa:DIFF-A02}
+设 \(\displaystyle X,Y,Z\) 为 \(\displaystyle\mathbb K\)-Banach 空间，\(\displaystyle U\subseteq X\)、\(\displaystyle V\subseteq Y\) 开，\(\displaystyle F:U\to Y\)、\(\displaystyle G:V\to Z\)，并且 \(\displaystyle F(U)\subseteq V\). 若 \(\displaystyle F\) 在 \(\displaystyle x\in U\) Fréchet 可微，且 \(\displaystyle G\) 在 \(\displaystyle F(x)\) Fréchet 可微，则 \(\displaystyle G\circ F\) 在 \(\displaystyle x\) Fréchet 可微，且
+\(\displaystyle D(G\circ F)(x) = DG(F(x))\circ DF(x).\)
+\end{FATheorem}
+
+\begin{FAProof}
+令 \(\displaystyle A=DF(x)\in\mathcal B(X,Y)\)、\(\displaystyle B=DG(F(x))\in\mathcal B(Y,Z)\). 对充分小的 \(\displaystyle h\)，写
+\(\displaystyle F(x+h)-F(x) = Ah+r(h), \; r(h)=o(\|h\|_X).\)
+记 \(\displaystyle k(h)=Ah+r(h)\). 由\autoref{fa:DIFF-C01}第三项，\(\displaystyle\|k(h)\|_Y=O(\|h\|_X)\) 且 \(\displaystyle k(h)\to0\). 因 \(\displaystyle F(U)\subseteq V\)，复合对 \(\displaystyle x+h\in U\) 合法；而 \(\displaystyle V\) 开与 \(\displaystyle k(h)\to0\) 也保证 \(\displaystyle F(x)+k(h)\) 留在 \(\displaystyle F(x)\) 的某个局部 \(\displaystyle V\)-邻域.
+
+对 \(\displaystyle G\) 在 \(\displaystyle F(x)\) 的 Fréchet 展开，存在 \(\displaystyle s(k)=o(\|k\|_Y)\) 且 \(\displaystyle s(0)=0\)，使
+\(\displaystyle G(F(x)+k)-G(F(x)) = Bk+s(k).\)
+代入 \(\displaystyle k=k(h)\)，得到
+\(\displaystyle (G\circ F)(x+h)-(G\circ F)(x) =B(Ah+r(h))+s(Ah+r(h)) =BAh+Br(h)+s(Ah+r(h)).\)
+由\autoref{fa:DIFF-C01}第五项，\(\displaystyle Br(h)=o(\|h\|_X)\). 又由第三、第四项，\(\displaystyle k(h)=Ah+r(h)=O(\|h\|_X)\)、\(\displaystyle k(h)\to0\)，从而
+\(\displaystyle s(Ah+r(h)) = o(\|h\|_X).\)
+因此总余项 \(\displaystyle Br(h)+s(Ah+r(h))\) 是 \(\displaystyle o(\|h\|_X)\). 因 \(\displaystyle BA=B\circ A\in\mathcal B(X,Z)\)，\autoref{fa:DIFF-A01}给
+\(\displaystyle D(G\circ F)(x)=BA=DG(F(x))\circ DF(x).\)
+整个证明只使用 Fréchet 余项演算，没有调用任何有限维坐标微分的替代论证或后续逆函数定理.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][\(\displaystyle C^1\) 复合]{iii01:c1-composition}
+在\autoref{fa:DIFF-A02}的全局定义域条件下，若 \(\displaystyle F\in C^1(U,Y)\) 且 \(\displaystyle G\in C^1(V,Z)\)，则 \(\displaystyle G\circ F\in C^1(U,Z)\).
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{fa:DIFF-A02}，对每个 \(\displaystyle x\in U\)，
+\(\displaystyle D(G\circ F)(x) = DG(F(x))DF(x).\)
+只需证明右端在算子范数中连续. 固定 \(\displaystyle x\in U\)，令 \(\displaystyle x_n\to x\). 因 \(\displaystyle F\in C^1\)，特别地 \(\displaystyle F\) 连续，所以 \(\displaystyle F(x_n)\to F(x)\). 又因 \(\displaystyle DG:V\to\mathcal B(Y,Z)\) 与 \(\displaystyle DF:U\to\mathcal B(X,Y)\) 都在算子范数中连续，
+\(\displaystyle DG(F(x_n))\to DG(F(x)), \; DF(x_n)\to DF(x).\)
+第一列因此在算子范数中有界. 记 \(\displaystyle B_n=DG(F(x_n))\)、\(\displaystyle B=DG(F(x))\)、\(\displaystyle A_n=DF(x_n)\)、\(\displaystyle A=DF(x)\)，则
+\(\displaystyle \|B_nA_n-BA\| \leqslant \|B_n\|\|A_n-A\|+\|B_n-B\|\|A\| \longrightarrow0.\)
+故微分映射算子范数连续.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][平移与有界双线性映射的微分]{iii01:bilinear-derivative}
+设 \(\displaystyle a\in X\). 平移 \(\displaystyle\tau_a(x)=x+a\) 满足 \(\displaystyle D\tau_a(x)=\mathcal I_X\). 再设 \(\displaystyle E_1,E_2,Y\) 为 Banach 空间，\(\displaystyle B:E_1\times E_2\to Y\) 为有界双线性映射，并在 \(\displaystyle E_1\times E_2\) 上取最大值范数. 则映射 \(\displaystyle\mathcal P(x,y)=B(x,y)\) Fréchet 可微，且
+\(\displaystyle D\mathcal P(x,y)(h,k) = B(h,y)+B(x,k).\)
+\end{FAProposition}
+
+\begin{FAProof}
+平移的增量恒等式为 \(\displaystyle\tau_a(x+h)-\tau_a(x)=h\)，余项为零. 对双线性映射，
+\[
+\mathcal P(x+h,y+k)-\mathcal P(x,y) =B(x+h,y+k)-B(x,y) =B(h,y)+B(x,k)+B(h,k).
+\]
+候选主部对 \(\displaystyle(h,k)\) 线性，并满足
+\(\displaystyle \|B(h,y)+B(x,k)\|_Y \leqslant \|B\|(\|y\|\|h\|+\|x\|\|k\|),\)
+故为有界线性算子. 若 \(\displaystyle\rho=\max\{\|h\|,\|k\|\}\)，则余项满足 \(\displaystyle\|B(h,k)\|_Y\leqslant\|B\|\rho^2\)，故除以 \(\displaystyle\rho\) 后趋于零.\hfill\(\square\)
+\end{FAProof}
+
+有界双线性复合立即给出通常的乘积法则结构：若 \(\displaystyle f,g\) 是取值于适当 Banach 空间的 Fréchet 可微映射，而 \(\displaystyle B\) 是有界双线性配对，则 \(\displaystyle x\mapsto B(f(x),g(x))\) 的微分由\autoref{fa:DIFF-A02}与\autoref{iii01:bilinear-derivative}得到. 本章不由此进入逆函数定理.
+
+\section{高阶微分}\label{sec:iii01-higher}
+\index{higher derivative@高阶微分}\index{multilinear map@多线性映射}
+
+\begin{FADefinition}[B][有界多线性映射与高阶 Fréchet 微分]{iii01:higher-definition}
+对整数 \(\displaystyle m\geqslant1\)，记 \(\displaystyle\mathcal B^m(X,Y)\) 为所有有界 \(\displaystyle m\)-线性映射 \(\displaystyle T:X^m\to Y\) 构成的 Banach 空间，并定义
+\[
+\|T\|
+=
+\sup\{\|T(h_1,\dots,h_m)\|_Y:\ \|h_j\|_X\leqslant1,\ 1\leqslant j\leqslant m\}.
+\]
+约定 \(\displaystyle\mathcal B^1(X,Y)=\mathcal B(X,Y)\). 若 \(\displaystyle F:U\to Y\) 已有 \(\displaystyle DF:U\to\mathcal B(X,Y)\)，并且 \(\displaystyle DF\) 在 \(\displaystyle x\) Fréchet 可微，则
+\(\displaystyle D^2F(x)=D(DF)(x)\in\mathcal B\bigl(X,\mathcal B(X,Y)\bigr).\)
+通过典型的柯里化识别，把它视为有界双线性映射 \(\displaystyle D^2F(x):X\times X\to Y\). 递归地定义 \(\displaystyle D^mF\). 若 \(\displaystyle D^jF\) 对 \(\displaystyle1\leqslant j\leqslant m\) 存在且相应微分映射在各自算子范数中连续，则记 \(\displaystyle F\in C^m(U,Y)\).
+\end{FADefinition}
+
+\begin{FATheorem}[B][若干高阶微分性质]{fa:DIFF-B02}
+设 \(\displaystyle X,Y\) 为 Banach 空间，\(\displaystyle m\geqslant2\).
+\begin{enumerate}
+\item 每个 \(\displaystyle T\in\mathcal B^m(X,Y)\) 通过柯里化定义
+\(\displaystyle \widehat T(h_1)(h_2,\dots,h_m) = T(h_1,\dots,h_m),\)
+得到 \(\displaystyle\widehat T\in\mathcal B\bigl(X,\mathcal B^{m-1}(X,Y)\bigr)\)，且 \(\displaystyle\|\widehat T\|=\|T\|\).
+\item 每个有界 \(\displaystyle m\)-线性映射 \(\displaystyle T:X^m\to Y\) 都连续，并满足
+\(\displaystyle \|T(h_1,\dots,h_m)\|_Y \leqslant \|T\|\prod_{j=1}^m\|h_j\|_X.\)
+\item 若 \(\displaystyle B:X\times X\to Y\) 为有界双线性映射，\(\displaystyle Q(x)=B(x,x)\)，则 \(\displaystyle Q\) Fréchet 可微，且
+\(\displaystyle DQ(x)h = B(h,x)+B(x,h).\)
+若 \(\displaystyle B\) 对称，则 \(\displaystyle DQ(x)h=2B(x,h)\)，并且 \(\displaystyle D^2Q(x)[h,k]=2B(h,k)\).
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+先证柯里化.\par\noindent 对固定 \(\displaystyle h_1\in X\)，由有界多线性估计，\(\displaystyle(h_2,\dots,h_m)\mapsto T(h_1,h_2,\dots,h_m)\) 属于 \(\displaystyle\mathcal B^{m-1}(X,Y)\)，并且
+\(\displaystyle \|\widehat T(h_1)\| \leqslant \|T\|\|h_1\|_X.\)
+因此 \(\displaystyle\widehat T\) 线性且有界，\(\displaystyle\|\widehat T\|\leqslant\|T\|\). 反过来，对任意 \(\displaystyle\|h_j\|_X\leqslant1\)，
+\[
+\|T(h_1,\dots,h_m)\|_Y
+=
+\|\widehat T(h_1)(h_2,\dots,h_m)\|_Y
+\leqslant
+\|\widehat T\|,
+\]
+取上确界得 \(\displaystyle\|T\|\leqslant\|\widehat T\|\)，故二者相等.
+
+第二项的估计先对所有非零 \(\displaystyle h_j\) 写 \(\displaystyle h_j=\|h_j\|_Xu_j\) 且 \(\displaystyle\|u_j\|_X=1\)，由多线性性得
+\[
+T(h_1,\dots,h_m)
+=
+\left(\prod_{j=1}^m\|h_j\|_X\right)T(u_1,\dots,u_m),
+\]
+从而得到所列不等式；若某个 \(\displaystyle h_j=0\)，两边同为零. 为证联合连续性，固定 \(\displaystyle(a_1,\dots,a_m)\) 并令 \(\displaystyle h_j\to0\). 将
+\(\displaystyle T(a_1+h_1,\dots,a_m+h_m)-T(a_1,\dots,a_m)\)
+按多线性性展开为所有非空指标集合对应的有限和. 每一项至少含一个 \(\displaystyle h_j\)，其余因子在小邻域中有界，因此每项范数都趋于零，有限和也趋于零.
+
+对第三项，
+\(\displaystyle Q(x+h)-Q(x) = B(h,x)+B(x,h)+B(h,h).\)
+前两项关于 \(\displaystyle h\) 线性且有界，余项满足 \(\displaystyle\|B(h,h)\|_Y\leqslant\|B\|\|h\|_X^2=o(\|h\|_X)\). 因而微分公式成立. 若 \(\displaystyle B\) 对称，则两项相等，得到 \(\displaystyle DQ(x)h=2B(x,h)\). 此时微分映射 \(\displaystyle x\mapsto DQ(x)\) 对增量 \(\displaystyle k\) 的变化为有界算子 \(\displaystyle h\mapsto2B(k,h)\)，且没有更高余项，所以
+\(\displaystyle D^2Q(x)[k,h]=2B(k,h).\)
+换名即得到定理中的 \(\displaystyle D^2Q(x)[h,k]=2B(h,k)\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[二阶微分的对称性边界]
+本章不把 Schwarz 对称性作为\autoref{fa:DIFF-B02}的核心结论. 对 \(\displaystyle F\in C^2(U,Y)\) 的二阶 Fréchet 微分可以在额外证明下得到对称性，但不得从“二阶导数存在”这一句话无条件省略证明. 该结论在真正需要时再建立，不作为本章后续例子的隐藏前置.
+\end{FARemark}
+
+\begin{FAExample}[实 Hilbert 范数平方]\label{iii01:norm-square}
+令 \(\displaystyle H\) 为实 Hilbert 空间，并定义 \(\displaystyle N:H\to\mathbb R\)、\(\displaystyle N(x)=\|x\|^2\). 对任意 \(\displaystyle x,h\in H\)，
+\(\displaystyle N(x+h)-N(x)-2\langle x,h\rangle = \|h\|^2.\)
+因此
+\(\displaystyle DN(x)h=2\langle x,h\rangle, \; D^2N(x)[h,k]=2\langle h,k\rangle.\)
+第一式的余项除以 \(\displaystyle\|h\|\) 后等于 \(\displaystyle\|h\|\to0\)，第二式由\autoref{fa:DIFF-B02}对对称双线性形式 \(\displaystyle B(x,y)=\langle x,y\rangle\) 得到. 本例只声明实 Fréchet 微积分. 对复 Hilbert 空间，若把底层向量空间视为实 Banach 空间，可讨论相应实微分；本章不把上述公式声称为复 Fréchet 微分.
+\end{FAExample}
+
+\section{非线性映射}\label{sec:iii01-nonlinear-maps}
+\index{Nemytskii operator@Nemytskii 算子}\index{energy functional@能量泛函!线性化}
+
+有界二次映射与多项式映射可由\autoref{fa:DIFF-B02}、\autoref{iii01:bilinear-derivative}和\autoref{fa:DIFF-A02}逐层构造. 本节只展开两个后续会反复使用的模型：\(\displaystyle C(K;\mathbb R)\) 上的选定的 Nemytskii 算子与不依赖变分存在性理论的二次能量的线性化.
+
+\begin{FATheorem}[B][Nemytskii 算子作用于\(\displaystyle C(K;\mathbb R)\)]{iii01:nemytskii-ck}
+设 \(\displaystyle K\) 为非空紧度量空间，\(\displaystyle\varphi\in C^2(\mathbb R)\)，并令 \(\displaystyle X=C(K;\mathbb R)\) 配上确界范数. 定义
+\(\displaystyle \mathcal N_{\varphi}:X\to X, \; (\mathcal N_{\varphi}u)(t)=\varphi(u(t)).\)
+则 \(\displaystyle\mathcal N_{\varphi}\) 良定义且属于 \(\displaystyle C^1(X,X)\)，并有
+\(\displaystyle D\mathcal N_{\varphi}(u)h = (\varphi'\circ u)h.\)
+相应乘子的算子范数等于 \(\displaystyle\|\varphi'\circ u\|_{\infty}\). 此外二阶 Fréchet 微分存在，且
+\(\displaystyle D^2\mathcal N_{\varphi}(u)[h,k] = (\varphi''\circ u)hk.\)
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle u\in C(K;\mathbb R)\)，则 \(\displaystyle\varphi\circ u\) 连续，所以 \(\displaystyle\mathcal N_{\varphi}u\in X\)，从而映射良定义.
+
+固定 \(\displaystyle u\in X\). 因 \(\displaystyle u(K)\subset\mathbb R\) 紧，集合
+\(\displaystyle E= \{s\in\mathbb R:\operatorname{dist}(s,u(K))\leqslant1\}\)
+也是紧. \(\displaystyle\varphi'\) 在 \(\displaystyle E\) 上一致地连续. 设 \(\displaystyle\|h\|_{\infty}\leqslant1\). 对每个 \(\displaystyle t\in K\)，一维中值定理给某个位于 \(\displaystyle u(t)\) 与 \(\displaystyle u(t)+h(t)\) 之间的 \(\displaystyle\xi_t\in E\)，使
+\[
+\varphi(u(t)+h(t))-\varphi(u(t))-\varphi'(u(t))h(t)
+=
+\bigl(\varphi'(\xi_t)-\varphi'(u(t))\bigr)h(t).
+\]
+定义 \(\displaystyle\omega(\rho)=\sup\{|\varphi'(a)-\varphi'(b)|:a,b\in E,\ |a-b|\leqslant\rho\}\). 则 \(\displaystyle\omega(\rho)\to0\) 当 \(\displaystyle\rho\to0\)，并且
+\[
+\|\mathcal N_{\varphi}(u+h)-\mathcal N_{\varphi}(u)-(\varphi'\circ u)h\|_{\infty}
+\leqslant
+\omega(\|h\|_{\infty})\|h\|_{\infty}.
+\]
+故 Fréchet 余项商趋于零.
+
+乘法算子 \(\displaystyle M_u:h\mapsto(\varphi'\circ u)h\) 满足
+\(\displaystyle \|M_uh\|_{\infty} \leqslant \|\varphi'\circ u\|_{\infty}\|h\|_{\infty},\)
+所以 \(\displaystyle M_u\in\mathcal B(X,X)\) 且 \(\displaystyle\|M_u\|\leqslant\|\varphi'\circ u\|_{\infty}\). 取常值函数 \(\displaystyle h\equiv1\)，有 \(\displaystyle\|h\|_{\infty}=1\) 且 \(\displaystyle\|M_uh\|_{\infty}=\|\varphi'\circ u\|_{\infty}\)，故等号成立.
+
+再证微分映射的算子范数连续性. 固定 \(\displaystyle u\) 并令 \(\displaystyle v\to u\) 于上确界范数. 对 \(\displaystyle\|v-u\|_{\infty}\leqslant1\)，\(\displaystyle u(K)\cup v(K)\subseteq E\). 因此
+\[
+\|D\mathcal N_{\varphi}(v)-D\mathcal N_{\varphi}(u)\|
+=
+\|\varphi'\circ v-\varphi'\circ u\|_{\infty}
+\leqslant
+\omega(\|v-u\|_{\infty})
+\longrightarrow0.
+\]
+故 \(\displaystyle\mathcal N_{\varphi}\in C^1(X,X)\).
+
+最后把同一已证明的一阶论证应用于 \(\displaystyle\varphi'\in C^1(\mathbb R)\). 对小 \(\displaystyle k\in X\)，
+\[
+\|\varphi'\circ(u+k)-\varphi'\circ u-(\varphi''\circ u)k\|_{\infty}
+=
+o(\|k\|_{\infty}).
+\]
+对任意 \(\displaystyle h\in X\)，定义
+\(\displaystyle L_u(k)h = (\varphi''\circ u)kh.\)
+由 \(\displaystyle\|L_u(k)h\|_{\infty}\leqslant\|\varphi''\circ u\|_{\infty}\|k\|_{\infty}\|h\|_{\infty}\)，\(\displaystyle k\mapsto L_u(k)\) 属于 \(\displaystyle\mathcal B(X,\mathcal B(X,X))\). 且
+\[
+\frac{\|D\mathcal N_{\varphi}(u+k)-D\mathcal N_{\varphi}(u)-L_u(k)\|_{\mathcal B(X,X)}}{\|k\|_{\infty}}
+=
+\frac{\|\varphi'\circ(u+k)-\varphi'\circ u-(\varphi''\circ u)k\|_{\infty}}{\|k\|_{\infty}}
+\longrightarrow0.
+\]
+因此 \(\displaystyle D^2\mathcal N_{\varphi}(u)[k,h]=(\varphi''\circ u)kh\)，交换变量名称即得定理中公式；同时有界双线性估计为
+\[
+\|D^2\mathcal N_{\varphi}(u)[h,k]\|_{\infty}
+\leqslant
+\|\varphi''\circ u\|_{\infty}\|h\|_{\infty}\|k\|_{\infty}.\]\hfill\(\square\)
+
+
+\end{FAProof}
+
+这一模型只在 \(\displaystyle C(K;\mathbb R)\) 上建立. 本章不声称一般 \(\displaystyle L^p\to L^q\) Nemytskii 可微性，不引入增长指数，也不调用 Sobolev 嵌入或未来偏微分方程正则性.
+
+\begin{FAApplication}[能量泛函线性化]\label{iii01:energy-linearization}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle B:X\times X\to\mathbb R\) 为有界对称双线性形式，\(\displaystyle\ell\in X^*\)，并定义
+\(\displaystyle J(x) = \frac{1}{2}B(x,x)-\ell(x).\)
+由\autoref{fa:DIFF-B02}与线性规则，
+\(\displaystyle DJ(x)h = B(x,h)-\ell(h).\)
+进一步，\(\displaystyle x\mapsto DJ(x)\in X^*\) 的增量满足
+\(\displaystyle (DJ(x+k)-DJ(x))h = B(k,h),\)
+且 \(\displaystyle h\mapsto B(k,h)\) 的算子范数不超过 \(\displaystyle\|B\|\|k\|\). 因而
+\(\displaystyle D^2J(x)[k,h] = B(k,h),\)
+即 \(\displaystyle D^2J(x)[h,k]=B(h,k)\). 这里仅完成微分与线性化计算，不讨论弱下半连续性、强制性、极小化序列、直接法或临界点存在性.
+\end{FAApplication}
+
+\subsection{后续接口与高级边界}
+本章建立的 \(\displaystyle C^1\) 微积分与\autoref{fa:DIFF-A02}是下一章 Banach 空间逆/隐函数理论的微分接口；后续关于能量泛函的凸性、弱下半连续性与强制性属于 III-06；Palais--Smale 与临界点紧性的微分入口属于 III-09. 这些都只是延后结果型前向链接，本章不陈述或证明对应未来定理.
+
+Banach 流形或更一般 Fréchet 流形的微分需要与坐标图相容的微分. 一般 Fréchet 空间上的逆函数理论与 Banach 情形不同，Nash--Moser 还需要驯服结构. 这些内容均保留为高级接口，Nash--Moser 只属于后续的驯顺 Fréchet 与 Nash--Moser 专题，不在 III-01 建立形式化理论.
+
+\subsection*{本章习题}\label{sec:iii01-exercises}
+
+\begin{FAExercise}[方向导数]{ex:iii01-01}
+设 \(\displaystyle F:\mathbb R^2\to\mathbb R\)、\(\displaystyle F(x,y)=x^2y+y^3\). 直接由方向商计算 \(\displaystyle\partial_hF(x,y)\)，并检查所得方向映射关于 \(\displaystyle h\) 线性且连续.
+\end{FAExercise}
+
+\begin{FAExercise}[Gâteaux 唯一性]{ex:iii01-02}
+不引用\autoref{iii01:gateaux-basic}的证明，独立证明若 \(\displaystyle A,B\in\mathcal B(X,Y)\) 都表示同一点的全部方向导数，则 \(\displaystyle A=B\).
+\end{FAExercise}
+
+\begin{FAExercise}[线性映射的 Gâteaux 微分]{ex:iii01-03}
+设 \(\displaystyle\mathcal T\in\mathcal B(X,Y)\). 从定义证明 \(\displaystyle D_G\mathcal T(x)=\mathcal T\)，并说明有界性在本书 Gâteaux 定义中的算子语义作用.
+\end{FAExercise}
+
+\begin{FAExercise}[Fréchet 唯一性]{ex:iii01-04}
+设 \(\displaystyle A,B\in\mathcal B(X,Y)\) 都满足\autoref{fa:DIFF-A01}. 沿 \(\displaystyle h=tu\) 缩放，完整证明 \(\displaystyle A=B\).
+\end{FAExercise}
+
+\begin{FAExercise}[Fréchet 推出连续性]{ex:iii01-05}
+只从 \(\displaystyle F(x+h)-F(x)=DF(x)h+r(h)\) 与 \(\displaystyle r(h)=o(\|h\|)\) 推出 \(\displaystyle F(x+h)\to F(x)\)，并给出一个基点处的局部 Lipschitz 估计.
+\end{FAExercise}
+
+\begin{FAExercise}[Fréchet 推出 Gâteaux]{ex:iii01-06}
+固定 \(\displaystyle h\neq0\)，把 Fréchet 余项代入 \(\displaystyle th\)，严格证明 \(\displaystyle\partial_hF(x)=DF(x)h\). 分别说明 \(\displaystyle\mathbb R\) 与 \(\displaystyle\mathbb C\) 标量参数的含义.
+\end{FAExercise}
+
+\begin{FAExercise}[完整验证典型反例]{ex:iii01-07}
+对 Gâteaux 可微不蕴含 Fréchet 可微的反例完整处理 \(\displaystyle b=0\) 与 \(\displaystyle b\neq0\) 两种方向，证明 \(\displaystyle D_GF(0)=0\)，再沿 \(\displaystyle y=x^3\) 证明函数在原点不连续.
+\end{FAExercise}
+
+\begin{FAExercise}[余项的 \(\displaystyle O/o\) 微积分]{ex:iii01-08}
+逐项重建\autoref{fa:DIFF-C01}的第三、第四、第五项，并明确第四项中为什么必须同时知道 \(\displaystyle k(h)\to0\).
+\end{FAExercise}
+
+\begin{FAExercise}[链式法则的第一余项]{ex:iii01-09}
+在\autoref{fa:DIFF-A02}的记号下，从 \(\displaystyle r(h)=o(\|h\|)\) 证明 \(\displaystyle Br(h)=o(\|h\|)\)，不得省略算子范数估计.
+\end{FAExercise}
+
+\begin{FAExercise}[链式法则的第二余项]{ex:iii01-10}
+令 \(\displaystyle k(h)=Ah+r(h)\). 先证明 \(\displaystyle k(h)=O(\|h\|)\) 与 \(\displaystyle k(h)\to0\)，再由 \(\displaystyle s(k)=o(\|k\|)\) 推出 \(\displaystyle s(k(h))=o(\|h\|)\).
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建 Banach 空间 Fréchet 链式法则]{ex:iii01-11}
+不写“标准链式法则”，从两个 Fréchet 展开开始完整重建\autoref{fa:DIFF-A02}，并同时核对复合定义域与有界算子类型.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle C^1\) 复合]{ex:iii01-12}
+设 \(\displaystyle F\in C^1(U,Y)\)、\(\displaystyle G\in C^1(V,Z)\)、\(\displaystyle F(U)\subseteq V\). 使用算子乘法估计证明 \(\displaystyle x\mapsto DG(F(x))DF(x)\) 算子范数连续.
+\end{FAExercise}
+
+\begin{FAExercise}[有界双线性微分]{ex:iii01-13}
+对 \(\displaystyle\mathcal P(x,y)=B(x,y)\)，以乘积空间上的最大值范数独立证明
+\(\displaystyle D\mathcal P(x,y)(h,k)=B(h,y)+B(x,k),\)
+并把 \(\displaystyle B(h,k)\) 的余项估计写到 Fréchet 商的层面.
+\end{FAExercise}
+
+\begin{FAExercise}[二次映射微分]{ex:iii01-14}
+设 \(\displaystyle Q(x)=B(x,x)\) 且 \(\displaystyle B\) 不必对称. 证明 \(\displaystyle DQ(x)h=B(h,x)+B(x,h)\)，再给出对称情形的简化.
+\end{FAExercise}
+
+\begin{FAExercise}[范数平方一阶导数]{ex:iii01-15}
+在实 Hilbert 空间中直接由内积展开证明 \(\displaystyle DN(x)h=2\langle x,h\rangle\)，并核对该泛函属于 \(\displaystyle H^*\).
+\end{FAExercise}
+
+\begin{FAExercise}[范数平方二阶导数]{ex:iii01-16}
+从 \(\displaystyle x\mapsto DN(x)\) 的算子范数增量直接计算 \(\displaystyle D^2N(x)[h,k]=2\langle h,k\rangle\)，并说明为什么本题只作实微分声明.
+\end{FAExercise}
+
+\begin{FAExercise}[高阶微分的柯里化]{ex:iii01-17}
+对 \(\displaystyle T\in\mathcal B^3(X,Y)\)，构造 \(\displaystyle\widehat T\in\mathcal B(X,\mathcal B^2(X,Y))\)，证明 \(\displaystyle\|\widehat T\|=\|T\|\)，并写出逆柯里化.
+\end{FAExercise}
+
+\begin{FAExercise}[Nemytskii的良定义与乘子]{ex:iii01-18}
+设 \(\displaystyle K\) 紧、\(\displaystyle\varphi\in C^1(\mathbb R)\). 证明 \(\displaystyle\mathcal N_{\varphi}:C(K;\mathbb R)\to C(K;\mathbb R)\) 良定义，并证明乘法算子 \(\displaystyle h\mapsto(\varphi'\circ u)h\) 的范数等于 \(\displaystyle\|\varphi'\circ u\|_{\infty}\).
+\end{FAExercise}
+
+\begin{FAExercise}[Nemytskii Fréchet 余项]{ex:iii01-19}
+固定 \(\displaystyle u\in C(K;\mathbb R)\)，构造 \(\displaystyle u(K)\) 的紧单位邻域，并用 \(\displaystyle\varphi'\) 的一致连续性证明 Fréchet 余项商一致地趋于零.
+\end{FAExercise}
+
+\begin{FAExercise}[Nemytskii的 \(\displaystyle C^1\)]{ex:iii01-20}
+证明 \(\displaystyle u_n\to u\) 于上确界范数时
+\(\displaystyle \|D\mathcal N_{\varphi}(u_n)-D\mathcal N_{\varphi}(u)\| \longrightarrow0,\)
+并指出为什么紧值域邻域是把逐点连续性提升到一致估计的关键.
+\end{FAExercise}
+
+\begin{FAExercise}[能量导数与 Hessian 算子]{ex:iii01-21}
+对 \(\displaystyle J(x)=\frac{1}{2}B(x,x)-\ell(x)\)，其中 \(\displaystyle B\) 有界对称实双线性、\(\displaystyle\ell\in X^*\)，独立计算 \(\displaystyle DJ(x)\) 与 \(\displaystyle D^2J(x)\)，并核对每一步的算子空间.
+\end{FAExercise}
+
+\begin{FAExercise}[后续边界]{ex:iii01-22}
+分别说明为什么本章的 Fréchet 微积分本身不能直接推出 Banach 逆函数定理、变分直接法、Palais--Smale 临界点存在性或 Nash--Moser 定理. 对每项只指出尚缺的形式化工具，不得调用未来定理补证明.
+\end{FAExercise}

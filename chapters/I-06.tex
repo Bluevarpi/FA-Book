@@ -1,0 +1,614 @@
+\chapter{Hahn--Banach与分离}\label{chap:I-06}
+\FAChapterOpening
+{从纯代数次线性支配出发证明实Hahn--Banach延拓；得到实、复赋范空间上的范数保持延拓；建立Minkowski泛函及开凸集分离；证明点与闭凸集的定量分离；推出范数化泛函、对偶范数表示、距离公式与连续对偶分离性质.}
+{I-03的赋范空间基础；I-05的有界线性算子、连续线性泛函与对偶范数.}
+{\begin{center}
+\begin{tikzpicture}[x=2.15cm,y=1.12cm]
+\node[fa/node] (ban) at (0,0) {赋范空间};
+\node[fa/node] (op) at (0,-1) {连续/有界等价};
+\node[fa/node] (rdhb) at (1.45,-0.5) {实支配延拓};
+\node[fa/node] (a01) at (3,-0.5) {Hahn--Banach延拓};
+\node[fa/node] (b01) at (1.45,-1.65) {Minkowski支撑};
+\node[fa/node] (a02) at (3,-1.65) {凸集分离定理};
+\node[fa/node] (b02) at (4.45,-0.5) {范数化与距离};
+\node[fa/node] (c01) at (5.85,-0.5) {对偶};
+\draw[fa/arrow] (ban) -- (rdhb);
+\draw[fa/arrow] (op) -- (rdhb);
+\draw[fa/arrow] (rdhb) -- (a01);
+\draw[fa/arrow] (ban) -- (b01);
+\draw[fa/arrow] (b01) -- (a02);
+\draw[fa/arrow] (a01) -- (a02);
+\draw[fa/arrow] (a01) -- (b02);
+\draw[fa/arrow] (b02) -- (c01);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). 除第一节的纯代数实向量空间外，\(\displaystyle X\) 均为 \(\displaystyle \mathbb K\)-赋范空间；不要求 \(\displaystyle X\) 完备. 本章只使用 I-05 已建立的 \(\displaystyle X^*\)、对偶范数、连续线性泛函与对偶配对；二次对偶、弱拓扑、弱星拓扑、Banach--Alaoglu、Banach对偶算子及Hilbert伴随均留待各自后续章节.
+
+\section{次线性延拓}\label{sec:i06-sublinear-extension}
+\index{sublinear functional@次线性泛函}\index{Hahn--Banach theorem@Hahn--Banach定理}\index{Zorn lemma@Zorn引理}
+
+\subsection{次线性泛函}
+
+\begin{FADefinition}[B][次线性泛函]{i06:sublinear-functional}
+设 \(\displaystyle E\) 为实向量空间. 映射 \(\displaystyle p:E\to\mathbb R\) 称为次线性泛函，若 \(\displaystyle p(x+y)\leqslant p(x)+p(y), \; p(\lambda x)=\lambda p(x)\;(\lambda\geqslant0)\)
+对全部 \(\displaystyle x,y\in E\) 成立. 由正齐次性取 \(\displaystyle \lambda=0\) 得 \(\displaystyle p(0)=0\). 一般不要求 \(\displaystyle p(-x)=p(x)\)，故次线性泛函不等同于范数.
+\end{FADefinition}
+
+\begin{FAExample}[非对称次线性泛函]
+在实向量空间 \(\displaystyle \mathbb R\) 上令 \(\displaystyle p(t)=t\). 则 \(\displaystyle p(s+t)=p(s)+p(t)\)，且 \(\displaystyle p(\lambda t)=\lambda p(t)\) 对 \(\displaystyle \lambda\geqslant0\) 成立，因此 \(\displaystyle p\) 次线性；但 \(\displaystyle p(-1)=-1\neq1=p(1)\).
+\end{FAExample}
+
+\subsection{一维延拓引理}
+
+\begin{FALemma}[B][一维受控延拓]{i06:one-dimensional-extension}
+设 \(\displaystyle E\) 为实向量空间，\(\displaystyle M\leqslant E\)，\(\displaystyle p:E\to\mathbb R\) 次线性，\(\displaystyle f:M\to\mathbb R\) 线性且 \(\displaystyle f(m)\leqslant p(m)\) 对全部 \(\displaystyle m\in M\) 成立. 若 \(\displaystyle x_0\in E\setminus M\)，则存在 \(\displaystyle c\in\mathbb R\)，使 \(\displaystyle F(m+t x_0):=f(m)+tc\)
+在 \(\displaystyle M+\operatorname{span}_{\mathbb R}\{x_0\}\) 上良定义、线性、延拓 \(\displaystyle f\)，并满足 \(\displaystyle F(y)\leqslant p(y)\) 对全部 \(\displaystyle y\) 成立. 可取任意满足
+\[
+\sup_{m\in M}\bigl(f(m)-p(m-x_0)\bigr)
+\leqslant c
+\leqslant
+\inf_{m\in M}\bigl(p(m+x_0)-f(m)\bigr)
+\]
+的 \(\displaystyle c\).
+\end{FALemma}
+
+\begin{FAProof}
+因 \(\displaystyle x_0\notin M\)，表示 \(\displaystyle m+t x_0\) 唯一：若 \(\displaystyle m_1+t_1x_0=m_2+t_2x_0\)，则 \(\displaystyle (t_1-t_2)x_0=m_2-m_1\in M\)；若 \(\displaystyle t_1\neq t_2\)，则 \(\displaystyle x_0\in M\)，矛盾. 故 \(\displaystyle t_1=t_2\) 且 \(\displaystyle m_1=m_2\)，于是候选 \(\displaystyle F\) 良定义且线性，并满足 \(\displaystyle F|_M=f\).
+
+先证所给区间非空. 对任意 \(\displaystyle m_1,m_2\in M\)，由 \(\displaystyle f\leqslant p\) 与次可加性， \(\displaystyle f(m_1+m_2) \leqslant p(m_1+m_2) \leqslant p(m_1-x_0)+p(m_2+x_0)\).
+由 \(\displaystyle f(m_1+m_2)=f(m_1)+f(m_2)\)，移项得 \(\displaystyle f(m_1)-p(m_1-x_0) \leqslant p(m_2+x_0)-f(m_2)\).
+因此每个左侧值都不超过每个右侧值. 固定 \(\displaystyle m_2=0\) 得左侧值族有有限上界，固定 \(\displaystyle m_1=0\) 得右侧值族有有限下界；两族又均非空且各项均为有限实数，故两个端点均属于 \(\displaystyle\mathbb R\)，并且 \(\displaystyle \sup_{m\in M}\bigl(f(m)-p(m-x_0)\bigr) \leqslant \inf_{m\in M}\bigl(p(m+x_0)-f(m)\bigr)\).
+取该闭区间内任意 \(\displaystyle c\).
+
+以下验证支配关系. 固定 \(\displaystyle m\in M\)、\(\displaystyle t\in\mathbb R\). 若 \(\displaystyle t>0\)，令 \(\displaystyle m'=\frac{m}{t}\). 由 \(\displaystyle c\) 的上界， \(\displaystyle c\leqslant p(m'+x_0)-f(m')\).
+乘以 \(\displaystyle t>0\)，并用正齐次性与 \(\displaystyle f(tm')=tf(m')\)，得到
+\[
+F(m+t x_0)=f(m)+tc\leqslant f(m)+t p(m'+x_0)-t f(m')=t p(m'+x_0)=p(m+t x_0).
+\]
+若 \(\displaystyle t=0\)，则 \(\displaystyle F(m)=f(m)\leqslant p(m)\).
+
+若 \(\displaystyle t<0\)，令 \(\displaystyle s=-t>0\) 与 \(\displaystyle m'=\frac{m}{s}\). 由 \(\displaystyle c\) 的下界， \(\displaystyle c\geqslant f(m')-p(m'-x_0)\).
+乘以 \(\displaystyle s>0\)，得 \(\displaystyle sc\geqslant f(m)-p(m-sx_0)\)，即 \(\displaystyle f(m)-sc\leqslant p(m-sx_0)\).
+于是 \(\displaystyle F(m+t x_0) =f(m)-sc \leqslant p(m-sx_0) =p(m+t x_0)\).
+三种情形覆盖全部 \(\displaystyle t\in\mathbb R\)，故 \(\displaystyle F\leqslant p\).
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Zorn引理与实支配型Hahn--Banach}
+
+\begin{FATheorem}[B][实支配型Hahn--Banach]{i06:real-dominated-hahn-banach}
+设 \(\displaystyle E\) 为实向量空间，\(\displaystyle M\leqslant E\)，\(\displaystyle p:E\to\mathbb R\) 次线性，\(\displaystyle f:M\to\mathbb R\) 线性，并满足 \(\displaystyle f(m)\leqslant p(m)\) 对全部 \(\displaystyle m\in M\) 成立. 则存在实线性 \(\displaystyle F:E\to\mathbb R\)，使 \(\displaystyle F|_M=f\)，且 \(\displaystyle F(x)\leqslant p(x)\) 对全部 \(\displaystyle x\in E\) 成立.
+\end{FATheorem}
+
+\begin{FAProof}
+令 \(\displaystyle \mathcal P\) 为所有二元组 \(\displaystyle (N,g)\) 的集合，其中 \(\displaystyle M\leqslant N\leqslant E\)，\(\displaystyle g:N\to\mathbb R\) 线性，\(\displaystyle g|_M=f\)，且 \(\displaystyle g(x)\leqslant p(x)\) 对全部 \(\displaystyle x\in N\) 成立. 因 \(\displaystyle (M,f)\in\mathcal P\)，故 \(\displaystyle \mathcal P\neq\varnothing\). 定义 \(\displaystyle (N_1,g_1)\preccurlyeq(N_2,g_2) \iff N_1\subseteq N_2\ \text{且}\ g_2|_{N_1}=g_1\).
+这是 \(\displaystyle \mathcal P\) 上的偏序.
+
+固定任意链 \(\displaystyle \mathcal C\subseteq\mathcal P\)，令 \(\displaystyle N_{\mathcal C} :=\bigcup_{(N,g)\in\mathcal C}N\).
+先证 \(\displaystyle N_{\mathcal C}\) 为线性子空间. 若 \(\displaystyle x,y\in N_{\mathcal C}\)，则存在 \(\displaystyle (N_1,g_1),(N_2,g_2)\in\mathcal C\) 使 \(\displaystyle x\in N_1\)、\(\displaystyle y\in N_2\). 因 \(\displaystyle \mathcal C\) 为链，不妨 \(\displaystyle N_1\subseteq N_2\)，于是 \(\displaystyle x,y\in N_2\). 对任意 \(\displaystyle \alpha,\beta\in\mathbb R\)，有 \(\displaystyle \alpha x+\beta y\in N_2\subseteq N_{\mathcal C}\).
+
+若 \(\displaystyle x\in N_1\cap N_2\) 且两对均属 \(\displaystyle \mathcal C\)，由链的全序性，不妨 \(\displaystyle (N_1,g_1)\preccurlyeq(N_2,g_2)\)，故 \(\displaystyle g_2(x)=g_1(x)\). 因此可良定义 \(\displaystyle g_{\mathcal C}(x):=g(x), \; x\in N, \; (N,g)\in\mathcal C\).
+对 \(\displaystyle x,y\in N_{\mathcal C}\) 及 \(\displaystyle \alpha,\beta\in\mathbb R\)，仍可选链中同一成员 \(\displaystyle (N,g)\) 同时包含 \(\displaystyle x,y\)，于是 \(\displaystyle g_{\mathcal C}(\alpha x+\beta y) =\alpha g_{\mathcal C}(x)+\beta g_{\mathcal C}(y)\).
+故 \(\displaystyle g_{\mathcal C}\) 线性. 每个链成员都延拓 \(\displaystyle f\)，故 \(\displaystyle g_{\mathcal C}|_M=f\). 对 \(\displaystyle x\in N_{\mathcal C}\)，取包含 \(\displaystyle x\) 的链成员 \(\displaystyle (N,g)\)，则 \(\displaystyle g_{\mathcal C}(x)=g(x)\leqslant p(x)\). 因而 \(\displaystyle (N_{\mathcal C},g_{\mathcal C})\in\mathcal P\)，并且它是 \(\displaystyle \mathcal C\) 的上界.
+
+至此显式调用Zorn引理，即选择公理的Zorn形式：由于 \(\displaystyle \mathcal P\neq\varnothing\) 且每条链都有上界，存在极大元 \(\displaystyle (N_{\max},g_{\max})\in\mathcal P\). 若 \(\displaystyle N_{\max}\neq E\)，取 \(\displaystyle x_0\in E\setminus N_{\max}\). 由\autoref{i06:one-dimensional-extension}，\(\displaystyle g_{\max}\) 可延拓到 \(\displaystyle N_{\max}+\operatorname{span}_{\mathbb R}\{x_0\}\)，且延拓仍被 \(\displaystyle p\) 支配. 新定义域严格包含 \(\displaystyle N_{\max}\)，与极大性矛盾. 故 \(\displaystyle N_{\max}=E\). 取 \(\displaystyle F=g_{\max}\) 即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[选择公理依赖]
+上述证明唯一的选择公理依赖是显式的Zorn引理调用. 一维延拓及链上界构造本身均为直接代数构造.
+\end{FARemark}
+
+\section{范数保持Hahn--Banach}\label{sec:i06-norm-preserving-hb}
+\index{norm-preserving extension@范数保持延拓}
+
+\subsection{实数情形}
+
+\begin{FATheorem}[A][Hahn--Banach定理]{fa:HB-A01}
+设 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\)，\(\displaystyle X\) 为 \(\displaystyle \mathbb K\)-赋范空间，\(\displaystyle M\leqslant X\) 为任意线性子空间，并赋予 \(\displaystyle X\) 的诱导范数. 若 \(\displaystyle f\in M^*\)，则存在 \(\displaystyle F\in X^*\)，使 \(\displaystyle F|_M=f, \; \|F\|=\|f\|\).
+这里不要求 \(\displaystyle M\) 闭，也不要求 \(\displaystyle X\) 完备.
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle \mathbb K=\mathbb R\). 若 \(\displaystyle f=0\)，取 \(\displaystyle F=0\)，结论成立. 以下设 \(\displaystyle f\neq0\)，定义 \(\displaystyle p:X\to\mathbb R\) 为 \(\displaystyle p(x)=\|f\|\|x\|\). 由范数三角不等式与正齐次性，\(\displaystyle p\) 次线性. 对 \(\displaystyle m\in M\)， \(\displaystyle f(m)\leqslant|f(m)|\leqslant\|f\|\|m\|=p(m)\).
+由\autoref{i06:real-dominated-hahn-banach}，存在实线性 \(\displaystyle F:X\to\mathbb R\) 延拓 \(\displaystyle f\)，且 \(\displaystyle F(x)\leqslant p(x)\). 对 \(\displaystyle -x\) 应用同一支配关系， \(\displaystyle -F(x)=F(-x)\leqslant p(-x)=p(x)\),
+故 \(\displaystyle |F(x)|\leqslant\|f\|\|x\|\).
+因此 \(\displaystyle F\in X^*\) 且 \(\displaystyle \|F\|\leqslant\|f\|\). 另一方面，因 \(\displaystyle F|_M=f\)，
+\[
+\|f\|
+=\sup_{\substack{m\in M\\ \|m\|\leqslant1}}|F(m)|
+\leqslant
+\sup_{\substack{x\in X\\ \|x\|\leqslant1}}|F(x)|
+=\|F\|.
+\]
+于是 \(\displaystyle \|F\|=\|f\|\). 实数情形得证.
+
+再设 \(\displaystyle \mathbb K=\mathbb C\). 若 \(\displaystyle f=0\)，仍取 \(\displaystyle F=0\). 以下设 \(\displaystyle f\neq0\). 把 \(\displaystyle X\) 与 \(\displaystyle M\) 视为实向量空间，并定义实线性泛函 \(\displaystyle u=\operatorname{Re}f\). 对任意 \(\displaystyle x\in M\)， \(\displaystyle |u(x)|=|\operatorname{Re}f(x)|\leqslant|f(x)|\leqslant\|f\|\|x\|\),
+故 \(\displaystyle \|u\|\leqslant\|f\|\). 反之，若 \(\displaystyle f(x)\neq0\)，取 \(\displaystyle \alpha =\frac{\overline{f(x)}}{|f(x)|}\).
+则 \(\displaystyle |\alpha|=1\)，并且 \(\displaystyle f(\alpha x)=\alpha f(x)=|f(x)|, \; u(\alpha x)=|f(x)|, \; \|\alpha x\|=\|x\|\).
+若 \(\displaystyle f(x)=0\)，则 \(\displaystyle |f(x)|\leqslant\|u\|\|x\|\) 直接成立. 因而对全部 \(\displaystyle x\in M\)， \(\displaystyle |f(x)|\leqslant\|u\|\|x\|\),
+故 \(\displaystyle \|f\|\leqslant\|u\|\). 因此 \(\displaystyle \|u\|=\|f\|\).
+由已证的实数情形，存在连续实线性 \(\displaystyle U:X\to\mathbb R\)，满足 \(\displaystyle U|_M=u\) 且 \(\displaystyle \|U\|=\|u\|=\|f\|\).
+定义 \(\displaystyle F(x):=U(x)-\mathrm{i}U(\mathrm{i}x)\).
+由 \(\displaystyle U\) 的实线性性，\(\displaystyle F\) 对加法与实数倍线性. 又
+\[
+\begin{aligned}
+F(\mathrm{i}x)
+&=U(\mathrm{i}x)-\mathrm{i}U(-x)=U(\mathrm{i}x)+\mathrm{i}U(x)\\
+&=\mathrm{i}\bigl(U(x)-\mathrm{i}U(\mathrm{i}x)\bigr)=\mathrm{i}F(x),
+\end{aligned}
+\]
+故 \(\displaystyle F\) 复线性. 因 \(\displaystyle U(x),U(\mathrm{i}x)\in\mathbb R\)，有 \(\displaystyle \operatorname{Re}F(x)=U(x)\).
+
+若 \(\displaystyle x\in M\)，则 \(\displaystyle U(x)=\operatorname{Re}f(x)\)，
+且
+\[
+U(\mathrm{i}x)
+=\operatorname{Re}f(\mathrm{i}x)
+=\operatorname{Re}\bigl(\mathrm{i}f(x)\bigr)
+=-\operatorname{Im}f(x).
+\]
+因此 \(\displaystyle F(x) =\operatorname{Re}f(x)+\mathrm{i}\operatorname{Im}f(x) =f(x)\)，
+即 \(\displaystyle F|_M=f\).
+
+最后证明范数不损失. 若 \(\displaystyle F(x)\neq0\)，取 \(\displaystyle \beta =\frac{\overline{F(x)}}{|F(x)|}\).
+则 \(\displaystyle |\beta|=1\) 且 \(\displaystyle F(\beta x)=|F(x)|\). 因而 \(\displaystyle |F(x)| =\operatorname{Re}F(\beta x) =U(\beta x) \leqslant\|U\|\|\beta x\| =\|U\|\|x\|\).
+若 \(\displaystyle F(x)=0\)，该估计直接成立. 故 \(\displaystyle \|F\|\leqslant\|U\|=\|f\|\). 由 \(\displaystyle F|_M=f\) 又有 \(\displaystyle \|F\|\geqslant\|f\|\)，从而 \(\displaystyle \|F\|=\|f\|\). 实、复两种数域均得证.
+\hfill\(\square\)
+\end{FAProof}
+
+
+\newpage
+\subsection{范数保持延拓的具体例}
+
+\begin{FAExample}[常数子空间的延拓]\label{i06:hb-cont-example}
+取 \(\displaystyle X=C([0,1];\mathbb K)\) 配上确界范数，并令 \(\displaystyle M=\operatorname{span}_{\mathbb K}\{\mathbf1\}, \; f(c\mathbf1)=c\).
+表示 \(\displaystyle c\mathbf1\) 唯一，故 \(\displaystyle f\) 良定义且线性. 又 \(\displaystyle |f(c\mathbf1)|=|c|=\|c\mathbf1\|_\infty\)，
+故 \(\displaystyle \|f\|=1\). 对任意 \(\displaystyle t_0\in[0,1]\)，I-05 的点值泛函 \(\displaystyle \delta_{t_0}(g)=g(t_0)\) 满足 \(\displaystyle \|\delta_{t_0}\|=1\)，且 \(\displaystyle \delta_{t_0}(c\mathbf1)=c\). 因而 \(\displaystyle \delta_{t_0}\) 是 \(\displaystyle f\) 的范数保持延拓. 取不同的 \(\displaystyle t_0\) 可得到不同延拓，说明Hahn--Banach保证存在性与范数保持，但一般不保证唯一性.
+\end{FAExample}
+
+\begin{FARemark}[线性不蕴含连续的边界]
+本节不重新建立线性不蕴含连续的反例. I-05 的\autoref{i05:ce-discont-lin}已说明代数线性不蕴含连续. \autoref{fa:HB-A01}的输入是 \(\displaystyle f\in M^*\)，即已经连续的线性泛函；定理只断言可在保持连续性范数的同时延拓，不断言任意线性泛函自动连续.
+\end{FARemark}
+
+\section{Minkowski泛函}\label{sec:i06-minkowski}
+\index{Minkowski functional@Minkowski泛函}\index{absorbing set@吸收集}
+
+\subsection{定义、吸收性与尺度集合}
+
+\begin{FALemma}[B][Minkowski泛函支撑结果]{fa:HB-B01}
+设 \(\displaystyle X\) 为实或复赋范空间，\(\displaystyle U\subseteq X\) 非空、开、凸且 \(\displaystyle0\in U\). 若 \(\displaystyle X\) 为复空间，本引理把 \(\displaystyle X\) 视为底层实向量空间. 定义 \(\displaystyle p_U(x) :=\inf\{t>0:x\in tU\}\).
+则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle U\) 吸收每个向量，且 \(\displaystyle0\leqslant p_U(x)<\infty\)；
+\item 对 \(\displaystyle A_x:=\{t>0:x\in tU\}\)，若 \(\displaystyle s\in A_x\) 且 \(\displaystyle t\geqslant s\)，则 \(\displaystyle t\in A_x\)；
+\item 对全部 \(\displaystyle \lambda\geqslant0\)，\(\displaystyle p_U(\lambda x)=\lambda p_U(x)\)；
+\item \(\displaystyle p_U(x+y)\leqslant p_U(x)+p_U(y)\)；
+\item \(\displaystyle U=\{x\in X:p_U(x)<1\}\)；
+\item 若 \(\displaystyle B_X(0,r)\subseteq U\)，则 \(\displaystyle p_U(z)\leqslant\frac{\|z\|}{r}\)，且 \(\displaystyle |p_U(x)-p_U(y)|\leqslant\frac{\|x-y\|}{r}\).
+\end{enumerate}
+特别地，\(\displaystyle p_U\) 是连续次线性泛函. 一般不要求 \(\displaystyle U\) 平衡或对称，故不假设 \(\displaystyle p_U(-x)=p_U(x)\).
+\end{FALemma}
+
+\begin{FAProof}
+因 \(\displaystyle U\) 开且 \(\displaystyle0\in U\)，存在 \(\displaystyle r>0\) 使 \(\displaystyle B_X(0,r)\subseteq U\). 若 \(\displaystyle x\neq0\) 且 \(\displaystyle t>\frac{\|x\|}{r}\)，
+则 \(\displaystyle \|\frac{x}{t}\|<r\)，故 \(\displaystyle \frac{x}{t}\in U\)，即 \(\displaystyle x\in tU\). 因而 \(\displaystyle A_x\neq\varnothing\) 且 \(\displaystyle p_U(x)<\infty\). 若 \(\displaystyle x=0\)，则 \(\displaystyle0\in tU\) 对全部 \(\displaystyle t>0\) 成立，故 \(\displaystyle A_0=(0,\infty)\) 与 \(\displaystyle p_U(0)=0\). 由于每个 \(\displaystyle A_x\subseteq(0,\infty)\)，总有 \(\displaystyle p_U(x)\geqslant0\). 这证明 （i）.
+
+证明 （ii）. 若 \(\displaystyle s\in A_x\)，则存在 \(\displaystyle u\in U\) 使 \(\displaystyle x=su\). 对 \(\displaystyle t\geqslant s\)，有 \(\displaystyle0<\frac{s}{t}\leqslant1\). 由 \(\displaystyle0,u\in U\) 与凸性，\(\displaystyle (\frac{s}{t})u\in U\). 因此 \(\displaystyle x=t\bigl((\frac{s}{t})u\bigr)\in tU\)，
+即 \(\displaystyle t\in A_x\).
+
+证明 （iii）. 若 \(\displaystyle \lambda>0\)，则对任意 \(\displaystyle t>0\)，
+\[
+t\in A_{\lambda x}
+\iff
+\lambda x\in tU
+\iff
+x\in(\frac{t}{\lambda})U
+\iff
+\frac{t}{\lambda}\in A_x.
+\]
+故 \(\displaystyle A_{\lambda x}=\lambda A_x\)，从而 \(\displaystyle p_U(\lambda x) =\inf A_{\lambda x} =\lambda\inf A_x =\lambda p_U(x)\).
+当 \(\displaystyle \lambda=0\) 时，\(\displaystyle p_U(0)=0=0p_U(x)\). 因而正齐次性对全部 \(\displaystyle \lambda\geqslant0\) 成立.
+
+证明 （iv）. 固定 \(\displaystyle \varepsilon>0\). 由 \(\displaystyle A_x,A_y\neq\varnothing\) 与上确界下确界的定义，存在 \(\displaystyle s\in A_x, \; s<p_U(x)+\varepsilon\)，
+以及 \(\displaystyle t\in A_y, \; t<p_U(y)+\varepsilon\).
+写 \(\displaystyle x=su\)、\(\displaystyle y=tv\)，其中 \(\displaystyle u,v\in U\). 由于 \(\displaystyle s,t>0\) 且 \(\displaystyle U\) 凸， \(\displaystyle \frac{s}{s+t}u+\frac{t}{s+t}v\in U\).
+于是
+\[
+x+y
+=(s+t)\left(\frac{s}{s+t}u+\frac{t}{s+t}v\right)
+\in(s+t)U,
+\]
+故 \(\displaystyle p_U(x+y) \leqslant s+t <p_U(x)+p_U(y)+2\varepsilon\).
+令 \(\displaystyle \varepsilon\downarrow0\)，得到 \(\displaystyle p_U(x+y)\leqslant p_U(x)+p_U(y)\). 因而 \(\displaystyle p_U\) 次线性.
+
+证明 （v）. 先设 \(\displaystyle p_U(x)<1\). 取 \(\displaystyle t\) 满足 \(\displaystyle p_U(x)<t<1\). 不能仅由下确界值直接断言 \(\displaystyle x\in tU\)；由 \(\displaystyle t>\inf A_x\)，存在 \(\displaystyle s\in A_x\) 使 \(\displaystyle s<t\). 因 \(\displaystyle x\in sU\) 且尺度集合向上闭，\(\displaystyle x\in tU\). 又因 \(\displaystyle0<t<1\)、\(\displaystyle0\in U\) 且 \(\displaystyle U\) 凸，有 \(\displaystyle tU\subseteq U\). 故 \(\displaystyle x\in U\).
+
+反之设 \(\displaystyle x\in U\). 映射 \(\displaystyle \lambda\mapsto\lambda x\) 从 \(\displaystyle \mathbb R\) 到 \(\displaystyle X\) 连续，且 \(\displaystyle1x=x\in U\). 由 \(\displaystyle U\) 开，存在 \(\displaystyle \lambda>1\) 足够接近 \(\displaystyle1\)，使 \(\displaystyle \lambda x\in U\). 对 \(\displaystyle x=0\) 亦可直接取任意 \(\displaystyle \lambda>1\). 因此 \(\displaystyle x\in\lambda^{-1}U\)，
+从而 \(\displaystyle p_U(x)\leqslant\lambda^{-1}<1\).
+故 \(\displaystyle U=\{x:p_U(x)<1\}\).
+
+最后证明 （vi）. 对 \(\displaystyle z\neq0\)，上面的吸收性计算表明：每个 \(\displaystyle t>\frac{\|z\|}{r}\) 都属于 \(\displaystyle A_z\). 因此 \(\displaystyle p_U(z)\leqslant t\)
+对全部此类 \(\displaystyle t\) 成立. 令 \(\displaystyle t\downarrow\frac{\|z\|}{r}\)，得 \(\displaystyle p_U(z)\leqslant\frac{\|z\|}{r}\).
+对 \(\displaystyle z=0\) 该估计也成立. 由次可加性， \(\displaystyle p_U(x)-p_U(y)\leqslant p_U(x-y)\),
+交换 \(\displaystyle x,y\) 又得 \(\displaystyle p_U(y)-p_U(x)\leqslant p_U(y-x)\).
+于是 \(\displaystyle |p_U(x)-p_U(y)| \leqslant \max\{p_U(x-y),p_U(y-x)\}\).
+分别对 \(\displaystyle x-y\) 与 \(\displaystyle y-x\) 使用刚得的范数估计，得到 \(\displaystyle |p_U(x)-p_U(y)| \leqslant\frac{\|x-y\|}{r}\).
+这里没有使用 \(\displaystyle p_U(-z)=p_U(z)\). 因而 \(\displaystyle p_U\) 在 \(\displaystyle X\) 上 Lipschitz 连续，并完成全部结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{标准开球的Minkowski泛函}
+
+\begin{FAExample}[开球的Minkowski泛函]\label{i06:minkowski-ball}
+取 \(\displaystyle U=B_X(0,r)\)，其中 \(\displaystyle r>0\). 则对全部 \(\displaystyle x\in X\)， \(\displaystyle p_U(x)=\frac{\|x\|}{r}\).
+若 \(\displaystyle x=0\)，两边均为 \(\displaystyle0\). 以下设 \(\displaystyle x\neq0\). 若 \(\displaystyle t>\frac{\|x\|}{r}\)，则 \(\displaystyle \|\frac{x}{t}\|<r\)，故 \(\displaystyle x\in tU\). 因而 \(\displaystyle p_U(x)\leqslant t\) 对全部 \(\displaystyle t>\frac{\|x\|}{r}\) 成立，令 \(\displaystyle t\downarrow\frac{\|x\|}{r}\) 得 \(\displaystyle p_U(x)\leqslant\frac{\|x\|}{r}\).
+反之，若 \(\displaystyle t\in A_x\)，则 \(\displaystyle x\in tU\)，所以存在 \(\displaystyle u\in U\) 使 \(\displaystyle x=tu\). 因 \(\displaystyle \|u\|<r\)， \(\displaystyle \|x\|=t\|u\|<tr\),
+故 \(\displaystyle t>\frac{\|x\|}{r}\). 因而 \(\displaystyle \frac{\|x\|}{r}\) 是 \(\displaystyle A_x\) 的下界，得到 \(\displaystyle p_U(x)\geqslant\frac{\|x\|}{r}\). 两个方向合并即得等式.
+\end{FAExample}
+
+\section{凸集分离}\label{sec:i06-convex-separation}
+\index{separation theorem@分离定理}\index{convex set@凸集}
+
+\subsection{开凸集与点的严格分离}
+
+\begin{FATheorem}[B][开凸集分离]{i06:open-convex-separation}
+设 \(\displaystyle X\) 为实或复赋范空间，\(\displaystyle U\subseteq X\) 非空、开、凸，且 \(\displaystyle x_0\notin U\). 则存在 \(\displaystyle x^*\in X^*\setminus\{0\}\)，使 \(\displaystyle \operatorname{Re}x^*(u) < \operatorname{Re}x^*(x_0)\)
+对全部 \(\displaystyle u\in U\) 成立. 在实数域上 \(\displaystyle \operatorname{Re}\) 为恒等映射.
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle X\) 为实赋范空间. 固定 \(\displaystyle a\in U\)，令 \(\displaystyle V:=U-a, \; z:=x_0-a\).
+则 \(\displaystyle V\) 非空、开、凸，\(\displaystyle0\in V\)，且 \(\displaystyle z\notin V\). 由\autoref{fa:HB-B01}， \(\displaystyle V=\{x:p_V(x)<1\}\).
+因此 \(\displaystyle p_V(z)\geqslant1\). 特别地 \(\displaystyle z\neq0\). 在实直线 \(\displaystyle L:=\operatorname{span}_{\mathbb R}\{z\}\)
+上定义 \(\displaystyle g_0(tz)=t\). 因 \(\displaystyle z\neq0\)，该表示唯一，故 \(\displaystyle g_0\) 良定义且实线性. 若 \(\displaystyle t\geqslant0\)，则 \(\displaystyle p_V(tz)=t p_V(z)\geqslant t=g_0(tz)\).
+若 \(\displaystyle t<0\)，则由 \(\displaystyle p_V\geqslant0\)， \(\displaystyle g_0(tz)=t<0\leqslant p_V(tz)\).
+故 \(\displaystyle g_0\leqslant p_V\) 于全部 \(\displaystyle L\). 由\autoref{i06:real-dominated-hahn-banach}，存在实线性 \(\displaystyle g:X\to\mathbb R\) 延拓 \(\displaystyle g_0\)，且 \(\displaystyle g(x)\leqslant p_V(x)\) 对全部 \(\displaystyle x\in X\) 成立.
+
+由 \(\displaystyle V\) 开且 \(\displaystyle0\in V\)，取 \(\displaystyle r>0\) 使 \(\displaystyle B_X(0,r)\subseteq V\). 对任意 \(\displaystyle x\in X\)， \(\displaystyle g(x)\leqslant p_V(x), \; -g(x)=g(-x)\leqslant p_V(-x)\).
+由\autoref{fa:HB-B01}的范数估计，
+\[
+p_V(x)\leqslant\frac{\|x\|}{r},
+\quad
+p_V(-x)\leqslant\frac{\|x\|}{r}.
+\]
+所以 \(\displaystyle |g(x)|\leqslant\frac{\|x\|}{r}\).
+故 \(\displaystyle g\in X^*\). 又 \(\displaystyle g(z)=g_0(z)=1\). 对任意 \(\displaystyle v\in V\)，由集合恢复有 \(\displaystyle p_V(v)<1\)，从而 \(\displaystyle g(v)\leqslant p_V(v)<1=g(z)\).
+若 \(\displaystyle u\in U\)，则 \(\displaystyle u-a\in V\)，于是 \(\displaystyle g(u-a)<g(x_0-a)\).
+由线性性， \(\displaystyle g(u)-g(a)<g(x_0)-g(a)\),
+故 \(\displaystyle g(u)<g(x_0)\).
+取 \(\displaystyle x^*=g\) 即得实数情形，并且 \(\displaystyle x^*\neq0\) 因 \(\displaystyle g(z)=1\).
+
+再设 \(\displaystyle X\) 为复赋范空间. 把 \(\displaystyle X\) 视为底层实赋范空间；集合 \(\displaystyle U\) 的开性与凸性不变. 由已证实数情形，存在连续实线性 \(\displaystyle g:X\to\mathbb R\)，使 \(\displaystyle g(u)<g(x_0)\)
+对全部 \(\displaystyle u\in U\) 成立，并可按上述构造取到 \(\displaystyle g(z)=1\). 定义 \(\displaystyle x^*(x):=g(x)-\mathrm{i}g(\mathrm{i}x)\).
+由 \(\displaystyle g\) 的实线性性，\(\displaystyle x^*\) 对加法与实数倍线性，且
+\[
+\begin{aligned}
+x^*(\mathrm{i}x)
+&=g(\mathrm{i}x)-\mathrm{i}g(-x)=g(\mathrm{i}x)+\mathrm{i}g(x)\\
+&=\mathrm{i}\bigl(g(x)-\mathrm{i}g(\mathrm{i}x)\bigr)=\mathrm{i}x^*(x).
+\end{aligned}
+\]
+故 \(\displaystyle x^*\) 复线性. 同时 \(\displaystyle \operatorname{Re}x^*(x)=g(x)\).
+连续性由 \(\displaystyle |x^*(x)| \leqslant|g(x)|+|g(\mathrm{i}x)| \leqslant2\|g\|\|x\|\)
+得到，故 \(\displaystyle x^*\in X^*\). 又 \(\displaystyle \operatorname{Re}x^*(z)=g(z)=1\)，
+所以 \(\displaystyle x^*\neq0\). 最后对全部 \(\displaystyle u\in U\)， \(\displaystyle \operatorname{Re}x^*(u) =g(u) <g(x_0) =\operatorname{Re}x^*(x_0)\).
+复数情形得证.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[分离结论的层级]
+本章区分三种强度. 对不交集合 \(\displaystyle A,B\subseteq X\)，若存在 \(\displaystyle 0\neq x^*\in X^*\) 使 \(\displaystyle \sup_{a\in A}\operatorname{Re}x^*(a)\leqslant\inf_{b\in B}\operatorname{Re}x^*(b)\)，称为非严格分离；若对每个 \(\displaystyle a\in A\)、\(\displaystyle b\in B\) 都有 \(\displaystyle \operatorname{Re}x^*(a)<\operatorname{Re}x^*(b)\)，则是逐点严格分离，但两端上确界与下确界仍可能相等；若还存在 \(\displaystyle \gamma>0\) 使 \(\displaystyle \sup_{a\in A}\operatorname{Re}x^*(a)+\gamma\leqslant\inf_{b\in B}\operatorname{Re}x^*(b)\)，则称为定量严格分离. \autoref{i06:open-convex-separation}对开凸集与外点给出逐点严格分离，却一般不给正的统一间隙；例如 \(\displaystyle A=(-\infty,0)\subset\mathbb R\)、\(\displaystyle B=\{0\}\) 时可有 \(\displaystyle \sup_A t=0=\inf_B t\). 下述闭凸集定理则给出正的定量间隙.
+\end{FARemark}
+
+\begin{FAProposition}[C][两个凸集的一侧严格分离]{i06:two-convex-separation}
+设 \(\displaystyle A,B\subseteq X\) 非空、凸且不交，并假设 \(\displaystyle A\) 开. 则存在 \(\displaystyle x^*\in X^*\setminus\{0\}\) 与 \(\displaystyle \alpha\in\mathbb R\)，使 \(\displaystyle \operatorname{Re}x^*(a)<\alpha\leqslant\operatorname{Re}x^*(b)\)
+对全部 \(\displaystyle a\in A\)、\(\displaystyle b\in B\) 成立. 这里右侧只保证非严格不等式，不能在没有额外距离条件时改成统一正间隙.
+\end{FAProposition}
+
+\begin{FAProof}
+令 \(\displaystyle U=A-B=\{a-b:a\in A,\ b\in B\}\). 因 \(\displaystyle A\) 开，\(\displaystyle U=\bigcup_{b\in B}(A-b)\) 开；由 \(\displaystyle A,B\) 的凸性，\(\displaystyle U\) 凸；由 \(\displaystyle A\cap B=\varnothing\)，有 \(\displaystyle0\notin U\). 对开凸集 \(\displaystyle U\) 与外点 \(\displaystyle0\) 应用\autoref{i06:open-convex-separation}，得到 \(\displaystyle0\neq x^*\in X^*\) 满足 \(\displaystyle \operatorname{Re}x^*(u)<0\) 对全部 \(\displaystyle u\in U\) 成立. 因而 \(\displaystyle \operatorname{Re}x^*(a)<\operatorname{Re}x^*(b)\)
+对任意 \(\displaystyle a\in A\)、\(\displaystyle b\in B\) 成立. 固定 \(\displaystyle b_0\in B\)，可知 \(\displaystyle \operatorname{Re}x^*(a)<\operatorname{Re}x^*(b_0)\) 对全部 \(\displaystyle a\in A\) 成立，因此 \(\displaystyle \alpha:=\sup_{a\in A}\operatorname{Re}x^*(a)\)
+是有限实数，且 \(\displaystyle \alpha\leqslant\operatorname{Re}x^*(b)\) 对每个 \(\displaystyle b\in B\) 成立. 还需证明每个 \(\displaystyle a\in A\) 都满足严格不等式 \(\displaystyle \operatorname{Re}x^*(a)<\alpha\). 因 \(\displaystyle x^*\neq0\)，可取 \(\displaystyle v\in X\) 使 \(\displaystyle \operatorname{Re}x^*(v)>0\)：实数域取符号，复数域对某个 \(\displaystyle x^*(v_0)\neq0\) 作相位旋转即可. 由 \(\displaystyle A\) 开，对固定 \(\displaystyle a\in A\) 存在充分小的 \(\displaystyle t>0\) 使 \(\displaystyle a+tv\in A\). 因此 \(\displaystyle \alpha\geqslant\operatorname{Re}x^*(a+tv)>\operatorname{Re}x^*(a)\). 合并两侧即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\newpage
+\subsection{点与闭凸集的定量分离}
+
+\begin{FATheorem}[A][凸集分离定理]{fa:HB-A02}
+设 \(\displaystyle X\) 为实或复赋范空间，\(\displaystyle C\subseteq X\) 非空、闭、凸，且 \(\displaystyle x_0\notin C\). 则存在 \(\displaystyle x^*\in X^*\) 满足 \(\displaystyle \|x^*\|=1\)，并且 \(\displaystyle \sup_{c\in C}\operatorname{Re}x^*(c) < \operatorname{Re}x^*(x_0)\).
+\end{FATheorem}
+
+\begin{FAProof}
+定义 \(\displaystyle d:=\operatorname{dist}(x_0,C) =\inf_{c\in C}\|x_0-c\|\).
+因 \(\displaystyle C\) 闭且 \(\displaystyle x_0\notin C\)，补集 \(\displaystyle X\setminus C\) 开. 故存在 \(\displaystyle \rho>0\) 使 \(\displaystyle B_X(x_0,\rho)\cap C=\varnothing\).
+于是对全部 \(\displaystyle c\in C\)，有 \(\displaystyle \|x_0-c\|\geqslant\rho\)，从而 \(\displaystyle d\geqslant\rho>0\).
+这里没有假设存在达到距离 \(\displaystyle d\) 的最近点.
+
+令 \(\displaystyle r=\frac{d}{2}\)，并定义 \(\displaystyle U:=C+B_X(0,r) =\{c+b:c\in C,\ \|b\|<r\}\).
+因 \(\displaystyle C\neq\varnothing\) 且 \(\displaystyle0\in B_X(0,r)\)，故 \(\displaystyle U\neq\varnothing\). 又 \(\displaystyle U=\bigcup_{c\in C}\bigl(c+B_X(0,r)\bigr)\)，
+是开集之并，故开. 若 \(\displaystyle c_1+b_1,c_2+b_2\in U\) 且 \(\displaystyle0\leqslant\lambda\leqslant1\)，则
+\[
+\lambda(c_1+b_1)+(1-\lambda)(c_2+b_2)
+=\bigl(\lambda c_1+(1-\lambda)c_2\bigr)
++\bigl(\lambda b_1+(1-\lambda)b_2\bigr).
+\]
+由 \(\displaystyle C\) 与 \(\displaystyle B_X(0,r)\) 的凸性，右侧仍属于 \(\displaystyle U\)，故 \(\displaystyle U\) 凸. 若 \(\displaystyle x_0\in U\)，则存在 \(\displaystyle c\in C\)、\(\displaystyle b\in B_X(0,r)\) 使 \(\displaystyle x_0=c+b\). 因而 \(\displaystyle \|x_0-c\|=\|b\|<r<d\)，
+与 \(\displaystyle d=\inf_{c\in C}\|x_0-c\|\) 矛盾. 故 \(\displaystyle x_0\notin U\).
+
+由\autoref{i06:open-convex-separation}，存在 \(\displaystyle f\in X^*\setminus\{0\}\)，使 \(\displaystyle \operatorname{Re}f(u)<\operatorname{Re}f(x_0)\)
+对全部 \(\displaystyle u\in U\) 成立. 固定任意 \(\displaystyle c\in C\). 对每个 \(\displaystyle b\in B_X(0,r)\)，有 \(\displaystyle c+b\in U\)，因此 \(\displaystyle \operatorname{Re}f(c)+\operatorname{Re}f(b) < \operatorname{Re}f(x_0)\).
+对 \(\displaystyle b\) 取上确界时，逐点严格不等式只能推出
+\[
+\operatorname{Re}f(c)
++
+\sup_{\|b\|<r}\operatorname{Re}f(b)
+\leqslant
+\operatorname{Re}f(x_0).
+\]
+
+现证明 \(\displaystyle \sup_{\|b\|<r}\operatorname{Re}f(b) =r\|f\|\).
+上界由 \(\displaystyle \operatorname{Re}f(b) \leqslant|f(b)| \leqslant\|f\|\|b\| <r\|f\|\)
+得到，故该上确界不超过 \(\displaystyle r\|f\|\).
+
+反向估计不假设对偶范数上确界达到. 取任意 \(\displaystyle \varepsilon\) 满足 \(\displaystyle0<\varepsilon<\|f\|\). 由对偶范数定义，存在 \(\displaystyle x\in X\) 使 \(\displaystyle \|x\|\leqslant1\) 且 \(\displaystyle |f(x)|>\|f\|-\varepsilon\).
+若 \(\displaystyle \mathbb K=\mathbb R\)，取 \(\displaystyle \sigma\in\{-1,1\}\) 使 \(\displaystyle f(\sigma x)=|f(x)|\)，并令 \(\displaystyle y=\sigma x\). 若 \(\displaystyle \mathbb K=\mathbb C\)，则上式保证 \(\displaystyle f(x)\neq0\)，取 \(\displaystyle \alpha=\frac{\overline{f(x)}}{|f(x)|}, \; y=\alpha x\).
+两种情形均有 \(\displaystyle \|y\|\leqslant1\) 且 \(\displaystyle \operatorname{Re}f(y)=|f(x)|>\|f\|-\varepsilon\).
+再取任意 \(\displaystyle0<s<r\)，令 \(\displaystyle b=sy\). 则 \(\displaystyle \|b\|<r\)，且 \(\displaystyle \operatorname{Re}f(b) =s\operatorname{Re}f(y) >s(\|f\|-\varepsilon)\).
+故 \(\displaystyle \sup_{\|b\|<r}\operatorname{Re}f(b) \geqslant s(\|f\|-\varepsilon)\).
+先令 \(\displaystyle s\uparrow r\)，再令 \(\displaystyle \varepsilon\downarrow0\)，得到该上确界至少为 \(\displaystyle r\|f\|\). 等式得证.
+
+因此对全部 \(\displaystyle c\in C\)， \(\displaystyle \operatorname{Re}f(c)+r\|f\| \leqslant \operatorname{Re}f(x_0)\).
+定义 \(\displaystyle x^*:=\frac{f}{\|f\|}\).
+因 \(\displaystyle f\neq0\)，有 \(\displaystyle \|x^*\|=1\)，且对全部 \(\displaystyle c\in C\)， \(\displaystyle \operatorname{Re}x^*(c) \leqslant \operatorname{Re}x^*(x_0)-r\).
+取 \(\displaystyle c\in C\) 的上确界，得到
+\[
+\sup_{c\in C}\operatorname{Re}x^*(c)
+\leqslant
+\operatorname{Re}x^*(x_0)-r
+<
+\operatorname{Re}x^*(x_0).
+\]
+故存在范数为 \(\displaystyle1\) 的连续线性泛函，以至少 \(\displaystyle r=\frac{d}{2}\) 的实部间隙分离 \(\displaystyle x_0\) 与 \(\displaystyle C\).
+\hfill\(\square\)
+\end{FAProof}
+
+
+\newpage
+\subsection{规范例与闭性边界}
+
+\begin{FAExample}[闭超平面的分离]\label{i06:closed-hyperplane-example}
+取 \(\displaystyle X=C([0,1];\mathbb K)\)， \(\displaystyle C:=\{f\in C([0,1];\mathbb K):f(0)=0\}, \; x_0:=\mathbf1\).
+集合 \(\displaystyle C\) 非空且线性，故凸. 若 \(\displaystyle f_n\in C\) 且 \(\displaystyle \|f_n-f\|_\infty\to0\)，则 \(\displaystyle |f(0)|=|f(0)-f_n(0)|\leqslant\|f-f_n\|_\infty\to0\)，故 \(\displaystyle f\in C\)；所以 \(\displaystyle C\) 闭. I-05 已建立 \(\displaystyle \delta_0(f)=f(0)\) 与 \(\displaystyle \|\delta_0\|=1\). 因而 \(\displaystyle \sup_{f\in C}\operatorname{Re}\delta_0(f) =0 <1 =\operatorname{Re}\delta_0(\mathbf1)\).
+这给出\autoref{fa:HB-A02}的一个显式分离泛函.
+\end{FAExample}
+
+\begin{FACounterexample}[闭性不可删除]\label{i06:closedness-counterexample}
+令 \(\displaystyle c_{00}\subset c_0\) 为有限支撑序列构成的线性子空间. 对任意 \(\displaystyle x=(x_n)\in c_0\)，定义 \(\displaystyle x^{(N)}:=(x_1,\dots,x_N,0,0,\dots)\in c_{00}\).
+由 \(\displaystyle x_n\to0\)， \(\displaystyle \|x-x^{(N)}\|_\infty =\sup_{n>N}|x_n| \longrightarrow0\).
+故 \(\displaystyle \overline{c_{00}}^{\|\cdot\|_\infty}=c_0\).
+取 \(\displaystyle x_0=(\frac{1}{n})_{n\in\mathbb N}\in c_0\setminus c_{00}\).
+现证不存在连续线性泛函将 \(\displaystyle x_0\) 与 \(\displaystyle c_{00}\) 严格分离. 设 \(\displaystyle x^*\in(c_0)^*\). 若 \(\displaystyle x^*|_{c_{00}}\neq0\)，取 \(\displaystyle m\in c_{00}\) 使 \(\displaystyle x^*(m)\neq0\). 在实数域取符号 \(\displaystyle \sigma\in\{-1,1\}\) 并令 \(\displaystyle v=\sigma m\)，使 \(\displaystyle \operatorname{Re}x^*(v)=x^*(v)=|x^*(m)|>0\)；在复数域取 \(\displaystyle \alpha=\frac{\overline{x^*(m)}}{|x^*(m)|}\) 并令 \(\displaystyle v=\alpha m\)，则 \(\displaystyle \operatorname{Re}x^*(v)=|x^*(m)|>0\). 因 \(\displaystyle c_{00}\) 为线性子空间，对 \(\displaystyle t>0\) 有 \(\displaystyle tv\in c_{00}\)，从而 \(\displaystyle \sup_{w\in c_{00}}\operatorname{Re}x^*(w)=+\infty\).
+因此不可能有 \(\displaystyle \sup_{w\in c_{00}}\operatorname{Re}x^*(w)<\operatorname{Re}x^*(x_0)\).
+
+若 \(\displaystyle x^*|_{c_{00}}=0\)，则由 \(\displaystyle c_{00}\) 在 \(\displaystyle c_0\) 中稠密及 \(\displaystyle x^*\) 连续，有 \(\displaystyle x^*=0\). 此时两侧实部均为 \(\displaystyle0\)，仍不能严格分离. 因而\autoref{fa:HB-A02}中 \(\displaystyle C\) 的闭性条件不可删除；此反例与 I-05 的线性不蕴含连续反例不是同一个规范对象.
+\end{FACounterexample}
+
+\section{对偶分离点}\label{sec:i06-dual-separation}
+\index{norming functional@范数化泛函}\index{distance formula@距离公式}\index{dual separates points@对偶分离点}
+
+\subsection{范数化泛函}
+
+\begin{FALemma}[B][范数化泛函]{i06:norming-functional}
+若 \(\displaystyle x_0\in X\setminus\{0\}\)，则存在 \(\displaystyle x^*\in X^*\)，使 \(\displaystyle \|x^*\|=1, \; x^*(x_0)=\|x_0\|\).
+\end{FALemma}
+
+\begin{FAProof}
+令 \(\displaystyle M:=\operatorname{span}_{\mathbb K}\{x_0\}\).
+因 \(\displaystyle x_0\neq0\)，每个 \(\displaystyle y\in M\) 都有唯一表示 \(\displaystyle y=\alpha x_0\)：若 \(\displaystyle \alpha x_0=\beta x_0\)，则 \(\displaystyle (\alpha-\beta)x_0=0\)，故 \(\displaystyle \alpha=\beta\). 定义 \(\displaystyle f_0(\alpha x_0):=\alpha\|x_0\|\).
+由表示唯一性，\(\displaystyle f_0\) 良定义；由标量运算直接得其 \(\displaystyle \mathbb K\)-线性. 对任意 \(\displaystyle \alpha\in\mathbb K\)， \(\displaystyle |f_0(\alpha x_0)| =|\alpha|\|x_0\| =\|\alpha x_0\|\).
+故 \(\displaystyle \|f_0\|=1\). 由\autoref{fa:HB-A01}，存在 \(\displaystyle x^*\in X^*\) 延拓 \(\displaystyle f_0\)，且 \(\displaystyle \|x^*\|=\|f_0\|=1\). 特别地 \(\displaystyle x^*(x_0)=f_0(x_0)=\|x_0\|\).
+结论成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][对偶范数表示]{i06:dual-norm-representation}
+对任意 \(\displaystyle x\in X\)， \(\displaystyle \|x\| = \sup_{\|x^*\|\leqslant1}|x^*(x)|\).
+\end{FACorollary}
+
+\begin{FAProof}
+若 \(\displaystyle \|x^*\|\leqslant1\)，则 \(\displaystyle |x^*(x)| \leqslant\|x^*\|\|x\| \leqslant\|x\|\).
+故右侧不超过 \(\displaystyle \|x\|\). 若 \(\displaystyle x=0\)，右侧也为 \(\displaystyle0\). 若 \(\displaystyle x\neq0\)，由\autoref{i06:norming-functional}存在 \(\displaystyle x^*\) 满足 \(\displaystyle \|x^*\|=1\) 且 \(\displaystyle x^*(x)=\|x\|\)，故右侧至少为 \(\displaystyle \|x\|\). 两边相等.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{范数化泛函与距离公式}
+
+\begin{FATheorem}[B][范数化泛函与距离公式]{fa:HB-B02}
+以下两项成立：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 对每个 \(\displaystyle x_0\neq0\)，存在 \(\displaystyle x^*\in X^*\) 满足 \(\displaystyle \|x^*\|=1\) 与 \(\displaystyle x^*(x_0)=\|x_0\|\)；
+\item 若 \(\displaystyle M\leqslant X\) 为任意线性子空间，\(\displaystyle x\in X\)，则
+\[
+\operatorname{dist}(x,M)
+=
+\sup\left\{|x^*(x)|:x^*\in X^*,\ \|x^*\|\leqslant1,\ x^*|_M=0\right\}.
+\]
+若 \(\displaystyle d:=\operatorname{dist}(x,M)>0\)，则上式右侧上确界由某个 \(\displaystyle \|x^*\|=1\) 的泛函达到，并可取 \(\displaystyle x^*(x)=d\).
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+（i） 即\autoref{i06:norming-functional}. 以下证明 （ii）.
+
+令 \(\displaystyle d=\operatorname{dist}(x,M)\). 先证右侧不超过 \(\displaystyle d\). 若 \(\displaystyle x^*\in X^*\)、\(\displaystyle \|x^*\|\leqslant1\) 且 \(\displaystyle x^*|_M=0\)，则对任意 \(\displaystyle m\in M\)， \(\displaystyle |x^*(x)| =|x^*(x-m)| \leqslant\|x-m\|\).
+对 \(\displaystyle m\in M\) 取下确界，得到 \(\displaystyle |x^*(x)|\leqslant d\). 再对所有满足条件的 \(\displaystyle x^*\) 取上确界，右侧不超过 \(\displaystyle d\).
+
+若 \(\displaystyle d=0\)，则 \(\displaystyle x\in\overline M\). 对任意连续 \(\displaystyle x^*\) 满足 \(\displaystyle x^*|_M=0\)，取 \(\displaystyle m_n\in M\) 使 \(\displaystyle m_n\to x\). 连续性给出 \(\displaystyle x^*(x)=\lim_{n\to\infty}x^*(m_n)=0\).
+因此右侧上确界为 \(\displaystyle0=d\).
+
+以下设 \(\displaystyle d>0\). 则 \(\displaystyle x\notin\overline M\)，特别地 \(\displaystyle x\notin M\). 定义 \(\displaystyle N:=M+\operatorname{span}_{\mathbb K}\{x\}\).
+先验证表示唯一. 若 \(\displaystyle m_1+\alpha_1x=m_2+\alpha_2x\)，
+则 \(\displaystyle (\alpha_1-\alpha_2)x=m_2-m_1\in M\).
+若 \(\displaystyle \alpha_1\neq\alpha_2\)，则 \(\displaystyle x\in M\)，矛盾. 故 \(\displaystyle \alpha_1=\alpha_2\)，继而 \(\displaystyle m_1=m_2\). 因此可良定义 \(\displaystyle f_0(m+\alpha x):=\alpha d\).
+由唯一表示直接得到 \(\displaystyle f_0\) 的 \(\displaystyle \mathbb K\)-线性性.
+
+先证明距离缩放公式. 若 \(\displaystyle \alpha=0\)，则 \(\displaystyle \operatorname{dist}(0,M)=0=|\alpha|d\). 若 \(\displaystyle \alpha\neq0\)，利用 \(\displaystyle M\) 的线性性，令 \(\displaystyle m=\alpha m'\)，则 \(\displaystyle m\) 遍历 \(\displaystyle M\) 当且仅当 \(\displaystyle m'\) 遍历 \(\displaystyle M\). 因而
+\[
+\begin{aligned}
+\operatorname{dist}(\alpha x,M)
+&=\inf_{m\in M}\|\alpha x-m\|=\inf_{m'\in M}\|\alpha x-\alpha m'\|\\
+&=|\alpha|\inf_{m'\in M}\|x-m'\|=|\alpha|d.
+\end{aligned}
+\]
+
+对任意 \(\displaystyle m+\alpha x\in N\)，由 \(\displaystyle -m\in M\)，
+\[
+|f_0(m+\alpha x)|=|\alpha|d=\operatorname{dist}(\alpha x,M)\leqslant\|\alpha x-(-m)\|=\|m+\alpha x\|.
+\]
+故 \(\displaystyle \|f_0\|\leqslant1\). 由下确界定义，存在序列 \(\displaystyle (m_n)\subseteq M\) 使 \(\displaystyle \|x-m_n\|\longrightarrow d\).
+令 \(\displaystyle y_n=x-m_n\in N\). 因 \(\displaystyle d>0\)，充分大的 \(\displaystyle n\) 有 \(\displaystyle y_n\neq0\)，且 \(\displaystyle f_0(y_n)=d\)，
+所以
+\[
+\frac{|f_0(y_n)|}{\|y_n\|}
+=
+\frac{d}{\|x-m_n\|}
+\longrightarrow1.
+\]
+故 \(\displaystyle \|f_0\|\geqslant1\). 因而 \(\displaystyle \|f_0\|=1\).
+
+由\autoref{fa:HB-A01}，\(\displaystyle f_0\) 存在范数保持延拓 \(\displaystyle x^*\in X^*\). 于是 \(\displaystyle \|x^*\|=1, \; x^*|_M=0, \; x^*(x)=d\).
+故右侧上确界至少为 \(\displaystyle d\)，并且当 \(\displaystyle d>0\) 时由该 \(\displaystyle x^*\) 达到. 与先前上界合并得到距离公式.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Hahn--Banach直接推论}
+
+\begin{FAProposition}[C][Hahn--Banach直接推论工具]{fa:HB-C01}
+以下结论成立：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 若 \(\displaystyle x,y\in X\) 且 \(\displaystyle x\neq y\)，则存在 \(\displaystyle x^*\in X^*\) 使 \(\displaystyle x^*(x)\neq x^*(y)\)；
+\item 对任意线性子空间 \(\displaystyle M\leqslant X\)， \(\displaystyle x\in\overline M \iff \bigl(\forall\,x^*\in X^*,\ x^*|_M=0\Longrightarrow x^*(x)=0\bigr)\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+（i） 因 \(\displaystyle x-y\neq0\)，由\autoref{i06:norming-functional}存在 \(\displaystyle x^*\in X^*\) 使 \(\displaystyle \|x^*\|=1\) 且 \(\displaystyle x^*(x-y)=\|x-y\|>0\).
+故 \(\displaystyle x^*(x)\neq x^*(y)\).
+
+（ii） 若 \(\displaystyle x\in\overline M\) 且 \(\displaystyle x^*|_M=0\)，取 \(\displaystyle m_n\in M\) 使 \(\displaystyle m_n\to x\). 由连续性，\(\displaystyle x^*(x)=\lim_nx^*(m_n)=0\).
+
+反之，若 \(\displaystyle x\notin\overline M\)，则 \(\displaystyle X\setminus\overline M\) 为开集，故存在 \(\displaystyle \rho>0\) 使 \(\displaystyle B_X(x,\rho)\cap\overline M=\varnothing\). 因此对每个 \(\displaystyle m\in M\) 都有 \(\displaystyle \|x-m\|\geqslant\rho\)，从而 \(\displaystyle d=\operatorname{dist}(x,M)\geqslant\rho>0\). 由\autoref{fa:HB-B02}，存在 \(\displaystyle x^*\in X^*\) 满足 \(\displaystyle x^*|_M=0\) 且 \(\displaystyle x^*(x)=d\neq0\). 因而右侧条件失败. 等价关系成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{连续函数空间模型与\(\displaystyle c_0\) 序列空间模型应用}
+
+\begin{FAApplication}[函数值约束的距离]\label{i06:ex-cont-distance}
+设 \(\displaystyle K\) 为非空紧 Hausdorff 空间，\(\displaystyle t_0\in K\)，并令 \(\displaystyle M:=\{f\in C(K;\mathbb K):f(t_0)=0\}\).
+I-05 已建立点值泛函 \(\displaystyle \delta_{t_0}(f)=f(t_0)\) 与 \(\displaystyle \|\delta_{t_0}\|=1\). 对任意 \(\displaystyle f\in C(K;\mathbb K)\) 与 \(\displaystyle m\in M\)， \(\displaystyle |f(t_0)| =|\delta_{t_0}(f-m)| \leqslant\|f-m\|_\infty\).
+故 \(\displaystyle |f(t_0)|\leqslant\operatorname{dist}(f,M)\). 另一方面，取 \(\displaystyle m:=f-f(t_0)\mathbf1\).
+则 \(\displaystyle m(t_0)=0\)，故 \(\displaystyle m\in M\)，并且 \(\displaystyle \|f-m\|_\infty =\|f(t_0)\mathbf1\|_\infty =|f(t_0)|\).
+因此 \(\displaystyle \operatorname{dist}(f,M)=|f(t_0)|\).
+\end{FAApplication}
+
+\begin{FAApplication}[坐标约束的距离]\label{i06:ex-c0-distance}
+固定 \(\displaystyle n\in\mathbb N\). 定义 \(\displaystyle \pi_n:c_0\to\mathbb K\) 为 \(\displaystyle \pi_n(x)=x_n\). 它线性，且 \(\displaystyle |\pi_n(x)|=|x_n|\leqslant\|x\|_\infty\)，
+故 \(\displaystyle \|\pi_n\|\leqslant1\). 对标准单位向量 \(\displaystyle e_n\)，有 \(\displaystyle \|e_n\|_\infty=1\) 与 \(\displaystyle |\pi_n(e_n)|=1\)，故 \(\displaystyle \|\pi_n\|=1\).
+令 \(\displaystyle M_n:=\{x\in c_0:x_n=0\}\).
+对任意 \(\displaystyle x\in c_0\) 与 \(\displaystyle m\in M_n\)， \(\displaystyle |x_n| =|\pi_n(x-m)| \leqslant\|x-m\|_\infty\),
+故 \(\displaystyle |x_n|\leqslant\operatorname{dist}(x,M_n)\). 取 \(\displaystyle m:=x-x_ne_n\in M_n\)，
+则 \(\displaystyle \|x-m\|_\infty =\|x_ne_n\|_\infty =|x_n|\).
+因此 \(\displaystyle \operatorname{dist}(x,M_n)=|x_n|\).
+这里没有使用也没有建立 \(\displaystyle (c_0)^*\) 的完整识别.
+\end{FAApplication}
+
+\begin{FARemark}[后续边界]
+本章的结论只需要 \(\displaystyle X^*\) 本身. 二次对偶与自然嵌入、弱拓扑与弱星拓扑留待 I-07；Banach--Alaoglu 留待 I-10；Banach 对偶算子与 Hilbert 伴随留待 I-11. 本章也不进入弱下半连续、次微分、凸共轭、Fenchel对偶或变分直接法.
+\end{FARemark}
+
+\subsection{本章习题}\label{sec:i06-exercises}
+
+\begin{FAExercise}[次线性与非对称性]{ex:i06-01}
+设 \(\displaystyle p:E\to\mathbb R\) 次线性. 证明 \(\displaystyle p(x)+p(-x)\geqslant0\). 构造一个满足严格不等式的例，并说明何种附加条件可推出 \(\displaystyle p(-x)=p(x)\).
+\end{FAExercise}
+
+\begin{FAExercise}[一维延拓区间]{ex:i06-02}
+在\autoref{i06:one-dimensional-extension}的条件下，从 \(\displaystyle f(m_1+m_2)\leqslant p(m_1-x_0)+p(m_2+x_0)\) 出发，重新推导 \(\displaystyle c\) 的可选区间，并逐项说明为什么其上确界与下确界是有限实数.
+\end{FAExercise}
+
+\begin{FAExercise}[负参数分支]{ex:i06-03}
+设 \(\displaystyle t<0\). 令 \(\displaystyle s=-t>0\)、\(\displaystyle m'=\frac{m}{s}\)，从 \(\displaystyle c\geqslant f(m')-p(m'-x_0)\) 推出 \(\displaystyle F(m+t x_0)\leqslant p(m+t x_0)\).
+\end{FAExercise}
+
+\begin{FAExercise}[Zorn链的并]{ex:i06-04}
+对\autoref{i06:real-dominated-hahn-banach}中任意链 \(\displaystyle \mathcal C\)，独立验证 \(\displaystyle N_{\mathcal C}\) 为子空间、\(\displaystyle g_{\mathcal C}\) 良定义且线性，并指出证明中哪一步使用了链的全序性.
+\end{FAExercise}
+
+\begin{FAExercise}[实支配型延拓的具体计算]{ex:i06-05}
+在 \(\displaystyle E=\mathbb R^2\) 上取 \(\displaystyle p(x_1,x_2)=|x_1|+2|x_2|\)，\(\displaystyle M=\operatorname{span}_{\mathbb R}\{(1,0)\}\)，\(\displaystyle f(t,0)=t\). 对 \(\displaystyle x_0=(0,1)\) 计算一维延拓参数 \(\displaystyle c\) 的全部允许值，并写出相应延拓.
+\end{FAExercise}
+
+\begin{FAExercise}[实范数保持Hahn--Banach]{ex:i06-06}
+设 \(\displaystyle X\) 为实赋范空间、\(\displaystyle f\in M^*\). 从 \(\displaystyle p(x)=\|f\|\|x\|\) 出发重建\autoref{fa:HB-A01}的实数证明，特别验证由单侧支配 \(\displaystyle F\leqslant p\) 如何得到双侧估计 \(\displaystyle |F(x)|\leqslant\|f\|\|x\|\).
+\end{FAExercise}
+
+\begin{FAExercise}[复泛函的实部范数]{ex:i06-07}
+设 \(\displaystyle f\) 为复赋范空间上的连续复线性泛函，\(\displaystyle u=\operatorname{Re}f\). 使用相位旋转完整证明 \(\displaystyle \|u\|=\|f\|\)，并单独处理 \(\displaystyle f(x)=0\) 的情形.
+\end{FAExercise}
+
+\begin{FAExercise}[复线性重建与无常数损失]{ex:i06-08}
+设 \(\displaystyle U:X\to\mathbb R\) 连续实线性，并定义 \(\displaystyle F(x)=U(x)-\mathrm{i}U(\mathrm{i}x)\). 证明 \(\displaystyle F\) 复线性与 \(\displaystyle \operatorname{Re}F=U\). 再用 \(\displaystyle \beta=\frac{\overline{F(x)}}{|F(x)|}\) 证明 \(\displaystyle |F(x)|\leqslant\|U\|\|x\|\)，不得使用产生常数 \(\displaystyle2\) 的粗略估计作为最终范数界.
+\end{FAExercise}
+
+\begin{FAExercise}[Minkowski吸收性与尺度上闭]{ex:i06-09}
+设 \(\displaystyle U\) 非空、开、凸且 \(\displaystyle0\in U\). 从 \(\displaystyle B_X(0,r)\subseteq U\) 证明 \(\displaystyle A_x\neq\varnothing\). 再证明 \(\displaystyle s\in A_x\)、\(\displaystyle t\geqslant s\Rightarrow t\in A_x\)，并指出凸性与 \(\displaystyle0\in U\) 分别出现在哪里.
+\end{FAExercise}
+
+\begin{FAExercise}[Minkowski集合恢复中的下确界缺口]{ex:i06-10}
+设 \(\displaystyle p_U(x)<1\). 证明存在 \(\displaystyle p_U(x)<t<1\)，再由下确界定义得到某个 \(\displaystyle s\in A_x\) 满足 \(\displaystyle s<t\). 禁止直接从 \(\displaystyle p_U(x)<t\) 写出 \(\displaystyle x\in tU\)；完成 \(\displaystyle x\in U\) 的余下推导.
+\end{FAExercise}
+
+\begin{FAExercise}[非对称Minkowski连续性]{ex:i06-11}
+不假设 \(\displaystyle U=-U\). 由次可加性分别证明 \(\displaystyle p_U(x)-p_U(y)\leqslant p_U(x-y)\) 与 \(\displaystyle p_U(y)-p_U(x)\leqslant p_U(y-x)\)，再利用 \(\displaystyle B_X(0,r)\subseteq U\) 得到 \(\displaystyle |p_U(x)-p_U(y)|\leqslant\frac{\|x-y\|}{r}\).
+\end{FAExercise}
+
+\begin{FAExercise}[开凸集分离的平移消去]{ex:i06-12}
+设 \(\displaystyle a\in U\)、\(\displaystyle V=U-a\)、\(\displaystyle z=x_0-a\). 从 \(\displaystyle g(v)<g(z)\) 对全部 \(\displaystyle v\in V\) 成立，完整推出 \(\displaystyle g(u)<g(x_0)\) 对全部 \(\displaystyle u\in U\) 成立. 复数情形再验证实部重建的分离式.
+\end{FAExercise}
+
+\begin{FAExercise}[闭凸集增厚与定量间隙]{ex:i06-13}
+设 \(\displaystyle C\) 非空、闭、凸且 \(\displaystyle x_0\notin C\)，\(\displaystyle d=\operatorname{dist}(x_0,C)\)、\(\displaystyle r=\frac{d}{2}\). 证明 \(\displaystyle U=C+B_X(0,r)\) 非空、开、凸且不含 \(\displaystyle x_0\). 再解释为何对开球取上确界后只能先得到非严格不等式.
+\end{FAExercise}
+
+\begin{FAExercise}[开球上的实部上确界]{ex:i06-14}
+对 \(\displaystyle0\neq f\in X^*\) 与 \(\displaystyle r>0\)，在不假设 \(\displaystyle \|f\|\) 达到的前提下证明 \(\displaystyle \sup_{\|b\|<r}\operatorname{Re}f(b)=r\|f\|\).
+实数域使用符号选择，复数域使用相位旋转，并明确先令 \(\displaystyle s\uparrow r\)、再令 \(\displaystyle \varepsilon\downarrow0\).
+\end{FAExercise}
+
+\begin{FAExercise}[闭性必要性]{ex:i06-15}
+重建\autoref{i06:closedness-counterexample}. 先用截断证明 \(\displaystyle c_{00}\) 在 \(\displaystyle c_0\) 中稠密，再分别处理 \(\displaystyle x^*|_{c_{00}}\neq0\) 与 \(\displaystyle x^*|_{c_{00}}=0\)，证明 \(\displaystyle x_0=(\frac{1}{n})\) 不能与 \(\displaystyle c_{00}\) 被连续线性泛函严格分离.
+\end{FAExercise}
+
+\begin{FAExercise}[范数化泛函]{ex:i06-16}
+对 \(\displaystyle x_0\neq0\)，在 \(\displaystyle \operatorname{span}_{\mathbb K}\{x_0\}\) 上定义 \(\displaystyle f_0(\alpha x_0)=\alpha\|x_0\|\). 证明表示唯一、\(\displaystyle f_0\) 良定义且线性、\(\displaystyle \|f_0\|=1\)，再用\autoref{fa:HB-A01}得到范数化泛函.
+\end{FAExercise}
+
+\begin{FAExercise}[对偶范数表示与分离点]{ex:i06-17}
+先证明 \(\displaystyle \|x\|=\sup_{\|x^*\|\leqslant1}|x^*(x)|\). 再对 \(\displaystyle x\neq y\) 应用于 \(\displaystyle x-y\)，构造 \(\displaystyle x^*\) 使 \(\displaystyle x^*(x)\neq x^*(y)\).
+\end{FAExercise}
+
+\begin{FAExercise}[距离公式的两种情形]{ex:i06-18}
+设 \(\displaystyle M\leqslant X\)、\(\displaystyle d=\operatorname{dist}(x,M)\). 对 \(\displaystyle d=0\) 用连续性证明所有满足 \(\displaystyle x^*|_M=0\) 的连续泛函在 \(\displaystyle x\) 上取零. 对 \(\displaystyle d>0\) 重建 \(\displaystyle N=M+\operatorname{span}_{\mathbb K}\{x\}\)、表示唯一性、距离缩放公式与 \(\displaystyle f_0(m+\alpha x)=\alpha d\) 的范数计算.
+\end{FAExercise}
+
+\begin{FAExercise}[闭包的连续泛函刻画]{ex:i06-19}
+证明对任意 \(\displaystyle M\leqslant X\)，有 \(\displaystyle x\in\overline M \iff \bigl(\forall\,x^*\in X^*,\ x^*|_M=0\Longrightarrow x^*(x)=0\bigr)\).
+必要性只用连续性；充分性只用本章距离公式，不使用任何弱拓扑语言.
+\end{FAExercise}
+
+\begin{FAExercise}[连续函数空间模型与\(\displaystyle c_0\) 序列空间模型距离]{ex:i06-20}
+分别证明 \(\displaystyle C(K;\mathbb K)\) 中 \(\displaystyle \operatorname{dist}(f,\{g:g(t_0)=0\})=|f(t_0)|\)，以及 \(\displaystyle c_0\) 中 \(\displaystyle \operatorname{dist}(x,\{y:y_n=0\})=|x_n|\). 每一式都必须分别给出泛函导致的下界与显式修正元素导致的上界.
+\end{FAExercise}

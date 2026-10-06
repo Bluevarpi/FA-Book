@@ -1,0 +1,606 @@
+\chapter{Banach代数与Gelfand理论}\label{chap:II-02}
+\FAChapterOpening
+{建立复Banach代数中的可逆性、谱与谱半径；用左正则表示把Banach代数谱论严格归约到I-12的有界算子谱论；在交换含幺情形建立角色、极大理想空间与Gelfand变换，并以函数代数说明抽象谱与点值结构的关系.}
+{I-12的有界算子谱论，特别是\autoref{fa:SPEC-A03}与\autoref{fa:SPEC-B02}；角色空间紧性另使用I-10的Banach--Alaoglu定理.}
+{\begin{center}
+\begin{tikzpicture}[x=1.05cm,y=1.08cm]
+\node[fa/node] (spec) at (0,1.25) {谱半径};
+\node[fa/node] (poly) at (0,-1.25) {多项式谱映射};
+\node[fa/node] (unit) at (2.9,1.25) {单位化};
+\node[fa/node] (balg) at (5.8,1.25) {Banach代数谱};
+\node[fa/node] (balgc) at (8.7,0.1) {多项式谱映射};
+\node[fa/node] (gelb) at (8.7,1.85) {角色/极大理想};
+\node[fa/node] (gela) at (11.6,1.85) {谱表示};
+\draw[fa/arrow] (spec) -- (unit);
+\draw[fa/arrow] (spec.south) to[bend right=30] (balg.south);
+\draw[fa/arrow] (balg) -- (gelb);
+\draw[fa/arrow] (gelb) -- (gela);
+\draw[fa/arrow] (balg) -- (balgc);
+\draw[fa/arrow] (poly) -- (balgc);
+\end{tikzpicture}
+\end{center}}
+
+本章首先允许Banach代数非交换；从第二节起，除非另行声明，\(\displaystyle \mathcal A\) 固定为非零交换含幺复Banach代数. 本章只建立Banach代数谱、角色空间、Gelfand变换与函数代数接口；\(\displaystyle C^*\)代数、连续函数演算、谱测度、无界算子以及非交换Gelfand表示均留待后续章节.
+
+\section{Banach代数}\label{sec:ii02-banach-algebra}
+\index{Banach algebra@Banach代数}\index{invertible element@可逆元}\index{spectrum@谱!Banach代数中的谱}
+
+\begin{FADefinition}[A][复Banach代数]{ii02:banach-algebra-definition}
+复Banach代数是复Banach空间 \(\displaystyle \mathcal A\) 连同双线性结合乘法 \(\displaystyle \mathcal A\times\mathcal A\to\mathcal A\)，满足对全部 \(\displaystyle a,b\in\mathcal A\) 有
+\(\displaystyle \|ab\|\leqslant\|a\|\|b\|.\)
+若存在非零元素 \(\displaystyle 1_{\mathcal A}\) 使 \(\displaystyle 1_{\mathcal A}a=a1_{\mathcal A}=a\) 对全部 \(\displaystyle a\in\mathcal A\) 成立，则称 \(\displaystyle \mathcal A\) 含幺. 本章对含幺代数采用规范 \(\displaystyle \|1_{\mathcal A}\|=1\)，并简写 \(\displaystyle 1:=1_{\mathcal A}\).
+\end{FADefinition}
+
+\begin{FAExample}[两个基本Banach代数]
+若 \(\displaystyle X\) 为非零复Banach空间，则 \(\displaystyle \mathcal B(X)\) 在算子复合下是含幺Banach代数，单位元为 \(\displaystyle \mathcal I_X\)，且 \(\displaystyle \|\mathcal S\mathcal T\|\leqslant\|\mathcal S\|\|\mathcal T\|\). 若 \(\displaystyle K\) 为非空紧Hausdorff空间，则 \(\displaystyle C(K)\) 配逐点乘法与上确界范数是交换含幺Banach代数，单位元为常值函数 \(\displaystyle1\).
+\end{FAExample}
+
+\begin{FALemma}[B][Banach代数中的Neumann引理]{ii02:neumann}
+设 \(\displaystyle \mathcal A\) 为含幺Banach代数，\(\displaystyle a\in\mathcal A\) 且 \(\displaystyle \|a\|<1\). 则 \(\displaystyle1-a\) 可逆，且
+\[
+(1-a)^{-1}=\sum_{n=0}^{\infty}a^n,
+\;
+\|(1-a)^{-1}\|\leqslant\frac{1}{1-\|a\|}.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+由次乘性，\(\displaystyle \|a^n\|\leqslant\|a\|^n\)，故
+\[
+\sum_{n=0}^{\infty}\|a^n\|
+\leqslant
+\sum_{n=0}^{\infty}\|a\|^n
+=
+\frac{1}{1-\|a\|}
+<\infty.
+\]
+完备性给出 \(\displaystyle s:=\sum_{n=0}^{\infty}a^n\in\mathcal A\). 对有限和 \(\displaystyle s_N=\sum_{n=0}^{N}a^n\) 有 \(\displaystyle (1-a)s_N=s_N(1-a)=1-a^{N+1}\). 因 \(\displaystyle \|a^{N+1}\|\leqslant\|a\|^{N+1}\to0\)，乘法连续且 \(\displaystyle s_N\to s\)，故 \(\displaystyle (1-a)s=s(1-a)=1\). 范数估计由级数的绝对收敛直接得到.\hfill\(\square\)
+\end{FAProof}
+
+记 \(\displaystyle \mathcal A^\times\) 为 \(\displaystyle \mathcal A\) 的可逆元群.
+
+\begin{FAProposition}[B][可逆元群的开性与求逆连续性]{ii02:invertible-open}
+设 \(\displaystyle \mathcal A\) 为含幺Banach代数. 则 \(\displaystyle \mathcal A^\times\) 在 \(\displaystyle \mathcal A\) 中开，且映射 \(\displaystyle a\mapsto a^{-1}\) 从 \(\displaystyle \mathcal A^\times\) 到自身连续.
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle a\in\mathcal A^\times\). 若 \(\displaystyle \|h\|<\|a^{-1}\|^{-1}\)，则 \(\displaystyle \|a^{-1}h\|<1\)，且
+\(\displaystyle a+h=a(1+a^{-1}h).\)
+由\autoref{ii02:neumann}，\(\displaystyle1+a^{-1}h\) 可逆，故 \(\displaystyle a+h\in\mathcal A^\times\). 因而 \(\displaystyle \mathcal A^\times\) 开.
+
+进一步，当 \(\displaystyle \|a^{-1}h\|<1\) 时，
+\(\displaystyle (a+h)^{-1}=(1+a^{-1}h)^{-1}a^{-1}.\)
+令 \(\displaystyle u=a^{-1}h\). 由 \(\displaystyle (1+u)^{-1}-1=-(1+u)^{-1}u\) 与Neumann估计，
+\(\displaystyle \|(a+h)^{-1}-a^{-1}\| \leqslant \frac{\|u\|}{1-\|u\|}\|a^{-1}\| \longrightarrow0\)
+当 \(\displaystyle h\to0\). 因而求逆映射连续.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][单位化]{fa:BALG-B01}
+设 \(\displaystyle \mathcal A\) 为无单位复Banach代数. 在向量空间 \(\displaystyle \mathcal A^\#:=\mathcal A\oplus\mathbb C\) 上定义
+\[
+(a,\lambda)(b,\mu)
+:=
+(ab+\lambda b+\mu a,\lambda\mu),
+\;
+\|(a,\lambda)\|_\#:=\|a\|+|\lambda|.
+\]
+则 \(\displaystyle \mathcal A^\#\) 是含幺复Banach代数，单位元为 \(\displaystyle(0,1)\)，而 \(\displaystyle \mathcal A\times\{0\}\) 是其闭双边理想. 对无单位 \(\displaystyle \mathcal A\) 中的 \(\displaystyle a\)，本书把其谱定义为 \(\displaystyle (a,0)\) 在 \(\displaystyle \mathcal A^\#\) 中的谱.
+\end{FATheorem}
+
+\begin{FAProof}
+乘法的双线性由定义式对两个变量逐项展开得到. 对 \(\displaystyle (a,\lambda),(b,\mu),(c,\nu)\in\mathcal A^\#\)，两种结合次序的第一分量都等于
+\(\displaystyle ( ab)c+\lambda bc+\mu ac+\nu ab+\lambda\mu c+\lambda\nu b+\mu\nu a,\)
+第二分量都等于 \(\displaystyle\lambda\mu\nu\)，故乘法结合. 直接计算得 \(\displaystyle(0,1)(a,\lambda)=(a,\lambda)(0,1)=(a,\lambda)\).
+
+由 \(\displaystyle \|ab\|\leqslant\|a\|\|b\|\)，
+\[
+\begin{aligned}
+\displaystyle \|(a,\lambda)(b,\mu)\|_\# &\displaystyle \leqslant \|a\|\|b\|+|\lambda|\|b\|+|\mu|\|a\|+|\lambda\mu|\\
+\displaystyle &\displaystyle = (\|a\|+|\lambda|)(\|b\|+|\mu|).
+\end{aligned}
+\]
+若 \(\displaystyle (a_n,\lambda_n)\) 在 \(\displaystyle\|\cdot\|_\#\) 下Cauchy，则 \(\displaystyle(a_n)\) 在 \(\displaystyle\mathcal A\) 中Cauchy且 \(\displaystyle(\lambda_n)\) 在 \(\displaystyle\mathbb C\) 中Cauchy. 取 \(\displaystyle a_n\to a\)、\(\displaystyle\lambda_n\to\lambda\)，即得 \(\displaystyle(a_n,\lambda_n)\to(a,\lambda)\)，故 \(\displaystyle\mathcal A^\#\) 完备. 线性映射 \(\displaystyle (a,\lambda)\mapsto\lambda\) 的核恰为 \(\displaystyle\mathcal A\times\{0\}\)，故该子空间闭；乘法公式说明它是双边理想.\hfill\(\square\)
+\end{FAProof}
+
+若 \(\displaystyle \mathcal A\) 已含幺，则本章始终使用其原有单位与原有谱，不以单位化替换该谱概念. 现在固定 \(\displaystyle \mathcal A\) 为非零含幺复Banach代数.
+
+\begin{FADefinition}[A][Banach代数中的预解集、谱与谱半径]{ii02:algebra-spectrum-definition}
+对 \(\displaystyle a\in\mathcal A\) 定义
+\[
+\rho_{\mathcal A}(a)
+:=
+\{\lambda\in\mathbb C:\lambda1-a\in\mathcal A^\times\},
+\;
+\sigma_{\mathcal A}(a)
+:=
+\mathbb C\setminus\rho_{\mathcal A}(a),
+\]
+并对 \(\displaystyle \lambda\in\rho_{\mathcal A}(a)\) 定义预解元 \(\displaystyle R_{\mathcal A}(\lambda,a):=(\lambda1-a)^{-1}\). 在下文证明 \(\displaystyle\sigma_{\mathcal A}(a)\) 非空紧后，定义谱半径
+\(\displaystyle r_{\mathcal A}(a):=\max_{\lambda\in\sigma_{\mathcal A}(a)}|\lambda|.\)
+\end{FADefinition}
+
+对 \(\displaystyle a\in\mathcal A\)，定义左正则算子 \(\displaystyle L_a:\mathcal A\to\mathcal A\) 为 \(\displaystyle L_a(b)=ab\).
+
+\begin{FAProposition}[B][左正则表示]{ii02:left-regular}
+对每个 \(\displaystyle a\in\mathcal A\)，有 \(\displaystyle L_a\in\mathcal B(\mathcal A)\) 且 \(\displaystyle\|L_a\|=\|a\|\). 此外 \(\displaystyle L_{ab}=L_aL_b\)、\(\displaystyle L_1=\mathcal I_{\mathcal A}\)，故 \(\displaystyle a\mapsto L_a\) 是等距含幺代数同态.
+\end{FAProposition}
+
+\begin{FAProof}
+由 \(\displaystyle\|ab\|\leqslant\|a\|\|b\|\) 得 \(\displaystyle\|L_a\|\leqslant\|a\|\). 因 \(\displaystyle\|1\|=1\) 且 \(\displaystyle L_a1=a\)，又有 \(\displaystyle\|a\|\leqslant\|L_a\|\). 其余恒等式由结合律与单位元定义直接得到.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][代数可逆性与算子可逆性的等价]{ii02:invertibility-transfer}
+对 \(\displaystyle b\in\mathcal A\)，
+\(\displaystyle b\in\mathcal A^\times \Longleftrightarrow L_b\in\mathcal B(\mathcal A)^\times.\)
+当这些条件成立时，\(\displaystyle L_b^{-1}=L_{b^{-1}}\).
+\end{FALemma}
+
+\begin{FAProof}
+若 \(\displaystyle b\in\mathcal A^\times\)，则 \(\displaystyle L_bL_{b^{-1}}=L_{b^{-1}}L_b=\mathcal I\). 反之设 \(\displaystyle L_b\) 可逆，并令 \(\displaystyle c=L_b^{-1}(1)\). 则 \(\displaystyle bc=1\). 又
+\(\displaystyle L_b(cb-1)=bcb-b=(bc)b-b=0.\)
+因 \(\displaystyle L_b\) 可逆故单射，所以 \(\displaystyle cb=1\). 因而 \(\displaystyle b\in\mathcal A^\times\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][代数谱与左正则算子谱的转移]{ii02:spectrum-transfer}
+对 \(\displaystyle a\in\mathcal A\)，
+\(\displaystyle \sigma_{\mathcal A}(a) = \sigma_{\mathcal B(\mathcal A)}(L_a).\)
+并且当 \(\displaystyle\lambda\in\rho_{\mathcal A}(a)\) 时，
+\(\displaystyle R_{\mathcal B(\mathcal A)}(\lambda,L_a) = L_{R_{\mathcal A}(\lambda,a)}.\)
+\end{FAProposition}
+
+\begin{FAProof}
+由 \(\displaystyle L_{\lambda1-a}=\lambda\mathcal I-L_a\) 与\autoref{ii02:invertibility-transfer}，\(\displaystyle\lambda1-a\) 可逆当且仅当 \(\displaystyle\lambda\mathcal I-L_a\) 可逆，故谱相等. 可逆时\autoref{ii02:invertibility-transfer}还给出
+\(\displaystyle (\lambda\mathcal I-L_a)^{-1} = L_{(\lambda1-a)^{-1}},\)
+即第二式.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][Banach代数谱非空紧与谱半径公式]{fa:BALG-A01}
+设 \(\displaystyle \mathcal A\) 为非零含幺复Banach代数，\(\displaystyle a\in\mathcal A\). 则
+\[
+\varnothing\neq\sigma_{\mathcal A}(a)
+\subseteq
+\{\lambda\in\mathbb C:|\lambda|\leqslant\|a\|\},
+\]
+且 \(\displaystyle\sigma_{\mathcal A}(a)\) 紧. 此外
+\[
+r_{\mathcal A}(a)
+=
+\lim_{n\to\infty}\|a^n\|^{\frac{1}{n}}
+=
+\inf_{n\geqslant1}\|a^n\|^{\frac{1}{n}}.
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{ii02:left-regular}，\(\displaystyle L_a\in\mathcal B(\mathcal A)\) 且 \(\displaystyle\|L_a\|=\|a\|\). 由\autoref{ii02:spectrum-transfer}与I-12的\autoref{fa:SPEC-A03}，\(\displaystyle\sigma_{\mathcal A}(a)=\sigma(L_a)\) 非空紧并包含于 \(\displaystyle |\lambda|\leqslant\|L_a\|=\|a\|\). 同时
+\(\displaystyle L_a^n=L_{a^n},\; \|L_a^n\|=\|L_{a^n}\|=\|a^n\|.\)
+再次应用\autoref{fa:SPEC-A03}的算子谱半径公式，即得所述极限与下确界表达. 证明链只使用左正则表示与I-12谱论，没有使用本章后续Gelfand理论.\hfill\(\square\)
+\end{FAProof}
+
+由\autoref{fa:BALG-A01}，谱半径定义合法且总有 \(\displaystyle r_{\mathcal A}(a)\leqslant\|a\|\).
+
+\begin{FAProposition}[C][谱的仿射规则]{ii02:affine-spectrum}
+对 \(\displaystyle a\in\mathcal A\)、\(\displaystyle\alpha\in\mathbb C\) 与 \(\displaystyle\beta\in\mathbb C\setminus\{0\}\)，有
+\[
+\sigma_{\mathcal A}(\alpha1+a)=\alpha+\sigma_{\mathcal A}(a),
+\;
+\sigma_{\mathcal A}(\beta a)=\beta\sigma_{\mathcal A}(a),
+\;
+\sigma_{\mathcal A}(1)=\{1\}.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+第一式来自 \(\displaystyle \lambda1-(\alpha1+a)=(\lambda-\alpha)1-a\). 第二式来自
+\(\displaystyle \lambda1-\beta a = \beta\bigl((\frac{\lambda}{\beta})1-a\bigr),\)
+而非零标量倍数 \(\displaystyle\beta1\) 可逆. 第三式直接由 \(\displaystyle\lambda1-1=(\lambda-1)1\) 得到.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[C][多项式谱映射工具]{fa:BALG-C01}
+对任意复多项式 \(\displaystyle p\) 与 \(\displaystyle a\in\mathcal A\)，
+\(\displaystyle \sigma_{\mathcal A}(p(a)) = p(\sigma_{\mathcal A}(a)).\)
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle p\) 非常数. 由左正则表示的代数同态性，\(\displaystyle L_{p(a)}=p(L_a)\). 因而由\autoref{ii02:spectrum-transfer}与I-12的\autoref{fa:SPEC-B02}，
+\[
+\begin{aligned}
+\displaystyle \sigma_{\mathcal A}(p(a)) &\displaystyle =\sigma_{\mathcal B(\mathcal A)}(L_{p(a)})\\
+\displaystyle &\displaystyle =\sigma_{\mathcal B(\mathcal A)}(p(L_a))\\
+\displaystyle &\displaystyle =p(\sigma_{\mathcal B(\mathcal A)}(L_a))\\
+\displaystyle &\displaystyle =p(\sigma_{\mathcal A}(a)).
+\end{aligned}
+\]
+若 \(\displaystyle p\equiv c\) 为常数，则 \(\displaystyle p(a)=c1\)，由\autoref{ii02:affine-spectrum}有 \(\displaystyle\sigma(c1)=\{c\}\)，而 \(\displaystyle p(\sigma(a))=\{c\}\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[Banach代数谱仍不等于特征值集合]\label{ii02:ce-spectrum-noeig-reuse}
+I-12已对 \(\displaystyle\ell^2\) 上单边右移 \(\displaystyle\mathcal S\) 证明 \(\displaystyle\sigma(\mathcal S)=\{\lambda:|\lambda|\leqslant1\}\) 而 \(\displaystyle\sigma_{\mathrm p}(\mathcal S)=\varnothing\). 因为 \(\displaystyle\mathcal B(\ell^2)\) 本身是Banach代数，这一同一对象说明Banach代数中的谱仍由 \(\displaystyle\lambda1-a\) 的可逆性定义，不能改成特征值集合. 本章不重复I-12的反例证明.
+\end{FACounterexample}
+
+\section{角色与极大理想}\label{sec:ii02-characters-maximal-ideals}
+\index{character@角色}\index{maximal ideal@极大理想}\index{character space@角色空间}
+
+本节起固定 \(\displaystyle \mathcal A\) 为非零交换含幺复Banach代数. 下述角色与极大理想对应不推广到一般非交换Banach代数.
+
+\begin{FADefinition}[B][角色]{ii02:character-definition}
+角色是非零、复线性且乘法保持的泛函 \(\displaystyle\varphi:\mathcal A\to\mathbb C\)，即 \(\displaystyle\varphi(ab)=\varphi(a)\varphi(b)\). 定义时不预先假设 \(\displaystyle\varphi\) 连续.
+\end{FADefinition}
+
+\begin{FALemma}[B][角色在单位元上的取值]{ii02:character-unit}
+每个角色 \(\displaystyle\varphi\) 都满足 \(\displaystyle\varphi(1)=1\).
+\end{FALemma}
+
+\begin{FAProof}
+由乘法性，\(\displaystyle\varphi(1)=\varphi(1)^2\)，故 \(\displaystyle\varphi(1)\in\{0,1\}\). 若 \(\displaystyle\varphi(1)=0\)，则对全部 \(\displaystyle a\in\mathcal A\) 有 \(\displaystyle\varphi(a)=\varphi(1a)=\varphi(1)\varphi(a)=0\)，与角色非零矛盾.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][角色值属于谱与自动连续性]{ii02:character-continuity}
+若 \(\displaystyle\varphi\) 为角色，则对全部 \(\displaystyle a\in\mathcal A\) 有 \(\displaystyle\varphi(a)\in\sigma_{\mathcal A}(a)\). 因而
+\(\displaystyle |\varphi(a)|\leqslant r_{\mathcal A}(a)\leqslant\|a\|,\)
+所以 \(\displaystyle\varphi\in\mathcal A^*\) 且 \(\displaystyle\|\varphi\|=1\).
+\end{FAProposition}
+
+\begin{FAProof}
+若反设 \(\displaystyle\varphi(a)1-a\) 可逆，记其逆为 \(\displaystyle b\). 由\autoref{ii02:character-unit}与乘法性，
+\(\displaystyle 1 =\varphi(1) =\varphi((\varphi(a)1-a)b) =(\varphi(a)-\varphi(a))\varphi(b) =0,\)
+矛盾. 故 \(\displaystyle\varphi(a)\in\sigma(a)\). 于是由\autoref{fa:BALG-A01}，\(\displaystyle|\varphi(a)|\leqslant r(a)\leqslant\|a\|\)，所以 \(\displaystyle\|\varphi\|\leqslant1\). 又 \(\displaystyle\varphi(1)=1\) 且 \(\displaystyle\|1\|=1\)，故 \(\displaystyle\|\varphi\|\geqslant1\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][代数极大理想自动闭]{ii02:maximal-ideal-closed}
+每个真代数极大理想 \(\displaystyle M\subset\mathcal A\) 都闭.
+\end{FALemma}
+
+\begin{FAProof}
+若 \(\displaystyle\overline M=\mathcal A\)，则存在 \(\displaystyle m\in M\) 使 \(\displaystyle\|1-m\|<1\). 由\autoref{ii02:neumann}，\(\displaystyle m=1-(1-m)\) 可逆. 真理想不能含可逆元，因为 \(\displaystyle m\in M\) 与 \(\displaystyle m^{-1}\in\mathcal A\) 会推出 \(\displaystyle1=m^{-1}m\in M\). 因而 \(\displaystyle\overline M\neq\mathcal A\). 另一方面，\(\displaystyle\overline M\) 是线性子空间；若 \(\displaystyle x_n\in M\) 且 \(\displaystyle x_n\to x\)，则对任意 \(\displaystyle a\in\mathcal A\) 有 \(\displaystyle ax_n\to ax\) 与 \(\displaystyle x_na\to xa\)，故 \(\displaystyle ax,xa\in\overline M\). 因此 \(\displaystyle\overline M\) 仍是双边理想且包含 \(\displaystyle M\)，由极大性得 \(\displaystyle\overline M=M\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][Gelfand--Mazur定理]{ii02:gelfand-mazur}
+若 \(\displaystyle \mathcal D\) 为复含幺Banach除代数，则 \(\displaystyle\mathcal D=\mathbb C1\).
+\end{FATheorem}
+
+\begin{FAProof}
+固定 \(\displaystyle a\in\mathcal D\). 由\autoref{fa:BALG-A01}，\(\displaystyle\sigma_{\mathcal D}(a)\neq\varnothing\). 取 \(\displaystyle\lambda\in\sigma_{\mathcal D}(a)\)，则 \(\displaystyle\lambda1-a\) 不可逆. 除代数中唯一不可逆元素为 \(\displaystyle0\)，故 \(\displaystyle\lambda1-a=0\)，即 \(\displaystyle a=\lambda1\). 因 \(\displaystyle a\) 任意，结论成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][极大理想产生角色]{ii02:maximal-to-character}
+若 \(\displaystyle M\) 为 \(\displaystyle\mathcal A\) 的极大理想，则存在角色 \(\displaystyle\varphi_M\) 满足 \(\displaystyle\ker\varphi_M=M\).
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii02:maximal-ideal-closed}，\(\displaystyle M\) 闭，所以 \(\displaystyle\mathcal A/M\) 在商范数下是Banach空间. 商乘法 \(\displaystyle(a+M)(b+M)=ab+M\) 因 \(\displaystyle M\) 为理想而良定. 对任意 \(\displaystyle\varepsilon>0\)，可取 \(\displaystyle m,n\in M\) 使 \(\displaystyle\|a+m\|\leqslant\|a+M\|+\varepsilon\) 与 \(\displaystyle\|b+n\|\leqslant\|b+M\|+\varepsilon\). 因而
+\(\displaystyle \|(a+M)(b+M)\| \leqslant (\|a+M\|+\varepsilon)(\|b+M\|+\varepsilon).\)
+令 \(\displaystyle\varepsilon\downarrow0\)，得到商范数的次乘性. 因 \(\displaystyle M\) 真，\(\displaystyle1+M\neq0\) 且它是单位元；又 \(\displaystyle\|1+M\|\leqslant\|1\|=1\)，而 \(\displaystyle\|1+M\|=\|(1+M)^2\|\leqslant\|1+M\|^2\) 给出 \(\displaystyle\|1+M\|\geqslant1\)，故 \(\displaystyle\|1+M\|=1\). 因此 \(\displaystyle\mathcal A/M\) 是含幺交换Banach代数. 若 \(\displaystyle a+M\neq M\)，则 \(\displaystyle a\notin M\). 极大性给出理想 \(\displaystyle M+\mathcal Aa=\mathcal A\)，故存在 \(\displaystyle m\in M\)、\(\displaystyle b\in\mathcal A\) 使 \(\displaystyle m+ba=1\). 因而 \(\displaystyle(b+M)(a+M)=1+M\)，交换性同时给双边逆，所以 \(\displaystyle\mathcal A/M\) 是复Banach除代数.
+
+由\autoref{ii02:gelfand-mazur}，\(\displaystyle\mathcal A/M=\mathbb C(1+M)\). 因而存在唯一复线性含幺代数同构 \(\displaystyle\theta_M:\mathcal A/M\to\mathbb C\)，满足 \(\displaystyle\theta_M(\lambda1+M)=\lambda\). 令 \(\displaystyle q_M:\mathcal A\to\mathcal A/M\) 为商映射并定义 \(\displaystyle\varphi_M:=\theta_M\circ q_M\). 则 \(\displaystyle\varphi_M\) 为角色且 \(\displaystyle\ker\varphi_M=M\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][角色核是闭极大理想]{ii02:character-to-maximal}
+若 \(\displaystyle\varphi\) 为角色，则 \(\displaystyle\ker\varphi\) 是闭极大理想.
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii02:character-continuity}，\(\displaystyle\ker\varphi\) 闭. 又 \(\displaystyle\varphi(\lambda1)=\lambda\)，故 \(\displaystyle\varphi\) 满射. 第一同构定理给出复代数同构
+\(\displaystyle \mathcal A/\ker\varphi\cong\mathbb C.\)
+商代数是域，故 \(\displaystyle\ker\varphi\) 极大.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][极大理想与角色的存在]{ii02:character-existence}
+每个真理想都包含于某个极大理想. 特别地，\(\displaystyle\mathcal A\) 至少存在一个角色.
+\end{FALemma}
+
+\begin{FAProof}
+固定真理想 \(\displaystyle I\). 令 \(\displaystyle\mathcal P\) 为所有包含 \(\displaystyle I\) 的真理想组成的偏序集，按包含关系排序. 若 \(\displaystyle\mathcal C\subseteq\mathcal P\) 为链，则 \(\displaystyle J:=\bigcup_{K\in\mathcal C}K\) 是理想. 若 \(\displaystyle1\in J\)，则某个 \(\displaystyle K\in\mathcal C\) 含 \(\displaystyle1\)，与真矛盾；故 \(\displaystyle J\in\mathcal P\) 且是该链的上界. Zorn引理给出包含 \(\displaystyle I\) 的极大元，它正是极大理想. 取 \(\displaystyle I=\{0\}\)，再用\autoref{ii02:maximal-to-character}即得角色存在.\hfill\(\square\)
+\end{FAProof}
+
+记所有角色的集合为 \(\displaystyle\Delta(\mathcal A)\subseteq\mathcal A^*\)，并赋予 \(\displaystyle\mathcal A^*\) 的弱*子空间拓扑.
+
+\begin{FATheorem}[B][角色空间与极大理想空间的基本性质]{fa:GEL-B01}
+设 \(\displaystyle\mathcal A\) 为非零交换含幺复Banach代数. 则：
+\begin{enumerate}[label=(\roman*)]
+\item 每个角色自动连续且范数为 \(\displaystyle1\).
+\item 映射 \(\displaystyle\varphi\mapsto\ker\varphi\) 给出角色与极大理想的一一对应.
+\item \(\displaystyle\Delta(\mathcal A)\) 非空，并作为 \(\displaystyle\mathcal A^*\) 闭单位球的弱*闭子集而紧.
+\item \(\displaystyle\Delta(\mathcal A)\) 在弱*拓扑下Hausdorff.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+第一项由\autoref{ii02:character-continuity}，存在性由\autoref{ii02:character-existence}. 由\autoref{ii02:character-to-maximal}，每个角色核为极大理想；由\autoref{ii02:maximal-to-character}，每个极大理想是某个角色的核. 若两个角色 \(\displaystyle\varphi,\psi\) 有相同核 \(\displaystyle M\)，则对每个 \(\displaystyle a\in\mathcal A\)，\(\displaystyle a-\varphi(a)1\in M\)，故 \(\displaystyle0=\psi(a-\varphi(a)1)=\psi(a)-\varphi(a)\). 因而 \(\displaystyle\psi=\varphi\)，所以第二项为一一对应.
+
+由第一项，\(\displaystyle\Delta(\mathcal A)\subseteq\overline B_{\mathcal A^*}\). I-10的Banach--Alaoglu定理给出 \(\displaystyle\overline B_{\mathcal A^*}\) 弱*紧. 设网 \(\displaystyle(\varphi_\alpha)\subseteq\Delta(\mathcal A)\) 在该球中弱*收敛到 \(\displaystyle\varphi\). 对全部 \(\displaystyle a,b\in\mathcal A\)，
+\(\displaystyle \varphi(1)=\lim_\alpha\varphi_\alpha(1)=1\)
+且
+\[
+\varphi(ab)=\lim_\alpha\varphi_\alpha(ab)=\lim_\alpha\bigl(\varphi_\alpha(a)\varphi_\alpha(b)\bigr)=\varphi(a)\varphi(b).
+\]
+弱*极限仍是复线性泛函，且 \(\displaystyle\varphi(1)=1\) 保证其非零，故 \(\displaystyle\varphi\in\Delta(\mathcal A)\). 因而角色空间弱*闭，从而紧. 弱*拓扑是对偶空间上的Hausdorff拓扑，其子空间仍Hausdorff.\hfill\(\square\)
+\end{FAProof}
+
+通过 \(\displaystyle\varphi\mapsto\ker\varphi\)，本章把 \(\displaystyle\Delta(\mathcal A)\) 与极大理想集合识别，因此可称其为角色空间或极大理想空间. hull--kernel拓扑、本原理想与非交换理想谱不在本章建立.
+
+\section{Gelfand变换}\label{sec:ii02-gelfand-transform}
+\index{Gelfand transform@Gelfand变换}\index{semisimple Banach algebra@半单Banach代数}\index{radical@根}
+
+仍设 \(\displaystyle\mathcal A\) 为非零交换含幺复Banach代数.
+
+\begin{FADefinition}[A][Gelfand变换]{ii02:gelfand-transform-definition}
+对 \(\displaystyle a\in\mathcal A\) 定义
+\(\displaystyle \widehat a:\Delta(\mathcal A)\to\mathbb C, \; \widehat a(\varphi):=\varphi(a).\)
+由于弱*拓扑正由各点值映射 \(\displaystyle\varphi\mapsto\varphi(a)\) 生成，\(\displaystyle\widehat a\in C(\Delta(\mathcal A))\). 定义Gelfand变换
+\(\displaystyle \Gamma:\mathcal A\to C(\Delta(\mathcal A)), \; \Gamma(a):=\widehat a.\)
+\end{FADefinition}
+
+\begin{FAProposition}[B][Gelfand变换的代数结构]{ii02:gelfand-homomorphism}
+\(\displaystyle\Gamma\) 是含幺复代数同态，即对 \(\displaystyle a,b\in\mathcal A\) 与 \(\displaystyle\lambda\in\mathbb C\) 有
+\[
+\widehat{a+b}=\widehat a+\widehat b,
+\;
+\widehat{\lambda a}=\lambda\widehat a,
+\;
+\widehat{ab}=\widehat a\,\widehat b,
+\;
+\widehat1=1.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+对每个 \(\displaystyle\varphi\in\Delta(\mathcal A)\)，四式分别由角色的复线性、乘法性与 \(\displaystyle\varphi(1)=1\) 逐点得到.\hfill\(\square\)
+\end{FAProof}
+
+由\autoref{ii02:character-continuity}，对任意 \(\displaystyle a\in\mathcal A\) 已有
+\(\displaystyle \widehat a(\Delta(\mathcal A)) \subseteq \sigma_{\mathcal A}(a).\)
+反向包含需要极大理想.
+
+\begin{FAProposition}[A][Gelfand谱识别]{ii02:gelfand-spectrum-identification}
+对每个 \(\displaystyle a\in\mathcal A\)，
+\(\displaystyle \sigma_{\mathcal A}(a) = \widehat a(\Delta(\mathcal A)).\)
+\end{FAProposition}
+
+\begin{FAProof}
+只需证明反向包含. 固定 \(\displaystyle\lambda\in\sigma_{\mathcal A}(a)\). 元素 \(\displaystyle a-\lambda1\) 不可逆. 主理想 \(\displaystyle\mathcal A(a-\lambda1)\) 必为真：若存在 \(\displaystyle b\in\mathcal A\) 使 \(\displaystyle1=b(a-\lambda1)\)，则交换性给 \(\displaystyle(a-\lambda1)b=1\)，所以 \(\displaystyle a-\lambda1\) 可逆，矛盾.
+
+由\autoref{ii02:character-existence}的Zorn论证，存在极大理想 \(\displaystyle M\supseteq\mathcal A(a-\lambda1)\). 取\autoref{ii02:maximal-to-character}给出的角色 \(\displaystyle\varphi_M\)，则
+\(\displaystyle 0 =\varphi_M(a-\lambda1) =\varphi_M(a)-\lambda.\)
+故 \(\displaystyle\lambda=\widehat a(\varphi_M)\in\widehat a(\Delta(\mathcal A))\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][Gelfand基本定理]{fa:GEL-A01}
+设 \(\displaystyle\mathcal A\) 为非零交换含幺复Banach代数. Gelfand变换
+\(\displaystyle \Gamma:\mathcal A\to C(\Delta(\mathcal A))\)
+是含幺代数同态，且对每个 \(\displaystyle a\in\mathcal A\)，
+\[
+\sigma_{\mathcal A}(a)
+=
+\widehat a(\Delta(\mathcal A)),
+\;
+r_{\mathcal A}(a)
+=
+\|\widehat a\|_\infty
+\leqslant
+\|a\|.
+\]
+此外
+\[
+a\in\mathcal A^\times
+\Longleftrightarrow
+0\notin\widehat a(\Delta(\mathcal A))
+\Longleftrightarrow
+\widehat a(\varphi)\neq0
+\text{ 对全部 }\varphi\in\Delta(\mathcal A).
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+同态性由\autoref{ii02:gelfand-homomorphism}，谱识别由\autoref{ii02:gelfand-spectrum-identification}. 由\autoref{fa:GEL-B01}，\(\displaystyle\Delta(\mathcal A)\) 非空紧，故连续函数 \(\displaystyle|\widehat a|\) 取得最大值. 谱识别给出
+\(\displaystyle \|\widehat a\|_\infty = \max_{\varphi\in\Delta(\mathcal A)}|\varphi(a)| = \max_{\lambda\in\sigma(a)}|\lambda| = r(a).\)
+再由\autoref{fa:BALG-A01}得 \(\displaystyle r(a)\leqslant\|a\|\). 最后 \(\displaystyle a\) 可逆当且仅当 \(\displaystyle0\notin\sigma(a)\)，结合谱识别即得两重等价.\hfill\(\square\)
+\end{FAProof}
+
+关键边界是
+\(\displaystyle \|\widehat a\|_\infty=r(a)\leqslant\|a\|,\)
+而不是对一般交换Banach代数断言 \(\displaystyle\|\widehat a\|_\infty=\|a\|\).
+
+\begin{FADefinition}[C][Gelfand核与半单性]{ii02:radical-definition}
+定义本章所需的最小根接口
+\[
+\operatorname{rad}\mathcal A
+:=
+\bigcap_{\varphi\in\Delta(\mathcal A)}\ker\varphi.
+\]
+则 \(\displaystyle\ker\Gamma=\operatorname{rad}\mathcal A\). 若 \(\displaystyle\operatorname{rad}\mathcal A=\{0\}\)，称 \(\displaystyle\mathcal A\) 半单.
+\end{FADefinition}
+
+\begin{FAProof}[等式证明]
+对 \(\displaystyle a\in\mathcal A\)，\(\displaystyle a\in\ker\Gamma\) 当且仅当 \(\displaystyle\widehat a(\varphi)=\varphi(a)=0\) 对全部 \(\displaystyle\varphi\in\Delta(\mathcal A)\) 成立，这恰等价于 \(\displaystyle a\in\bigcap_{\varphi\in\Delta(\mathcal A)}\ker\varphi\).\hfill\(\square\)
+\end{FAProof}
+
+本章不进一步发展一般Jacobson radical理论.
+
+\begin{FACounterexample}[双数代数：Gelfand变换一般不单射也不等距]\label{ii02:dual-number}
+令
+\[
+\mathcal D
+:=
+\mathbb C\oplus\mathbb C\varepsilon,
+\;
+\varepsilon^2=0,
+\;
+\|\alpha+\beta\varepsilon\|:=|\alpha|+|\beta|.
+\]
+乘法为
+\[
+(\alpha+\beta\varepsilon)(\gamma+\delta\varepsilon)
+=
+\alpha\gamma+(\alpha\delta+\beta\gamma)\varepsilon.
+\]
+于是
+\[
+\begin{aligned}
+\displaystyle \|(\alpha+\beta\varepsilon)(\gamma+\delta\varepsilon)\| &\displaystyle \leqslant |\alpha||\gamma|+|\alpha||\delta|+|\beta||\gamma|\\
+\displaystyle &\displaystyle \leqslant (|\alpha|+|\beta|)(|\gamma|+|\delta|).
+\end{aligned}
+\]
+空间 \(\displaystyle\mathcal D\) 与 \(\displaystyle\mathbb C^2\) 的 \(\displaystyle\ell^1\)-范数等距，故完备；单位元为 \(\displaystyle1=1+0\varepsilon\). 因而 \(\displaystyle\mathcal D\) 是交换含幺Banach代数.
+
+若 \(\displaystyle\varphi\in\Delta(\mathcal D)\)，则 \(\displaystyle\varphi(\varepsilon)^2=\varphi(\varepsilon^2)=0\)，故 \(\displaystyle\varphi(\varepsilon)=0\)，而 \(\displaystyle\varphi(1)=1\). 因此唯一角色为
+\(\displaystyle \varphi(\alpha+\beta\varepsilon)=\alpha.\)
+特别地，\(\displaystyle\varepsilon\neq0\) 而 \(\displaystyle\widehat\varepsilon=0\). 所以Gelfand变换在一般交换Banach代数上既不必单射，也不必等距.
+\end{FACounterexample}
+
+\section{函数代数}\label{sec:ii02-function-algebras}
+\index{function algebra@函数代数}\index{evaluation character@点值角色}\index{maximal ideal space@极大理想空间}
+
+\begin{FAProposition}[B][\(\displaystyle C(K)\) 中的谱]{ii02:ck-spectrum}
+设 \(\displaystyle K\) 为非空紧Hausdorff空间，\(\displaystyle f\in C(K)\). 则
+\(\displaystyle \sigma_{C(K)}(f)=f(K).\)
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle\lambda\notin f(K)\)，则连续函数 \(\displaystyle\lambda-f\) 无零点. 因为 \(\displaystyle K\) 紧，\(\displaystyle |\lambda-f|\) 有正的最小值，所以
+\(\displaystyle (\lambda1-f)^{-1} = \frac{1}{\lambda-f} \in C(K).\)
+故 \(\displaystyle\lambda\in\rho_{C(K)}(f)\). 反之若 \(\displaystyle\lambda=f(x_0)\)，则 \(\displaystyle(\lambda1-f)(x_0)=0\). 若 \(\displaystyle\lambda1-f\) 有逐点乘法逆 \(\displaystyle g\)，则在 \(\displaystyle x_0\) 处有 \(\displaystyle1=(\lambda-f)(x_0)g(x_0)=0\)，矛盾. 因而 \(\displaystyle\lambda\in\sigma_{C(K)}(f)\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[C][含幺函数代数]{ii02:function-algebra-definition}
+设 \(\displaystyle K\) 为非空紧Hausdorff空间. 闭含幺子代数 \(\displaystyle\mathcal A\subseteq C(K)\) 称为含幺函数代数. 若对任意不同 \(\displaystyle x,y\in K\) 存在 \(\displaystyle f\in\mathcal A\) 使 \(\displaystyle f(x)\neq f(y)\)，则称 \(\displaystyle\mathcal A\) 分离点.
+\end{FADefinition}
+
+对每个 \(\displaystyle x\in K\)，点值泛函 \(\displaystyle\operatorname{ev}_x(f):=f(x)\) 是角色，因此定义
+\(\displaystyle \iota:K\to\Delta(\mathcal A),\; \iota(x):=\operatorname{ev}_x.\)
+
+\begin{FAProposition}[B][函数代数的点值嵌入]{ii02:evaluation-embedding}
+映射 \(\displaystyle\iota\) 连续. 若 \(\displaystyle\mathcal A\) 分离点，则 \(\displaystyle\iota\) 单射，并且 \(\displaystyle\iota:K\to\iota(K)\) 是同胚.
+\end{FAProposition}
+
+\begin{FAProof}
+弱*拓扑在 \(\displaystyle\Delta(\mathcal A)\) 上由坐标映射 \(\displaystyle\varphi\mapsto\varphi(f)\) 生成. 对固定 \(\displaystyle f\in\mathcal A\)，复合映射满足
+\(\displaystyle x\longmapsto\iota(x)(f)=f(x),\)
+故连续；因此 \(\displaystyle\iota\) 连续. 若 \(\displaystyle\mathcal A\) 分离点且 \(\displaystyle x\neq y\)，取 \(\displaystyle f\in\mathcal A\) 使 \(\displaystyle f(x)\neq f(y)\)，则 \(\displaystyle\operatorname{ev}_x\neq\operatorname{ev}_y\)，故 \(\displaystyle\iota\) 单射. 由\autoref{fa:GEL-B01}，角色空间Hausdorff；紧空间到Hausdorff空间的连续单射是到其像的同胚.\hfill\(\square\)
+\end{FAProof}
+
+对一般闭含幺且分离点的函数代数，本章不声称 \(\displaystyle\iota(K)=\Delta(\mathcal A)\). 下述完整函数代数给出一个可直接证明的特殊情形.
+
+\begin{FATheorem}[B][区间连续函数代数的极大理想空间]{ii02:interval-character-space}
+设 \(\displaystyle a<b\) 且 \(\displaystyle\mathcal A=C([a,b])\). 则每个极大理想唯一形如
+\(\displaystyle M_{x_0}:=\{f\in C([a,b]):f(x_0)=0\}, \; x_0\in[a,b].\)
+因此每个角色唯一为 \(\displaystyle\operatorname{ev}_{x_0}\)，并且
+\(\displaystyle \Delta(C([a,b]))\cong[a,b]\)
+作为紧Hausdorff空间同胚.
+\end{FATheorem}
+
+\begin{FAProof}
+固定极大理想 \(\displaystyle M\). 定义共同零点集
+\(\displaystyle Z(M) := \{x\in[a,b]:f(x)=0\text{ 对全部 }f\in M\}.\)
+先证 \(\displaystyle Z(M)\neq\varnothing\). 若反设为空，则开集族 \(\displaystyle\{x:f(x)\neq0\}\)，其中 \(\displaystyle f\in M\)，覆盖 \(\displaystyle[a,b]\). 紧性给出 \(\displaystyle f_1,\dots,f_n\in M\) 无共同零点. 令
+\[
+g
+:=
+\sum_{j=1}^{n}\overline{f_j}f_j.
+\]
+因为 \(\displaystyle f_j\in M\)、\(\displaystyle\overline{f_j}\in C([a,b])\) 且 \(\displaystyle M\) 为理想，所以 \(\displaystyle g\in M\). 又无共同零点给出 \(\displaystyle g(x)>0\) 对全部 \(\displaystyle x\in[a,b]\) 成立. 紧性使 \(\displaystyle\min_{x\in[a,b]}g(x)>0\)，故 \(\displaystyle\frac{1}{g}\in C([a,b])\)，所以 \(\displaystyle g\) 可逆. 这与真理想 \(\displaystyle M\) 含可逆元矛盾. 因而 \(\displaystyle Z(M)\neq\varnothing\).
+
+取 \(\displaystyle x_0\in Z(M)\). 则 \(\displaystyle M\subseteq M_{x_0}\). 点值映射 \(\displaystyle\operatorname{ev}_{x_0}:C([a,b])\to\mathbb C\) 是满射角色，故由\autoref{ii02:character-to-maximal}，\(\displaystyle M_{x_0}\) 极大. 由 \(\displaystyle M\) 的极大性，\(\displaystyle M=M_{x_0}\).
+
+若 \(\displaystyle M_x=M_y\)，取坐标函数 \(\displaystyle u(t)=t\). 因 \(\displaystyle u-u(x)1\in M_x=M_y\)，有 \(\displaystyle y-x=0\)，故 \(\displaystyle x=y\)，从而 \(\displaystyle x_0\) 唯一. 现设角色 \(\displaystyle\varphi\) 满足 \(\displaystyle\ker\varphi=M_{x_0}\). 对任意 \(\displaystyle f\in C([a,b])\)，有 \(\displaystyle f-f(x_0)1\in M_{x_0}=\ker\varphi\)，因此 \(\displaystyle\varphi(f)=f(x_0)\). 于是全部角色恰为点值角色.
+
+最后\autoref{ii02:evaluation-embedding}给出连续映射 \(\displaystyle\iota:[a,b]\to\Delta(C([a,b]))\)，上述角色分类说明它双射. 紧空间到Hausdorff空间的连续双射为同胚.\hfill\(\square\)
+\end{FAProof}
+
+在 \(\displaystyle\Delta(C([a,b]))\cong[a,b]\) 的识别下，对 \(\displaystyle f\in C([a,b])\) 有 \(\displaystyle\widehat f(x)=f(x)\). 因而此特殊完整函数代数中Gelfand变换是等距代数同构
+\(\displaystyle C([a,b]) \cong C(\Delta(C([a,b]))).\)
+这是 \(\displaystyle C([a,b])\) 的特殊结论，不能反向推广成任意交换Banach代数上的Gelfand等距性.
+
+\begin{FARemark}[II-03边界]
+下一章才引入对合、\(\displaystyle C^*\)恒等式、正元素、正规算子的连续函数演算、有界正规谱定理与谱测度. 本章没有正式定义\(\displaystyle C^*\)代数，也没有使用任何II-03结果. 非交换Gelfand理论、本原理想、表示论、GNS与Calkin机制均属于更后的专题边界.
+\end{FARemark}
+
+\subsection*{本章习题}\label{sec:ii02-exercises}
+
+\begin{FAExercise}[Banach代数基本例]{ex:ii02-01}
+设 \(\displaystyle X\) 为非零复Banach空间、\(\displaystyle K\) 为非空紧Hausdorff空间. 证明 \(\displaystyle\mathcal B(X)\) 在算子复合与算子范数下为含幺Banach代数，并证明 \(\displaystyle C(K)\) 在逐点乘法与上确界范数下为交换含幺Banach代数. 指出两个证明中完备性分别来自何处.
+\end{FAExercise}
+
+\begin{FAExercise}[卷积Banach代数]{ex:ii02-02}
+在 \(\displaystyle\ell^1(\mathbb N_0)\) 上定义 \(\displaystyle(x*y)_n=\sum_{k=0}^{n}x_k y_{n-k}\). 证明 \(\displaystyle x*y\in\ell^1\) 且 \(\displaystyle\|x*y\|_1\leqslant\|x\|_1\|y\|_1\)，再找出单位元.
+\end{FAExercise}
+
+\begin{FAExercise}[Neumann级数]{ex:ii02-03}
+完整重建\autoref{ii02:neumann}，特别证明极限同时给出左逆与右逆，并从绝对收敛推出 \(\displaystyle\|(1-a)^{-1}\|\leqslant(1-\|a\|)^{-1}\).
+\end{FAExercise}
+
+\begin{FAExercise}[可逆元群与逆映射]{ex:ii02-04}
+设 \(\displaystyle a\in\mathcal A^\times\). 从 \(\displaystyle\|h\|<\|a^{-1}\|^{-1}\) 出发证明 \(\displaystyle a+h\) 可逆，再推导一个显式上界控制 \(\displaystyle\|(a+h)^{-1}-a^{-1}\|\)，由此证明求逆连续.
+\end{FAExercise}
+
+\begin{FAExercise}[单位化]{ex:ii02-05}
+逐项验证\autoref{fa:BALG-B01}中单位化乘法的结合律、次乘性与完备性，并证明 \(\displaystyle\mathcal A\times\{0\}\) 是闭双边理想. 最后解释为什么已经含幺的代数不应无条件用新单位化替换原有谱概念.
+\end{FAExercise}
+
+\begin{FAExercise}[左正则表示]{ex:ii02-06}
+证明 \(\displaystyle\|L_a\|=\|a\|\)、\(\displaystyle L_{ab}=L_aL_b\) 与 \(\displaystyle L_1=\mathcal I\). 指出等距性的下界为什么需要 \(\displaystyle\|1\|=1\).
+\end{FAExercise}
+
+\begin{FAExercise}[代数与算子可逆性]{ex:ii02-07}
+设 \(\displaystyle L_b\) 可逆. 令 \(\displaystyle c=L_b^{-1}(1)\)，先得 \(\displaystyle bc=1\)，再只使用 \(\displaystyle L_b\) 的单射性证明 \(\displaystyle cb=1\). 不得假设代数交换.
+\end{FAExercise}
+
+\begin{FAExercise}[谱转移]{ex:ii02-08}
+从 \(\displaystyle L_{\lambda1-a}=\lambda\mathcal I-L_a\) 与上一题证明 \(\displaystyle\sigma_{\mathcal A}(a)=\sigma_{\mathcal B(\mathcal A)}(L_a)\)，并写出两个预解对象之间的对应公式.
+\end{FAExercise}
+
+\begin{FAExercise}[Banach代数谱非空紧与谱半径公式]{ex:ii02-09}
+只使用左正则表示与I-12的\autoref{fa:SPEC-A03}重建\autoref{fa:BALG-A01}. 明确证明 \(\displaystyle\|L_a^n\|=\|a^n\|\)，并说明证明中没有使用角色或Gelfand变换.
+\end{FAExercise}
+
+\begin{FAExercise}[谱的仿射规则]{ex:ii02-10}
+从可逆性定义直接证明 \(\displaystyle\sigma(\alpha1+a)=\alpha+\sigma(a)\) 与 \(\displaystyle\sigma(\beta a)=\beta\sigma(a)\) 对 \(\displaystyle\beta\neq0\) 成立，并计算 \(\displaystyle\sigma(1)\).
+\end{FAExercise}
+
+\begin{FAExercise}[多项式谱映射]{ex:ii02-11}
+用 \(\displaystyle L_{p(a)}=p(L_a)\) 与I-12的\autoref{fa:SPEC-B02}重建\autoref{fa:BALG-C01}. 必须单独处理常数多项式，且不得使用Gelfand变换.
+\end{FAExercise}
+
+\begin{FAExercise}[谱与特征值的边界]{ex:ii02-12}
+复述I-12单边右移反例的已知结论，并解释为什么 \(\displaystyle\mathcal B(\ell^2)\) 是Banach代数并不能把其元素的谱改写成特征值集合. 不得重新证明该反例.
+\end{FAExercise}
+
+\begin{FAExercise}[角色的单位值与自动连续性]{ex:ii02-13}
+先证明非零乘法复线性泛函满足 \(\displaystyle\varphi(1)=1\)，再证明 \(\displaystyle\varphi(a)\in\sigma(a)\)，并由此得到 \(\displaystyle\|\varphi\|=1\).
+\end{FAExercise}
+
+\begin{FAExercise}[极大理想闭性]{ex:ii02-14}
+设 \(\displaystyle M\) 为真代数极大理想. 若 \(\displaystyle\overline M=\mathcal A\)，构造 \(\displaystyle m\in M\) 使 \(\displaystyle\|1-m\|<1\)，再用Neumann引理得到矛盾. 最后说明为什么 \(\displaystyle\overline M\) 仍是理想.
+\end{FAExercise}
+
+\begin{FAExercise}[Gelfand--Mazur定理]{ex:ii02-15}
+对复含幺Banach除代数 \(\displaystyle\mathcal D\)，只用\autoref{fa:BALG-A01}证明每个元素都属于 \(\displaystyle\mathbb C1\). 指出“除代数中唯一不可逆元是零”在哪一步使用.
+\end{FAExercise}
+
+\begin{FAExercise}[角色与极大理想]{ex:ii02-16}
+证明交换含幺Banach代数中极大理想商是复Banach除代数，并结合Gelfand--Mazur构造角色. 反向证明角色核极大，并证明同一极大理想至多对应一个角色.
+\end{FAExercise}
+
+\begin{FAExercise}[Zorn与角色空间非空]{ex:ii02-17}
+对包含固定真理想的真理想偏序集验证每条链的并仍是真理想，从而用Zorn引理取得极大理想. 再说明为什么从 \(\displaystyle\{0\}\) 出发得到 \(\displaystyle\Delta(\mathcal A)\neq\varnothing\).
+\end{FAExercise}
+
+\begin{FAExercise}[弱*紧角色空间]{ex:ii02-18}
+从角色范数为 \(\displaystyle1\) 与I-10 Banach--Alaoglu定理出发证明 \(\displaystyle\Delta(\mathcal A)\) 弱*紧. 闭性证明必须使用一般网，并逐点验证极限满足 \(\displaystyle\varphi(1)=1\) 与乘法性，不得用序列替代网.
+\end{FAExercise}
+
+\begin{FAExercise}[Gelfand谱识别与可逆性]{ex:ii02-19}
+证明 \(\displaystyle\widehat a(\Delta(\mathcal A))\subseteq\sigma(a)\). 对反向包含，完整证明 \(\displaystyle\mathcal A(a-\lambda1)\) 为真理想，再经极大理想与角色得到 \(\displaystyle\lambda=\widehat a(\varphi)\). 推出 \(\displaystyle r(a)=\|\widehat a\|_\infty\) 与Gelfand可逆性判据.
+\end{FAExercise}
+
+\begin{FAExercise}[根与双数反例]{ex:ii02-20}
+证明 \(\displaystyle\ker\Gamma=\operatorname{rad}\mathcal A\). 再对 \(\displaystyle\mathbb C\oplus\mathbb C\varepsilon\)、\(\displaystyle\varepsilon^2=0\) 验证Banach代数范数估计、角色唯一性与 \(\displaystyle\widehat\varepsilon=0\)，从而说明一般Gelfand变换不必单射或等距.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle C(K)\) 谱与函数代数嵌入]{ex:ii02-21}
+设 \(\displaystyle K\) 为非空紧Hausdorff空间. 直接证明 \(\displaystyle\sigma_{C(K)}(f)=f(K)\). 若 \(\displaystyle\mathcal A\subseteq C(K)\) 为闭含幺且分离点的子代数，证明 \(\displaystyle x\mapsto\operatorname{ev}_x\) 连续单射并为到其像的同胚；同时解释为什么本章不能据此断言其像等于全部 \(\displaystyle\Delta(\mathcal A)\).
+\end{FAExercise}
+
+\begin{FAExercise}[区间极大理想与II-03边界]{ex:ii02-22}
+对 \(\displaystyle C([a,b])\) 重建共同零点论证：若极大理想 \(\displaystyle M\) 无共同零点，用有限个 \(\displaystyle f_j\in M\) 构造 \(\displaystyle g=\sum_j\overline{f_j}f_j\in M\) 并导出可逆矛盾. 由此证明全部角色都是点值角色，并说明在此特殊情形Gelfand变换为何等距. 最后辨析：对合、\(\displaystyle C^*\)恒等式、正元素、正规算子连续函数演算、谱测度与无界算子理论均尚未在本章建立，任何依赖这些对象的证明都属于非法前向使用.
+\end{FAExercise}

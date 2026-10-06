@@ -1,0 +1,784 @@
+\chapter{分布与弱导数}\label{chap:II-12}
+\FAChapterOpening
+{在一般开集上建立测试函数、分布、分布导数与磨光的最小完整理论；严格控制测试函数拓扑与分布有限阶连续性；证明 Dirac、Heaviside、支撑局部性、卷积光滑性与磨光核逼近；最后只建立分布意义的方程接口，为 II-13 的 Sobolev 理论准备代数基础.}
+{I-01 的 Lebesgue 测度与积分接口；II-01 的局部凸空间与半范数拓扑，特别是\autoref{fa:LCS-A01}. 本章不调用 I-03 的 \(\displaystyle L^p\) Banach 理论，不调用 II-13 及以后任何形式上的定理.}
+{\begin{center}
+\begin{tikzpicture}[x=0.78cm,y=1.05cm]
+\node[fa/node] (lcs) at (0,1.2) {局部凸/半范数};
+\node[fa/node] (int) at (0,-1.2) {I-01 积分};
+\node[fa/node] (a01) at (4,0) {分布/弱导数};
+\node[fa/node] (c01) at (8,1.2) {支撑/局部性};
+\node[fa/node] (b02) at (8,-1.2) {分布卷积};
+\node[fa/node] (b01) at (12,-1.2) {磨光核逼近};
+\draw[fa/arrow] (lcs) -- (a01);
+\draw[fa/arrow] (int) -- (a01);
+\draw[fa/arrow] (a01) -- (c01);
+\draw[fa/arrow] (a01) -- (b02);
+\draw[fa/arrow] (b02) -- (b01);
+\end{tikzpicture}
+\end{center}}
+
+全章固定 \(\displaystyle \Omega\subseteq\mathbb R^d\) 为非空开集，\(\displaystyle d\in\mathbb N\)，测度均为 Lebesgue 测度 \(\displaystyle\,\mathrm{d}x\). 记 \(\displaystyle K\Subset\Omega\) 表示 \(\displaystyle K\) 紧且紧包含于 \(\displaystyle\Omega\). 除局部明确附加的假设外，不假设 \(\displaystyle\Omega\) 有界、光滑或连通. 分布与磨光以 Brezis 与 Yosida 为标准参考；以下正文与证明按本书依赖关系独立重构，并以二者作交叉参照\cite{brezis2011,yosida}.
+
+\section{测试函数}\label{sec:ii12-test-functions}
+\index{test function@测试函数}\index{multiindex@多重指标}\index{seminorm@半范数!测试函数}
+
+\subsection{多重指标与局部凸结构}
+
+对 \(\displaystyle \alpha=(\alpha_1,\dots,\alpha_d)\in\mathbb N_0^d\)，记 \(\displaystyle |\alpha|=\alpha_1+\cdots+\alpha_d,\) \(\displaystyle \partial^\alpha=\partial_1^{\alpha_1}\cdots\partial_d^{\alpha_d}.\)
+第 \(\displaystyle j\) 个坐标多重指标记为 \(\displaystyle e_j=(0,\dots,1,\dots,0)\).
+
+\begin{FADefinition}[A][测试函数与固定支撑测试函数空间]{ii12:test-functions}
+定义 \(\displaystyle \mathcal D(\Omega)=C_c^\infty(\Omega)\). 对任意 \(\displaystyle K\Subset\Omega\)，定义 \(\displaystyle \mathcal D_K(\Omega)=\{\varphi\in C_c^\infty(\Omega):\operatorname{supp}\varphi\subseteq K\}\). 对 \(\displaystyle m\in\mathbb N_0\)，定义递增半范数 \(\displaystyle p_{K,m}(\varphi)=\max_{|\alpha|\leqslant m}\sup_{x\in K}|\partial^\alpha\varphi(x)|\). 固定 \(\displaystyle K\) 时，\(\displaystyle\mathcal D_K(\Omega)\) 取由 \(\displaystyle(p_{K,m})_{m\in\mathbb N_0}\) 生成的局部凸拓扑. 本章不把 \(\displaystyle\mathcal D(\Omega)\) 声称为 Fréchet 空间，也不发展完整 LF 空间理论.
+\end{FADefinition}
+
+由\autoref{fa:LCS-A01}，一族半范数生成局部凸拓扑. 这里的递增性 \(\displaystyle p_{K,0}\leqslant p_{K,1}\leqslant\cdots\)
+使线性泛函连续性可压缩为单个有限阶估计.
+
+\begin{FAProposition}[B][\(\displaystyle\mathcal D_K\) 上连续线性泛函的有限阶判据]{ii12:dk-continuity}
+设 \(\displaystyle K\Subset\Omega\)，\(\displaystyle\Lambda:\mathcal D_K(\Omega)\to\mathbb C\) 线性. 则 \(\displaystyle\Lambda\) 连续，当且仅当存在 \(\displaystyle C>0\) 与 \(\displaystyle m\in\mathbb N_0\)，使 \(\displaystyle |\Lambda(\varphi)| \leqslant C p_{K,m}(\varphi) \; \forall\,\varphi\in\mathcal D_K(\Omega).\)
+\end{FAProposition}
+
+\begin{FAProof}
+若该估计成立，则对任意 \(\displaystyle\varepsilon>0\)，条件 \(\displaystyle p_{K,m}(\varphi)<\frac{\varepsilon}{C}\) 推出 \(\displaystyle|\Lambda(\varphi)|<\varepsilon\)，故 \(\displaystyle\Lambda\) 在零点连续，从而处处连续.
+
+反之，设 \(\displaystyle\Lambda\) 连续. 由零点连续性，存在有限组指标 \(\displaystyle m_1,\dots,m_r\in\mathbb N_0\) 与正数 \(\displaystyle\varepsilon_1,\dots,\varepsilon_r\)，使 \(\displaystyle p_{K,m_j}(\psi)<\varepsilon_j \;(1\leqslant j\leqslant r)\)
+蕴含 \(\displaystyle|\Lambda(\psi)|<1\). 令 \(\displaystyle m=\max_jm_j\) 与 \(\displaystyle\varepsilon=\min_j\varepsilon_j\). 由半范数递增性，\(\displaystyle p_{K,m}(\psi)<\varepsilon\) 即可保证上述全部不等式.
+
+若 \(\displaystyle p_{K,m}(\varphi)=0\)，则对任意 \(\displaystyle t>0\) 有 \(\displaystyle p_{K,m}(t\varphi)=0<\varepsilon\)，故 \(\displaystyle t|\Lambda(\varphi)|<1\). 令 \(\displaystyle t\to\infty\) 得 \(\displaystyle\Lambda(\varphi)=0\). 若 \(\displaystyle p_{K,m}(\varphi)>0\)，取 \(\displaystyle t=\frac{\varepsilon}{2p_{K,m}(\varphi)}\)，则 \(\displaystyle p_{K,m}(t\varphi)=\frac{\varepsilon}{2}\)，故 \(\displaystyle t|\Lambda(\varphi)|<1.\)
+于是 \(\displaystyle |\Lambda(\varphi)| < \frac{2}{\varepsilon}p_{K,m}(\varphi).\)
+取 \(\displaystyle C=\frac{2}{\varepsilon}\) 即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[B][测试函数的操作性收敛]{ii12:test-function-convergence}
+称 \(\displaystyle\varphi_n\to\varphi\) 于 \(\displaystyle\mathcal D(\Omega)\)，若存在 \(\displaystyle K\Subset\Omega\)，使 \(\displaystyle\varphi\in\mathcal D_K(\Omega)\)，全部充分大的 \(\displaystyle n\) 满足 \(\displaystyle\varphi_n\in\mathcal D_K(\Omega)\)，并且对每个 \(\displaystyle m\in\mathbb N_0\)， \(\displaystyle p_{K,m}(\varphi_n-\varphi)\longrightarrow0.\)
+本章只使用这一标准操作性收敛接口，不展开严格归纳极限理论.
+\end{FADefinition}
+
+\subsection{光滑隆起函数的显式构造}
+
+\begin{FALemma}[B][一维平坦函数]{ii12:flat-function}
+定义
+\[
+\eta(t)
+=
+\begin{cases}
+\mathrm{e}^{-\frac{1}{t}},&t>0,\\
+0,&t\leqslant0.
+\end{cases}
+\]
+则 \(\displaystyle\eta\in C^\infty(\mathbb R)\)，且对每个 \(\displaystyle k\in\mathbb N_0\)，\(\displaystyle\eta^{(k)}(0)=0\).
+\end{FALemma}
+
+\begin{FAProof}
+对 \(\displaystyle t>0\) 归纳可得 \(\displaystyle \eta^{(k)}(t)=P_k(\frac{1}{t})\mathrm{e}^{-\frac{1}{t}},\)
+其中 \(\displaystyle P_k\) 是多项式. 初始 \(\displaystyle P_0=1\). 若结论对 \(\displaystyle k\) 成立，则链式法则给
+\[
+\frac{\mathrm{d}}{\mathrm{d}t}
+\bigl(P_k(\frac{1}{t})\mathrm{e}^{-\frac{1}{t}}\bigr)
+=
+\left[-t^{-2}P_k'(\frac{1}{t})+t^{-2}P_k(\frac{1}{t})\right]\mathrm{e}^{-\frac{1}{t}},
+\]
+右侧仍为 \(\displaystyle P_{k+1}(\frac{1}{t})\mathrm{e}^{-\frac{1}{t}}\) 的形式.
+
+现证明指数衰减支配任意负幂. 对任意 \(\displaystyle N\in\mathbb N_0\)，令 \(\displaystyle s=\frac{1}{t}\). 由 \(\displaystyle \mathrm{e}^s \geqslant \frac{s^{N+1}}{(N+1)!} \;(s>0),\)
+得到 \(\displaystyle 0\leqslant t^{-N}\mathrm{e}^{-\frac{1}{t}} =s^N\mathrm{e}^{-s} \leqslant \frac{(N+1)!}{s} \longrightarrow0\)
+当 \(\displaystyle t\downarrow0\). 因而对每个固定 \(\displaystyle k\)，多项式 \(\displaystyle P_k(\frac{1}{t})\) 的每一项都被该估计控制，所以 \(\displaystyle\eta^{(k)}(t)\to0\) 当 \(\displaystyle t\downarrow0\).
+
+从 \(\displaystyle k=0\) 开始归纳. 若分段定义的 \(\displaystyle\eta^{(k)}\) 已连续且在零点值为零，则右侧导数极限
+\[
+\lim_{h\downarrow0}
+\frac{\eta^{(k)}(h)-\eta^{(k)}(0)}{h}
+=
+\lim_{h\downarrow0}h^{-1}P_k(\frac{1}{h})\mathrm{e}^{-\frac{1}{h}}
+=0,
+\]
+左侧因 \(\displaystyle\eta^{(k)}\) 在 \(\displaystyle(-\infty,0]\) 恒为零也等于零. 因此 \(\displaystyle\eta^{(k+1)}(0)=0\)，并与两侧导数连续拼接. 归纳完成全部阶数.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][非零光滑紧支撑函数存在]{ii12:bump-existence}
+函数 \(\displaystyle \theta(x)=\eta(1-|x|^2)\)
+满足
+\[
+\theta\in C_c^\infty(\mathbb R^d),
+\;
+\theta\geqslant0,
+\;
+\theta(0)=\mathrm{e}^{-1}>0,
+\]
+且 \(\displaystyle\operatorname{supp}\theta\subseteq\overline{B(0,1)}\).
+\end{FAProposition}
+
+\begin{FAProof}
+映射 \(\displaystyle x\mapsto1-|x|^2\) 光滑，\autoref{ii12:flat-function}给 \(\displaystyle\eta\in C^\infty(\mathbb R)\)，故复合函数 \(\displaystyle\theta\) 光滑. 当 \(\displaystyle|x|\geqslant1\) 时 \(\displaystyle1-|x|^2\leqslant0\)，所以 \(\displaystyle\theta(x)=0\). 因而其支撑包含于紧集 \(\displaystyle\overline{B(0,1)}\)，并且 \(\displaystyle\theta(0)>0\)，故非零.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{分布}\label{sec:ii12-distributions}
+\index{distribution@分布}\index{Dirac distribution@Dirac 分布}\index{support@支撑!分布}
+
+\begin{FADefinition}[A][分布与弱导数规范节点]{fa:DIST-A01}
+线性泛函 \(\displaystyle T:\mathcal D(\Omega)\to\mathbb C\)
+称为 \(\displaystyle\Omega\) 上的分布，若对每个 \(\displaystyle K\Subset\Omega\)，存在 \(\displaystyle C_K>0\) 与 \(\displaystyle m_K\in\mathbb N_0\)，使 \(\displaystyle |\langle T,\varphi\rangle| \leqslant C_Kp_{K,m_K}(\varphi) \; \forall\,\varphi\in\mathcal D_K(\Omega).\)
+记 \(\displaystyle T\in\mathcal D'(\Omega)\). 配对 \(\displaystyle\langle T,\varphi\rangle\) 对测试函数变量是复线性的，不是半线性的. 记号 \(\displaystyle\mathcal D'(\Omega)\) 中的撇号是分布论标准记号，不表示 Banach 对偶算子 \(\displaystyle\mathcal T'\).
+
+本规范节点还固定弱导数术语：对稍后在本章定义的分布导数，若 \(\displaystyle f,g\in L^1_{\mathrm{loc}}(\Omega)\) 且 \(\displaystyle T_g=\partial^\alpha T_f\)，则称 \(\displaystyle g\) 为 \(\displaystyle f\) 的一个弱/分布导数代表元. 这一术语在\autoref{ii12:weak-derivative}中以测试函数恒等式展开；本定义此处不调用任何 II-13 结论.
+\end{FADefinition}
+
+\autoref{ii12:dk-continuity}表明，\autoref{fa:DIST-A01}正是“在每个固定紧支撑层上连续”的有限阶形式；这里没有把 \(\displaystyle\mathcal D(\Omega)\) 当作 Fréchet 空间.
+
+\subsection{正则分布与 Dirac}
+
+\begin{FAProposition}[B][局部可积函数诱导正则分布]{ii12:regular-distribution}
+设 \(\displaystyle f\in L^1_{\mathrm{loc}}(\Omega)\). 定义
+\[
+\langle T_f,\varphi\rangle
+=
+\int_\Omega f(x)\varphi(x)\,\mathrm{d}x.
+\]
+则 \(\displaystyle T_f\in\mathcal D'(\Omega)\). 若 \(\displaystyle f=g\) 几乎处处，则 \(\displaystyle T_f=T_g\).
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle K\Subset\Omega\) 与 \(\displaystyle\varphi\in\mathcal D_K(\Omega)\). 因 \(\displaystyle f\in L^1(K)\)，
+\[
+|\langle T_f,\varphi\rangle|
+\leqslant
+\int_K|f(x)||\varphi(x)|\,\mathrm{d}x
+\leqslant
+\left(\int_K|f(x)|\,\mathrm{d}x\right)p_{K,0}(\varphi).
+\]
+故满足\autoref{fa:DIST-A01}，阶数可取 \(\displaystyle0\). 若 \(\displaystyle f=g\) 几乎处处，则对每个测试函数有 \(\displaystyle(f-g)\varphi=0\) 几乎处处，所以相应积分相等. 本章不反向使用 \(\displaystyle T_f=T_g\Rightarrow f=g\) 几乎处处.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[Dirac 分布]
+设 \(\displaystyle a\in\Omega\)，定义 \(\displaystyle \langle\delta_a,\varphi\rangle=\varphi(a).\)
+若 \(\displaystyle a\in K\Subset\Omega\)，则 \(\displaystyle |\langle\delta_a,\varphi\rangle| \leqslant p_{K,0}(\varphi).\)
+若 \(\displaystyle a\notin K\)，则每个 \(\displaystyle\varphi\in\mathcal D_K(\Omega)\) 都满足 \(\displaystyle\varphi(a)=0\). 因而 \(\displaystyle\delta_a\in\mathcal D'(\Omega)\).
+\end{FAExample}
+
+\begin{FAProposition}[B][光滑函数与分布的乘法]{ii12:smooth-multiplication}
+设 \(\displaystyle a\in C^\infty(\Omega)\)、\(\displaystyle T\in\mathcal D'(\Omega)\). 定义 \(\displaystyle \langle aT,\varphi\rangle = \langle T,a\varphi\rangle.\)
+则 \(\displaystyle aT\in\mathcal D'(\Omega)\).
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle K\Subset\Omega\). 设 \(\displaystyle T\) 在 \(\displaystyle K\) 上满足 \(\displaystyle |\langle T,\psi\rangle| \leqslant C_Kp_{K,m}(\psi).\)
+Leibniz 公式给
+\[
+\partial^\alpha(a\varphi)
+=
+\sum_{\beta\leqslant\alpha}
+\binom{\alpha}{\beta}(\partial^\beta a)(\partial^{\alpha-\beta}\varphi).
+\]
+对全部 \(\displaystyle|\alpha|\leqslant m\)，\(\displaystyle a\) 的有限阶导数在紧集 \(\displaystyle K\) 上有界，所以存在仅依赖 \(\displaystyle a,K,m\) 的常数 \(\displaystyle C_{a,K,m}>0\)，使 \(\displaystyle p_{K,m}(a\varphi) \leqslant C_{a,K,m}p_{K,m}(\varphi).\)
+于是 \(\displaystyle |\langle aT,\varphi\rangle| \leqslant C_KC_{a,K,m}p_{K,m}(\varphi).\)
+故 \(\displaystyle aT\) 是分布.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{分布支撑与局部性}
+
+\begin{FADefinition}[B][分布的支撑]{ii12:distribution-support}
+设 \(\displaystyle U\subseteq\Omega\) 开. 若 \(\displaystyle \langle T,\varphi\rangle=0 \; \forall\,\varphi\in\mathcal D(U),\)
+则称 \(\displaystyle T\) 在 \(\displaystyle U\) 上消失，记 \(\displaystyle T|_U=0\). 定义 \(\displaystyle \operatorname{supp}T = \Omega\setminus \bigcup\{U\subseteq\Omega:U\text{ 开的且 }T|_U=0\}.\)
+因此 \(\displaystyle\operatorname{supp}T\) 是 \(\displaystyle\Omega\) 中的闭集.
+\end{FADefinition}
+
+\begin{FAProof}
+定义右侧被减去的集合是开集之并，因而在 \(\displaystyle\Omega\) 中开；其补集即 \(\displaystyle\operatorname{supp}T\) 在 \(\displaystyle\Omega\) 中闭.
+\hfill\(\square\)
+\end{FAProof}
+
+为证明后续所需的支撑工具，先在下一节使用分布导数定义. 本节只固定支撑概念；\autoref{fa:DIST-C01}将在导数定义之后立即闭合，不引入分割单位分解.
+
+\section{分布导数}\label{sec:ii12-distributional-derivative}
+\index{distributional derivative@分布导数}\index{weak derivative@弱导数}
+
+\begin{FADefinition}[A][分布导数]{ii12:distributional-derivative}
+设 \(\displaystyle T\in\mathcal D'(\Omega)\)、\(\displaystyle\alpha\in\mathbb N_0^d\). 定义 \(\displaystyle \langle\partial^\alpha T,\varphi\rangle = (-1)^{|\alpha|}\langle T,\partial^\alpha\varphi\rangle.\)
+\end{FADefinition}
+
+\begin{FAProposition}[B][分布导数仍为分布]{ii12:derivative-well-defined}
+若 \(\displaystyle T\) 在 \(\displaystyle K\Subset\Omega\) 上满足阶数 \(\displaystyle m\) 的估计，则
+\[
+|\langle\partial^\alpha T,\varphi\rangle|
+\leqslant
+C_Kp_{K,m+|\alpha|}(\varphi)
+\;
+\forall\,\varphi\in\mathcal D_K(\Omega).
+\]
+特别地，\(\displaystyle\partial^\alpha T\in\mathcal D'(\Omega)\).
+\end{FAProposition}
+
+\begin{FAProof}
+由定义与 \(\displaystyle\partial^\alpha\varphi\in\mathcal D_K(\Omega)\)，
+\[
+|\langle\partial^\alpha T,\varphi\rangle|
+=
+|\langle T,\partial^\alpha\varphi\rangle|
+\leqslant
+C_Kp_{K,m}(\partial^\alpha\varphi)
+\leqslant
+C_Kp_{K,m+|\alpha|}(\varphi).
+\]
+这正是\autoref{fa:DIST-A01}的局部有限阶估计.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][分布支撑与局部性工具]{fa:DIST-C01}
+设 \(\displaystyle T,S\in\mathcal D'(\Omega)\)、\(\displaystyle a\in C^\infty(\Omega)\)、\(\displaystyle\alpha\in\mathbb N_0^d\). 则 \(\displaystyle \operatorname{supp}(\partial^\alpha T) \subseteq \operatorname{supp}T,\) \(\displaystyle \operatorname{supp}(aT) \subseteq \operatorname{supp}a\cap\operatorname{supp}T.\)
+若 \(\displaystyle T=S\) 于开集 \(\displaystyle U\subseteq\Omega\)，则 \(\displaystyle \partial^\alpha T=\partial^\alpha S \;\text{于 }U.\)
+\end{FAProposition}
+
+\begin{FAProof}
+若开集 \(\displaystyle U\) 上 \(\displaystyle T|_U=0\)，则对任意 \(\displaystyle\varphi\in\mathcal D(U)\)，仍有 \(\displaystyle\partial^\alpha\varphi\in\mathcal D(U)\)，故 \(\displaystyle \langle\partial^\alpha T,\varphi\rangle = (-1)^{|\alpha|}\langle T,\partial^\alpha\varphi\rangle =0.\)
+所以 \(\displaystyle\partial^\alpha T\) 在 \(\displaystyle\Omega\setminus\operatorname{supp}T\) 的每个消失开集上也消失，得到第一条包含.
+
+若 \(\displaystyle x\notin\operatorname{supp}a\)，则存在 \(\displaystyle x\) 的开邻域 \(\displaystyle U\) 使 \(\displaystyle a|_U=0\)，故 \(\displaystyle aT|_U=0\). 若 \(\displaystyle x\notin\operatorname{supp}T\)，则存在开邻域 \(\displaystyle V\) 使 \(\displaystyle T|_V=0\). 对 \(\displaystyle\varphi\in\mathcal D(V)\)，有 \(\displaystyle a\varphi\in\mathcal D(V)\)，所以 \(\displaystyle\langle aT,\varphi\rangle=0\). 因而 \(\displaystyle aT\) 的支撑只能位于两支撑交集.
+
+最后，若 \(\displaystyle T=S\) 于 \(\displaystyle U\)，则 \(\displaystyle(T-S)|_U=0\). 第一条应用于 \(\displaystyle T-S\) 得 \(\displaystyle\partial^\alpha(T-S)|_U=0\)，即所述局部性.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{导数代数与经典相容性}
+
+\begin{FAProposition}[B][分布导数的复合与混合导数交换]{ii12:derivative-composition}
+对 \(\displaystyle\alpha,\beta\in\mathbb N_0^d\)， \(\displaystyle \partial^\alpha\partial^\beta T = \partial^{\alpha+\beta}T.\)
+因此任意混合分布导数可交换.
+\end{FAProposition}
+
+\begin{FAProof}
+对任意 \(\displaystyle\varphi\in\mathcal D(\Omega)\)，
+\[
+\begin{aligned}
+\langle\partial^\alpha\partial^\beta T,\varphi\rangle
+&=
+(-1)^{|\alpha|}\langle\partial^\beta T,\partial^\alpha\varphi\rangle\\
+&=
+(-1)^{|\alpha|+|\beta|}\langle T,\partial^\beta\partial^\alpha\varphi\rangle\\
+&=
+(-1)^{|\alpha+\beta|}\langle T,\partial^{\alpha+\beta}\varphi\rangle\\
+&=
+\langle\partial^{\alpha+\beta}T,\varphi\rangle.
+\end{aligned}
+\]
+测试函数的经典混合导数可交换，故分布相等.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][光滑乘子的分布乘积法则]{ii12:distribution-product-rule}
+对 \(\displaystyle a\in C^\infty(\Omega)\) 与 \(\displaystyle1\leqslant j\leqslant d\)， \(\displaystyle \partial_j(aT) = (\partial_ja)T+a\,\partial_jT.\)
+\end{FAProposition}
+
+\begin{FAProof}
+对任意 \(\displaystyle\varphi\in\mathcal D(\Omega)\)，
+\[
+\begin{aligned}
+\langle\partial_j(aT),\varphi\rangle
+&=-\langle aT,\partial_j\varphi\rangle\\
+&=-\langle T,a\partial_j\varphi\rangle\\
+&=-\langle T,\partial_j(a\varphi)-(\partial_ja)\varphi\rangle\\
+&=\langle\partial_jT,a\varphi\rangle+\langle(\partial_ja)T,\varphi\rangle\\
+&=\langle a\,\partial_jT+(\partial_ja)T,\varphi\rangle.
+\end{aligned}
+\]
+两个负号的位置均由分布导数定义确定.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][经典导数与分布导数相容]{ii12:classical-compatibility}
+若 \(\displaystyle f\in C^m(\Omega)\) 且 \(\displaystyle|\alpha|\leqslant m\)，则 \(\displaystyle \partial^\alpha T_f=T_{\partial^\alpha f}.\)
+特别地，对 \(\displaystyle f\in C^1(\Omega)\)， \(\displaystyle \partial_jT_f=T_{\partial_jf}.\)
+\end{FATheorem}
+
+\begin{FAProof}
+先取 \(\displaystyle|\alpha|=1\)，即 \(\displaystyle\alpha=e_j\). 对 \(\displaystyle\varphi\in\mathcal D(\Omega)\)，因 \(\displaystyle\operatorname{supp}\varphi\Subset\Omega\)，函数 \(\displaystyle f\varphi\) 在 \(\displaystyle\Omega\) 的边界附近恒为零. 把 \(\displaystyle f\varphi\) 在 \(\displaystyle\mathbb R^d\setminus\Omega\) 上延拓为零，所得函数属于 \(\displaystyle C_c^1(\mathbb R^d)\)，且在 \(\displaystyle\Omega\) 内满足 \(\displaystyle \partial_j(f\varphi) = (\partial_jf)\varphi+f\partial_j\varphi.\)
+对其余变量固定后，一维微积分基本定理给 \(\displaystyle\int_{\mathbb R}\partial_j(f\varphi)\,\mathrm{d}x_j=0\)；再用 I-01 的标量积分接口逐变量积分，得到
+\[
+\int_{\mathbb R^d}\partial_j(f\varphi)(x)\,\mathrm{d}x=0.
+\]
+因此
+\[
+\langle\partial_jT_f,\varphi\rangle
+=
+-\int_\Omega f\,\partial_j\varphi\,\mathrm{d}x
+=
+\int_\Omega(\partial_jf)\varphi\,\mathrm{d}x
+=
+\langle T_{\partial_jf},\varphi\rangle.
+\]
+一阶结论成立. 对一般 \(\displaystyle|\alpha|\leqslant m\)，沿各坐标方向重复该论证，并用\autoref{ii12:derivative-composition}合并导数，即得 \(\displaystyle \partial^\alpha T_f=T_{\partial^\alpha f}.\)
+每次边界项都由测试函数的紧支撑消除，不需要对 \(\displaystyle\Omega\) 附加矩形、凸性或光滑边界假设.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[B][弱导数代表元]{ii12:weak-derivative}
+补全\autoref{fa:DIST-A01}的弱导数部分. 设 \(\displaystyle f,g\in L^1_{\mathrm{loc}}(\Omega)\). 若 \(\displaystyle T_g=\partial^\alpha T_f,\)
+等价地，
+\[
+\int_\Omega g(x)\varphi(x)\,\mathrm{d}x
+=
+(-1)^{|\alpha|}
+\int_\Omega f(x)\partial^\alpha\varphi(x)\,\mathrm{d}x
+\;
+\forall\,\varphi\in\mathcal D(\Omega),
+\]
+则称 \(\displaystyle g\) 为 \(\displaystyle f\) 的一个弱/分布导数代表元. 本章的规范对象是唯一确定的分布 \(\displaystyle\partial^\alpha T_f\). 在 II-13 的 \(\displaystyle L^p\)/Sobolev 框架建立前，本章不把正则分布单射性或弱导数代表元的几乎处处唯一性作为隐藏输入.
+\end{FADefinition}
+
+\subsection{Heaviside、Dirac 导数与规范反例}
+
+\begin{FAExample}[Heaviside的分布导数]
+在 \(\displaystyle\Omega=\mathbb R\) 上定义
+\[
+H(x)
+=
+\begin{cases}
+0,&x<0,\\
+1,&x>0,
+\end{cases}
+\]
+其中 \(\displaystyle H(0)\) 任取. 则 \(\displaystyle H\in L^1_{\mathrm{loc}}(\mathbb R)\)，并且 \(\displaystyle H'=\delta_0\)
+作为分布成立.
+\end{FAExample}
+
+\begin{FAProof}
+对任意 \(\displaystyle\varphi\in\mathcal D(\mathbb R)\)，由测试函数在无穷远处恒为零，
+\[
+\begin{aligned}
+\langle H',\varphi\rangle
+&=-\int_{\mathbb R}H(x)\varphi'(x)\,\mathrm{d}x
+=-\int_0^\infty\varphi'(x)\,\mathrm{d}x\\
+&=\varphi(0)=\langle\delta_0,\varphi\rangle.
+\end{aligned}
+\]
+所以 \(\displaystyle H'=\delta_0\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[无经典导数但有分布导数]
+Heaviside 函数在 \(\displaystyle x=0\) 不连续，因而在该点没有经典导数；但其作为局部可积函数诱导的分布满足 \(\displaystyle H'=\delta_0.\)
+故“没有经典导数”不蕴含“没有分布导数”. 该反例的标准模型为 II-12，不再建立额外命名结果.
+\end{FACounterexample}
+
+\begin{FAProposition}[B][Dirac的任意阶分布导数]{ii12:dirac-derivatives}
+设 \(\displaystyle a\in\Omega\). 对每个 \(\displaystyle\alpha\in\mathbb N_0^d\)， \(\displaystyle \langle\partial^\alpha\delta_a,\varphi\rangle = (-1)^{|\alpha|}\partial^\alpha\varphi(a).\)
+\end{FAProposition}
+
+\begin{FAProof}
+直接由分布导数定义与 \(\displaystyle\langle\delta_a,\psi\rangle=\psi(a)\) 得
+\[
+\langle\partial^\alpha\delta_a,\varphi\rangle
+=
+(-1)^{|\alpha|}\langle\delta_a,\partial^\alpha\varphi\rangle
+=
+(-1)^{|\alpha|}\partial^\alpha\varphi(a).
+\]
+由\autoref{fa:DIST-C01}，这些导数的支撑仍包含于 \(\displaystyle\{a\}\). 导数可提高奇异阶数，但不破坏局部性.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{磨光核}\label{sec:ii12-mollifiers}
+\index{convolution@卷积!分布与测试函数}\index{mollifier@磨光核}\index{regularization@正则化}
+
+\subsection{分布与测试函数的卷积}
+
+本小节先在 \(\displaystyle\mathbb R^d\) 上工作. 设 \(\displaystyle T\in\mathcal D'(\mathbb R^d)\)、\(\displaystyle\psi\in\mathcal D(\mathbb R^d)\). 定义 \(\displaystyle (T*\psi)(x) = \langle T_y,\psi(x-y)\rangle.\)
+下标 \(\displaystyle y\) 只用于区分分布作用变量与参数 \(\displaystyle x\).
+
+\begin{FALemma}[B][紧参数测试函数积分与连续泛函换序]{ii12:parameter-integral}
+设 \(\displaystyle E\subset\mathbb R^n\) 为紧集且 Lebesgue 测度有限，\(\displaystyle K\Subset\Omega\). 假设对每个 \(\displaystyle x\in E\) 有 \(\displaystyle\Phi_x\in\mathcal D_K(\Omega)\)，并且对每个 \(\displaystyle m\in\mathbb N_0\)，映射 \(\displaystyle x\mapsto\Phi_x\) 关于半范数 \(\displaystyle p_{K,m}\) 连续. 定义
+\[
+\Psi(y)=\int_E\Phi_x(y)\,\mathrm{d}x.
+\]
+则 \(\displaystyle\Psi\in\mathcal D_K(\Omega)\). 对任意在 \(\displaystyle\mathcal D_K(\Omega)\) 上连续的线性泛函 \(\displaystyle\Lambda\)，
+\[
+\left\langle\Lambda,\int_E\Phi_x\,\mathrm{d}x\right\rangle
+=
+\int_E\langle\Lambda,\Phi_x\rangle\,\mathrm{d}x.
+\]
+这里只使用标量积分、有限和逼近与\autoref{ii12:dk-continuity}，不调用分布值 Fubini 定理.
+\end{FALemma}
+
+\begin{FAProof}
+固定多重指标 \(\displaystyle\alpha\). 由 \(\displaystyle x\mapsto\Phi_x\) 在 \(\displaystyle p_{K,|\alpha|}\) 下连续且 \(\displaystyle E\) 紧，族 \(\displaystyle\partial^\alpha\Phi_x\) 在 \(\displaystyle E\times K\) 上一致有界，并且参数变化在 \(\displaystyle K\) 上一致连续. 对差商使用同一一致控制，可把 \(\displaystyle\partial^\alpha\) 逐阶移入标量积分，得到
+\[
+\partial^\alpha\Psi(y)
+=
+\int_E\partial^\alpha\Phi_x(y)\,\mathrm{d}x.
+\]
+因每个 \(\displaystyle\Phi_x\) 在 \(\displaystyle K\) 外为零，\(\displaystyle\Psi\) 也在 \(\displaystyle K\) 外为零，所以 \(\displaystyle\Psi\in\mathcal D_K(\Omega)\).
+
+由\autoref{ii12:dk-continuity}，存在 \(\displaystyle C>0\) 与 \(\displaystyle m\in\mathbb N_0\)，使 \(\displaystyle |\Lambda(\zeta)|\leqslant Cp_{K,m}(\zeta).\)
+固定 \(\displaystyle\varepsilon>0\). 紧性与 \(\displaystyle p_{K,m}\)-连续性给有限开覆盖，使每个覆盖片内任意两参数对应测试函数的 \(\displaystyle p_{K,m}\)-距离小于 \(\displaystyle\varepsilon\). 把 \(\displaystyle E\) 分成有限个可测互不相交集合 \(\displaystyle E_1,\dots,E_N\)，每个 \(\displaystyle E_i\) 落在一个覆盖片中，并取 \(\displaystyle x_i\in E_i\) 当 \(\displaystyle|E_i|>0\). 令 \(\displaystyle S=\sum_{i=1}^N|E_i|\Phi_{x_i}\). 则
+\[
+p_{K,m}(\Psi-S)
+\leqslant
+\sum_{i=1}^N\int_{E_i}p_{K,m}(\Phi_x-\Phi_{x_i})\,\mathrm{d}x
+\leqslant
+|E|\varepsilon.
+\]
+故 \(\displaystyle\Lambda(S)\to\Lambda(\Psi)\) 当覆盖网格细化. 另一方面，线性性给 \(\displaystyle \Lambda(S)=\sum_{i=1}^N|E_i|\Lambda(\Phi_{x_i})\)，而标量函数 \(\displaystyle x\mapsto\Lambda(\Phi_x)\) 连续，因为 \(\displaystyle |\Lambda(\Phi_x)-\Lambda(\Phi_{x_0})| \leqslant Cp_{K,m}(\Phi_x-\Phi_{x_0}).\)
+同一有限和逼近收敛到其 Lebesgue 积分，因此两极限相等，得到所需换序.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][分布与测试函数卷积的光滑性及导数换序]{fa:DIST-B02}
+设 \(\displaystyle T\in\mathcal D'(\mathbb R^d)\)、\(\displaystyle\psi\in\mathcal D(\mathbb R^d)\). 则 \(\displaystyle T*\psi\in C^\infty(\mathbb R^d)\)，并且对每个 \(\displaystyle\alpha\in\mathbb N_0^d\)， \(\displaystyle \partial^\alpha(T*\psi) = T*(\partial^\alpha\psi) = (\partial^\alpha T)*\psi.\)
+另外，对每个 \(\displaystyle\varphi\in\mathcal D(\mathbb R^d)\)，若 \(\displaystyle\check\psi(x)=\psi(-x)\)，则
+\[
+\int_{\mathbb R^d}(T*\psi)(x)\varphi(x)\,\mathrm{d}x
+=
+\langle T,\check\psi*\varphi\rangle.
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+先证光滑性. 固定 \(\displaystyle x_0\in\mathbb R^d\)，取其紧邻域 \(\displaystyle L\). 对 \(\displaystyle x\in L\)，测试函数 \(\displaystyle y\mapsto\psi(x-y)\) 的支撑包含于统一紧集 \(\displaystyle K=L-\operatorname{supp}\psi.\)
+设 \(\displaystyle T\) 在 \(\displaystyle K\) 上满足阶数 \(\displaystyle m\) 的估计. 对坐标方向 \(\displaystyle e_j\) 与 \(\displaystyle h\neq0\)，令 \(\displaystyle R_h(y) = \frac{\psi(x+he_j-y)-\psi(x-y)}{h}-\partial_j\psi(x-y).\)
+对每个 \(\displaystyle|\beta|\leqslant m\)，一维平均值公式应用于 \(\displaystyle\partial^\beta\psi\) 得 \(\displaystyle \sup_{y\in K}|\partial_y^\beta R_h(y)|\longrightarrow0\) 当 \(\displaystyle h\to0\)，且小 \(\displaystyle h\) 时全部 \(\displaystyle R_h\) 支撑于一个统一紧集. 因而 \(\displaystyle p_{K,m}(R_h)\to0\)，由 \(\displaystyle T\) 的有限阶连续性， \(\displaystyle \frac{(T*\psi)(x+he_j)-(T*\psi)(x)}{h} \longrightarrow \langle T_y,\partial_j\psi(x-y)\rangle.\)
+同一论证迭代全部阶数，得到 \(\displaystyle \partial_x^\alpha(T*\psi)(x) = \langle T_y,\partial^\alpha\psi(x-y)\rangle = (T*(\partial^\alpha\psi))(x).\)
+右侧对 \(\displaystyle x\) 连续仍由相同半范数估计推出，故 \(\displaystyle T*\psi\in C^\infty\).
+
+再核对分布导数一侧. 由 \(\displaystyle \partial_y^\alpha\psi(x-y) = (-1)^{|\alpha|}\partial^\alpha\psi(x-y),\)
+有
+\[
+\begin{aligned}
+((\partial^\alpha T)*\psi)(x)
+&=\langle\partial^\alpha T_y,\psi(x-y)\rangle\\
+&=(-1)^{|\alpha|}\langle T_y,\partial_y^\alpha\psi(x-y)\rangle\\
+&=(-1)^{2|\alpha|}\langle T_y,\partial^\alpha\psi(x-y)\rangle
+=(T*(\partial^\alpha\psi))(x).
+\end{aligned}
+\]
+两个 \(\displaystyle(-1)^{|\alpha|}\) 正好相消.
+
+最后证明配对恒等式. 设 \(\displaystyle E=\operatorname{supp}\varphi\)，并对 \(\displaystyle x\in E\) 定义 \(\displaystyle \Phi_x(y)=\varphi(x)\psi(x-y).\)
+当 \(\displaystyle x\in E\) 时，\(\displaystyle\Phi_x\) 的支撑包含统一紧集 \(\displaystyle E-\operatorname{supp}\psi\)，并且 \(\displaystyle x\mapsto\Phi_x\) 在全部测试函数半范数下连续. 由\autoref{ii12:parameter-integral}，
+\[
+\begin{aligned}
+\int_{\mathbb R^d}(T*\psi)(x)\varphi(x)\,\mathrm{d}x
+&=\int_E\langle T_y,\varphi(x)\psi(x-y)\rangle\,\mathrm{d}x\\
+&=\left\langle T_y,\int_E\varphi(x)\psi(x-y)\,\mathrm{d}x\right\rangle.
+\end{aligned}
+\]
+而
+\[
+(\check\psi*\varphi)(y)
+=
+\int_{\mathbb R^d}\check\psi(y-x)\varphi(x)\,\mathrm{d}x
+=
+\int_E\psi(x-y)\varphi(x)\,\mathrm{d}x.
+\]
+故配对恒等式成立. 全部换序只使用\autoref{ii12:parameter-integral}，没有调用未建立的 Fubini 型分布定理.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][正则分布的卷积相容性]{ii12:regular-convolution}
+若 \(\displaystyle f\in L^1_{\mathrm{loc}}(\mathbb R^d)\)、\(\displaystyle\psi\in\mathcal D(\mathbb R^d)\)，则
+\[
+(T_f*\psi)(x)
+=
+\int_{\mathbb R^d}f(y)\psi(x-y)\,\mathrm{d}y.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+对固定 \(\displaystyle x\)，函数 \(\displaystyle y\mapsto\psi(x-y)\) 的支撑是紧集 \(\displaystyle x-\operatorname{supp}\psi\). 因 \(\displaystyle f\) 在该紧集上可积，定义 \(\displaystyle T_f\) 的积分合法，并直接给出
+\[
+(T_f*\psi)(x)
+=
+\langle T_f,\psi(x-\,\cdot)\rangle
+=
+\int_{\mathbb R^d}f(y)\psi(x-y)\,\mathrm{d}y.
+\]
+无需全局 \(\displaystyle L^1\) 假设.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{标准磨光核与局部正则化}
+
+由\autoref{ii12:bump-existence}的 \(\displaystyle\theta\) 定义
+\[
+c_\rho
+=
+\left(\int_{\mathbb R^d}\theta(x)\,\mathrm{d}x\right)^{-1},
+\;
+\rho=c_\rho\theta.
+\]
+因为 \(\displaystyle\theta\geqslant0\)、非零且紧支撑，积分严格为正且有限. 因此
+\[
+\rho\in C_c^\infty(\mathbb R^d),
+\;
+\rho\geqslant0,
+\;
+\operatorname{supp}\rho\subseteq\overline{B(0,1)},
+\]
+\[
+\int_{\mathbb R^d}\rho(x)\,\mathrm{d}x=1,
+\;
+\rho(-x)=\rho(x).
+\]
+对 \(\displaystyle\varepsilon>0\)，定义 \(\displaystyle \rho_\varepsilon(x) = \varepsilon^{-d}\rho(\frac{x}{\varepsilon}).\)
+变量代换 \(\displaystyle x=\varepsilon z\) 给
+\[
+\int_{\mathbb R^d}\rho_\varepsilon(x)\,\mathrm{d}x=1,
+\]
+且 \(\displaystyle \operatorname{supp}\rho_\varepsilon \subseteq \overline{B(0,\varepsilon)}.\)
+
+\begin{FADefinition}[B][内部区域与局部分布磨光]{ii12:inner-domain}
+定义 \(\displaystyle \Omega_\varepsilon = \{x\in\Omega:\operatorname{dist}(x,\mathbb R^d\setminus\Omega)>\varepsilon\}.\)
+当 \(\displaystyle\Omega=\mathbb R^d\) 时约定 \(\displaystyle\operatorname{dist}(x,\varnothing)=+\infty\).
+对 \(\displaystyle T\in\mathcal D'(\Omega)\) 与 \(\displaystyle x\in\Omega_\varepsilon\)，定义 \(\displaystyle T_\varepsilon(x) = (T*\rho_\varepsilon)(x) = \langle T_y,\rho_\varepsilon(x-y)\rangle.\)
+\end{FADefinition}
+
+\begin{FAProposition}[B][局部磨光的合法性]{ii12:local-mollification}
+对每个 \(\displaystyle\varepsilon>0\)，\(\displaystyle T_\varepsilon\in C^\infty(\Omega_\varepsilon)\). 并且对任意 \(\displaystyle\alpha\in\mathbb N_0^d\)， \(\displaystyle \partial^\alpha T_\varepsilon = (\partial^\alpha T)*\rho_\varepsilon = T*(\partial^\alpha\rho_\varepsilon)\)
+在 \(\displaystyle\Omega_\varepsilon\) 上成立.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle x\in\Omega_\varepsilon\)，则 \(\displaystyle \operatorname{supp}[y\mapsto\rho_\varepsilon(x-y)] \subseteq \overline{B(x,\varepsilon)} \subseteq \Omega,\)
+所以配对合法. 对 \(\displaystyle\Omega_\varepsilon\) 中任意紧邻域 \(\displaystyle L\)，所有相关测试函数支撑落入 \(\displaystyle L-\operatorname{supp}\rho_\varepsilon\Subset\Omega\). 因而\autoref{fa:DIST-B02}的差商证明可在该统一紧集上逐字局部化，得到光滑性与两种导数换序公式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][测试函数的近似恒等式]{ii12:test-mollifier-approximation}
+对任意 \(\displaystyle\varphi\in\mathcal D(\Omega)\)，当 \(\displaystyle\varepsilon\downarrow0\) 时 \(\displaystyle \rho_\varepsilon*\varphi \longrightarrow \varphi \;\text{于 }\mathcal D(\Omega).\)
+并且对每个 \(\displaystyle\alpha\in\mathbb N_0^d\)， \(\displaystyle \partial^\alpha(\rho_\varepsilon*\varphi) = \rho_\varepsilon*\partial^\alpha\varphi.\)
+\end{FAProposition}
+
+\begin{FAProof}
+把 \(\displaystyle\varphi\) 视为 \(\displaystyle\mathbb R^d\) 上在 \(\displaystyle\Omega\) 外取零的光滑函数；由于 \(\displaystyle\varphi\) 的支撑紧包含于 \(\displaystyle\Omega\)，该延拓在边界附近恒为零，故仍属于 \(\displaystyle C_c^\infty(\mathbb R^d)\). 对每个 \(\displaystyle\alpha\)，可在紧支撑积分下逐项微分，得到 \(\displaystyle \partial^\alpha(\rho_\varepsilon*\varphi) = \rho_\varepsilon*\partial^\alpha\varphi.\)
+令 \(\displaystyle \delta = \operatorname{dist}(\operatorname{supp}\varphi,\mathbb R^d\setminus\Omega)>0\)
+并取 \(\displaystyle K_1 = \{x\in\mathbb R^d:\operatorname{dist}(x,\operatorname{supp}\varphi)\leqslant\frac{\delta}{2}\}.\)
+则 \(\displaystyle K_1\Subset\Omega\). 当 \(\displaystyle0<\varepsilon<\frac{\delta}{2}\) 时，卷积支撑包含于 \(\displaystyle K_1\).
+
+由缩放变量 \(\displaystyle y=\varepsilon z\)，
+\[
+(\rho_\varepsilon*\partial^\alpha\varphi)(x)
+=
+\int_{\mathbb R^d}\rho(z)\partial^\alpha\varphi(x-\varepsilon z)\,\mathrm{d}z.
+\]
+因此
+\[
+\begin{aligned}
+&\sup_x| (\rho_\varepsilon*\partial^\alpha\varphi)(x)-\partial^\alpha\varphi(x)|\\
+&\leqslant
+\int_{\mathbb R^d}\rho(z)
+\sup_x|\partial^\alpha\varphi(x-\varepsilon z)-\partial^\alpha\varphi(x)|\,\mathrm{d}z.
+\end{aligned}
+\]
+函数 \(\displaystyle\partial^\alpha\varphi\in C_c(\mathbb R^d)\) 一致连续，且 \(\displaystyle|z|\leqslant1\) 在 \(\displaystyle\rho\) 的支撑上成立，所以右侧趋于零. 对每个固定 \(\displaystyle m\)，同时处理有限多个 \(\displaystyle|\alpha|\leqslant m\)，得到 \(\displaystyle p_{K_1,m}(\rho_\varepsilon*\varphi-\varphi)\longrightarrow0.\)
+结合统一支撑 \(\displaystyle K_1\)，即为\autoref{ii12:test-function-convergence}的收敛.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][磨光核对分布的局部逼近]{fa:DIST-B01}
+设 \(\displaystyle T\in\mathcal D'(\Omega)\)，并以\autoref{ii12:inner-domain}定义 \(\displaystyle T_\varepsilon\). 则对每个 \(\displaystyle\varphi\in\mathcal D(\Omega)\)，存在 \(\displaystyle\varepsilon_\varphi>0\)，使 \(\displaystyle0<\varepsilon<\varepsilon_\varphi\) 时 \(\displaystyle\operatorname{supp}\varphi\subset\Omega_\varepsilon\)，并且 \(\displaystyle \langle T_\varepsilon,\varphi\rangle \longrightarrow \langle T,\varphi\rangle.\)
+亦即 \(\displaystyle T_\varepsilon\to T\) 于 \(\displaystyle\mathcal D'(\Omega)\) 的含义是对每个固定测试函数逐点收敛；局部磨光在边界附近不被强行延拓.
+\end{FATheorem}
+
+\begin{FAProof}
+固定 \(\displaystyle\varphi\in\mathcal D(\Omega)\)，令 \(\displaystyle \delta = \operatorname{dist}(\operatorname{supp}\varphi,\mathbb R^d\setminus\Omega)>0.\)
+取 \(\displaystyle0<\varepsilon<\frac{\delta}{2}\). 则 \(\displaystyle\operatorname{supp}\varphi\subset\Omega_\varepsilon\)，且 \(\displaystyle\rho_\varepsilon*\varphi\in\mathcal D(\Omega)\). 因 \(\displaystyle\rho\) 为偶函数，\(\displaystyle\check\rho_\varepsilon=\rho_\varepsilon\). 令 \(\displaystyle E=\operatorname{supp}\varphi\)，并对 \(\displaystyle x\in E\) 定义 \(\displaystyle\Phi_x(y)=\varphi(x)\rho_\varepsilon(x-y)\). 由 \(\displaystyle\varepsilon<\frac{\delta}{2}\)，存在固定 \(\displaystyle K\Subset\Omega\) 包含全部 \(\displaystyle\operatorname{supp}\Phi_x\). 因此\autoref{ii12:parameter-integral}可直接用于 \(\displaystyle T|_{\mathcal D_K(\Omega)}\)，给出
+\[
+\begin{aligned}
+\langle T_\varepsilon,\varphi\rangle
+&=\int_E\langle T_y,\rho_\varepsilon(x-y)\rangle\varphi(x)\,\mathrm{d}x\\
+&=\left\langle T_y,\int_E\varphi(x)\rho_\varepsilon(x-y)\,\mathrm{d}x\right\rangle\\
+&=\langle T,\rho_\varepsilon*\varphi\rangle.
+\end{aligned}
+\]
+这里的最后一步只用 \(\displaystyle\rho_\varepsilon(-z)=\rho_\varepsilon(z)\)，没有调用未建立的 Fubini 定理.
+由\autoref{ii12:test-mollifier-approximation}，存在固定 \(\displaystyle K_1\Subset\Omega\)，使小 \(\displaystyle\varepsilon\) 时 \(\displaystyle\rho_\varepsilon*\varphi-\varphi\in\mathcal D_{K_1}(\Omega)\)，且其每个 \(\displaystyle p_{K_1,m}\) 都趋于零. 设 \(\displaystyle T\) 在 \(\displaystyle K_1\) 上满足阶数 \(\displaystyle m\) 的估计，则
+\[
+|\langle T_\varepsilon,\varphi\rangle-\langle T,\varphi\rangle|
+\leqslant
+C_{K_1}p_{K_1,m}(\rho_\varepsilon*\varphi-\varphi)
+\longrightarrow0.
+\]
+故结论成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][连续函数的局部一致磨光核逼近]{ii12:continuous-mollifier}
+设 \(\displaystyle f\in C(\Omega)\)、\(\displaystyle K\Subset\Omega\). 对充分小的 \(\displaystyle\varepsilon>0\)，\(\displaystyle f*\rho_\varepsilon\) 在 \(\displaystyle K\) 上有定义，并且 \(\displaystyle \sup_{x\in K}|(f*\rho_\varepsilon)(x)-f(x)|\longrightarrow0\).
+\end{FAProposition}
+
+\begin{FAProof}
+令 \(\displaystyle\delta=\operatorname{dist}(K,\mathbb R^d\setminus\Omega)>0\)，并固定 \(\displaystyle0<r<\delta\). 紧集 \(\displaystyle K_r = \{x\in\Omega:\operatorname{dist}(x,K)\leqslant r\}\)
+包含于 \(\displaystyle\Omega\)，故 \(\displaystyle f|_{K_r}\) 一致连续. 当 \(\displaystyle0<\varepsilon<r\) 时，对 \(\displaystyle x\in K\)，
+\[
+(f*\rho_\varepsilon)(x)
+=
+\int_{\mathbb R^d}\rho(z)f(x-\varepsilon z)\,\mathrm{d}z.
+\]
+于是
+\[
+|(f*\rho_\varepsilon)(x)-f(x)|
+\leqslant
+\int\rho(z)|f(x-\varepsilon z)-f(x)|\,\mathrm{d}z.
+\]
+在 \(\displaystyle|z|\leqslant1\) 上，\(\displaystyle x-\varepsilon z\in K_r\)，并且一致连续性使被积差对全部 \(\displaystyle x\in K\) 一致趋于零. 再用 \(\displaystyle\int\rho=1\) 得所述上确界收敛.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[Dirac的标准正则化]
+设 \(\displaystyle a\in\Omega\). 当 \(\displaystyle0<\varepsilon<\operatorname{dist}(a,\mathbb R^d\setminus\Omega)\) 时， \(\displaystyle (\delta_a*\rho_\varepsilon)(x) = \langle\delta_{a,y},\rho_\varepsilon(x-y)\rangle = \rho_\varepsilon(x-a).\)
+由\autoref{fa:DIST-B01}， \(\displaystyle \rho_\varepsilon(\,\cdot-a) \longrightarrow \delta_a \;\text{于 }\mathcal D'(\Omega).\)
+这给出奇异的分布被光滑紧支撑函数局部逼近的基本模型.
+\end{FAExample}
+
+\begin{FAWarning}[本章不建立一般 \(\displaystyle L^p_{\mathrm{loc}}\) 磨光核收敛]
+本章没有建立平移连续性或 \(\displaystyle C_c^\infty\) 在 \(\displaystyle L^p\) 中的密度链，因此不声称对所有 \(\displaystyle f\in L^p_{\mathrm{loc}}\) 都有 \(\displaystyle f*\rho_\varepsilon\to f\) 于 \(\displaystyle L^p_{\mathrm{loc}}\). 该强化只在 II-13 正式需要时建立. 本章已证明的收敛只有测试函数拓扑、分布逐测试函数收敛以及连续函数的局部一致收敛.
+\end{FAWarning}
+
+\section{弱解接口}\label{sec:ii12-weak-interface}
+\index{distributional solution@分布意义解}\index{differential operator@微分算子!分布作用}
+
+\begin{FADefinition}[B][光滑系数微分算子在分布上的作用]{ii12:differential-operator}
+设有限阶线性微分算子 \(\displaystyle \mathcal P=\sum_{|\alpha|\leqslant m}a_\alpha\partial^\alpha\)，其中 \(\displaystyle a_\alpha\in C^\infty(\Omega)\). 对 \(\displaystyle u\in\mathcal D'(\Omega)\)，定义 \(\displaystyle \mathcal Pu=\sum_{|\alpha|\leqslant m}a_\alpha\partial^\alpha u\). 若 \(\displaystyle u,F\in\mathcal D'(\Omega)\)，称 \(\displaystyle\mathcal Pu=F\) 在分布意义下，当且仅当两分布相等.
+\end{FADefinition}
+
+\begin{FAProposition}[B][分布意义的方程的测试函数形式]{ii12:tested-formulation}
+对任意 \(\displaystyle\varphi\in\mathcal D(\Omega)\)，
+\[
+\langle\mathcal Pu,\varphi\rangle
+=
+\sum_{|\alpha|\leqslant m}
+(-1)^{|\alpha|}
+\langle u,\partial^\alpha(a_\alpha\varphi)\rangle.
+\]
+因此 \(\displaystyle\mathcal Pu=F\) 等价于上述左侧对每个测试函数都等于 \(\displaystyle\langle F,\varphi\rangle\). 若 \(\displaystyle u=T_f\)、\(\displaystyle F=T_h\)，其中 \(\displaystyle f,h\in L^1_{\mathrm{loc}}(\Omega)\)，则测试形式为
+\[
+\sum_{|\alpha|\leqslant m}
+(-1)^{|\alpha|}
+\int_\Omega f(x)\partial^\alpha(a_\alpha(x)\varphi(x))\,\mathrm{d}x
+=
+\int_\Omega h(x)\varphi(x)\,\mathrm{d}x.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由光滑乘法与分布导数定义，
+\[
+\begin{aligned}
+\langle a_\alpha\partial^\alpha u,\varphi\rangle
+&=
+\langle\partial^\alpha u,a_\alpha\varphi\rangle\\
+&=
+(-1)^{|\alpha|}\langle u,\partial^\alpha(a_\alpha\varphi)\rangle.
+\end{aligned}
+\]
+对有限多个 \(\displaystyle\alpha\) 求和得到第一式. 当 \(\displaystyle u\) 与 \(\displaystyle F\) 为正则分布时，再代入\autoref{ii12:regular-distribution}的积分定义即得第二式. 每一项都只在 \(\displaystyle\operatorname{supp}\varphi\) 的紧邻域上积分，因此局部可积性足够.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAApplication}[Heaviside 作为分布意义的常微分方程解]
+等式 \(\displaystyle H'=\delta_0\) 表示 Heaviside 函数诱导的正则分布是 \(\displaystyle u'=\delta_0\)
+的一个分布解. 它不是经典解，因为 \(\displaystyle H\) 在零点不连续. 对任意常数 \(\displaystyle C\in\mathbb C\)，常分布的导数为零，所以 \(\displaystyle (H+C)'=\delta_0.\)
+本章不发展一般分布意义的常微分方程理论.
+\end{FAApplication}
+
+\begin{FAWarning}[Sobolev 与偏微分方程弱形式的边界]
+本章的分布意义的形式只是后续 Sobolev/偏微分方程弱形式的代数基础. II-13 才正式建立 \(\displaystyle W^{k,p}\)、\(\displaystyle H^k\)、\(\displaystyle W_0^{1,p}\)、完备性、密度与 Poincaré；II-15 才建立 Lax--Milgram 与典型椭圆弱解. 本章不调用 Sobolev 空间的完备、自反与 Hilbert 结构、有界开集上的 Poincaré 不等式、全空间光滑紧支撑密度、Lax--Milgram 定理或 Poisson 的 Dirichlet 弱解存在唯一性的任何结论.
+\end{FAWarning}
+
+\begin{FARemark}[缓增的分布与 Fourier的 D 级预告]
+在 \(\displaystyle\mathbb R^d\) 上，后续可考虑适配 Fourier 变换的较小分布类 \(\displaystyle\mathcal S'(\mathbb R^d)\). 本章不定义 Schwartz 拓扑，不建立缓增的分布对偶理论，不定义或证明 分布上的 Fourier 变换，也不使用该理论证明任何 II-12 结果.
+\end{FARemark}
+
+\subsection*{本章习题}\label{sec:ii12-exercises}
+
+\begin{FAExercise}[多重指标与 Leibniz 公式]{ex:ii12-01}
+对 \(\displaystyle\alpha\in\mathbb N_0^d\) 证明多重指标 Leibniz 公式，并用它给出 \(\displaystyle p_{K,m}(a\varphi)\leqslant C_{a,K,m}p_{K,m}(\varphi)\) 的一个显式常数上界.
+\end{FAExercise}
+
+\begin{FAExercise}[测试函数支撑]{ex:ii12-02}
+设 \(\displaystyle\varphi,\psi\in\mathcal D(\Omega)\). 证明 \(\displaystyle\operatorname{supp}(\varphi\psi)\subseteq\operatorname{supp}\varphi\cap\operatorname{supp}\psi\)，并证明每个 \(\displaystyle\partial^\alpha\varphi\) 的支撑包含于 \(\displaystyle\operatorname{supp}\varphi\).
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle\mathcal D_K\) 半范数]{ex:ii12-03}
+验证 \(\displaystyle p_{K,m}\) 是半范数且关于 \(\displaystyle m\) 递增. 再证明 \(\displaystyle p_{K,0}(\varphi)=0\) 蕴含 \(\displaystyle\varphi=0\).
+\end{FAExercise}
+
+\begin{FAExercise}[有限阶连续性判据]{ex:ii12-04}
+不引用一般局部地凸对偶理论定理，从零点邻域定义完整重建\autoref{ii12:dk-continuity}，并单独处理 \(\displaystyle p_{K,m}(\varphi)=0\) 的情形.
+\end{FAExercise}
+
+\begin{FAExercise}[平坦函数与隆起]{ex:ii12-05}
+证明对每个 \(\displaystyle N\in\mathbb N_0\) 有 \(\displaystyle t^{-N}\mathrm{e}^{-\frac{1}{t}}\to0\) 当 \(\displaystyle t\downarrow0\)，再从该估计独立证明 \(\displaystyle\eta\in C^\infty\) 与 \(\displaystyle\theta\in C_c^\infty(\mathbb R^d)\).
+\end{FAExercise}
+
+\begin{FAExercise}[正则分布]{ex:ii12-06}
+设 \(\displaystyle f\in L^1_{\mathrm{loc}}(\Omega)\). 对每个 \(\displaystyle K\Subset\Omega\) 写出 \(\displaystyle T_f\) 的零阶连续性常数，并证明几乎处处相等的代表元诱导同一分布；不得使用反向单射性.
+\end{FAExercise}
+
+\begin{FAExercise}[Dirac 连续性]{ex:ii12-07}
+分别讨论 \(\displaystyle a\in K\) 与 \(\displaystyle a\notin K\)，证明 \(\displaystyle\delta_a\in\mathcal D'(\Omega)\)，并确定可取的局部阶数.
+\end{FAExercise}
+
+\begin{FAExercise}[光滑乘法]{ex:ii12-08}
+从多重指标 Leibniz 公式出发证明 \(\displaystyle aT\in\mathcal D'(\Omega)\)，并说明为什么只需要 \(\displaystyle a\) 在固定紧集上的有限阶导数有界.
+\end{FAExercise}
+
+\begin{FAExercise}[支撑与局部性]{ex:ii12-09}
+完整证明\autoref{fa:DIST-C01}的三条结论，并解释为何证明中不需要分割单位分解.
+\end{FAExercise}
+
+\begin{FAExercise}[分布导数与阶数]{ex:ii12-10}
+若 \(\displaystyle T\) 在 \(\displaystyle K\) 上有阶数 \(\displaystyle m\) 的估计，证明 \(\displaystyle\partial^\alpha T\) 有阶数至多 \(\displaystyle m+|\alpha|\)，并指出该结论不声称这是最小阶数.
+\end{FAExercise}
+
+\begin{FAExercise}[混合导数与乘积法则]{ex:ii12-11}
+逐个核对符号，证明 \(\displaystyle\partial^\alpha\partial^\beta T=\partial^{\alpha+\beta}T\) 与 \(\displaystyle\partial_j(aT)=(\partial_ja)T+a\partial_jT\).
+\end{FAExercise}
+
+\begin{FAExercise}[经典与分布意义的相容性]{ex:ii12-12}
+对 \(\displaystyle f\in C^m(\Omega)\) 与 \(\displaystyle|\alpha|\leqslant m\)，用测试函数紧支撑消去全部边界项并证明 \(\displaystyle\partial^\alpha T_f=T_{\partial^\alpha f}\).
+\end{FAExercise}
+
+\begin{FAExercise}[Dirac 导数]{ex:ii12-13}
+证明 \(\displaystyle\langle\partial^\alpha\delta_a,\varphi\rangle=(-1)^{|\alpha|}\partial^\alpha\varphi(a)\)，并用\autoref{fa:DIST-C01}证明其支撑包含于 \(\displaystyle\{a\}\).
+\end{FAExercise}
+
+\begin{FAExercise}[Heaviside 与规范反例]{ex:ii12-14}
+完整计算 \(\displaystyle H'=\delta_0\)，说明 \(\displaystyle H(0)\) 的取值为何不影响正则分布，并明确指出“无经典导数但有分布导数”的失败命题与失败点.
+\end{FAExercise}
+
+\begin{FAExercise}[分布与测试函数卷积]{ex:ii12-15}
+对固定 \(\displaystyle x\) 证明 \(\displaystyle y\mapsto\psi(x-y)\) 是测试函数，并对紧参数集 \(\displaystyle L\) 找到统一支撑 \(\displaystyle L-\operatorname{supp}\psi\).
+\end{FAExercise}
+
+\begin{FAExercise}[参数积分换序]{ex:ii12-16}
+对\autoref{ii12:parameter-integral}给出有限可测分割构造，证明有限和在 \(\displaystyle p_{K,m}\) 下逼近参数积分，并从有限阶连续性推出 \(\displaystyle\Lambda\) 与参数积分换序.
+\end{FAExercise}
+
+\begin{FAExercise}[卷积导数符号]{ex:ii12-17}
+用差商证明 \(\displaystyle\partial^\alpha(T*\psi)=T*(\partial^\alpha\psi)\)，再显式计算 \(\displaystyle\partial_y^\alpha\psi(x-y)\) 并证明 \(\displaystyle T*(\partial^\alpha\psi)=(\partial^\alpha T)*\psi\).
+\end{FAExercise}
+
+\begin{FAExercise}[卷积配对恒等式]{ex:ii12-18}
+令 \(\displaystyle\Phi_x(y)=\varphi(x)\psi(x-y)\). 只使用\autoref{ii12:parameter-integral}证明 \(\displaystyle\int(T*\psi)\varphi=\langle T,\check\psi*\varphi\rangle\)，禁止调用 Fubini 黑箱.
+\end{FAExercise}
+
+\begin{FAExercise}[磨光核缩放]{ex:ii12-19}
+从 \(\displaystyle\rho_\varepsilon(x)=\varepsilon^{-d}\rho(\frac{x}{\varepsilon})\) 证明归一化、支撑缩放与偶性保持，并求 \(\displaystyle\partial^\alpha\rho_\varepsilon\) 的缩放公式.
+\end{FAExercise}
+
+\begin{FAExercise}[测试函数近似恒等式]{ex:ii12-20}
+对给定 \(\displaystyle\varphi\in\mathcal D(\Omega)\) 构造固定 \(\displaystyle K_1\Subset\Omega\)，证明小 \(\displaystyle\varepsilon\) 时全部 \(\displaystyle\rho_\varepsilon*\varphi\) 支撑于 \(\displaystyle K_1\)，并对每个 \(\displaystyle m\) 证明 \(\displaystyle p_{K_1,m}(\rho_\varepsilon*\varphi-\varphi)\to0\).
+\end{FAExercise}
+
+\begin{FAExercise}[分布磨光与 Dirac 正则化]{ex:ii12-21}
+从\autoref{fa:DIST-B02}与\autoref{ii12:test-mollifier-approximation}证明\autoref{fa:DIST-B01}，再计算 \(\displaystyle\delta_a*\rho_\varepsilon=\rho_\varepsilon(\,\cdot-a)\). 解释局部内部子域定义为何足以表达 \(\displaystyle\mathcal D'(\Omega)\) 中的逐测试函数收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[连续逼近、分布意义的方程与未来边界]{ex:ii12-22}
+先证明连续函数在任意 \(\displaystyle K\Subset\Omega\) 上被磨光核局部一致逼近，再推导 \(\displaystyle\mathcal Pu=F\) 的测试函数形式. 最后逐项说明一般 \(\displaystyle L^p_{\mathrm{loc}}\) 磨光核收敛、Sobolev 完备性与密度、Poincaré、Lax--Milgram、椭圆型弱解、缓增的/Fourier 形式上的理论为什么均不属于 II-12 已建立结果.
+\end{FAExercise}

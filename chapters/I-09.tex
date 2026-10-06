@@ -1,0 +1,462 @@
+\chapter{开映射、有界逆与闭图像}\label{chap:I-09}
+\FAChapterOpening
+{建立Banach空间线性理论的三个基本稳定性定理：由Baire纲方法证明开映射定理，再推出有界逆定理，并由图范数与有界逆定理证明闭图像定理；同时逐项定位完备性假设的作用与失效边界.}
+{I-03的Banach空间与商空间；I-05的有界线性算子、连续性判据与局部可逆稳定性；I-08的Baire纲定理及闭集覆盖形式.}
+{\begin{center}
+\begin{tikzpicture}[x=1.5cm,y=1.05cm]
+\node[fa/node] (ban) at (0,0.65) {I-03};
+\node[fa/node] (op) at (0,-0.65) {I-05};
+\node[fa/node] (bai) at (0,-1.95) {I-08};
+\node[fa/node] (omb) at (2.1,0) {开映射球引理};
+\node[fa/node] (oma) at (4.2,0) {开映射定理};
+\node[fa/node] (bit) at (6.25,0.65) {有界逆定理};
+\node[fa/node] (cgt) at (6.25,-0.65) {闭图像定理};
+\draw[fa/arrow] (ban) -- (omb);
+\draw[fa/arrow] (op) -- (omb);
+\draw[fa/arrow] (bai) -- (oma);
+\draw[fa/arrow] (omb) -- (oma);
+\draw[fa/arrow] (oma) -- (bit);
+\draw[fa/arrow] (bit) -- (cgt);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). 开映射定理与有界逆定理处理Banach空间之间的有界线性映射；闭图像定理处理处处定义的线性映射，并不预先假设连续. I-05的\autoref{fa:OP-B02}只说明一个已经有界可逆的算子在小扰动下仍然有界可逆，本章的\autoref{fa:BIT-A01}则从Banach空间上的有界线性双射出发自动推出逆映射有界，二者不是同一结论.
+
+\section{开映射}\label{sec:i09-open-mapping}
+\index{open map@开映射}\index{open mapping theorem@开映射定理}
+
+\begin{FADefinition}[A][开映射]{i09:open-map-definition}
+设 \(\displaystyle X,Y\) 为拓扑空间，\(\displaystyle \mathcal T:X\to Y\). 若对每个开集 \(\displaystyle U\subseteq X\)，像集 \(\displaystyle \mathcal T(U)\) 都在 \(\displaystyle Y\) 中开，则称 \(\displaystyle \mathcal T\) 为开映射. 连续性控制开集的逆像，开放性控制开集的像；二者是不同性质.
+\end{FADefinition}
+
+以下对赋范空间 \(\displaystyle X\) 记闭单位球
+\(\displaystyle \overline B_X:=\{x\in X:\|x\|\leqslant1\}\).
+
+\begin{FALemma}[B][开映射定量球包含引理]{fa:OMT-B01}
+设 \(\displaystyle X\) 为Banach空间，\(\displaystyle Y\) 为赋范空间，\(\displaystyle \mathcal T\in\mathcal B(X,Y)\). 若存在 \(\displaystyle \delta>0\) 使
+\(\displaystyle B_Y(0,\delta)\subseteq\overline{\mathcal T(\overline B_X)}\)，
+则
+\[
+B_Y(0,\frac{\delta}{2})\subseteq\mathcal T(\overline B_X).
+\]
+特别地，本引理不要求 \(\displaystyle Y\) 完备.
+\end{FALemma}
+
+\begin{FAProof}
+先建立缩放接口. 固定 \(\displaystyle a>0\). 标量乘法 \(\displaystyle y\mapsto ay\) 是 \(\displaystyle Y\) 上的同胚，且 \(\displaystyle \mathcal T(a\overline B_X)=a\mathcal T(\overline B_X)\). 因而
+\(\displaystyle \overline{\mathcal T(a\overline B_X)} =a\overline{\mathcal T(\overline B_X)}\).
+若 \(\displaystyle z\in B_Y(0,a\delta)\)，则 \(\displaystyle a^{-1}z\in B_Y(0,\delta)\subseteq\overline{\mathcal T(\overline B_X)}\)，故 \(\displaystyle z\in\overline{\mathcal T(a\overline B_X)}\). 因此
+\(\displaystyle B_Y(0,a\delta)\subseteq\overline{\mathcal T(a\overline B_X)}\).
+
+固定 \(\displaystyle y\in B_Y(0,\frac{\delta}{2})\)，令 \(\displaystyle r_0=y\). 递归构造 \(\displaystyle x_k\in X\) 与 \(\displaystyle r_k\in Y\). 假设 \(\displaystyle r_{k-1}\) 已定义且 \(\displaystyle \|r_{k-1}\|<\delta2^{-k}\). 取 \(\displaystyle a=2^{-k}\). 由上面的缩放包含，
+\(\displaystyle r_{k-1}\in B_Y(0,\delta2^{-k}) \subseteq\overline{\mathcal T(2^{-k}\overline B_X)}\).
+按闭包定义，可取 \(\displaystyle x_k\in2^{-k}\overline B_X\) 使
+\(\displaystyle \|r_{k-1}-\mathcal T x_k\|<\delta2^{-(k+1)}\).
+于是 \(\displaystyle \|x_k\|\leqslant2^{-k}\). 定义
+\(\displaystyle r_k:=r_{k-1}-\mathcal T x_k\)，
+则 \(\displaystyle \|r_k\|<\delta2^{-(k+1)}\). 因 \(\displaystyle \|r_0\|<\frac{\delta}{2}\)，归纳过程从 \(\displaystyle k=1\) 开始并对全部 \(\displaystyle k\in\mathbb N\) 成立.
+
+令 \(\displaystyle s_n=\sum_{k=1}^n x_k\). 对 \(\displaystyle m>n\)，
+\[
+\|s_m-s_n\|
+\leqslant\sum_{k=n+1}^{m}\|x_k\|
+\leqslant\sum_{k=n+1}^{\infty}2^{-k}
+=2^{-n}.
+\]
+故 \(\displaystyle (s_n)\) 是 \(\displaystyle X\) 中Cauchy列. 此处显式使用 \(\displaystyle X\) 完备，存在 \(\displaystyle x\in X\) 使 \(\displaystyle s_n\to x\). 又
+\[
+\|s_n\|
+\leqslant\sum_{k=1}^{n}\|x_k\|
+\leqslant\sum_{k=1}^{\infty}2^{-k}
+=1,
+\]
+由范数连续性得 \(\displaystyle \|x\|\leqslant1\)，即 \(\displaystyle x\in\overline B_X\).
+
+递推定义给出
+\(\displaystyle y-\mathcal T s_n =r_n\)，
+而 \(\displaystyle \|r_n\|<\delta2^{-(n+1)}\to0\). 因 \(\displaystyle \mathcal T\) 有界，从 \(\displaystyle s_n\to x\) 得 \(\displaystyle \mathcal T s_n\to\mathcal T x\). 另一方面 \(\displaystyle \mathcal T s_n\to y\)，故极限唯一性给出 \(\displaystyle \mathcal T x=y\). 因此 \(\displaystyle y\in\mathcal T(\overline B_X)\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][开映射定理]{fa:OMT-A01}
+设 \(\displaystyle X,Y\) 为Banach空间，\(\displaystyle \mathcal T\in\mathcal B(X,Y)\) 且 \(\displaystyle \mathcal T\) 满射. 则 \(\displaystyle \mathcal T\) 是开映射.
+\end{FATheorem}
+
+\begin{FAProof}
+因为 \(\displaystyle \mathcal T\) 满射，对每个 \(\displaystyle y\in Y\) 可取 \(\displaystyle x\in X\) 使 \(\displaystyle \mathcal T x=y\)，再取 \(\displaystyle n\in\mathbb N\) 满足 \(\displaystyle \|x\|\leqslant n\). 因而
+\[
+Y=\bigcup_{n=1}^{\infty}\mathcal T(n\overline B_X).
+\]
+令
+\(\displaystyle F_n:=\overline{\mathcal T(n\overline B_X)}\).
+则每个 \(\displaystyle F_n\) 在 \(\displaystyle Y\) 中闭，且
+\[
+Y=\bigcup_{n=1}^{\infty}F_n.
+\]
+这里使用了满射性以得到可数覆盖. 因 \(\displaystyle Y\) 是Banach空间，由\autoref{fa:BAI-C01}，存在 \(\displaystyle N\in\mathbb N\) 使 \(\displaystyle F_N\) 有非空内部. 因而存在 \(\displaystyle y_0\in Y\) 与 \(\displaystyle r>0\) 使
+\(\displaystyle B_Y(y_0,r)\subseteq F_N\).
+这里正是 \(\displaystyle Y\) 完备性的作用.
+
+固定 \(\displaystyle z\in B_Y(0,r)\). 则 \(\displaystyle y_0+z\in B_Y(y_0,r)\subseteq F_N\)，并且 \(\displaystyle y_0\in B_Y(y_0,r)\subseteq F_N\). 因 \(\displaystyle Y\) 为度量空间，闭包可由序列刻画，所以可取 \(\displaystyle u_k,v_k\in N\overline B_X\) 使
+\(\displaystyle \mathcal T u_k\to y_0+z, \; \mathcal T v_k\to y_0\).
+于是 \(\displaystyle u_k-v_k\in2N\overline B_X\)，且
+\(\displaystyle \mathcal T(u_k-v_k) =\mathcal T u_k-\mathcal T v_k \to z\).
+故
+\(\displaystyle B_Y(0,r) \subseteq \overline{\mathcal T(2N\overline B_X)}\).
+将该包含按因子 \(\displaystyle (2N)^{-1}\) 缩放，得到
+\[
+B_Y\left(0,\frac{r}{2N}\right)
+\subseteq
+\overline{\mathcal T(\overline B_X)}.
+\]
+令 \(\displaystyle \delta=\frac{r}{2N}\). 由\autoref{fa:OMT-B01}，
+\[
+B_Y(0,\frac{\delta}{2})
+\subseteq
+\mathcal T(\overline B_X).
+\]
+记 \(\displaystyle c=\frac{\delta}{2}>0\). 因而获得关键的定量包含
+\(\displaystyle B_Y(0,c)\subseteq\mathcal T(\overline B_X)\).
+
+现证开放性. 固定任意开集 \(\displaystyle U\subseteq X\) 与任意 \(\displaystyle x_0\in U\). 由 \(\displaystyle U\) 开，存在 \(\displaystyle \rho>0\) 使
+\(\displaystyle x_0+\rho B_X(0,1)\subseteq U\).
+因为 \(\displaystyle (\frac{\rho}{2})\overline B_X\subseteq\rho B_X(0,1)\)，所以
+\[
+x_0+(\frac{\rho}{2})\overline B_X\subseteq U.
+\]
+由线性性与上面的球包含，
+\[
+\mathcal T(U) \supseteq\mathcal T x_0+(\frac{\rho}{2})\mathcal T(\overline B_X) \supseteq B_Y\left(\mathcal T x_0,\frac{\rho c}{2}\right).
+\]
+因此 \(\displaystyle \mathcal T x_0\) 是 \(\displaystyle \mathcal T(U)\) 的内点. 由于 \(\displaystyle x_0\in U\) 任意，\(\displaystyle \mathcal T(U)\) 开，故 \(\displaystyle \mathcal T\) 是开映射.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[四个假设各自出现的位置]
+\(\displaystyle X\) 的完备性用于\autoref{fa:OMT-B01}中Cauchy部分和的极限存在；\(\displaystyle Y\) 的完备性只用于Baire闭集覆盖步骤；\(\displaystyle \mathcal T\) 的满射性用于构造 \(\displaystyle Y=\bigcup_n\mathcal T(n\overline B_X)\)；\(\displaystyle \mathcal T\) 的有界性用于迭代极限中 \(\displaystyle \mathcal T s_n\to\mathcal T x\)，并保证全章处于有界算子框架内.
+\end{FARemark}
+
+\begin{FAApplication}[商映射是开映射]\label{i09:quotient-map-open}
+设 \(\displaystyle X\) 为Banach空间，\(\displaystyle M\subseteq X\) 为闭线性子空间. I-03已由\autoref{fa:BAN-B02}证明 \(\displaystyle X/M\) 为Banach空间. 商映射
+\(\displaystyle Q:X\to X/M, \; Qx=x+M\)
+线性且满射，并由商范数定义有 \(\displaystyle \|Qx\|_{X/M}\leqslant\|x\|\)，故 \(\displaystyle Q\in\mathcal B(X,X/M)\). 由\autoref{fa:OMT-A01}，\(\displaystyle Q\) 是开映射. 这里直接复用I-03的商Banach空间结论，不重建商空间完备性证明.
+\end{FAApplication}
+
+\section{有界逆}\label{sec:i09-bounded-inverse}
+\index{bounded inverse theorem@有界逆定理}\index{equivalent norms@等价范数}
+
+\begin{FACorollary}[A][有界逆定理]{fa:BIT-A01}
+设 \(\displaystyle X,Y\) 为Banach空间，\(\displaystyle \mathcal T\in\mathcal B(X,Y)\) 且 \(\displaystyle \mathcal T\) 双射. 则
+\(\displaystyle \mathcal T^{-1}\in\mathcal B(Y,X)\).
+\end{FACorollary}
+
+\begin{FAProof}
+因为 \(\displaystyle \mathcal T\) 满射，由\autoref{fa:OMT-A01}，\(\displaystyle \mathcal T\) 是开映射. 因 \(\displaystyle \mathcal T\) 双射，\(\displaystyle \mathcal T^{-1}:Y\to X\) 线性. 对任意开集 \(\displaystyle U\subseteq X\)，
+\(\displaystyle (\mathcal T^{-1})^{-1}(U)=\mathcal T(U)\)，
+右端由 \(\displaystyle \mathcal T\) 的开放性为开集，故 \(\displaystyle \mathcal T^{-1}\) 连续. I-05已建立线性映射连续与有界等价，因此 \(\displaystyle \mathcal T^{-1}\in\mathcal B(Y,X)\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][逆映射的定量估计]{i09:inverse-estimate}
+在\autoref{fa:BIT-A01}的条件下，若由\autoref{fa:OMT-A01}的证明得到某个 \(\displaystyle c>0\) 满足
+\(\displaystyle B_Y(0,c)\subseteq\mathcal T(\overline B_X)\)，
+则对全部 \(\displaystyle y\in Y\) 有
+\(\displaystyle \|\mathcal T^{-1}y\|\leqslant c^{-1}\|y\|\).
+\end{FAProposition}
+
+\begin{FAProof}
+当 \(\displaystyle y=0\) 时左侧等于零，结论成立. 设 \(\displaystyle y\neq0\). 对任意
+\(\displaystyle 0<\lambda<\frac{c}{\|y\|}\)，有 \(\displaystyle \|\lambda y\|<c\)，故存在 \(\displaystyle x_\lambda\in\overline B_X\) 使 \(\displaystyle \mathcal T x_\lambda=\lambda y\). 因 \(\displaystyle \mathcal T\) 单射，
+\(\displaystyle x_\lambda=\lambda\mathcal T^{-1}y\).
+于是
+\(\displaystyle \lambda\|\mathcal T^{-1}y\|=\|x_\lambda\|\leqslant1\).
+令 \(\displaystyle \lambda\uparrow \frac{c}{\|y\|}\)，得到
+\[
+\|\mathcal T^{-1}y\|\leqslant\frac{\|y\|}{c}.\]
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[I-05局部稳定性与本章全局定理]
+\autoref{fa:OP-B02}的输入已经包含 \(\displaystyle \mathcal A^{-1}\in\mathcal B(X)\)，结论是足够小的有界扰动仍可逆；\autoref{fa:BIT-A01}的输入只要求Banach空间之间的有界线性双射，逆映射的有界性正是结论. 因而前者不能替代后者.
+\end{FARemark}
+
+\begin{FACorollary}[B][Banach范数的一侧控制自动升级为等价]{i09:norm-equivalence}
+设同一向量空间 \(\displaystyle E\) 上有两个范数 \(\displaystyle \|\cdot\|_1\) 与 \(\displaystyle \|\cdot\|_2\)，并且 \(\displaystyle (E,\|\cdot\|_1)\)、\(\displaystyle (E,\|\cdot\|_2)\) 都是Banach空间. 若存在 \(\displaystyle C>0\) 使
+\(\displaystyle \|x\|_2\leqslant C\|x\|_1\)
+对全部 \(\displaystyle x\in E\) 成立，则存在 \(\displaystyle C'>0\) 使
+\(\displaystyle \|x\|_1\leqslant C'\|x\|_2\)
+对全部 \(\displaystyle x\in E\) 成立. 因而两个范数等价.
+\end{FACorollary}
+
+\begin{FAProof}
+恒等映射
+\(\displaystyle \mathcal I:(E,\|\cdot\|_1)\to(E,\|\cdot\|_2), \; \mathcal Ix=x\)
+是线性双射，且假设给出 \(\displaystyle \|\mathcal Ix\|_2\leqslant C\|x\|_1\)，故 \(\displaystyle \mathcal I\) 有界. 由\autoref{fa:BIT-A01}，逆恒等映射 \(\displaystyle \mathcal I^{-1}\) 有界. 因而存在 \(\displaystyle C'>0\) 使 \(\displaystyle \|x\|_1\leqslant C'\|x\|_2\) 对全部 \(\displaystyle x\in E\) 成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[两个Banach范数的等价性]\label{i09:ex-cont-norm-equivalence}
+在向量空间 \(\displaystyle C[0,1]\) 上保留I-03与I-05使用的上确界范数 \(\displaystyle \|\cdot\|_\infty\). 设 \(\displaystyle \|\cdot\|_\diamond\) 是另一个使 \(\displaystyle C[0,1]\) 成为Banach空间的范数，并假设存在 \(\displaystyle C>0\) 使
+\(\displaystyle \|f\|_\infty\leqslant C\|f\|_\diamond\)
+对全部 \(\displaystyle f\in C[0,1]\) 成立. 由\autoref{i09:norm-equivalence}，存在 \(\displaystyle C'>0\) 使
+\(\displaystyle \|f\|_\diamond\leqslant C'\|f\|_\infty\).
+故两个范数等价. 这里的一侧连续性假设不可删除；不能由两个范数各自完备直接断言它们等价.
+\end{FAExample}
+
+\section{闭图像}\label{sec:i09-closed-graph}
+\index{closed graph@闭图像}\index{graph norm@图范数}\index{closed graph theorem@闭图像定理}
+
+\begin{FADefinition}[A][闭图像]{i09:closed-graph-definition}
+设 \(\displaystyle X,Y\) 为赋范空间，\(\displaystyle \mathcal T:X\to Y\) 为线性映射. 定义
+\(\displaystyle G(\mathcal T) :=\{(x,\mathcal T x):x\in X\} \subseteq X\times Y\).
+在 \(\displaystyle X\times Y\) 上取乘积范数
+\(\displaystyle \|(x,y)\|_{X\times Y}:=\|x\|_X+\|y\|_Y\).
+若 \(\displaystyle G(\mathcal T)\) 在该乘积范数拓扑中闭，则称 \(\displaystyle \mathcal T\) 具有闭图像. 闭图像是 \(\displaystyle X\times Y\) 中关于点对 \(\displaystyle (x,\mathcal T x)\) 的闭性；闭值域则是 \(\displaystyle \operatorname{Ran}\mathcal T\subseteq Y\) 的闭性，二者不能混同.
+\end{FADefinition}
+
+\begin{FATheorem}[A][闭图像定理]{fa:CGT-A01}
+设 \(\displaystyle X,Y\) 为Banach空间，\(\displaystyle \mathcal T:X\to Y\) 为处处定义的线性映射，不预先假设 \(\displaystyle \mathcal T\) 连续. 若 \(\displaystyle G(\mathcal T)\) 闭，则
+\(\displaystyle \mathcal T\in\mathcal B(X,Y)\).
+\end{FATheorem}
+
+\begin{FAProof}
+在底层向量空间 \(\displaystyle X\) 上定义图范数
+\(\displaystyle \|x\|_{\mathcal T}:=\|x\|_X+\|\mathcal T x\|_Y\).
+先验证这是范数. 两项均非负，故其和非负；若 \(\displaystyle \|x\|_{\mathcal T}=0\)，则 \(\displaystyle \|x\|_X=0\)，故 \(\displaystyle x=0\). 对 \(\displaystyle \alpha\in\mathbb K\)，由 \(\displaystyle \mathcal T\) 线性，
+\(\displaystyle \|\alpha x\|_{\mathcal T} =|\alpha|\|x\|_X+|\alpha|\|\mathcal T x\|_Y =|\alpha|\|x\|_{\mathcal T}\).
+再由两个原范数的三角不等式，
+\[
+\|x+z\|_{\mathcal T}
+\leqslant\|x\|_X+\|z\|_X+\|\mathcal T x\|_Y+\|\mathcal T z\|_Y
+=\|x\|_{\mathcal T}+\|z\|_{\mathcal T}.
+\]
+
+证明 \(\displaystyle (X,\|\cdot\|_{\mathcal T})\) 完备. 设 \(\displaystyle (x_n)\) 在图范数下为Cauchy列. 由
+\(\displaystyle \|x_n-x_m\|_X\leqslant\|x_n-x_m\|_{\mathcal T}\)
+与
+\(\displaystyle \|\mathcal T x_n-\mathcal T x_m\|_Y \leqslant\|x_n-x_m\|_{\mathcal T}\)，
+可知 \(\displaystyle (x_n)\) 在 \(\displaystyle X\) 中Cauchy，\(\displaystyle (\mathcal T x_n)\) 在 \(\displaystyle Y\) 中Cauchy. 因 \(\displaystyle X,Y\) 都完备，存在 \(\displaystyle x\in X\) 与 \(\displaystyle y\in Y\) 使
+\(\displaystyle x_n\to x, \; \mathcal T x_n\to y\).
+于是 \(\displaystyle (x_n,\mathcal T x_n)\to(x,y)\) 于 \(\displaystyle X\times Y\) 的乘积范数成立.
+因 \(\displaystyle G(\mathcal T)\) 闭且每个 \(\displaystyle (x_n,\mathcal T x_n)\in G(\mathcal T)\)，有 \(\displaystyle (x,y)\in G(\mathcal T)\)，即 \(\displaystyle y=\mathcal T x\). 因而
+\(\displaystyle \|x_n-x\|_{\mathcal T} =\|x_n-x\|_X+\|\mathcal T x_n-\mathcal T x\|_Y \to0\).
+所以图范数空间是Banach空间.
+
+考虑恒等映射
+\(\displaystyle \mathcal I:(X,\|\cdot\|_{\mathcal T})\to(X,\|\cdot\|_X), \; \mathcal Ix=x\).
+它线性且双射，并满足 \(\displaystyle \|\mathcal Ix\|_X\leqslant\|x\|_{\mathcal T}\)，故有界. 两端现在都是Banach空间，由\autoref{fa:BIT-A01}，\(\displaystyle \mathcal I^{-1}\) 有界. 因而存在 \(\displaystyle C>0\) 使
+\(\displaystyle \|x\|_{\mathcal T}\leqslant C\|x\|_X\)
+对全部 \(\displaystyle x\in X\) 成立. 特别地，
+\(\displaystyle \|\mathcal T x\|_Y \leqslant\|x\|_{\mathcal T} \leqslant C\|x\|_X\).
+故 \(\displaystyle \mathcal T\in\mathcal B(X,Y)\). 这里的依赖顺序是 \(\displaystyle \text{开映射定理}\to\text{有界逆定理}\to\text{闭图像定理}\)，不存在循环.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][闭图像的序列判据]{fa:CGT-C01}
+设 \(\displaystyle X,Y\) 为赋范空间，\(\displaystyle \mathcal T:X\to Y\) 为线性映射. 下列条件等价：
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(\displaystyle G(\mathcal T)\) 在 \(\displaystyle X\times Y\) 中闭；
+\item 若 \(\displaystyle x_n\to x\) 且 \(\displaystyle \mathcal T x_n\to y\)，则 \(\displaystyle y=\mathcal T x\)；
+\item 若 \(\displaystyle x_n\to0\) 且 \(\displaystyle \mathcal T x_n\to y\)，则 \(\displaystyle y=0\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+先证（i）与（ii）等价. 若图像闭，而 \(\displaystyle x_n\to x\)、\(\displaystyle \mathcal T x_n\to y\)，则 \(\displaystyle (x_n,\mathcal T x_n)\to(x,y)\). 闭性给出 \(\displaystyle (x,y)\in G(\mathcal T)\)，即 \(\displaystyle y=\mathcal T x\).
+
+反之，假设（ii）成立. 固定 \(\displaystyle (x,y)\in\overline{G(\mathcal T)}\). 因 \(\displaystyle X\times Y\) 是度量空间，对每个 \(\displaystyle n\in\mathbb N\) 可取 \(\displaystyle z_n\in X\) 使
+\[
+\|(z_n,\mathcal T z_n)-(x,y)\|_{X\times Y}<\frac{1}{n}.
+\]
+于是 \(\displaystyle z_n\to x\) 且 \(\displaystyle \mathcal T z_n\to y\). 由（ii），\(\displaystyle y=\mathcal T x\)，故 \(\displaystyle (x,y)\in G(\mathcal T)\). 因而图像闭.
+
+由（ii）取 \(\displaystyle x=0\) 立即得到（iii）. 最后假设（iii）成立，并设 \(\displaystyle x_n\to x\)、\(\displaystyle \mathcal T x_n\to y\). 令 \(\displaystyle z_n=x_n-x\). 则 \(\displaystyle z_n\to0\)，且由线性性
+\(\displaystyle \mathcal T z_n =\mathcal T x_n-\mathcal T x \to y-\mathcal T x\).
+由（iii），\(\displaystyle y-\mathcal T x=0\)，故 \(\displaystyle y=\mathcal T x\). 因而（ii）成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAApplication}[Volterra算子的闭图像]\label{i09:ex-cont-closed-graph}
+复用I-05的Volterra算子
+\[
+(\mathcal V f)(t)=\int_0^t f(s)\,\mathrm{d}s,
+\quad
+\mathcal V:C[0,1]\to C[0,1].
+\]
+I-05已经证明 \(\displaystyle \mathcal V\) 有界. 若 \(\displaystyle f_n\to f\) 一致且 \(\displaystyle \mathcal V f_n\to g\) 一致，则有界性给出 \(\displaystyle \mathcal V f_n\to\mathcal V f\) 一致. 极限唯一性得到 \(\displaystyle g=\mathcal V f\). 由\autoref{fa:CGT-C01}，\(\displaystyle G(\mathcal V)\) 闭. 这里闭图像判据只是验证模板，并不反过来作为\autoref{fa:CGT-A01}的证明输入.
+\end{FAApplication}
+
+\begin{FAWarning}[处处定义条件不可删除]\label{i09:derivative-domain-warning}
+考虑
+\[
+\mathcal D:D(\mathcal D)=C^1[0,1]\subset C[0,1]\to C[0,1],
+\quad
+\mathcal Df=f',
+\]
+其中定义域与陪域都使用上确界范数的相应子空间结构. 若 \(\displaystyle f_n\in C^1[0,1]\)，\(\displaystyle f_n\to f\) 一致且 \(\displaystyle f_n'\to g\) 一致，则对每个 \(\displaystyle t\in[0,1]\)，
+\[
+f_n(t)-f_n(0)=\int_0^t f_n'(s)\,\mathrm{d}s.
+\]
+由一致收敛可逐项取极限，并由
+\[
+\left|\int_0^t(f_n'(s)-g(s))\,\mathrm{d}s\right|
+\leqslant\|f_n'-g\|_\infty
+\to0
+\]
+得到
+\[
+f(t)-f(0)=\int_0^t g(s)\,\mathrm{d}s.
+\]
+因 \(\displaystyle g\) 连续，微积分基本定理给出 \(\displaystyle f\in C^1[0,1]\) 且 \(\displaystyle f'=g\). 因而该图像在 \(\displaystyle C[0,1]\times C[0,1]\) 中闭.
+
+另一方面，对 \(\displaystyle p_n(t)=t^n\)，有 \(\displaystyle \|p_n\|_\infty=1\) 而 \(\displaystyle \|\mathcal Dp_n\|_\infty=n\). 故 \(\displaystyle \mathcal D\) 对定义域的继承上确界范数不有界. 这不违反\autoref{fa:CGT-A01}，因为 \(\displaystyle D(\mathcal D)=C^1[0,1]\neq C[0,1]\). 本章只用此例说明处处定义假设的必要性，不发展闭算子、可闭算子或图范数定义域理论；这些内容留到第二卷的相应章节.
+\end{FAWarning}
+
+\section{前提失效}\label{sec:i09-assumption-failure}
+\index{incomplete space@不完备空间}
+
+本节复用I-02首次建立、I-08继续使用的同一反例族不完备性反例，但当前只检验开映射、有界逆与闭图像三类结论的完备性边界. I-08讨论的是Baire与一致有界性失效；本节的三个失败陈述分别独立验证，不能合并为一个命题.
+
+令底层向量空间
+\(\displaystyle E=\ell^1\)，
+并定义
+\(\displaystyle X=(E,\|\cdot\|_1), \; Y=(E,\|\cdot\|_\infty)\).
+I-03已知 \(\displaystyle X\) 是Banach空间.
+
+\begin{FAProposition}[C][\(\displaystyle Y\) 不完备]{i09:y-incomplete}
+赋上确界范数的线性空间 \(\displaystyle Y=(\ell^1,\|\cdot\|_\infty)\) 不完备.
+\end{FAProposition}
+
+\begin{FAProof}
+对 \(\displaystyle N\in\mathbb N\) 定义
+\[
+a^{(N)}
+=\left(1,\frac{1}{2},\dots,\frac{1}{N},0,0,\dots\right)\in\ell^1.
+\]
+若 \(\displaystyle M>N\)，则
+\[
+\|a^{(M)}-a^{(N)}\|_\infty
+=\frac{1}{N+1}.
+\]
+故 \(\displaystyle (a^{(N)})\) 在 \(\displaystyle Y\) 中为Cauchy列. 若存在 \(\displaystyle a\in\ell^1\) 使 \(\displaystyle a^{(N)}\to a\) 于上确界范数，则上确界范数收敛推出逐坐标收敛，所以对每个 \(\displaystyle n\in\mathbb N\) 有 \(\displaystyle a_n=\frac{1}{n}\). 但调和级数发散，故 \(\displaystyle (\frac{1}{n})_{n\geqslant1}\notin\ell^1\)，矛盾. 因而 \(\displaystyle Y\) 不完备.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[删除陪域完备性后开映射与有界逆可失效]\label{i09:ce-incomplete-omt}
+定义恒等映射
+\(\displaystyle \mathcal I:X\to Y, \; \mathcal Ix=x\).
+由 \(\displaystyle \|x\|_\infty\leqslant\|x\|_1\)，\(\displaystyle \mathcal I\) 有界；由于定义域与陪域具有同一底层向量空间，\(\displaystyle \mathcal I\) 双射. 但逆映射 \(\displaystyle \mathcal I^{-1}:Y\to X\) 不有界. 事实上，取
+\[
+u^{(N)}=(\underbrace{1,\dots,1}_{N\text{项}},0,0,\dots),
+\]
+则 \(\displaystyle \|u^{(N)}\|_\infty=1\) 而 \(\displaystyle \|u^{(N)}\|_1=N\to\infty\). 因此有界逆结论失败.
+
+再直接证明 \(\displaystyle \mathcal I\) 不是开映射. 若 \(\displaystyle \mathcal I(B_X(0,1))\) 是 \(\displaystyle Y\) 中包含 \(\displaystyle0\) 的开集，则应存在 \(\displaystyle r>0\) 使 \(\displaystyle B_Y(0,r)\subseteq\mathcal I(B_X(0,1))\). 但对任意 \(\displaystyle r>0\)，取 \(\displaystyle N\) 使 \(\displaystyle \frac{Nr}{2}>1\)，并令
+\[
+v^{(N)}=(\underbrace{\frac{r}{2},\dots,\frac{r}{2}}_{N\text{项}},0,0,\dots).
+\]
+则
+\[
+\|v^{(N)}\|_\infty=\frac{r}{2}<r,
+\]
+而
+\[
+\|v^{(N)}\|_1=\frac{Nr}{2}>1.
+\]
+故 \(\displaystyle v^{(N)}\in B_Y(0,r)\) 但 \(\displaystyle v^{(N)}\notin\mathcal I(B_X(0,1))\). 因而没有任何 \(\displaystyle0\) 的 \(\displaystyle Y\)-邻域包含于该像集，\(\displaystyle \mathcal I\) 不是开映射. 此例删除的是陪域 \(\displaystyle Y\) 的完备性，失败的是开映射结论与有界逆结论.
+\end{FACounterexample}
+
+\begin{FACounterexample}[删除定义域完备性后闭图像定理可失效]\label{i09:ce-incomplete-cgt}
+考虑反向恒等映射
+\(\displaystyle \mathcal S:Y\to X, \; \mathcal Sx=x\).
+上一个反例已经证明该映射不有界. 现证其图像闭. 若 \(\displaystyle x_n\to x\) 于 \(\displaystyle (E,\|\cdot\|_\infty)\)，且 \(\displaystyle \mathcal Sx_n=x_n\to y\) 于 \(\displaystyle (E,\|\cdot\|_1)\)，
+则由
+\(\displaystyle \|x_n-y\|_\infty\leqslant\|x_n-y\|_1\to0\)
+可知同一序列 \(\displaystyle (x_n)\) 在上确界范数下同时收敛到 \(\displaystyle x\) 与 \(\displaystyle y\). 由极限唯一性，\(\displaystyle x=y\)，即 \(\displaystyle y=\mathcal Sx\). 由\autoref{fa:CGT-C01}，\(\displaystyle G(\mathcal S)\) 闭. 因而 \(\displaystyle \mathcal S\) 是图像闭但不有界的线性映射. 此例中定义域 \(\displaystyle Y\) 不完备，而陪域 \(\displaystyle X\) 是Banach空间，所以删除定义域完备性后闭图像定理可以失效.
+\end{FACounterexample}
+
+\begin{FAWarning}[后续理论边界]
+本章没有使用Banach--Alaoglu定理、自反空间闭单位球弱紧性或Eberlein--Šmulian型结果；这些弱紧性内容留到I-10. Banach对偶算子与Hilbert伴随留到I-11. Fréchet空间上的开映射、闭图像与一致有界性推广留到第二卷的局部凸空间章节. 闭算子、可闭算子、定义域图范数与系统无界算子理论留到第二卷的无界算子章节.
+\end{FAWarning}
+
+\subsection{本章习题}\label{sec:i09-exercises}
+
+\begin{FAExercise}[开映射定义]{ex:i09-01}
+给出连续但不是开映射的线性映射例子，并逐项验证连续性与非开放性. 可在有限维空间中选取非满射线性映射.
+\end{FAExercise}
+
+\begin{FAExercise}[开映射定量球包含引理的缩放步骤]{ex:i09-02}
+从 \(\displaystyle B_Y(0,\delta)\subseteq\overline{\mathcal T(\overline B_X)}\) 出发，只用线性性与标量乘法同胚证明对每个 \(\displaystyle a>0\) 有 \(\displaystyle B_Y(0,a\delta)\subseteq\overline{\mathcal T(a\overline B_X)}\).
+\end{FAExercise}
+
+\begin{FAExercise}[残量递推]{ex:i09-03}
+在\autoref{fa:OMT-B01}中，从 \(\displaystyle \|r_{k-1}\|<\delta2^{-k}\) 推出可取 \(\displaystyle x_k\) 满足 \(\displaystyle \|x_k\|\leqslant2^{-k}\) 与 \(\displaystyle \|r_{k-1}-\mathcal T x_k\|<\delta2^{-(k+1)}\)，并写出从 \(\displaystyle r_0\) 到 \(\displaystyle r_3\) 的显式递推关系.
+\end{FAExercise}
+
+\begin{FAExercise}[定义域完备性的唯一使用点]{ex:i09-04}
+检查\autoref{fa:OMT-B01}的证明，指出若 \(\displaystyle X\) 只是假设为赋范空间，哪一步不能继续；同时说明该引理为什么不需要 \(\displaystyle Y\) 完备.
+\end{FAExercise}
+
+\begin{FAExercise}[Baire覆盖]{ex:i09-05}
+设 \(\displaystyle \mathcal T:X\to Y\) 为满射线性映射. 证明 \(\displaystyle Y=\bigcup_{n=1}^{\infty}\mathcal T(n\overline B_X)\)，并解释为什么满射性不可从这一步删除.
+\end{FAExercise}
+
+\begin{FAExercise}[从非中心球抽取零中心球]{ex:i09-06}
+设 \(\displaystyle F_N=\overline{\mathcal T(N\overline B_X)}\) 且 \(\displaystyle B_Y(y_0,r)\subseteq F_N\). 对任意 \(\displaystyle z\in B_Y(0,r)\)，用两个逼近序列完整证明 \(\displaystyle z\in\overline{\mathcal T(2N\overline B_X)}\).
+\end{FAExercise}
+
+\begin{FAExercise}[开映射证明的最后一步]{ex:i09-07}
+从 \(\displaystyle B_Y(0,c)\subseteq\mathcal T(\overline B_X)\) 出发，不再使用Baire定理，证明 \(\displaystyle \mathcal T\) 把任意开集映为开集.
+\end{FAExercise}
+
+\begin{FAExercise}[商映射开放性]{ex:i09-08}
+设 \(\displaystyle X\) 为Banach空间，\(\displaystyle M\subseteq X\) 为闭线性子空间，\(\displaystyle Qx=x+M\). 用\autoref{fa:OMT-A01}证明 \(\displaystyle Q\) 开，并说明闭性假设在何处保证可调用该定理.
+\end{FAExercise}
+
+\begin{FAExercise}[有界逆定理]{ex:i09-09}
+设 \(\displaystyle \mathcal T:X\to Y\) 为Banach空间之间的有界线性双射. 只用开映射定义证明 \(\displaystyle \mathcal T^{-1}\) 连续，再用I-05的线性连续性判据推出有界性.
+\end{FAExercise}
+
+\begin{FAExercise}[逆映射定量估计]{ex:i09-10}
+若 \(\displaystyle B_Y(0,c)\subseteq\mathcal T(\overline B_X)\) 且 \(\displaystyle \mathcal T\) 单射，重建\autoref{i09:inverse-estimate}，并说明 \(\displaystyle y=0\) 为什么需要单独处理.
+\end{FAExercise}
+
+\begin{FAExercise}[Banach范数等价]{ex:i09-11}
+设 \(\displaystyle \|\cdot\|_1\)、\(\displaystyle \|\cdot\|_2\) 都使同一向量空间 \(\displaystyle E\) 完备. 已知 \(\displaystyle \|x\|_2\leqslant C\|x\|_1\). 用恒等映射与\autoref{fa:BIT-A01}证明两个范数诱导相同的收敛序列与相同的开集.
+\end{FAExercise}
+
+\begin{FAExercise}[连续函数空间模型的一侧假设]{ex:i09-12}
+解释为什么\autoref{i09:ex-cont-norm-equivalence}不能删去 \(\displaystyle \|f\|_\infty\leqslant C\|f\|_\diamond\) 这一侧控制. 你的论证只需指出\autoref{fa:BIT-A01}的哪个输入会消失，不要求构造新反例.
+\end{FAExercise}
+
+\begin{FAExercise}[闭图像与闭值域]{ex:i09-13}
+分别写出 \(\displaystyle G(\mathcal T)\) 闭与 \(\displaystyle \operatorname{Ran}\mathcal T\) 闭的定义，并说明二者所处的环境空间不同. 给出一个有界线性算子，并利用连续性直接证明它的图像闭.
+\end{FAExercise}
+
+\begin{FAExercise}[图范数]{ex:i09-14}
+设 \(\displaystyle \mathcal T:X\to Y\) 线性. 逐项验证 \(\displaystyle \|x\|_{\mathcal T}=\|x\|_X+\|\mathcal T x\|_Y\) 是范数，并指出这一结论本身不需要 \(\displaystyle \mathcal T\) 连续.
+\end{FAExercise}
+
+\begin{FAExercise}[图范数完备性]{ex:i09-15}
+假设 \(\displaystyle X,Y\) Banach且 \(\displaystyle G(\mathcal T)\) 闭. 从图范数Cauchy列出发，完整证明 \(\displaystyle (X,\|\cdot\|_{\mathcal T})\) 完备，并标出两次使用完备性的对象.
+\end{FAExercise}
+
+\begin{FAExercise}[零序列判据]{ex:i09-16}
+不直接引用\autoref{fa:CGT-C01}的证明，重新证明对线性映射 \(\displaystyle \mathcal T:X\to Y\)，条件 \(\displaystyle x_n\to0\) 且 \(\displaystyle \mathcal T x_n\to y\Rightarrow y=0\) 等价于图像闭.
+\end{FAExercise}
+
+\begin{FAExercise}[Volterra闭图像模板]{ex:i09-17}
+对I-05的Volterra算子，分别用其有界性和积分表达式证明图像闭. 比较两条证明中实际使用的已知结果，但不要重新计算其精确算子范数.
+\end{FAExercise}
+
+\begin{FAExercise}[微分算子的定义域边界]{ex:i09-18}
+对本章的 \(\displaystyle \mathcal D:C^1[0,1]\subset C[0,1]\to C[0,1]\)，验证图像闭与不有界两个结论，并准确说明为什么这不与\autoref{fa:CGT-A01}冲突.
+\end{FAExercise}
+
+\begin{FAExercise}[不完备陪域导致OMT与BIT失效]{ex:i09-19}
+在 \(\displaystyle X=(\ell^1,\|\cdot\|_1)\)、\(\displaystyle Y=(\ell^1,\|\cdot\|_\infty)\) 上，依次证明 \(\displaystyle Y\) 不完备、恒等映射 \(\displaystyle X\to Y\) 有界双射、逆映射不有界，以及该恒等映射不开放. 每个失败结论都要指出删除的假设.
+\end{FAExercise}
+
+\begin{FAExercise}[闭图像失败与未来边界]{ex:i09-20}
+证明反向恒等映射 \(\displaystyle Y\to X\) 图像闭但不有界，并指出这里只否定删除定义域完备性后的闭图像结论. 再列出本章没有使用而留待I-10、I-11及第二卷处理的三类后续工具，不调用它们证明任何结论.
+\end{FAExercise}

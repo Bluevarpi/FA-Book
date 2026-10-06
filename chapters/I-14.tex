@@ -1,0 +1,710 @@
+\chapter{紧自伴谱定理与第一遍闭合}\label{chap:I-14}
+\FAChapterOpening
+{在实或复Hilbert空间上以紧性与正交几何直接证明紧自伴谱定理；建立非零特征空间的正交分解、特征展开、谱截断与值域闭包描述；由离散特征展开构造本章所需的连续函数演算；最后以连续共轭对称核算子和对角算子检验理论并闭合第一卷.}
+{I-04的Hilbert投影、正交分解与Parseval；I-11的Hilbert伴随；I-13的紧算子、Riesz--Schauder非零谱结构与紧算子范数闭性.}
+{\begin{center}
+\begin{tikzpicture}[x=1.72cm,y=1.02cm]
+\node[fa/node] (hil) at (0,1.1) {Hilbert投影定理};
+\node[fa/node] (adj) at (0,0) {Hilbert伴随};
+\node[fa/node] (rs) at (0,-1.1) {紧算子谱结构};
+\node[fa/node] (a01) at (4.45,0) {紧自伴谱定理};
+\node[fa/node] (b01) at (4.45,1.45) {特征空间有限维};
+\node[fa/node] (b02) at (4.45,-1.45) {特征向量正交};
+\node[fa/node] (c01) at (6.85,0) {离散谱演算};
+\draw[fa/arrow] (hil) -- (a01);
+\draw[fa/arrow] (adj) -- (a01);
+\draw[fa/arrow] (rs) -- (a01);
+\draw[fa/arrow] (b01) -- (a01);
+\draw[fa/arrow] (b02) -- (a01);
+\draw[fa/arrow] (a01) -- (c01);
+\end{tikzpicture}
+\end{center}}
+
+本章始终设 \(\displaystyle H\neq\{0\}\) 为实或复Hilbert空间，\(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\)，并设 \(\displaystyle \mathcal K\in\mathcal B(H)\) 紧且自伴，即 \(\displaystyle \mathcal K^*=\mathcal K\). 全章内积沿用第一变量线性、第二变量共轭线性的约定. 实情形的特征分解完全在实Hilbert空间 \(\displaystyle H\) 内完成；只有在解释I-12已经固定的实算子复谱记号时才调用复化接口，该接口不参与特征向量构造、正交完备性或极值特征值证明.
+
+\section{紧自伴谱结构}\label{sec:i14-compact-self-adjoint}
+\index{compact self-adjoint operator@紧自伴算子}\index{quadratic form@二次型}\index{eigenvalue@特征值}
+
+先建立两个只依赖自伴性的局部工具. 它们把算子范数转化为实二次型极值，并为紧性提供可收敛的近似特征向量.
+
+\begin{FALemma}[C][自伴二次型取实值]{i14:quadratic-real}
+对每个 \(\displaystyle x\in H\)，令 \(\displaystyle q(x):=\langle\mathcal Kx,x\rangle\).
+则 \(\displaystyle q(x)\in\mathbb R\).
+\end{FALemma}
+
+\begin{FAProof}
+由 \(\displaystyle \mathcal K^*=\mathcal K\) 与伴随恒等式，
+\(\displaystyle \langle\mathcal Kx,x\rangle = \langle x,\mathcal Kx\rangle = \overline{\langle\mathcal Kx,x\rangle}\).
+一个标量等于自身共轭当且仅当它为实数，故 \(\displaystyle q(x)\in\mathbb R\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][自伴二次型范数公式]{i14:quadratic-norm}
+有
+\[
+\|\mathcal K\|
+=
+\sup_{\|x\|=1}
+|\langle\mathcal Kx,x\rangle|.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+记 \(\displaystyle m:=\sup_{\|x\|=1}|q(x)|\).
+由Cauchy--Schwarz，\(\displaystyle |q(x)|\leqslant\|\mathcal Kx\|\|x\|\leqslant\|\mathcal K\|\) 对单位向量成立，因此 \(\displaystyle m\leqslant\|\mathcal K\|\). 由齐次性，对任意 \(\displaystyle w\in H\) 都有 \(\displaystyle |q(w)|\leqslant m\|w\|^2\).
+
+任取非零 \(\displaystyle u,v\in H\). 若 \(\displaystyle \langle\mathcal Ku,v\rangle=0\)，则其绝对值为零，而目标右端非负，所需估计成立. 以下设 \(\displaystyle a:=\langle\mathcal Ku,v\rangle\neq0\). 在实情形取 \(\displaystyle \eta=\operatorname{sgn}(a)\in\{-1,1\}\)；在复情形取 \(\displaystyle \eta=\frac{a}{|a|}\). 两种情形都有 \(\displaystyle |\eta|=1\). 因内积第二变量共轭线性，
+\(\displaystyle \langle\mathcal Ku,\eta v\rangle = \overline\eta\,a = |a|\).
+对任意 \(\displaystyle t>0\)，展开二次型，并利用自伴性与共轭对称性，得到
+\(\displaystyle q(u+t\eta v)-q(u-t\eta v) = 4t|\langle\mathcal Ku,v\rangle|\).
+于是
+\[
+4t|\langle\mathcal Ku,v\rangle| \leqslant |q(u+t\eta v)|+|q(u-t\eta v)| \leqslant m\bigl(\|u+t\eta v\|^2+\|u-t\eta v\|^2\bigr) = 2m\bigl(\|u\|^2+t^2\|v\|^2\bigr),
+\]
+其中最后一步是平行四边形恒等式. 取 \(\displaystyle t=\frac{\|u\|}{\|v\|}\)，得到 \(\displaystyle |\langle\mathcal Ku,v\rangle|\leqslant m\|u\|\|v\|\).
+固定 \(\displaystyle u\) 并对 \(\displaystyle \|v\|=1\) 取上确界，Hilbert空间范数表示给出 \(\displaystyle \|\mathcal Ku\|\leqslant m\|u\|\). 再对 \(\displaystyle \|u\|=1\) 取上确界，得 \(\displaystyle \|\mathcal K\|\leqslant m\). 与反向不等式合并即得等号. 这里没有使用一般 \(\displaystyle C^*\) 范数恒等式或正规算子谱定理.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][极值特征值存在]{i14:extremal-eigenvalue}
+若 \(\displaystyle \mathcal K\neq0\)，则 \(\displaystyle \|\mathcal K\|\) 与 \(\displaystyle -\|\mathcal K\|\) 中至少一个是 \(\displaystyle \mathcal K\) 的特征值.
+\end{FALemma}
+
+\begin{FAProof}
+令 \(\displaystyle m=\|\mathcal K\|>0\). 由\autoref{i14:quadratic-norm}，存在单位向量 \(\displaystyle x_n\) 使 \(\displaystyle |\langle\mathcal Kx_n,x_n\rangle|\to m\).
+由\autoref{i14:quadratic-real}，这些二次型值均为实数. 因 \(\displaystyle m>0\) 且其绝对值趋于 \(\displaystyle m\)，充分大的指标都满足 \(\displaystyle |\langle\mathcal Kx_n,x_n\rangle|>\frac{m}{2}\). 正值指标与负值指标中至少一类含有无穷多个指标；在相应子列上，绝对值收敛到 \(\displaystyle m\) 分别给出原值收敛到 \(\displaystyle m\) 或 \(\displaystyle -m\). 因此取子列后存在 \(\displaystyle \lambda\in\{m,-m\}\) 使 \(\displaystyle \langle\mathcal Kx_n,x_n\rangle\to\lambda\).
+因 \(\displaystyle \|x_n\|=1\)、\(\displaystyle \|\mathcal Kx_n\|\leqslant m\) 且 \(\displaystyle \lambda^2=m^2\)，
+\[
+\|\mathcal Kx_n-\lambda x_n\|^2 = \|\mathcal Kx_n\|^2+m^2 -2\lambda\langle\mathcal Kx_n,x_n\rangle \leqslant 2m^2-2\lambda\langle\mathcal Kx_n,x_n\rangle \to0.
+\]
+紧性给出子列 \(\displaystyle (x_{n_j})\)，使 \(\displaystyle \mathcal Kx_{n_j}\to y\) 于范数. 因 \(\displaystyle \lambda\neq0\)，
+\[
+x_{n_j}
+=
+\lambda^{-1}\mathcal Kx_{n_j}
+-
+\lambda^{-1}(\mathcal Kx_{n_j}-\lambda x_{n_j})
+\to
+x:=\lambda^{-1}y.
+\]
+故 \(\displaystyle \|x\|=1\). 由 \(\displaystyle \mathcal K\) 连续，\(\displaystyle \mathcal Kx_{n_j}\to\mathcal Kx\)，而左侧又趋于 \(\displaystyle y=\lambda x\)，所以 \(\displaystyle \mathcal Kx=\lambda x\). 因而 \(\displaystyle \lambda\) 是所需极值特征值.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][自伴算子的特征值为实数]{i14:eigenvalues-real}
+若 \(\displaystyle \mathcal Kx=\lambda x\) 且 \(\displaystyle x\neq0\)，则 \(\displaystyle \lambda\in\mathbb R\).
+\end{FAProposition}
+
+\begin{FAProof}
+有
+\(\displaystyle \lambda\|x\|^2 = \langle\lambda x,x\rangle = \langle\mathcal Kx,x\rangle \in \mathbb R\).
+因 \(\displaystyle \|x\|^2>0\)，故 \(\displaystyle \lambda\in\mathbb R\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][紧自伴非零特征空间有限维]{fa:CSPEC-B01}
+若 \(\displaystyle \lambda\neq0\)，则 \(\displaystyle E_\lambda:=\ker(\mathcal K-\lambda\mathcal I)\) 有限维.
+\end{FATheorem}
+
+\begin{FAProof}
+I-13的\autoref{i13:eigenspace-finite}已对非零特征值建立这一结论，其证明只使用 \(\displaystyle \lambda\neq0\)、紧性以及无限维恒等算子不紧，并不依赖复谱理论. 因而该证明对实、复Hilbert空间均直接适用. 复情形也可直接视为\autoref{fa:RS-A01}的非零谱点有限维结论的特例.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][紧自伴特征向量正交性]{fa:CSPEC-B02}
+若
+\(\displaystyle \mathcal Kx=\lambda x, \; \mathcal Ky=\mu y, \; \lambda\neq\mu\)，
+则 \(\displaystyle \langle x,y\rangle=0\).
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{i14:eigenvalues-real}，\(\displaystyle \lambda,\mu\in\mathbb R\). 因此第二变量共轭线性给出 \(\displaystyle \langle x,\mu y\rangle=\mu\langle x,y\rangle\). 再由自伴性，
+\[
+\lambda\langle x,y\rangle
+=
+\langle\mathcal Kx,y\rangle
+=
+\langle x,\mathcal Ky\rangle
+=
+\mu\langle x,y\rangle.
+\]
+由于 \(\displaystyle \lambda-\mu\neq0\)，只能有 \(\displaystyle \langle x,y\rangle=0\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[C][实Hilbert空间的复谱接口]{i14:real-spectrum-interface}
+若 \(\displaystyle H\) 为实Hilbert空间，则I-12定义的复谱 \(\displaystyle \sigma_{\mathbb C}(\mathcal K)\) 包含于 \(\displaystyle \mathbb R\). 并且每个 \(\displaystyle \lambda\in\sigma_{\mathbb C}(\mathcal K)\setminus\{0\}\) 都是原实算子 \(\displaystyle \mathcal K\) 的特征值.
+\end{FALemma}
+
+\begin{FAProof}
+只在本证明中使用I-12的复化向量空间 \(\displaystyle H_{\mathbb C}=H\oplus\mathrm{i}H\) 与复化算子 \(\displaystyle \mathcal K_{\mathbb C}\). 在同一向量空间上定义标准复Hilbert内积
+\[
+\langle x+\mathrm{i}y,u+\mathrm{i}v\rangle_{\mathbb C}
+:=
+\langle x,u\rangle+\langle y,v\rangle
++
+\mathrm{i}\bigl(\langle y,u\rangle-\langle x,v\rangle\bigr).
+\]
+其范数为 \(\displaystyle (\|x\|^2+\|y\|^2)^{\frac{1}{2}}\). I-12的标准复化范数记为 \(\displaystyle \|\cdot\|_{c}\). 由该范数定义取 \(\displaystyle \theta=0,\frac{\pi}{2}\) 并使用Cauchy--Schwarz，得到
+\(\displaystyle \|z\|_{c} \leqslant \|z\|_{\mathbb C} \leqslant \sqrt2\,\|z\|_{c}\).
+因此两个范数等价，线性算子的有界可逆性在二者下完全相同.
+
+对 \(\displaystyle z=x+\mathrm{i}y\) 与 \(\displaystyle w=u+\mathrm{i}v\)，原实内积上的自伴性给出
+\[
+\begin{aligned}
+\displaystyle \langle\mathcal K_{\mathbb C}z,w\rangle_{\mathbb C}
+&\displaystyle =
+\langle\mathcal Kx,u\rangle+\langle\mathcal Ky,v\rangle
++\mathrm{i}\bigl(\langle\mathcal Ky,u\rangle-\langle\mathcal Kx,v\rangle\bigr)\\
+&\displaystyle =
+\langle x,\mathcal Ku\rangle+\langle y,\mathcal Kv\rangle
++\mathrm{i}\bigl(\langle y,\mathcal Ku\rangle-\langle x,\mathcal Kv\rangle\bigr)\\
+&\displaystyle =
+\langle z,\mathcal K_{\mathbb C}w\rangle_{\mathbb C}.
+\end{aligned}
+\]
+因此 \(\displaystyle \mathcal K_{\mathbb C}\) 对上述复Hilbert内积自伴. 任取 \(\displaystyle \zeta=a+\mathrm{i}b\) 且 \(\displaystyle b\neq0\). 对每个 \(\displaystyle z\in H_{\mathbb C}\)，\autoref{i14:quadratic-real}应用于复Hilbert空间上的 \(\displaystyle \mathcal K_{\mathbb C}\)，故 \(\displaystyle \langle\mathcal K_{\mathbb C}z,z\rangle_{\mathbb C}\in\mathbb R\)，而 \(\displaystyle \langle\zeta z,z\rangle_{\mathbb C}=\zeta\|z\|_{\mathbb C}^2\). 因此下式中标量内积的虚部恰为 \(\displaystyle b\|z\|_{\mathbb C}^2\)：
+\[
+\begin{aligned}
+\displaystyle \| (\zeta\mathcal I-\mathcal K_{\mathbb C})z\|_{\mathbb C}\|z\|_{\mathbb C}
+&\displaystyle \geqslant
+|\langle(\zeta\mathcal I-\mathcal K_{\mathbb C})z,z\rangle_{\mathbb C}|\\
+&\displaystyle \geqslant
+|b|\|z\|_{\mathbb C}^2.
+\end{aligned}
+\]
+故 \(\displaystyle \zeta\mathcal I-\mathcal K_{\mathbb C}\) 有下界 \(\displaystyle |b|\)，从而单射且值域闭. 其伴随为 \(\displaystyle \overline\zeta\mathcal I-\mathcal K_{\mathbb C}\)，同样有下界，所以核为零. I-11的核--值域正交关系于是给出前一算子的值域稠密. 闭且稠密意味着满射，且上面的下界给出有界逆. 因而每个非实 \(\displaystyle \zeta\) 都属于预解集，故 \(\displaystyle \sigma_{\mathbb C}(\mathcal K)\subseteq\mathbb R\).
+
+现取 \(\displaystyle \lambda\in\sigma_{\mathbb C}(\mathcal K)\setminus\{0\}\). 若原实算子 \(\displaystyle \lambda\mathcal I-\mathcal K\) 单射，则I-13在\autoref{i13:nonzero-spectrum-point}中使用的核链、值域链与局部Riesz分解论证只依赖 \(\displaystyle \lambda\neq0\)、Banach完备性与紧性，故同样推出该实算子满射并有有界逆. 复化其逆便得到 \(\displaystyle \lambda\mathcal I-\mathcal K_{\mathbb C}\) 有界可逆，与 \(\displaystyle \lambda\in\sigma_{\mathbb C}(\mathcal K)\) 矛盾. 所以原实算子存在非零核，即 \(\displaystyle \lambda\) 是原实算子的特征值. 本段复化仅用于翻译I-12的复谱记号，没有参与后面的特征分解证明.
+\hfill\(\square\)
+\end{FAProof}
+
+以后复情形写 \(\displaystyle \sigma(\mathcal K)\)，实情形也简写I-12的 \(\displaystyle \sigma_{\mathbb C}(\mathcal K)\) 为 \(\displaystyle \sigma(\mathcal K)\). 于是两种标量域都已有 \(\displaystyle \sigma(\mathcal K)\subseteq\mathbb R\).
+复情形由\autoref{fa:RS-A01}与\autoref{i14:eigenvalues-real}得到每个非零谱点都是实特征值；实情形由\autoref{i14:real-spectrum-interface}得到同一结论. 因而I-13的Riesz--Schauder非零谱结构可在复情形直接复用，而实情形的对应非零特征值结论由I-13已经建立的域无关局部论证提供.
+
+\begin{FAProposition}[C][非零谱结构的本章复用]{i14:rs-reuse}
+令 \(\displaystyle \Lambda:=\sigma(\mathcal K)\setminus\{0\}\).
+则 \(\displaystyle \Lambda\subseteq\mathbb R\)，每个 \(\displaystyle \lambda\in\Lambda\) 的特征空间 \(\displaystyle E_\lambda\) 有限维；\(\displaystyle \Lambda\) 至多可数；对每个 \(\displaystyle \varepsilon>0\)，满足 \(\displaystyle |\lambda|\geqslant\varepsilon\) 的 \(\displaystyle \lambda\in\Lambda\) 只有有限多个；\(\displaystyle0\) 是 \(\displaystyle \Lambda\) 唯一可能的聚点.
+\end{FAProposition}
+
+\begin{FAProof}
+复情形全部结论直接来自\autoref{fa:RS-A01}、\autoref{fa:CSPEC-B01}与\autoref{i14:eigenvalues-real}. 实情形先由\autoref{i14:real-spectrum-interface}把非零复谱点识别为原实算子的非零特征值. I-13关于非零特征空间有限维以及“对每个 \(\displaystyle \varepsilon>0\) 仅有有限多个模长至少 \(\displaystyle \varepsilon\) 的非零谱点”的紧性反证只使用实或复Banach空间共有的线性结构，故原证明逐字按实标量成立. 再令 \(\displaystyle \varepsilon=\frac{1}{m}\)，即可得到至多可数性与唯一可能聚点为零.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{正交特征分解}\label{sec:i14-orthogonal-decomposition}
+\index{orthogonal eigenspace@正交特征空间}\index{spectral decomposition@谱分解}\index{nonseparable Hilbert space@不可分Hilbert空间}
+
+对每个 \(\displaystyle \lambda\in\Lambda\)，在有限维Hilbert空间 \(\displaystyle E_\lambda\) 中取一个标准正交基. 由\autoref{fa:CSPEC-B02}，不同非零特征值的特征空间彼此正交. 令
+\[
+M
+:=
+\overline{\operatorname{span}}
+\bigcup_{\lambda\in\Lambda}E_\lambda.
+\]
+由于 \(\displaystyle \Lambda\) 至多可数且每个 \(\displaystyle E_\lambda\) 有限维，全部非零特征空间标准正交基的并集为有限或可数标准正交族.
+
+\begin{FAProposition}[B][非零特征张成空间为约化子空间]{i14:eigenspan-reducing}
+有
+\(\displaystyle \mathcal K(M) \subseteq M, \; \mathcal K(M^\perp) \subseteq M^\perp\).
+\end{FAProposition}
+
+\begin{FAProof}
+对有限线性组合 \(\displaystyle y=\sum_{j=1}^N c_jy_j\)，其中 \(\displaystyle y_j\in E_{\lambda_j}\)，有
+\[
+\mathcal Ky
+=
+\sum_{j=1}^N c_j\lambda_jy_j
+\in
+\operatorname{span}\bigcup_{\lambda\in\Lambda}E_\lambda.
+\]
+由 \(\displaystyle \mathcal K\) 连续，把该不变性延伸到闭包，得到 \(\displaystyle \mathcal K(M)\subseteq M\).
+
+再取 \(\displaystyle x\in M^\perp\) 与 \(\displaystyle y\in E_\lambda\). 由自伴性、\(\displaystyle \lambda\in\mathbb R\) 以及 \(\displaystyle x\perp y\)，
+\(\displaystyle \langle\mathcal Kx,y\rangle = \langle x,\mathcal Ky\rangle = \lambda\langle x,y\rangle = 0\).
+故 \(\displaystyle \mathcal Kx\) 与每个非零特征空间正交. 由内积连续性，它与这些特征空间线性张成的闭包 \(\displaystyle M\) 正交，因此 \(\displaystyle \mathcal Kx\in M^\perp\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][核等于非零特征张成的正交补]{i14:kernel-eigenspan}
+有
+\(\displaystyle M^\perp = \ker\mathcal K\).
+因此
+\(\displaystyle H = \ker\mathcal K \oplus M\).
+\end{FATheorem}
+
+\begin{FAProof}
+先证 \(\displaystyle \ker\mathcal K\subseteq M^\perp\). 若 \(\displaystyle x\in\ker\mathcal K\)、\(\displaystyle y\in E_\lambda\) 且 \(\displaystyle \lambda\neq0\)，则
+\(\displaystyle 0 = \langle\mathcal Kx,y\rangle = \langle x,\mathcal Ky\rangle = \lambda\langle x,y\rangle\).
+故 \(\displaystyle x\perp E_\lambda\) 对全部 \(\displaystyle \lambda\in\Lambda\) 成立，再由闭包得到 \(\displaystyle x\in M^\perp\).
+
+反向假设限制算子 \(\displaystyle \mathcal K|_{M^\perp}\neq0\). 由\autoref{i14:eigenspan-reducing}，\(\displaystyle M^\perp\) 是 \(\displaystyle \mathcal K\) 的不变闭Hilbert子空间. 限制算子仍紧；并且对 \(\displaystyle x,y\in M^\perp\)，
+\(\displaystyle \langle\mathcal Kx,y\rangle = \langle x,\mathcal Ky\rangle\)，
+故限制算子仍自伴. 由\autoref{i14:extremal-eigenvalue}，该非零限制算子存在非零特征值及单位特征向量 \(\displaystyle z\in M^\perp\). 但 \(\displaystyle z\) 同时是原算子 \(\displaystyle \mathcal K\) 的非零特征向量，因此按 \(\displaystyle M\) 的定义有 \(\displaystyle z\in M\). 于是 \(\displaystyle z\in M\cap M^\perp=\{0\}\)，与 \(\displaystyle \|z\|=1\) 矛盾. 故 \(\displaystyle \mathcal K|_{M^\perp}=0\)，即 \(\displaystyle M^\perp\subseteq\ker\mathcal K\). 两个包含关系给出等号，再由I-04的闭子空间正交分解得到 \(\displaystyle H=\ker\mathcal K\oplus M\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[不可分核的边界]
+非零特征空间只贡献有限或可数个标准正交特征向量，但这不意味着整个 \(\displaystyle H\) 必有可数标准正交特征基. 核 \(\displaystyle \ker\mathcal K\) 可能不可分. 若要得到覆盖整个 \(\displaystyle H\) 的特征向量标准正交基，可以在 \(\displaystyle \ker\mathcal K\) 中另取一个Hilbert标准正交基，再与非零特征向量并合；该核基允许不可数. 因而本章始终把
+\(\displaystyle H = \ker\mathcal K \oplus M\)
+作为无需可分性假设的规范表述.
+\end{FAWarning}
+
+若非零特征向量族无限，则按重数把各 \(\displaystyle E_\lambda\) 的标准正交基并集枚举为 \(\displaystyle (e_n)_{n\geqslant1}\)，并写
+\(\displaystyle \mathcal Ke_n = \lambda_ne_n\).
+由于对每个 \(\displaystyle \varepsilon>0\)，只有有限多个不同非零特征值满足 \(\displaystyle |\lambda|\geqslant\varepsilon\)，且每个特征空间有限维，因此在计入重数后仍只有有限多个 \(\displaystyle n\) 满足 \(\displaystyle |\lambda_n|\geqslant\varepsilon\). 于是可重排为
+\(\displaystyle |\lambda_1| \geqslant |\lambda_2| \geqslant \cdots >0, \; |\lambda_n| \to0\).
+若非零特征向量族有限，则以下级数均按有限和解释.
+
+\begin{FATheorem}[A][紧自伴算子谱定理]{fa:CSPEC-A01}
+设 \(\displaystyle H\) 为实或复Hilbert空间，\(\displaystyle \mathcal K\in\mathcal B(H)\) 紧且自伴. 则：
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 所有非零谱点均为实特征值.
+\item 每个非零特征空间有限维.
+\item 不同特征值的特征空间彼此正交.
+\item 非零特征值至多可数，且非零谱唯一可能的聚点为 \(\displaystyle0\).
+\item 存在有限或可数标准正交非零特征向量族 \(\displaystyle (e_n)\)，使
+\(\displaystyle H = \ker\mathcal K \oplus \overline{\operatorname{span}}\{e_n\}\).
+若该族无限，可按重数安排 \(\displaystyle |\lambda_1|\geqslant|\lambda_2|\geqslant\cdots>0\) 且 \(\displaystyle |\lambda_n|\to0\).
+\item 对每个 \(\displaystyle x\in H\)，级数按范数收敛，并且
+\[
+\mathcal Kx
+=
+\sum_n
+\lambda_n\langle x,e_n\rangle e_n.
+\]
+\item 若 \(\displaystyle \mathcal K\neq0\)，则
+\(\displaystyle \|\mathcal K\| = \max_{\lambda\in\sigma(\mathcal K)}|\lambda|\)，
+并且 \(\displaystyle \|\mathcal K\|\) 与 \(\displaystyle -\|\mathcal K\|\) 中至少一个是特征值.
+\item 若非零谱有限，则上述所有关于非零特征向量的和均为有限和.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+（i）复情形由\autoref{fa:RS-A01}与\autoref{i14:eigenvalues-real}得到，实情形由\autoref{i14:real-spectrum-interface}得到. （ii）是\autoref{fa:CSPEC-B01}. （iii）是\autoref{fa:CSPEC-B02}. （iv）由\autoref{i14:rs-reuse}得到. （v）由\autoref{i14:kernel-eigenspan}以及上面的有限或可数枚举得到，且不可分核不影响该直和表述.
+
+现证（vi）. 令 \(\displaystyle P_0=\mathcal P_{\ker\mathcal K}\). 由I-04的正交投影与Parseval，对每个 \(\displaystyle x\in H\)，
+\[
+x
+=
+P_0x
++
+\sum_n\langle x,e_n\rangle e_n
+\]
+在范数中成立，其中级数正是 \(\displaystyle M\) 分量的Fourier展开. 对有限部分和应用有界算子 \(\displaystyle \mathcal K\)，再令部分和趋于极限. 因 \(\displaystyle \mathcal KP_0x=0\) 且 \(\displaystyle \mathcal Ke_n=\lambda_ne_n\)，得到
+\[
+\mathcal Kx
+=
+\sum_n
+\lambda_n\langle x,e_n\rangle e_n
+\]
+于范数收敛.
+
+最后，若 \(\displaystyle \mathcal K\neq0\)，\autoref{i14:extremal-eigenvalue}给出某个 \(\displaystyle \lambda\in\{\|\mathcal K\|,-\|\mathcal K\|\}\) 为特征值，故 \(\displaystyle \max_{\mu\in\sigma(\mathcal K)}|\mu|\geqslant\|\mathcal K\|\). 另一方面任意特征值满足 \(\displaystyle |\mu|\leqslant\|\mathcal K\|\)，而零也满足该估计，所以等号成立. （viii）只是有限枚举情形的直接解释. 全部结论闭合.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][谱有限秩截断]{i14:spectral-truncation}
+在无限非零谱情形定义
+\[
+\mathcal K_Nx
+:=
+\sum_{n=1}^{N}
+\lambda_n\langle x,e_n\rangle e_n.
+\]
+则每个 \(\displaystyle \mathcal K_N\) 有限秩，并且
+\(\displaystyle \|\mathcal K-\mathcal K_N\| \to0\).
+若按 \(\displaystyle |\lambda_n|\) 非增排序，则
+\(\displaystyle \|\mathcal K-\mathcal K_N\| = |\lambda_{N+1}|\).
+\end{FAProposition}
+
+\begin{FAProof}
+由 \(\displaystyle \mathcal K_Nx=\sum_{n=1}^N\lambda_n\langle x,e_n\rangle e_n\) 的定义，对每个 \(\displaystyle x\in H\) 都有 \(\displaystyle \mathcal K_Nx\in\operatorname{span}\{e_1,\dots,e_N\}\). 因此 \(\displaystyle \operatorname{Ran}\mathcal K_N\subseteq\operatorname{span}\{e_1,\dots,e_N\}\)，故 \(\displaystyle \mathcal K_N\) 有限秩. 由\autoref{fa:CSPEC-A01}的特征展开与正交性，对任意 \(\displaystyle x\in H\)，
+\[
+\begin{aligned}
+\displaystyle \|(\mathcal K-\mathcal K_N)x\|^2
+&\displaystyle =
+\sum_{n>N}|\lambda_n|^2|\langle x,e_n\rangle|^2\\
+&\displaystyle \leqslant
+\left(\sup_{n>N}|\lambda_n|\right)^2
+\sum_{n>N}|\langle x,e_n\rangle|^2\\
+&\displaystyle \leqslant
+\left(\sup_{n>N}|\lambda_n|\right)^2\|x\|^2.
+\end{aligned}
+\]
+所以
+\[
+\|\mathcal K-\mathcal K_N\|
+\leqslant
+\sup_{n>N}|\lambda_n|
+=
+|\lambda_{N+1}|
+\to0.
+\]
+把 \(\displaystyle x=e_{N+1}\) 代入可得反向不等式，从而实际有等号. 该结论依赖紧自伴特征分解，不能反向扩张为“一般Banach空间上的每个紧算子都是有限秩算子的算子范数极限”.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][值域闭包的谱描述]{i14:range-closure}
+有
+\(\displaystyle \overline{\operatorname{Ran}\mathcal K} = (\ker\mathcal K)^\perp = M\).
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle y=\mathcal Kx\in\operatorname{Ran}\mathcal K\) 且 \(\displaystyle z\in\ker\mathcal K\)，则
+\(\displaystyle \langle y,z\rangle = \langle\mathcal Kx,z\rangle = \langle x,\mathcal Kz\rangle = 0\).
+故 \(\displaystyle \operatorname{Ran}\mathcal K\subseteq(\ker\mathcal K)^\perp=M\)，从而 \(\displaystyle \overline{\operatorname{Ran}\mathcal K}\subseteq M\). 反向，对每个非零特征向量 \(\displaystyle e_n\)，
+\(\displaystyle e_n = \lambda_n^{-1}\mathcal Ke_n \in \operatorname{Ran}\mathcal K\).
+因此 \(\displaystyle \operatorname{span}\{e_n\}\subseteq\operatorname{Ran}\mathcal K\)，取闭包得到 \(\displaystyle M\subseteq\overline{\operatorname{Ran}\mathcal K}\). 两边合并即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[\(\displaystyle\ell^2\)上的紧自伴对角算子]\label{i14:ex-l2seq}
+设 \(\displaystyle a=(a_n)\) 为实数列且 \(\displaystyle a_n\to0\). 在实或复 \(\displaystyle \ell^2\) 上定义
+\(\displaystyle \mathcal D_a(x_1,x_2,\dots) := (a_1x_1,a_2x_2,\dots)\).
+则 \(\displaystyle \mathcal D_a\) 有界、自伴且紧，并且 \(\displaystyle \|\mathcal D_a\|=\sup_n|a_n|\).
+标准基向量 \(\displaystyle e_n\) 满足 \(\displaystyle \mathcal D_ae_n=a_ne_n\). 进一步，在复情形以及实算子的I-12复谱意义下都有 \(\displaystyle \sigma(\mathcal D_a)=\overline{\{a_n:n\geqslant1\}}\).
+\end{FAExample}
+
+\begin{FAProof}
+对任意 \(\displaystyle x=(x_n)\in\ell^2\)，
+\[
+\|\mathcal D_ax\|_2^2
+=
+\sum_n|a_n|^2|x_n|^2
+\leqslant
+\left(\sup_n|a_n|\right)^2\|x\|_2^2.
+\]
+故 \(\displaystyle \|\mathcal D_a\|\leqslant\sup_n|a_n|\). 对每个 \(\displaystyle n\)，\(\displaystyle \|\mathcal D_ae_n\|=|a_n|\)，所以取上确界得到反向不等式. 因 \(\displaystyle a_n\in\mathbb R\)，逐项计算给出 \(\displaystyle \langle\mathcal D_ax,y\rangle=\langle x,\mathcal D_ay\rangle\)，故自伴.
+
+定义有限秩截断
+\(\displaystyle \mathcal D_a^{(N)}(x_1,x_2,\dots) := (a_1x_1,\dots,a_Nx_N,0,0,\dots)\).
+同一范数计算给出 \(\displaystyle \|\mathcal D_a-\mathcal D_a^{(N)}\|=\sup_{n>N}|a_n|\to0\).
+由I-13有限秩算子紧性与紧算子范数闭性，\(\displaystyle \mathcal D_a\) 紧.
+
+最后证明谱公式. 若 \(\displaystyle \lambda\notin\overline{\{a_n:n\geqslant1\}}\)，则存在 \(\displaystyle \delta>0\) 使 \(\displaystyle |\lambda-a_n|\geqslant\delta\) 对全部 \(\displaystyle n\) 成立. 定义
+\[
+\mathcal R_\lambda(y_1,y_2,\dots)
+:=
+\left(
+\frac{y_1}{\lambda-a_1},
+\frac{y_2}{\lambda-a_2},
+\dots
+\right).
+\]
+则 \(\displaystyle \|\mathcal R_\lambda\|\leqslant\delta^{-1}\)，并且逐坐标验证 \(\displaystyle \mathcal R_\lambda=(\lambda\mathcal I-\mathcal D_a)^{-1}\). 因而 \(\displaystyle \lambda\) 在预解集中.
+
+反之，若 \(\displaystyle \lambda\in\overline{\{a_n\}}\)，若某个 \(\displaystyle a_j=\lambda\)，则 \(\displaystyle e_j\) 是 \(\displaystyle \lambda\mathcal I-\mathcal D_a\) 的非零核向量. 若 \(\displaystyle \lambda\) 未被任何 \(\displaystyle a_n\) 取得，则可取 \(\displaystyle n_k\) 使 \(\displaystyle a_{n_k}\to\lambda\). 此时 \(\displaystyle \|(\lambda\mathcal I-\mathcal D_a)e_{n_k}\|=|\lambda-a_{n_k}|\to0\).
+若该算子有有界逆，则单位向量 \(\displaystyle e_{n_k}\) 应满足
+\(\displaystyle 1 \leqslant \|(\lambda\mathcal I-\mathcal D_a)^{-1}\| \|(\lambda\mathcal I-\mathcal D_a)e_{n_k}\|\)，
+与右端趋于零矛盾. 故 \(\displaystyle \lambda\) 属于谱. 两方向给出所述闭包公式.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{离散函数演算}\label{sec:i14-discrete-calculus}
+\index{functional calculus@函数演算}\index{finite-rank truncation@有限秩截断}
+
+本节只利用\autoref{fa:CSPEC-A01}的离散特征展开. 对实Hilbert空间取 \(\displaystyle f\in C(\sigma(\mathcal K);\mathbb R)\)，对复Hilbert空间取 \(\displaystyle f\in C(\sigma(\mathcal K);\mathbb C)\). 这里不引入一般Banach代数、Gelfand变换、\(\displaystyle C^*\) 代数或谱测度.
+
+\begin{FAProposition}[C][紧自伴离散函数演算工具]{fa:CSPEC-C01}
+设 \(\displaystyle f\in C(\sigma(\mathcal K);\mathbb K)\).
+
+若 \(\displaystyle0\in\sigma(\mathcal K)\)，令 \(\displaystyle g(\lambda):=f(\lambda)-f(0)\).
+则 \(\displaystyle g(0)=0\)，并可定义
+\[
+g(\mathcal K)x
+:=
+\sum_n
+g(\lambda_n)\langle x,e_n\rangle e_n,
+\]
+以及 \(\displaystyle f(\mathcal K):=f(0)\mathcal I+g(\mathcal K)\).
+级数在算子范数意义下由有限秩截断定义，且 \(\displaystyle g(\mathcal K)\) 紧.
+
+若 \(\displaystyle0\notin\sigma(\mathcal K)\)，则 \(\displaystyle H\) 有限维，全部特征空间给出有限正交分解；此时按各特征空间上的标量作用 \(\displaystyle f(\lambda)\) 定义 \(\displaystyle f(\mathcal K)\).
+
+在两种情形中均有 \(\displaystyle (f+h)(\mathcal K)=f(\mathcal K)+h(\mathcal K)\)，\(\displaystyle (fh)(\mathcal K)=f(\mathcal K)h(\mathcal K)\)，\(\displaystyle 1(\mathcal K)=\mathcal I\).
+在复情形还有 \(\displaystyle \overline f(\mathcal K)=f(\mathcal K)^*\)，
+其中 \(\displaystyle \overline f(\lambda)=\overline{f(\lambda)}\). 对实情形该式按实值函数理解为同一自伴性结论. 若 \(\displaystyle p\) 为标量多项式，则本节定义的 \(\displaystyle p(\mathcal K)\) 与I-12的代数多项式 \(\displaystyle p(\mathcal K)\) 一致. 最后，
+\(\displaystyle \|f(\mathcal K)\| = \max_{\lambda\in\sigma(\mathcal K)}|f(\lambda)|\).
+特别地，当 \(\displaystyle0\in\sigma(\mathcal K)\) 时， \(\displaystyle f(\mathcal K)-f(0)\mathcal I\) 是紧算子.
+\end{FAProposition}
+
+\begin{FAProof}
+先设 \(\displaystyle0\in\sigma(\mathcal K)\). 若非零特征向量族无限，则 \(\displaystyle \lambda_n\to0\)，由 \(\displaystyle g\) 在零点连续且 \(\displaystyle g(0)=0\)，有 \(\displaystyle g(\lambda_n)\to0\). 若非零特征向量族有限，则以下收敛论证退化为有限和. 定义
+\[
+\mathcal G_Nx
+:=
+\sum_{n=1}^{N}
+g(\lambda_n)\langle x,e_n\rangle e_n.
+\]
+每个 \(\displaystyle \mathcal G_N\) 有限秩. 对 \(\displaystyle M>N\)，由正交性与Bessel不等式，
+\[
+\|(\mathcal G_M-\mathcal G_N)x\|^2 = \sum_{N<n\leqslant M} |g(\lambda_n)|^2|\langle x,e_n\rangle|^2 \leqslant \left(\sup_{n>N}|g(\lambda_n)|\right)^2\|x\|^2.
+\]
+故 \(\displaystyle (\mathcal G_N)\) 在算子范数下为Cauchy列，并收敛到某个 \(\displaystyle g(\mathcal K)\in\mathcal B(H)\). I-13的紧算子范数闭性给出 \(\displaystyle g(\mathcal K)\) 紧. 因此 \(\displaystyle f(\mathcal K)=f(0)\mathcal I+g(\mathcal K)\) 定义良好，并且 \(\displaystyle f(\mathcal K)-f(0)\mathcal I\) 紧.
+
+若 \(\displaystyle0\notin\sigma(\mathcal K)\)，则 \(\displaystyle \mathcal K\) 有有界逆. 若 \(\displaystyle H\) 无限维，则 \(\displaystyle \mathcal I=\mathcal K^{-1}\mathcal K\) 将由I-13的复合紧性成为紧算子，与无限维恒等算子不紧矛盾. 故 \(\displaystyle H\) 有限维. 由\autoref{fa:CSPEC-A01}且 \(\displaystyle \ker\mathcal K=\{0\}\)，非零特征空间的有限正交和就是整个 \(\displaystyle H\)，于是按特征空间标量作用定义 \(\displaystyle f(\mathcal K)\) 没有收敛问题.
+
+现在统一验证代数性质. 在 \(\displaystyle0\in\sigma(\mathcal K)\) 时，对 \(\displaystyle z\in\ker\mathcal K\) 有 \(\displaystyle f(\mathcal K)z=f(0)z\)，对每个非零特征向量 \(\displaystyle e_n\) 有 \(\displaystyle f(\mathcal K)e_n=f(\lambda_n)e_n\).
+在 \(\displaystyle0\notin\sigma(\mathcal K)\) 时后一式在有限特征基上仍成立. 因而 \(\displaystyle f+h\)、\(\displaystyle fh\) 与常函数 \(\displaystyle1\) 的公式先在每个正交特征分量上逐项成立，再由正交分解延伸到全部 \(\displaystyle H\). 对复情形，同样由 \(\displaystyle \langle f(\mathcal K)e_n,e_m\rangle=f(\lambda_n)\delta_{nm}\) 以及核分量上的标量 \(\displaystyle f(0)\) 可知伴随在每个正交分量上把标量取共轭，因此 \(\displaystyle f(\mathcal K)^*=\overline f(\mathcal K)\).
+
+对多项式兼容性，设 \(\displaystyle p(t)=\sum_{j=0}^{m}c_jt^j\). 若 \(\displaystyle z\in\ker\mathcal K\)，则I-12的代数多项式给出 \(\displaystyle p(\mathcal K)z=p(0)z\). 若 \(\displaystyle \mathcal Ke_n=\lambda_ne_n\)，则归纳得到 \(\displaystyle \mathcal K^je_n=\lambda_n^je_n\)，所以 \(\displaystyle p(\mathcal K)e_n=p(\lambda_n)e_n\).
+这与本节定义完全相同. 由 \(\displaystyle H=\ker\mathcal K\oplus M\) 及连续性，两种算子在全部 \(\displaystyle H\) 上相等.
+
+最后证明范数等式. 令 \(\displaystyle P_0:=\mathcal P_{\ker\mathcal K}\)，并令 \(\displaystyle A:=\max_{\lambda\in\sigma(\mathcal K)}|f(\lambda)|\).
+谱为紧集且 \(\displaystyle f\) 连续，故最大值存在. 对任意 \(\displaystyle x\in H\)，若 \(\displaystyle0\in\sigma(\mathcal K)\)，由正交分解与Parseval，
+\[
+\|f(\mathcal K)x\|^2 = |f(0)|^2\|P_0x\|^2 + \sum_n|f(\lambda_n)|^2|\langle x,e_n\rangle|^2 \leqslant A^2\|x\|^2.
+\]
+若 \(\displaystyle0\notin\sigma(\mathcal K)\)，同一有限正交和计算给出相同上界. 因而 \(\displaystyle \|f(\mathcal K)\|\leqslant A\).
+
+对反向不等式，每个非零特征值 \(\displaystyle \lambda_n\) 都给出
+\(\displaystyle \|f(\mathcal K)\| \geqslant \|f(\mathcal K)e_n\| = |f(\lambda_n)|\).
+若 \(\displaystyle0\) 是特征值，则取单位向量 \(\displaystyle z\in\ker\mathcal K\) 得 \(\displaystyle \|f(\mathcal K)\|\geqslant|f(0)|\). 剩下的边界是 \(\displaystyle0\in\sigma(\mathcal K)\) 但 \(\displaystyle0\) 不是特征值. 此时 \(\displaystyle \ker\mathcal K=\{0\}\). 若非零谱只有有限多个，则\autoref{fa:CSPEC-A01}会使 \(\displaystyle H\) 成为有限维且 \(\displaystyle \mathcal K\) 可逆，从而 \(\displaystyle0\notin\sigma(\mathcal K)\)，矛盾. 因而非零谱无限，可取 \(\displaystyle \lambda_n\to0\). 连续性给出 \(\displaystyle |f(\lambda_n)|\to|f(0)|\)，所以仍有 \(\displaystyle \|f(\mathcal K)\|\geqslant|f(0)|\). 因此 \(\displaystyle \|f(\mathcal K)\|\geqslant A\)，与上界合并得到等号.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[函数演算边界]
+\autoref{fa:CSPEC-C01}只是紧自伴算子的特征展开函数演算. 它没有建立一般有界正规算子的连续函数演算，没有建立 \(\displaystyle C^*\) 代数理论，也没有引入谱测度、投影值测度或Borel函数演算. 这些一般结构留到第二卷相应章节.
+\end{FARemark}
+
+\subsection{连续共轭对称核的Hilbert实现}
+\index{integral operator@积分算子}\index{Hermitian kernel@共轭对称核}
+
+令 \(\displaystyle H=L^2([a,b];\mathbb K)\). 本节沿用I-13的紧积分算子模型家族在该Hilbert空间上的实现. 设 \(\displaystyle a<b\) 与 \(\displaystyle L=b-a\). 再设
+\(\displaystyle k \in C([a,b]\times[a,b];\mathbb K)\).
+复情形假设 \(\displaystyle k(x,t)=\overline{k(t,x)}\)，实情形假设 \(\displaystyle k(x,t)=k(t,x)\). 定义
+\[
+(\mathcal Kf)(x)
+:=
+\int_a^b k(x,t)f(t)\,\mathrm{d}t.
+\]
+
+\begin{FAProposition}[B][连续共轭对称核算子的有界、紧与自伴性]{i14:kernel-l2}
+上述 \(\displaystyle \mathcal K:L^2([a,b])\to L^2([a,b])\) 有界、紧且自伴，并且
+\(\displaystyle \|\mathcal K\| \leqslant L\|k\|_\infty\).
+这些结论可在不交换二重积分的条件下证明.
+\end{FAProposition}
+
+\begin{FAProof}
+先证有界性. 对每个 \(\displaystyle x\in[a,b]\)，Cauchy--Schwarz给出
+\[
+|(\mathcal Kf)(x)| \leqslant \|k\|_\infty\int_a^b|f(t)|\,\mathrm{d}t \leqslant \|k\|_\infty L^{\frac{1}{2}}\|f\|_2.
+\]
+再对 \(\displaystyle x\) 积分，得到
+\(\displaystyle \|\mathcal Kf\|_2^2 \leqslant L^2\|k\|_\infty^2\|f\|_2^2\)，
+故 \(\displaystyle \|\mathcal Kf\|_2\leqslant L\|k\|_\infty\|f\|_2\).
+
+现构造保持共轭对称性的有限秩逼近. 取分割
+\(\displaystyle a=x_0<x_1<\cdots<x_N=b\)
+使最大网格宽度 \(\displaystyle h_N\to0\)，并取对应的实值分片线性帽函数 \(\displaystyle \varphi_0,\dots,\varphi_N\)，满足 \(\displaystyle \varphi_i\geqslant0\) 与 \(\displaystyle \sum_i\varphi_i(x)=1\). 定义二维插值核
+\[
+k_N(x,t)
+:=
+\sum_{i=0}^{N}\sum_{j=0}^{N}
+\varphi_i(x)\varphi_j(t)k(x_i,x_j).
+\]
+设
+\[
+\omega(\delta)
+:=
+\sup\left\{
+|k(x,t)-k(y,s)|:
+|x-y|\leqslant\delta,
+|t-s|\leqslant\delta
+\right\}.
+\]
+连续函数 \(\displaystyle k\) 在紧矩形上一致连续，所以 \(\displaystyle \omega(\delta)\to0\). 当 \(\displaystyle x\in[x_r,x_{r+1}]\)、\(\displaystyle t\in[x_s,x_{s+1}]\) 时，\(\displaystyle k_N(x,t)\) 是四个相邻网格顶点核值的凸组合，并且每个相邻顶点的两个坐标都与 \(\displaystyle (x,t)\) 相差不超过 \(\displaystyle h_N\). 因而
+\(\displaystyle |k_N(x,t)-k(x,t)| \leqslant \omega(h_N)\)，
+从而
+\(\displaystyle \|k_N-k\|_\infty \to0\).
+因为帽函数为实值且 \(\displaystyle k(x_i,x_j)=\overline{k(x_j,x_i)}\)，有限和直接给出
+\(\displaystyle k_N(x,t) = \overline{k_N(t,x)}\).
+
+定义
+\[
+(\mathcal K_Nf)(x)
+:=
+\int_a^b k_N(x,t)f(t)\,\mathrm{d}t.
+\]
+交换有限求和与单积分即可得到
+\[
+\mathcal K_Nf
+=
+\sum_{i=0}^{N}
+\varphi_i
+\sum_{j=0}^{N}
+k(x_i,x_j)
+\int_a^b\varphi_j(t)f(t)\,\mathrm{d}t.
+\]
+所以
+\(\displaystyle \operatorname{Ran}\mathcal K_N \subseteq \operatorname{span}\{\varphi_0,\dots,\varphi_N\}\)，
+即 \(\displaystyle \mathcal K_N\) 有限秩. 把前面的 \(\displaystyle L^2\) 有界性估计应用于核 \(\displaystyle k-k_N\)，得到
+\(\displaystyle \|\mathcal K-\mathcal K_N\| \leqslant L\|k-k_N\|_\infty \to0\).
+因此由I-13紧算子范数闭性，\(\displaystyle \mathcal K\) 紧.
+
+最后只用有限和证明每个 \(\displaystyle \mathcal K_N\) 自伴. 记 \(\displaystyle c_{ij}=k(x_i,x_j)\) 与
+\[
+\alpha_j(f)
+:=
+\int_a^b\varphi_j(t)f(t)\,\mathrm{d}t
+=
+\langle f,\varphi_j\rangle,
+\]
+其中帽函数实值. 则
+\[
+\mathcal K_Nf
+=
+\sum_{i,j}c_{ij}\alpha_j(f)\varphi_i.
+\]
+按第一变量线性、第二变量共轭线性的约定，对 \(\displaystyle f,h\in L^2([a,b])\)，
+\[
+\begin{aligned}
+\displaystyle \langle\mathcal K_Nf,h\rangle
+&\displaystyle =
+\sum_{i,j}c_{ij}\alpha_j(f)\overline{\alpha_i(h)},\\
+\displaystyle \langle f,\mathcal K_Nh\rangle
+&\displaystyle =
+\sum_{i,j}\overline{c_{ij}}\,\overline{\alpha_j(h)}\alpha_i(f)\\
+&\displaystyle =
+\sum_{i,j}c_{ij}\alpha_j(f)\overline{\alpha_i(h)},
+\end{aligned}
+\]
+其中最后一步用 \(\displaystyle \overline{c_{ij}}=c_{ji}\) 后交换有限指标. 因而 \(\displaystyle \mathcal K_N^*=\mathcal K_N\).
+
+I-11的伴随范数等式给出
+\(\displaystyle \|\mathcal K_N^*-\mathcal K^*\| = \|(\mathcal K_N-\mathcal K)^*\| = \|\mathcal K_N-\mathcal K\| \to0\).
+另一方面 \(\displaystyle \mathcal K_N^*=\mathcal K_N\to\mathcal K\)，由算子范数极限唯一性得到 \(\displaystyle \mathcal K^*=\mathcal K\). 整个论证只使用单积分、有限求和、连续核一致逼近与伴随连续性，没有交换二重积分.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAApplication}[连续共轭对称核的\(\displaystyle L^2\)谱展开]\label{i14:kernel-spectral-application}
+由\autoref{i14:kernel-l2}与\autoref{fa:CSPEC-A01}，存在有限或可数的非零实特征值 \(\displaystyle \lambda_n\) 与对应标准正交特征函数 \(\displaystyle e_n\)，使对每个 \(\displaystyle f\in L^2([a,b])\) 有
+\[
+\mathcal Kf
+=
+\sum_n
+\lambda_n\langle f,e_n\rangle e_n
+\]
+于 \(\displaystyle L^2\) 范数中收敛. 这里得到的是算子作用后的特征函数展开. 本章不由此推出核 \(\displaystyle k(x,t)\) 的逐点展开、核的统一收敛展开或Mercer定理.
+\end{FAApplication}
+
+\section{第一卷闭合}\label{sec:i14-volume-one-closure}
+\index{unilateral shift@单边右移}\index{spectral theorem@谱定理}
+
+\begin{FACounterexample}[一般有界算子的边界]
+I-12已经证明 \(\displaystyle \ell^2\) 上单边右移 \(\displaystyle \mathcal S\) 满足
+\[
+\sigma_{\mathrm p}(\mathcal S)
+=
+\varnothing,
+\;
+\sigma(\mathcal S)
+=
+\{\lambda\in\mathbb C:|\lambda|\leqslant1\}.
+\]
+I-11又已计算 \(\displaystyle \mathcal S^*\neq\mathcal S\)，而I-13的紧性序列判据还给出 \(\displaystyle \mathcal S\) 不紧：单位向量列 \(\displaystyle (e_n)\) 有界，而 \(\displaystyle \mathcal Se_n=e_{n+1}\)，且对 \(\displaystyle m\neq n\) 有 \(\displaystyle \|e_{m+1}-e_{n+1}\|=\sqrt2\)，所以像列没有Cauchy子列，更不可能有范数收敛子列. 因而一般有界算子可以拥有大量谱点却没有任何特征值，完全不具有本章的正交特征分解. 这沿用既有谱不等于特征值集合的反例，不引入新的反例编号.
+\end{FACounterexample}
+
+\begin{FARemark}[紧性与自伴性的分工]
+紧性单独提供I-13的Riesz--Schauder结论：非零谱点是有限重数特征值，并且非零谱只能向零聚集. 自伴性进一步迫使特征值为实数、不同特征空间正交，并通过 \(\displaystyle M^\perp=\ker\mathcal K\) 把非零特征向量闭合成完整正交分解. 因而不能把本章结论改写为“所有紧算子都可正交对角化”.
+\end{FARemark}
+
+\begin{FARemark}[偏微分方程预告]
+后续研究椭圆算子以及具有紧预解结构的情形时，离散谱、有限重数与正交特征展开会再次出现. 当前只记录这一阅读方向，不在此定义无界算子、紧预解、Laplace算子定义域、Sobolev空间或椭圆正则性.
+\end{FARemark}
+
+第一卷的线性主链至此闭合. Banach与Hilbert空间提供完备性、投影和正交几何；Hahn--Banach定理建立延拓、分离与对偶范数接口；Baire纲方法导出一致有界性、开映射、有界逆与闭图像定理；弱与弱*拓扑进一步连接Banach--Alaoglu、自反性与弱紧性；有界算子理论随后建立Banach对偶算子、Hilbert伴随以及强、弱算子拓扑. 在此基础上，预解集与谱给出算子的全局可逆性语言，紧算子理论把非零谱压缩为离散的有限重数特征值，Fredholm择一原理把核、值域与可解性联系起来，而本章最终用自伴性把这些离散谱点组织成正交特征分解，并得到范数收敛的特征展开与离散连续函数演算.
+
+下一遍将扩展这些结构. 局部凸与Fréchet空间将拓宽线性拓扑框架；Banach代数与Gelfand理论将提供更抽象的谱工具；一般有界正规算子的连续函数演算与谱定理将在 \(\displaystyle C^*\) 框架中建立；无界算子理论则会重新处理定义域、闭性、伴随与自伴性. 这些内容在当前章节都只作为后继方向，不作为本章证明的前提.
+
+\subsection*{本章习题}
+\addcontentsline{toc}{subsection}{本章习题}
+
+\begin{FAExercise}[自伴二次型的实性]{ex:i14-01}
+在第一变量线性的约定下，从 \(\displaystyle \mathcal K^*=\mathcal K\) 出发证明 \(\displaystyle \langle\mathcal Kx,x\rangle\in\mathbb R\). 再说明若把内积约定改为第二变量线性，证明中哪一步需要改写而结论不变.
+\end{FAExercise}
+
+\begin{FAExercise}[二次型范数公式]{ex:i14-02}
+独立重建\autoref{i14:quadratic-norm}. 要求从 \(\displaystyle m=\sup_{\|x\|=1}|\langle\mathcal Kx,x\rangle|\) 出发，写出两次二次型之差和平行四边形消去，并在最后对Hilbert对偶范数取上确界.
+\end{FAExercise}
+
+\begin{FAExercise}[复相位选择]{ex:i14-03}
+设内积第一变量线性、第二变量共轭线性，且 \(\displaystyle a=\langle\mathcal Ku,v\rangle\neq0\). 证明取 \(\displaystyle \eta=\frac{a}{|a|}\) 时 \(\displaystyle \langle\mathcal Ku,\eta v\rangle=|a|\)，并解释为什么取 \(\displaystyle \eta=\frac{\overline a}{|a|}\) 一般不满足所需等式.
+\end{FAExercise}
+
+\begin{FAExercise}[极值特征值]{ex:i14-04}
+从二次型范数公式构造单位向量 \(\displaystyle x_n\)，证明可固定一个符号 \(\displaystyle \lambda\in\{\|\mathcal K\|,-\|\mathcal K\|\}\)，使 \(\displaystyle \|\mathcal Kx_n-\lambda x_n\|\to0\)，再只用紧性完成特征向量极限论证.
+\end{FAExercise}
+
+\begin{FAExercise}[特征值实性]{ex:i14-05}
+设 \(\displaystyle \mathcal Kx=\lambda x\)、\(\displaystyle x\neq0\). 不使用任何谱定理，直接从二次型实性证明 \(\displaystyle \lambda\in\mathbb R\).
+\end{FAExercise}
+
+\begin{FAExercise}[非零特征空间有限维]{ex:i14-06}
+复用I-13中“非零特征空间有限维”的紧算子结论证明\autoref{fa:CSPEC-B01}. 要求指出该证明为何同时适用于实Hilbert空间，并且不得重新引入一套Riesz引理构造.
+\end{FAExercise}
+
+\begin{FAExercise}[不同特征空间正交]{ex:i14-07}
+证明\autoref{fa:CSPEC-B02}，并在复情形显式写出 \(\displaystyle \langle x,\mu y\rangle=\overline\mu\langle x,y\rangle\). 随后说明为什么必须先知道 \(\displaystyle \mu\in\mathbb R\) 才能得到正文使用的等式.
+\end{FAExercise}
+
+\begin{FAExercise}[正交补的不变性]{ex:i14-08}
+设 \(\displaystyle M\) 为全部非零特征空间线性张成的闭包. 分别证明 \(\displaystyle \mathcal K(M)\subseteq M\) 与 \(\displaystyle \mathcal K(M^\perp)\subseteq M^\perp\)，第二部分必须使用自伴性.
+\end{FAExercise}
+
+\begin{FAExercise}[核与非零特征张成]{ex:i14-09}
+先证明 \(\displaystyle \ker\mathcal K\subseteq M^\perp\). 再假设 \(\displaystyle \mathcal K|_{M^\perp}\neq0\)，对限制算子使用极值特征值引理推出矛盾，从而证明 \(\displaystyle M^\perp=\ker\mathcal K\).
+\end{FAExercise}
+
+\begin{FAExercise}[不可分核边界]{ex:i14-10}
+取一个不可分Hilbert空间 \(\displaystyle H\)，令 \(\displaystyle \mathcal K=0\). 说明非零特征向量族为空而 \(\displaystyle \ker\mathcal K=H\)，从而解释为什么“紧自伴算子总有可数正交特征基覆盖整个空间”是错误断言. 再写出正确的标准正交基表述.
+\end{FAExercise}
+
+\begin{FAExercise}[非零特征值枚举]{ex:i14-11}
+假设对每个 \(\displaystyle \varepsilon>0\)，只有有限多个非零特征值满足 \(\displaystyle |\lambda|\geqslant\varepsilon\)，且每个非零特征空间有限维. 证明计入重数后的非零特征向量族至多可数，并可按模长非增排列；若无限，则证明 \(\displaystyle |\lambda_n|\to0\).
+\end{FAExercise}
+
+\begin{FAExercise}[特征展开]{ex:i14-12}
+由 \(\displaystyle H=\ker\mathcal K\oplus M\) 与I-04的Parseval定理，证明对每个 \(\displaystyle x\in H\) 有 \(\displaystyle x=P_0x+\sum_n\langle x,e_n\rangle e_n\) 于范数收敛，再利用 \(\displaystyle \mathcal K\) 有界推出\autoref{fa:CSPEC-A01}的算子展开.
+\end{FAExercise}
+
+\begin{FAExercise}[谱有限秩截断]{ex:i14-13}
+对 \(\displaystyle \mathcal K_Nx=\sum_{n=1}^{N}\lambda_n\langle x,e_n\rangle e_n\)，证明 \(\displaystyle \|\mathcal K-\mathcal K_N\|\leqslant|\lambda_{N+1}|\)，再代入 \(\displaystyle e_{N+1}\) 证明等号. 说明该结果为何不能推出一般Banach空间紧算子的有限秩范数逼近.
+\end{FAExercise}
+
+\begin{FAExercise}[值域闭包]{ex:i14-14}
+不用I-11的核--值域正交关系作为黑箱，直接从自伴性证明 \(\displaystyle \operatorname{Ran}\mathcal K\subseteq(\ker\mathcal K)^\perp\)，再利用 \(\displaystyle e_n=\lambda_n^{-1}\mathcal Ke_n\) 完成反向闭包包含.
+\end{FAExercise}
+
+\begin{FAExercise}[紧对角算子]{ex:i14-15}
+设 \(\displaystyle a_n\to0\) 且 \(\displaystyle a_n\in\mathbb R\). 对 \(\displaystyle \mathcal D_a\) 证明有界、自伴、紧，并计算 \(\displaystyle \|\mathcal D_a\|=\sup_n|a_n|\). 必须用有限秩截断的算子范数收敛证明紧性.
+\end{FAExercise}
+
+\begin{FAExercise}[对角算子的谱]{ex:i14-16}
+完整证明 \(\displaystyle \sigma(\mathcal D_a)=\overline{\{a_n:n\geqslant1\}}\). 对闭包外的 \(\displaystyle \lambda\) 构造有界对角逆；对闭包内但未被任何 \(\displaystyle a_n\) 取得的 \(\displaystyle \lambda\)，用单位向量近似核序列否定有界可逆性.
+\end{FAExercise}
+
+\begin{FAExercise}[离散函数演算的定义与紧余项]{ex:i14-17}
+设 \(\displaystyle0\in\sigma(\mathcal K)\)、\(\displaystyle f\in C(\sigma(\mathcal K))\)，并令 \(\displaystyle g=f-f(0)\). 从 \(\displaystyle g(\lambda_n)\to0\) 出发证明 \(\displaystyle g(\mathcal K)\) 是有限秩算子的算子范数极限，因此 \(\displaystyle f(\mathcal K)-f(0)\mathcal I\) 紧.
+\end{FAExercise}
+
+\begin{FAExercise}[函数演算范数等式]{ex:i14-18}
+证明 \(\displaystyle \|f(\mathcal K)\|=\max_{\lambda\in\sigma(\mathcal K)}|f(\lambda)|\). 特别处理 \(\displaystyle0\in\sigma(\mathcal K)\) 但 \(\displaystyle0\) 不是特征值的情形，并用 \(\displaystyle \lambda_n\to0\) 与连续性恢复 \(\displaystyle |f(0)|\) 的下界.
+\end{FAExercise}
+
+\begin{FAExercise}[多项式兼容性]{ex:i14-19}
+设 \(\displaystyle p(t)=\sum_{j=0}^{m}c_jt^j\). 分别在 \(\displaystyle \ker\mathcal K\) 与每个非零特征空间上计算I-12代数定义的 \(\displaystyle p(\mathcal K)\)，证明它与\autoref{fa:CSPEC-C01}的离散函数演算定义一致.
+\end{FAExercise}
+
+\begin{FAExercise}[共轭对称核的对称有限秩逼近]{ex:i14-20}
+对连续共轭对称核 \(\displaystyle k\) 构造二维帽函数插值 \(\displaystyle k_N\). 证明 \(\displaystyle \|k_N-k\|_\infty\to0\)、\(\displaystyle k_N(x,t)=\overline{k_N(t,x)}\) 以及相应积分算子 \(\displaystyle \mathcal K_N\) 有限秩.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^2\)核算子的紧性与自伴性]{ex:i14-21}
+先用Cauchy--Schwarz证明 \(\displaystyle \|\mathcal Kf\|_2\leqslant L\|k\|_\infty\|f\|_2\)，再证明 \(\displaystyle \|\mathcal K-\mathcal K_N\|\leqslant L\|k-k_N\|_\infty\). 最后从有限和表示直接计算 \(\displaystyle \mathcal K_N^*=\mathcal K_N\)，并通过伴随的算子范数连续性推出 \(\displaystyle \mathcal K^*=\mathcal K\). 全程不得交换二重积分.
+\end{FAExercise}
+
+\begin{FAExercise}[边界对照与后继理论]{ex:i14-22}
+复用谱不等于特征值集合的反例说明一般有界算子的谱可以远大于点谱，并解释单边右移为什么既非自伴又非紧. 随后列出本章实际使用的假设，说明哪些步骤依赖紧性、哪些依赖自伴性，并解释为什么不能调用一般有界正规谱定理、一般 \(\displaystyle C^*\) 连续函数演算、谱测度或Mercer定理来替代本章证明.
+\end{FAExercise}

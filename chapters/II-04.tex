@@ -1,0 +1,816 @@
+\chapter{Banach值函数与Bochner积分}\label{chap:II-04}
+\FAChapterOpening
+{在任意测度空间上建立Banach值函数的强可测性、Bochner积分、支配收敛与Bochner\(\displaystyle L^p\) 空间；证明有界算子与积分交换，并为后续 \(\displaystyle C_0\) 半群轨道积分提供合法接口.}
+{I-01 的测度与标量积分接口；I-03 的Banach空间结构，特别是\autoref{fa:BAN-A01}；I-07 的对偶与弱结构.}
+{\begin{center}
+\begin{tikzpicture}[x=0.92cm,y=1.00cm]
+\node[fa/node] (m) at (0,1.2) {I-01 测度};
+\node[fa/node] (b) at (0,-1.2) {赋范/Banach空间};
+\node[fa/node] (w) at (0,-2.7) {I-07 对偶/弱拓扑};
+\node[fa/node] (a) at (4.0,0) {Bochner积分};
+\node[fa/node] (c) at (7.3,1.2) {Bochner范数估计};
+\node[fa/node] (b01) at (10.7,1.2) {Bochner支配收敛};
+\node[fa/node] (b02) at (7.3,-1.2) {算子与积分交换};
+\node[fa/node] (sm) at (4.0,-2.7) {强/弱可测};
+\draw[fa/arrow] (m) -- (a);
+\draw[fa/arrow] (b) -- (a);
+\draw[fa/arrow] (w) -- (sm);
+\draw[fa/arrow] (a) -- (c);
+\draw[fa/arrow] (c) -- (b01);
+\draw[fa/arrow] (a) -- (b02);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle(\Omega,\Sigma,\mu)\) 为任意测度空间，不全局假设有限性或 \(\displaystyle\sigma\)-有限性；\(\displaystyle X\) 为实或复Banach空间，必要时 \(\displaystyle Y\) 为同标量域上的另一个Banach空间. I-01 已建立的标量 Fatou 引理、单调收敛、支配收敛、Hölder 与Minkowski可直接调用；本章不用 Radon--Nikodym 定理. Banach完备性将在Bochner积分极限与Bochner\(\displaystyle L^p\) 完备性中显式使用.
+由于强可测性的定义只要求几乎处处范数极限，而一般测度空间不预设完备，任意修改零测集内的点值可能破坏原代表元的 \(\displaystyle\Sigma\)-可测性. 因此本章采用代表元约定：每当强可测函数进入可测性、标量范数或积分论证时，固定一个由有限值简单逼近在共同零测集外的点态极限并在该零测集上置零所得的 \(\displaystyle\Sigma\)-Borel可测代表元，仍记为 \(\displaystyle f\). 该约定不要求 \(\displaystyle(\Omega,\Sigma,\mu)\) 完备，且所有积分与Bochner\(\displaystyle L^p\) 对象只依赖几乎处处等价类.
+
+\newpage
+\section{强可测}\label{sec:ii04-strong-measurability}
+\index{strong measurability@强可测}\index{weak measurability@弱可测}\index{essentially separably valued@本质可分值}
+
+\begin{FADefinition}[A][Banach值简单函数]{ii04:simple-function}
+映射 \(\displaystyle s:\Omega\to X\) 称为有限值简单函数，当且仅当存在两两不交的 \(\displaystyle E_1,\dots,E_m\in\Sigma\) 与 \(\displaystyle x_1,\dots,x_m\in X\)，使
+\[
+s=\sum_{j=1}^{m}x_j1_{E_j}.
+\]
+任意有限值表示都可通过取各水平集的共同细分化为上述两两不交形式.
+\end{FADefinition}
+
+\begin{FADefinition}[A][强可测与弱可测]{ii04:strong-weak-measurable}
+映射 \(\displaystyle f:\Omega\to X\) 称为强可测，当且仅当存在有限值简单函数 \(\displaystyle s_n:\Omega\to X\)，使 \(\displaystyle s_n(\omega)\to f(\omega)\) 对几乎处处 \(\displaystyle\omega\in\Omega\) 在 \(\displaystyle X\) 的范数中成立. 映射 \(\displaystyle f\) 称为弱可测，当且仅当对全部 \(\displaystyle x^*\in X^*\)，标量函数 \(\displaystyle\omega\mapsto x^*(f(\omega))\) 可测.
+\end{FADefinition}
+
+\begin{FAProposition}[C][强可测的基本结构]{ii04:strong-structure}
+若 \(\displaystyle f:\Omega\to X\) 强可测，则存在一个与其几乎处处相等的 \(\displaystyle\Sigma\)-Borel可测代表元；在本章代表元约定下：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle f\) 为 \(\displaystyle X\)-值Borel可测映射；
+\item \(\displaystyle\omega\mapsto\|f(\omega)\|\) 为标量可测函数；
+\item \(\displaystyle f\) 弱可测；
+\item \(\displaystyle f\) 本质可分值，即存在可分闭线性子空间 \(\displaystyle Z\subseteq X\) 与零测集 \(\displaystyle N\in\Sigma\)，使 \(\displaystyle f(\Omega\setminus N)\subseteq Z\).
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+取有限值简单函数 \(\displaystyle s_n\) 与零测集 \(\displaystyle N\) 使 \(\displaystyle s_n(\omega)\to f(\omega)\) 对全部 \(\displaystyle\omega\notin N\) 成立. 令 \(\displaystyle\widetilde s_n=1_{\Omega\setminus N}s_n\)，并令 \(\displaystyle\widetilde f=1_{\Omega\setminus N}f\). 每个 \(\displaystyle\widetilde s_n\) 都是Borel可测的有限值函数，并且 \(\displaystyle\widetilde s_n(\omega)\to\widetilde f(\omega)\) 对全部 \(\displaystyle\omega\in\Omega\) 成立. 由于 \(\displaystyle X\) 为度量空间，点态极限仍Borel可测，故 \(\displaystyle\widetilde f\) 是所需代表元；按本章约定以后仍记作 \(\displaystyle f\)，从而（i）成立.
+
+范数映射 \(\displaystyle x\mapsto\|x\|\) 连续，所以所选代表元的 \(\displaystyle\|f\|\) 可测，故（ii）成立. 对任意 \(\displaystyle x^*\in X^*\)，连续性给出 \(\displaystyle x^*(s_n(\omega))\to x^*(f(\omega))\) 几乎处处，而每个 \(\displaystyle x^*\circ s_n\) 都是标量简单可测函数，因此 \(\displaystyle x^*\circ f\) 可测，故（iii）成立.
+
+令
+\(\displaystyle D=\bigcup_{n\geqslant1}s_n(\Omega).\)
+每个 \(\displaystyle s_n(\Omega)\) 有限，所以 \(\displaystyle D\) 至多可数. 令
+\(\displaystyle Z=\overline{\operatorname{span}D}^{\,X}.\)
+则 \(\displaystyle Z\) 可分且闭. 对 \(\displaystyle\omega\notin N\)，全部 \(\displaystyle s_n(\omega)\in Z\)，而 \(\displaystyle Z\) 闭，故 \(\displaystyle f(\omega)=\lim_ns_n(\omega)\in Z\). 因而（iv）成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[C][Borel可测与本质可分值判据]{ii04:borel-separable-criterion}
+设 \(\displaystyle f:\Omega\to X\) Borel可测且本质可分值. 则 \(\displaystyle f\) 强可测.
+\end{FATheorem}
+
+\begin{FAProof}
+取零测集 \(\displaystyle N\in\Sigma\) 与可分闭子空间 \(\displaystyle Z\subseteq X\)，使 \(\displaystyle f(\Omega\setminus N)\subseteq Z\). 把 \(\displaystyle f\) 在 \(\displaystyle N\) 上改为 \(\displaystyle0\)，不影响强可测性问题，因此可设 \(\displaystyle f(\Omega)\subseteq Z\). 取稠密序列 \(\displaystyle(y_k)_{k\geqslant1}\subseteq Z\). 对 \(\displaystyle n\geqslant1\) 定义
+\(\displaystyle d_n(\omega)=\min_{1\leqslant k\leqslant n}\|f(\omega)-y_k\|.\)
+各函数 \(\displaystyle\rho_k(\omega)=\|f(\omega)-y_k\|\) 可测，故 \(\displaystyle d_n\) 可测. 对每个 \(\displaystyle1\leqslant k\leqslant n\)，令 \(\displaystyle k_n(\omega)\) 为达到最小值的最小指标. 则
+\(\displaystyle \{\omega:k_n(\omega)=k\} = \bigcap_{1\leqslant j<k}\{\rho_k<\rho_j\} \cap \bigcap_{k<j\leqslant n}\{\rho_k\leqslant\rho_j\},\)
+所以该集合可测. 因而
+\(\displaystyle s_n(\omega)=y_{k_n(\omega)}\)
+是有限值简单函数. 对固定 \(\displaystyle\omega\)，稠密性给出 \(\displaystyle\inf_{k\geqslant1}\|f(\omega)-y_k\|=0\)，而 \(\displaystyle d_n(\omega)\downarrow0\). 因此
+\(\displaystyle \|s_n(\omega)-f(\omega)\|=d_n(\omega)\longrightarrow0.\)
+故 \(\displaystyle f\) 强可测.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][强可测性对几乎处处范数极限封闭]{ii04:strong-ae-limit}
+若每个 \(\displaystyle f_n:\Omega\to X\) 强可测，且 \(\displaystyle f_n(\omega)\to f(\omega)\) 在 \(\displaystyle X\) 中对几乎处处 \(\displaystyle\omega\) 成立，则 \(\displaystyle f\) 强可测.
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii04:strong-structure}，对每个 \(\displaystyle n\) 存在可分闭子空间 \(\displaystyle Z_n\subseteq X\) 与零测集 \(\displaystyle N_n\)，使 \(\displaystyle f_n(\Omega\setminus N_n)\subseteq Z_n\)，并可把 \(\displaystyle f_n\) 改在零测集上得到Borel可测版本. 令
+\(\displaystyle Z=\overline{\operatorname{span}\bigcup_{n\geqslant1}Z_n}^{\,X}.\)
+可数个可分空间的线性张成的闭包仍可分. 再把全部零测集与极限失效集并入一个零测集 \(\displaystyle N\). 对 \(\displaystyle\omega\notin N\)，有 \(\displaystyle f_n(\omega)\in Z\) 且 \(\displaystyle f_n(\omega)\to f(\omega)\)，故闭性给出 \(\displaystyle f(\omega)\in Z\).
+
+在 \(\displaystyle\Omega\setminus N\) 上，\(\displaystyle f\) 是度量值可测映射的点态极限. 更具体地，对任意闭集 \(\displaystyle C\subseteq X\)，连续函数 \(\displaystyle x\mapsto\operatorname{dist}(x,C)\) 给出可测标量函数 \(\displaystyle\operatorname{dist}(f_n(\cdot),C)\)，其点态极限为 \(\displaystyle\operatorname{dist}(f(\cdot),C)\)；因此 \(\displaystyle f^{-1}(C)=\{\operatorname{dist}(f,C)=0\}\) 在子空间 \(\displaystyle\Omega\setminus N\) 中可测. 在 \(\displaystyle N\) 上把 \(\displaystyle f\) 改为 \(\displaystyle0\)，得到全域Borel可测版本. 于是 \(\displaystyle f\) Borel可测且本质可分值，由\autoref{ii04:borel-separable-criterion}得 \(\displaystyle f\) 强可测.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[弱可测但不强可测]\label{ii04:weak-not-strong}
+取 Lebesgue 测度空间 \(\displaystyle([0,1],\mathcal B,m)\) 与非可分Hilbert空间
+\(\displaystyle H=\ell^2([0,1]).\)
+对 \(\displaystyle t\in[0,1]\) 令 \(\displaystyle f(t)=e_t\)，其中 \(\displaystyle(e_t)_{t\in[0,1]}\) 是标准正交族.
+
+先证任意 \(\displaystyle y\in\ell^2([0,1])\) 的支集至多可数. 对 \(\displaystyle n\geqslant1\)，集合
+\(\displaystyle A_n=\{t:|y_t|\geqslant\frac{1}{n}\}\)
+必为有限集，否则 \(\displaystyle\sum_t|y_t|^2=\infty\). 因而 \(\displaystyle\operatorname{supp}y=\bigcup_{n\geqslant1}A_n\) 至多可数. 对任意 \(\displaystyle x^*\in H^*\)，由 I-04 的Hilbert空间 Riesz 表示定理存在 \(\displaystyle y\in H\)，使 \(\displaystyle x^*(z)=\langle z,y\rangle\) 或按本书固定内积约定的等价形式成立. 因此 \(\displaystyle t\mapsto x^*(e_t)\) 只在 \(\displaystyle\operatorname{supp}y\) 上可能非零，故是Borel可测函数. 所以 \(\displaystyle f\) 弱可测.
+
+另一方面，若 \(\displaystyle Z\subseteq H\) 可分，则 \(\displaystyle\{e_t:e_t\in Z\}\) 至多可数. 事实上，不同 \(\displaystyle e_s,e_t\) 的距离恒为 \(\displaystyle\sqrt2\)，而可分度量空间不可能含有不可数的固定正距离离散子集. 因而
+\(\displaystyle T_Z=\{t:e_t\in Z\}\)
+至多可数. 若存在零测集 \(\displaystyle N\) 使 \(\displaystyle f([0,1]\setminus N)\subseteq Z\)，则 \(\displaystyle[0,1]\setminus N\subseteq T_Z\) 至多可数，于是 \(\displaystyle m([0,1]\setminus N)=0\)，与 \(\displaystyle m(N)=0\) 矛盾. 所以 \(\displaystyle f\) 不本质可分值，进而由\autoref{ii04:strong-structure}不强可测.
+
+同时 \(\displaystyle\|f(t)\|=1\) 处处成立，所以 \(\displaystyle\int_0^1\|f(t)\|\,\mathrm{d}t=1\). 因此“弱可测加范数可积”仍不足以推出Bochner可积.
+\end{FACounterexample}
+
+\begin{FARemark}[Pettis边界]\label{ii04:pettis-boundary}
+Pettis积分处理更弱的标量化可积条件，属于本章 D 级延伸. 本书当前不建立Pettis积分的存在理论，也不在任何本章证明中使用Pettis积分或“弱可测加本质可分值推出强可测”的完整Pettis可测性定理.
+\end{FARemark}
+
+\section{Bochner积分}\label{sec:ii04-bochner-integral}
+\index{Bochner integral@Bochner积分}
+
+\begin{FADefinition}[A][可积简单函数及其积分]{ii04:simple-integral-definition}
+设 \(\displaystyle s=\sum_{j=1}^{m}x_j1_{E_j}\) 为两两不交表示的有限值简单函数. 若
+\[
+\int_\Omega\|s\|\,\mathrm{d}\mu<\infty,
+\]
+则称 \(\displaystyle s\) 为可积简单函数. 对所有 \(\displaystyle x_j\neq0\)，必有 \(\displaystyle\mu(E_j)<\infty\). 定义
+\[
+\int_\Omega s\,\mathrm{d}\mu
+=
+\sum_{j:x_j\neq0}\mu(E_j)x_j,
+\]
+其中零值项忽略. 对 \(\displaystyle E\in\Sigma\)，定义
+\[
+\int_Es\,\mathrm{d}\mu
+:=
+\int_\Omega1_Es\,\mathrm{d}\mu.
+\]
+\end{FADefinition}
+
+\begin{FALemma}[C][简单积分良定义及范数估计]{ii04:simple-integral-tools}
+简单积分与所选两两不交表示无关；它对可积简单函数线性，并且对全部 \(\displaystyle E\in\Sigma\) 有
+\[
+\left\|\int_Es\,\mathrm{d}\mu\right\|
+\leqslant
+\int_E\|s\|\,\mathrm{d}\mu.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+设同一简单函数有两种两两不交表示
+\[
+s=\sum_{j=1}^{m}x_j1_{E_j}
+=
+\sum_{k=1}^{r}y_k1_{F_k}.
+\]
+取共同细分 \(\displaystyle E_j\cap F_k\). 若 \(\displaystyle\mu(E_j\cap F_k)>0\)，则在该集合上函数值同时为 \(\displaystyle x_j\) 与 \(\displaystyle y_k\)，故 \(\displaystyle x_j=y_k\). 忽略所有零值格子后，各格子的测度均有限，于是有限可加性给出
+\[
+\sum_j\mu(E_j)x_j
+=
+\sum_{j,k}\mu(E_j\cap F_k)x_j
+=
+\sum_{j,k}\mu(E_j\cap F_k)y_k
+=
+\sum_k\mu(F_k)y_k.
+\]
+因此定义与表示无关. 线性由对两个简单函数取共同细分后逐格计算得到.
+
+对 \(\displaystyle1_Es\) 取共同细分可写成 \(\displaystyle\sum_jx_j1_{E\cap E_j}\)，故
+\[
+\left\|\int_Es\,\mathrm{d}\mu\right\|
+=
+\left\|\sum_j\mu(E\cap E_j)x_j\right\|
+\leqslant
+\sum_j\mu(E\cap E_j)\|x_j\|
+=
+\int_E\|s\|\,\mathrm{d}\mu.
+\]
+这也同时证明对可测集合的限制积分定义合法.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[C][强可测且范数可积的简单逼近]{ii04:strong-l1-simple-approximation}
+若 \(\displaystyle f:\Omega\to X\) 强可测且
+\[
+\int_\Omega\|f\|\,\mathrm{d}\mu<\infty,
+\]
+则存在可积简单函数 \(\displaystyle s_n\)，使 \(\displaystyle s_n(\omega)\to f(\omega)\) 几乎处处，并且
+\(\displaystyle \|s_n-f\|\leqslant\|f\|\)
+几乎处处，从而
+\[
+\int_\Omega\|s_n-f\|\,\mathrm{d}\mu\longrightarrow0.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+由强可测性取有限值简单函数 \(\displaystyle u_n\) 使 \(\displaystyle u_n(\omega)\to f(\omega)\) 几乎处处. 由\autoref{ii04:strong-structure}，函数 \(\displaystyle\|u_n-f\|\) 与 \(\displaystyle\|f\|\) 可测，因此集合
+\(\displaystyle A_n= \{\omega:\|f(\omega)\|>0,\;\|u_n(\omega)-f(\omega)\|\leqslant\|f(\omega)\|\}\)
+可测. 定义 \(\displaystyle s_n=1_{A_n}u_n\)，它仍为有限值简单函数.
+
+若 \(\displaystyle f(\omega)=0\)，则 \(\displaystyle s_n(\omega)=0\) 对全部 \(\displaystyle n\) 成立. 若 \(\displaystyle f(\omega)\neq0\) 且 \(\displaystyle u_n(\omega)\to f(\omega)\)，则充分大的 \(\displaystyle n\) 满足 \(\displaystyle\|u_n-f\|\leqslant\|f\|\)，故 \(\displaystyle\omega\in A_n\) 且 \(\displaystyle s_n(\omega)=u_n(\omega)\to f(\omega)\). 因而 \(\displaystyle s_n\to f\) 几乎处处.
+
+若 \(\displaystyle\omega\in A_n\)，则 \(\displaystyle\|s_n-f\|=\|u_n-f\|\leqslant\|f\|\). 若 \(\displaystyle\omega\notin A_n\)，则 \(\displaystyle s_n=0\)，所以 \(\displaystyle\|s_n-f\|=\|f\|\). 因此全局有
+\(\displaystyle \|s_n-f\|\leqslant\|f\|\)
+几乎处处. 又在 \(\displaystyle A_n\) 上
+\(\displaystyle \|s_n\|=\|u_n\|\leqslant\|u_n-f\|+\|f\|\leqslant2\|f\|,\)
+在补集上 \(\displaystyle s_n=0\)，故 \(\displaystyle\int\|s_n\|\,\mathrm{d}\mu<\infty\)，即 \(\displaystyle s_n\) 可积简单. 最后对标量函数 \(\displaystyle\|s_n-f\|\) 使用 I-01 的支配收敛定理，得到所述 \(\displaystyle L^1\) 收敛.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][Bochner积分的存在、唯一与基本代数]{fa:BOCH-A01}
+设 \(\displaystyle X\) 为Banach空间，\(\displaystyle f:\Omega\to X\) 强可测且
+\[
+\int_\Omega\|f\|\,\mathrm{d}\mu<\infty.
+\]
+若 \(\displaystyle(s_n)\) 是任意满足
+\[
+\int_\Omega\|s_n-f\|\,\mathrm{d}\mu\longrightarrow0
+\]
+的可积简单函数列，则 \(\displaystyle\bigl(\int_\Omega s_n\,\mathrm{d}\mu\bigr)\) 在 \(\displaystyle X\) 中是 Cauchy 列，其极限与所选逼近无关. 定义
+\[
+\int_\Omega f\,\mathrm{d}\mu
+:=
+\lim_{n\to\infty}\int_\Omega s_n\,\mathrm{d}\mu,
+\]
+并称 \(\displaystyle f\) Bochner可积. 本章的Bochner可积函数恰为强可测且范数可积的函数. 此积分线性，可限制到任意可测集合，并只依赖 \(\displaystyle f\) 的几乎处处等价类.
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{ii04:strong-l1-simple-approximation}，至少存在一个满足条件的可积简单逼近列. 对任意这样的 \(\displaystyle(s_n)\)，由\autoref{ii04:simple-integral-tools}，
+\[
+\left\|\int_\Omega s_n\,\mathrm{d}\mu-
+\int_\Omega s_m\,\mathrm{d}\mu\right\|
+\leqslant
+\int_\Omega\|s_n-s_m\|\,\mathrm{d}\mu
+\leqslant
+\int_\Omega\|s_n-f\|\,\mathrm{d}\mu+
+\int_\Omega\|s_m-f\|\,\mathrm{d}\mu.
+\]
+右端趋于 \(\displaystyle0\)，故积分列 Cauchy. 此处必须使用 \(\displaystyle X\) 的完备性，才能断言其极限仍属于 \(\displaystyle X\).
+
+若 \(\displaystyle(t_n)\) 是另一个 \(\displaystyle L^1\) 简单逼近，则
+\[
+\left\|\int_\Omega s_n\,\mathrm{d}\mu-
+\int_\Omega t_n\,\mathrm{d}\mu\right\|
+\leqslant
+\int_\Omega\|s_n-f\|\,\mathrm{d}\mu+
+\int_\Omega\|t_n-f\|\,\mathrm{d}\mu
+\longrightarrow0.
+\]
+故极限与逼近无关.
+
+若 \(\displaystyle f,g\) Bochner可积，\(\displaystyle\alpha,\beta\) 为标量，并取简单逼近 \(\displaystyle s_n\to f\)、\(\displaystyle t_n\to g\) 于 \(\displaystyle L^1\)，则 \(\displaystyle\alpha s_n+\beta t_n\to\alpha f+\beta g\) 于 \(\displaystyle L^1\). 简单积分线性，取极限得到
+\[
+\int_\Omega(\alpha f+\beta g)\,\mathrm{d}\mu
+=
+\alpha\int_\Omega f\,\mathrm{d}\mu+
+\beta\int_\Omega g\,\mathrm{d}\mu.
+\]
+对 \(\displaystyle E\in\Sigma\)，若 \(\displaystyle s_n\to f\) 于 \(\displaystyle L^1\)，则 \(\displaystyle1_Es_n\to1_Ef\) 于 \(\displaystyle L^1\)，故定义
+\[
+\int_Ef\,\mathrm{d}\mu
+:=
+\int_\Omega1_Ef\,\mathrm{d}\mu
+\]
+与简单函数的限制积分定义一致.
+
+若 \(\displaystyle f=g\) 几乎处处，且 \(\displaystyle s_n\to f\) 在零测集 \(\displaystyle N_0\) 外成立，则取包含 \(\displaystyle\{f\neq g\}\) 的可测零测集 \(\displaystyle N_1\)，有 \(\displaystyle s_n\to g\) 在 \(\displaystyle\Omega\setminus(N_0\cup N_1)\) 上成立，故强可测性在几乎处处修改下保持；并且 \(\displaystyle\int\|f-g\|\,\mathrm{d}\mu=0\). 任取 \(\displaystyle f\) 的简单逼近 \(\displaystyle s_n\)，有
+\[
+\int_\Omega\|s_n-g\|\,\mathrm{d}\mu
+\leqslant
+\int_\Omega\|s_n-f\|\,\mathrm{d}\mu+
+\int_\Omega\|f-g\|\,\mathrm{d}\mu
+\longrightarrow0,
+\]
+故同一简单列也逼近 \(\displaystyle g\)，从而两者积分相同. 最后一项“恰为”由定义与\autoref{ii04:strong-l1-simple-approximation}给出的存在性共同得到.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][Bochner积分范数估计]{fa:BOCH-C01}
+若 \(\displaystyle f\) Bochner可积且 \(\displaystyle E\in\Sigma\)，则
+\[
+\left\|\int_Ef\,\mathrm{d}\mu\right\|
+\leqslant
+\int_E\|f\|\,\mathrm{d}\mu.
+\]
+因此若 \(\displaystyle f_n\to f\) 于 \(\displaystyle L^1(\Omega;X)\)，则
+\[
+\int_\Omega f_n\,\mathrm{d}\mu
+\longrightarrow
+\int_\Omega f\,\mathrm{d}\mu
+\]
+在 \(\displaystyle X\) 的范数中成立.
+\end{FAProposition}
+
+\begin{FAProof}
+取可积简单函数 \(\displaystyle s_n\to f\) 于 \(\displaystyle L^1\). 则 \(\displaystyle1_Es_n\to1_Ef\) 于 \(\displaystyle L^1\)，由定义与简单函数估计，
+\[
+\left\|\int_Ef\,\mathrm{d}\mu\right\|
+=
+\lim_{n\to\infty}
+\left\|\int_Es_n\,\mathrm{d}\mu\right\|
+\leqslant
+\lim_{n\to\infty}
+\int_E\|s_n\|\,\mathrm{d}\mu.
+\]
+又
+\[
+\left|\int_E\|s_n\|\,\mathrm{d}\mu-
+\int_E\|f\|\,\mathrm{d}\mu\right|
+\leqslant
+\int_E\bigl|\|s_n\|-\|f\|\bigr|\,\mathrm{d}\mu
+\leqslant
+\int_E\|s_n-f\|\,\mathrm{d}\mu
+\longrightarrow0,
+\]
+所以得到第一式. 对 \(\displaystyle f_n-f\) 应用第一式，得
+\[
+\left\|\int_\Omega f_n\,\mathrm{d}\mu-
+\int_\Omega f\,\mathrm{d}\mu\right\|
+\leqslant
+\int_\Omega\|f_n-f\|\,\mathrm{d}\mu
+\longrightarrow0.\]\hfill\(\square\)
+
+
+\end{FAProof}
+
+\begin{FATheorem}[B][有界算子与Bochner积分交换]{fa:BOCH-B02}
+设 \(\displaystyle X,Y\) 为Banach空间，\(\displaystyle\mathcal T\in\mathcal B(X,Y)\)，且 \(\displaystyle f:\Omega\to X\) Bochner可积. 则 \(\displaystyle\mathcal T\circ f\) 强可测且Bochner可积，并且
+\[
+\int_\Omega\|\mathcal T f\|\,\mathrm{d}\mu
+\leqslant
+\|\mathcal T\|
+\int_\Omega\|f\|\,\mathrm{d}\mu,
+\]
+以及
+\[
+\mathcal T\left(\int_\Omega f\,\mathrm{d}\mu\right)
+=
+\int_\Omega\mathcal T f\,\mathrm{d}\mu.
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle s_n\) 是强可测定义中的简单逼近，则 \(\displaystyle\mathcal Ts_n\) 仍为有限值简单函数，且由 \(\displaystyle\mathcal T\) 连续，\(\displaystyle\mathcal Ts_n(\omega)\to\mathcal Tf(\omega)\) 几乎处处，故 \(\displaystyle\mathcal Tf\) 强可测. 点态估计
+\(\displaystyle \|\mathcal Tf(\omega)\|\leqslant\|\mathcal T\|\|f(\omega)\|\)
+给出范数可积性与第一式.
+
+现取可积简单函数 \(\displaystyle s_n\to f\) 于 \(\displaystyle L^1\). 则
+\[
+\int_\Omega\|\mathcal Ts_n-\mathcal Tf\|\,\mathrm{d}\mu
+\leqslant
+\|\mathcal T\|
+\int_\Omega\|s_n-f\|\,\mathrm{d}\mu
+\longrightarrow0.
+\]
+对简单函数由有限和与线性性直接有
+\[
+\mathcal T\left(\int_\Omega s_n\,\mathrm{d}\mu\right)
+=
+\int_\Omega\mathcal Ts_n\,\mathrm{d}\mu.
+\]
+左端由 \(\displaystyle\mathcal T\) 连续收敛到 \(\displaystyle\mathcal T(\int f\,\mathrm{d}\mu)\)，右端由\autoref{fa:BOCH-C01}的 \(\displaystyle L^1\) 连续性收敛到 \(\displaystyle\int\mathcal Tf\,\mathrm{d}\mu\). 取极限即得交换公式.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[C][对偶标量化]{ii04:dual-scalarization}
+若 \(\displaystyle f\) Bochner可积且 \(\displaystyle x^*\in X^*\)，则
+\[
+x^*\left(\int_\Omega f\,\mathrm{d}\mu\right)
+=
+\int_\Omega x^*(f(\omega))\,\mathrm{d}\mu(\omega).
+\]
+\end{FACorollary}
+
+\begin{FAProof}
+把 \(\displaystyle x^*:X\to\mathbb K\) 视为有界线性算子，直接应用\autoref{fa:BOCH-B02}. 该结论只是Bochner积分的性质，不反向作为Pettis积分的定义.\hfill\(\square\)
+\end{FAProof}
+
+\newpage
+\section{收敛定理}\label{sec:ii04-convergence}
+
+\begin{FATheorem}[B][Bochner支配收敛定理]{fa:BOCH-B01}
+设 \(\displaystyle f_n:\Omega\to X\) 强可测，并且
+\(\displaystyle f_n(\omega)\longrightarrow f(\omega)\)
+在 \(\displaystyle X\) 的范数中对几乎处处 \(\displaystyle\omega\) 成立. 若存在 \(\displaystyle g\in L^1(\mu)\)、\(\displaystyle g\geqslant0\)，使对全部 \(\displaystyle n\) 有
+\(\displaystyle \|f_n(\omega)\|\leqslant g(\omega)\)
+几乎处处成立，则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle f\) 强可测；
+\item \(\displaystyle\|f(\omega)\|\leqslant g(\omega)\) 几乎处处；
+\item \(\displaystyle f\) 与全部 \(\displaystyle f_n\) 均Bochner可积；
+\item \(\displaystyle\int_\Omega\|f_n-f\|\,\mathrm{d}\mu\to0\)；
+\item \(\displaystyle\int_\Omega f_n\,\mathrm{d}\mu\to\int_\Omega f\,\mathrm{d}\mu\) 在 \(\displaystyle X\) 中成立.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{ii04:strong-ae-limit}，\(\displaystyle f\) 强可测. 在共同的满测度集合上，范数连续性给出
+\(\displaystyle \|f(\omega)\| = \lim_{n\to\infty}\|f_n(\omega)\| \leqslant g(\omega),\)
+故（ii）成立. 于是 \(\displaystyle\int\|f\|\,\mathrm{d}\mu\leqslant\int g\,\mathrm{d}\mu<\infty\)，并且对每个 \(\displaystyle n\)，由 \(\displaystyle\|f_n\|\leqslant g\) 直接得到 \(\displaystyle\int\|f_n\|\,\mathrm{d}\mu<\infty\). 由\autoref{fa:BOCH-A01}，它们均Bochner可积.
+
+又有 \(\displaystyle\|f_n-f\|\to0\) 几乎处处，并且
+\(\displaystyle \|f_n-f\| \leqslant \|f_n\|+\|f\| \leqslant 2g\)
+几乎处处. 对标量函数 \(\displaystyle\|f_n-f\|\) 应用 I-01 的支配收敛定理，得到（iv）. 最后由\autoref{fa:BOCH-C01}，
+\[
+\left\|\int_\Omega f_n\,\mathrm{d}\mu-
+\int_\Omega f\,\mathrm{d}\mu\right\|
+\leqslant
+\int_\Omega\|f_n-f\|\,\mathrm{d}\mu
+\longrightarrow0,
+\]
+故（v）成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[C][范数的 Fatou 边界]{ii04:fatou-norm}
+若 \(\displaystyle f_n,f:\Omega\to X\) 强可测，\(\displaystyle f_n\to f\) 几乎处处，则
+\[
+\int_\Omega\|f\|\,\mathrm{d}\mu
+\leqslant
+\liminf_{n\to\infty}
+\int_\Omega\|f_n\|\,\mathrm{d}\mu.
+\]
+\end{FACorollary}
+
+\begin{FAProof}
+由范数连续性，\(\displaystyle\|f_n\|\to\|f\|\) 几乎处处. 对非负标量函数 \(\displaystyle\|f_n\|\) 使用 I-01 的 Fatou 引理即得. 这只是对标量范数的 Fatou 结论，不是Banach值函数的序单调收敛定理.\hfill\(\square\)
+\end{FAProof}
+
+\section{Bochner\(\displaystyle L^p\)空间}\label{sec:ii04-bochner-lp}
+\index{Bochner Lp@Bochner Lp空间}
+
+\begin{FADefinition}[A][Bochner\(\displaystyle L^p\) 空间]{ii04:bochner-lp-definition}
+对 \(\displaystyle1\leqslant p<\infty\)，定义 \(\displaystyle L^p(\Omega;X)\) 为强可测函数 \(\displaystyle f:\Omega\to X\) 的几乎处处等价类，满足
+\[
+\int_\Omega\|f(\omega)\|^p\,\mathrm{d}\mu(\omega)<\infty,
+\]
+并置
+\[
+\|f\|_{L^p(\Omega;X)}
+=
+\left(
+\int_\Omega\|f(\omega)\|^p\,\mathrm{d}\mu(\omega)
+\right)^{\frac{1}{p}}.
+\]
+定义 \(\displaystyle L^\infty(\Omega;X)\) 为强可测且本质有界函数的几乎处处等价类，并置
+\[
+\|f\|_{L^\infty(\Omega;X)}
+=
+\operatorname*{ess\,sup}_{\omega\in\Omega}\|f(\omega)\|.
+\]
+\end{FADefinition}
+
+\begin{FAProposition}[C][Bochner\(\displaystyle L^p\) 范数]{ii04:lp-norm}
+对全部 \(\displaystyle1\leqslant p\leqslant\infty\)，上式定义 \(\displaystyle L^p(\Omega;X)\) 上的范数.
+\end{FAProposition}
+
+\begin{FAProof}
+绝对齐次性直接来自 \(\displaystyle\|\alpha f(\omega)\|=|\alpha|\|f(\omega)\|\). 若 \(\displaystyle1\leqslant p<\infty\)，则 \(\displaystyle\|f\|_{L^p}=0\) 等价于非负标量函数 \(\displaystyle\|f\|^p\) 的积分为零，故等价于 \(\displaystyle f=0\) 几乎处处. 对 \(\displaystyle p=\infty\)，本质上确界为零同样等价于 \(\displaystyle\|f(\omega)\|=0\) 几乎处处.
+
+对 \(\displaystyle1\leqslant p<\infty\)，点态三角不等式给出
+\(\displaystyle \|f(\omega)+g(\omega)\| \leqslant \|f(\omega)\|+\|g(\omega)\|.\)
+再使用 I-01 的标量Minkowski不等式，得到
+\[
+\|f+g\|_{L^p(\Omega;X)}
+\leqslant
+\|\,\|f\|+\|g\|\,\|_{L^p(\mu)}
+\leqslant
+\|f\|_{L^p(\Omega;X)}+
+\|g\|_{L^p(\Omega;X)}.
+\]
+对 \(\displaystyle p=\infty\)，在一个共同满测度集合上有 \(\displaystyle\|f+g\|\leqslant\|f\|+\|g\|\)，取本质上确界即得三角不等式.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][Bochner\(\displaystyle L^p\)的完备性]{ii04:lp-complete}
+若 \(\displaystyle X\) 为Banach空间，则 \(\displaystyle L^p(\Omega;X)\) 对全部 \(\displaystyle1\leqslant p\leqslant\infty\) 都是Banach空间.
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle1\leqslant p<\infty\)，并令 \(\displaystyle(f_n)\) 为 \(\displaystyle L^p(\Omega;X)\) 中的 Cauchy 列. 可选递增指标 \(\displaystyle n_k\)，使
+\(\displaystyle \|f_{n_{k+1}}-f_{n_k}\|_{L^p} \leqslant 2^{-k}.\)
+定义非负标量函数
+\[
+g_k(\omega)=\|f_{n_{k+1}}(\omega)-f_{n_k}(\omega)\|,\;
+G_N=\sum_{k=1}^{N}g_k.
+\]
+由标量Minkowski，
+\[
+\|G_N\|_{L^p}
+\leqslant
+\sum_{k=1}^{N}\|g_k\|_{L^p}
+\leqslant
+\sum_{k=1}^{N}2^{-k}
+\leqslant1.
+\]
+令 \(\displaystyle G=\sum_{k=1}^{\infty}g_k\). 因 \(\displaystyle G_N\uparrow G\)，标量 Fatou 给出
+\[
+\int_\Omega G^p\,\mathrm{d}\mu
+\leqslant
+\liminf_{N\to\infty}
+\int_\Omega G_N^p\,\mathrm{d}\mu
+\leqslant1,
+\]
+故 \(\displaystyle G\in L^p(\mu)\)，特别地 \(\displaystyle G(\omega)<\infty\) 几乎处处. 对这样的 \(\displaystyle\omega\) 与 \(\displaystyle m>k\)，
+\[
+\|f_{n_m}(\omega)-f_{n_k}(\omega)\|
+\leqslant
+\sum_{j=k}^{m-1}g_j(\omega),
+\]
+右端随 \(\displaystyle k\to\infty\) 一致趋于 \(\displaystyle0\)，所以 \(\displaystyle(f_{n_k}(\omega))\) 在 \(\displaystyle X\) 中 Cauchy. 由 \(\displaystyle X\) 完备，存在 \(\displaystyle f(\omega)\in X\) 使 \(\displaystyle f_{n_k}(\omega)\to f(\omega)\) 几乎处处；在余下零测集上定义 \(\displaystyle f=0\). 由\autoref{ii04:strong-ae-limit}，\(\displaystyle f\) 强可测.
+
+令 \(\displaystyle m\to\infty\)，得到点态尾估计
+\[
+\|f-f_{n_k}\|
+\leqslant
+\sum_{j=k}^{\infty}g_j
+\]
+几乎处处. 对有限尾使用Minkowski，再令尾端趋于无穷并用 Fatou，得到
+\[
+\left\|\sum_{j=k}^{\infty}g_j\right\|_{L^p}
+\leqslant
+\sum_{j=k}^{\infty}\|g_j\|_{L^p}
+\leqslant
+\sum_{j=k}^{\infty}2^{-j}.
+\]
+因此
+\[
+\|f-f_{n_k}\|_{L^p}
+\leqslant
+\sum_{j=k}^{\infty}2^{-j}
+\longrightarrow0.
+\]
+特别地 \(\displaystyle f\in L^p(\Omega;X)\)：例如固定 \(\displaystyle k\)，由点态三角不等式与Minkowski，\(\displaystyle\|f\|_{L^p}\leqslant\|f-f_{n_k}\|_{L^p}+\|f_{n_k}\|_{L^p}<\infty\). 最后原列 Cauchy，所以给定 \(\displaystyle\varepsilon>0\)，先取 \(\displaystyle k\) 使 \(\displaystyle\|f_{n_k}-f\|_{L^p}<\frac{\varepsilon}{2}\)，再取 \(\displaystyle n\) 足够大使 \(\displaystyle\|f_n-f_{n_k}\|_{L^p}<\frac{\varepsilon}{2}\)，从而 \(\displaystyle f_n\to f\) 于 \(\displaystyle L^p\).
+
+现设 \(\displaystyle p=\infty\). 从 Cauchy 列中选子列 \(\displaystyle f_{n_k}\) 使
+\(\displaystyle \|f_{n_{k+1}}-f_{n_k}\|_{L^\infty} \leqslant 2^{-k}.\)
+对每个 \(\displaystyle k\) 选零测集 \(\displaystyle N_k\)，使在 \(\displaystyle\Omega\setminus N_k\) 上有
+\(\displaystyle \|f_{n_{k+1}}(\omega)-f_{n_k}(\omega)\| \leqslant 2^{-k}.\)
+令 \(\displaystyle N=\bigcup_{k\geqslant1}N_k\). 对 \(\displaystyle\omega\notin N\)，几何级数尾给出
+\[
+\|f_{n_m}(\omega)-f_{n_k}(\omega)\|
+\leqslant
+\sum_{j=k}^{m-1}2^{-j},
+\]
+所以由 \(\displaystyle X\) 完备存在点态极限 \(\displaystyle f(\omega)\). 在 \(\displaystyle N\) 上置 \(\displaystyle f=0\). 由\autoref{ii04:strong-ae-limit}，\(\displaystyle f\) 强可测；令 \(\displaystyle m\to\infty\) 得
+\[
+\|f(\omega)-f_{n_k}(\omega)\|
+\leqslant
+\sum_{j=k}^{\infty}2^{-j}
+\]
+对 \(\displaystyle\omega\notin N\) 成立，故
+\[
+\|f-f_{n_k}\|_{L^\infty}
+\leqslant
+\sum_{j=k}^{\infty}2^{-j}
+\longrightarrow0.
+\]
+由一个 \(\displaystyle f_{n_k}\) 的本质有界性与上述尾估计可知 \(\displaystyle f\in L^\infty(\Omega;X)\). 再由原列的 Cauchy 性，得到 \(\displaystyle f_n\to f\) 于 \(\displaystyle L^\infty\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][有限 \(\displaystyle p\)的简单函数稠密性]{ii04:lp-simple-density}
+对 \(\displaystyle1\leqslant p<\infty\)，可积简单函数在 \(\displaystyle L^p(\Omega;X)\) 中稠密.
+\end{FAProposition}
+
+\begin{FAProof}
+取 \(\displaystyle f\in L^p(\Omega;X)\). 由强可测性取有限值简单函数 \(\displaystyle u_n\to f\) 几乎处处，并按\autoref{ii04:strong-l1-simple-approximation}的同一构造定义
+\[
+A_n=
+\{\omega:\|f(\omega)\|>0,\;\|u_n(\omega)-f(\omega)\|\leqslant\|f(\omega)\|\},\;
+s_n=1_{A_n}u_n.
+\]
+同一逐点论证给出 \(\displaystyle s_n\to f\) 几乎处处且
+\(\displaystyle \|s_n-f\| \leqslant \|f\|.\)
+因此
+\(\displaystyle \|s_n-f\|^p \leqslant \|f\|^p.\)
+由标量支配收敛，\(\displaystyle\|s_n-f\|_{L^p}\to0\). 又 \(\displaystyle\|s_n\|\leqslant2\|f\|\)，所以 \(\displaystyle s_n\in L^p\). 因 \(\displaystyle s_n\) 只有有限个非零值，对每个非零水平集 \(\displaystyle E\) 有 \(\displaystyle\mu(E)<\infty\)，否则 \(\displaystyle\int\|s_n\|^p=\infty\). 因而 \(\displaystyle\int\|s_n\|\,\mathrm{d}\mu<\infty\)，即 \(\displaystyle s_n\) 也是可积简单函数.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[\(\displaystyle L^\infty\)的密度边界]
+上一个命题不扩张为“对任意Banach目标，有限值简单函数在 \(\displaystyle L^\infty(\Omega;X)\) 中总稠密”. 强可测只保证几乎处处的可分值结构，不保证任意本质有界函数都能由有限值简单函数作本质一致逼近；本章不作这一无条件断言.
+\end{FAWarning}
+
+\begin{FAProposition}[C][有界算子在Bochner\(\displaystyle L^p\) 上的诱导]{ii04:bounded-operator-lp}
+设 \(\displaystyle\mathcal T\in\mathcal B(X,Y)\) 且 \(\displaystyle1\leqslant p\leqslant\infty\). 则
+\(\displaystyle (\mathcal T_pf)(\omega)=\mathcal T(f(\omega))\)
+定义有界线性算子
+\(\displaystyle \mathcal T_p:L^p(\Omega;X)\to L^p(\Omega;Y),\)
+并满足
+\(\displaystyle \|\mathcal T_p\|\leqslant\|\mathcal T\|.\)
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{fa:BOCH-B02}证明中的同一简单逼近论证，\(\displaystyle\mathcal T\circ f\) 强可测. 若 \(\displaystyle1\leqslant p<\infty\)，点态有
+\(\displaystyle \|\mathcal Tf\|^p \leqslant \|\mathcal T\|^p\|f\|^p,\)
+积分后得到 \(\displaystyle\|\mathcal T_pf\|_{L^p}\leqslant\|\mathcal T\|\|f\|_{L^p}\). 若 \(\displaystyle p=\infty\)，取本质上确界得到同一估计. 若 \(\displaystyle f=g\) 几乎处处，则 \(\displaystyle\mathcal Tf=\mathcal Tg\) 几乎处处，所以映射在等价类上良定义. 线性由 \(\displaystyle\mathcal T\) 的线性逐点得到，故结论成立. 一般测度空间可能没有合适的非零有限测度集合用于常值测试，因此本章不无条件声称 \(\displaystyle\|\mathcal T_p\|=\|\mathcal T\|\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][Bochner\(\displaystyle L^1\) 积分算子]{ii04:l1-integral-operator}
+映射
+\[
+\mathcal I:L^1(\Omega;X)\to X,\;
+\mathcal I(f)=\int_\Omega f\,\mathrm{d}\mu
+\]
+是有界线性算子，并满足 \(\displaystyle\|\mathcal I\|\leqslant1\).
+\end{FAProposition}
+
+\begin{FAProof}
+线性来自\autoref{fa:BOCH-A01}. 由\autoref{fa:BOCH-C01}，
+\[
+\|\mathcal I(f)\|
+\leqslant
+\int_\Omega\|f\|\,\mathrm{d}\mu
+=
+\|f\|_{L^1}.
+\]
+故 \(\displaystyle\|\mathcal I\|\leqslant1\). 若 \(\displaystyle\mu\) 为零测度，则 \(\displaystyle\mathcal I=0\)，所以一般不能无条件把该不等式改成等号.\hfill\(\square\)
+\end{FAProof}
+
+\section{半群接口}\label{sec:ii04-semigroup-interface}
+\index{continuous Banach-valued curve@Banach值连续曲线}\index{semigroup orbit@半群轨道}
+
+\begin{FATheorem}[C][连续Banach值曲线的Bochner可积性]{ii04:continuous-curve-integrable}
+设 \(\displaystyle u:[a,b]\to X\) 在范数拓扑下连续. 则 \(\displaystyle u\) 强可测且属于 \(\displaystyle L^1([a,b];X)\)，并且
+\[
+\left\|\int_a^bu(t)\,\mathrm{d}t\right\|
+\leqslant
+(b-a)\sup_{t\in[a,b]}\|u(t)\|.
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+由紧区间上的一致连续性，对每个 \(\displaystyle n\) 可取分割
+\(\displaystyle a=t_{n,0}<t_{n,1}<\dots<t_{n,m_n}=b\)
+使只要 \(\displaystyle s,t\) 落在同一分割小区间，就有 \(\displaystyle\|u(s)-u(t)\|<\frac{1}{n}\). 在每个半开区间 \(\displaystyle[t_{n,j-1},t_{n,j})\) 取左端点值，并在 \(\displaystyle b\) 取 \(\displaystyle u(b)\)，得到有限值阶梯函数 \(\displaystyle s_n\). 则
+\(\displaystyle \sup_{t\in[a,b]}\|s_n(t)-u(t)\| \leqslant \frac{1}{n},\)
+故 \(\displaystyle u\) 强可测. 连续函数 \(\displaystyle t\mapsto\|u(t)\|\) 在紧区间上有界，设 \(\displaystyle M=\sup_{t\in[a,b]}\|u(t)\|<\infty\). 因而
+\[
+\int_a^b\|u(t)\|\,\mathrm{d}t
+\leqslant
+(b-a)M<\infty,
+\]
+由\autoref{fa:BOCH-A01}可知 \(\displaystyle u\) Bochner可积. 最后用\autoref{fa:BOCH-C01}得
+\[
+\left\|\int_a^bu(t)\,\mathrm{d}t\right\|
+\leqslant
+\int_a^b\|u(t)\|\,\mathrm{d}t
+\leqslant
+(b-a)M.\]\hfill\(\square\)
+
+
+\end{FAProof}
+
+\begin{FATheorem}[C][连续曲线的Bochner基本微积分定理]{ii04:continuous-curve-ftc}
+设 \(\displaystyle u:[a,b]\to X\) 范数连续，并定义
+\[
+F(t)=\int_a^tu(s)\,\mathrm{d}s.
+\]
+则 \(\displaystyle F:[a,b]\to X\) 范数连续，并且对每个 \(\displaystyle t\in(a,b)\) 有
+\(\displaystyle F'(t)=u(t).\)
+端点处分别存在相应的单侧导数.
+\end{FATheorem}
+
+\begin{FAProof}
+设 \(\displaystyle M=\sup_{s\in[a,b]}\|u(s)\|\). 对 \(\displaystyle r,t\in[a,b]\)，若 \(\displaystyle r<t\)，则由线性与限制积分公式，
+\[
+F(t)-F(r)=\int_r^tu(s)\,\mathrm{d}s,
+\]
+故\autoref{fa:BOCH-C01}给出
+\[
+\|F(t)-F(r)\|
+\leqslant
+\int_r^t\|u(s)\|\,\mathrm{d}s
+\leqslant
+M|t-r|.
+\]
+交换 \(\displaystyle r,t\) 得到一般情形，因此 \(\displaystyle F\) 甚至 Lipschitz 连续.
+
+固定 \(\displaystyle t\in(a,b)\). 若 \(\displaystyle h>0\) 且 \(\displaystyle t+h\leqslant b\)，则
+\[
+\frac{F(t+h)-F(t)}{h}-u(t)
+=
+\frac{1}{h}\int_t^{t+h}(u(s)-u(t))\,\mathrm{d}s,
+\]
+因此
+\[
+\left\|
+\frac{F(t+h)-F(t)}{h}-u(t)
+\right\|
+\leqslant
+\sup_{s\in[t,t+h]}\|u(s)-u(t)\|
+\longrightarrow0
+\]
+当 \(\displaystyle h\downarrow0\). 若 \(\displaystyle h<0\) 且 \(\displaystyle t+h\geqslant a\)，令 \(\displaystyle\delta=-h>0\). 则
+\[
+\frac{F(t+h)-F(t)}{h}-u(t)
+=
+\frac1\delta\int_{t-\delta}^{t}(u(s)-u(t))\,\mathrm{d}s,
+\]
+从而
+\[
+\left\|
+\frac{F(t+h)-F(t)}{h}-u(t)
+\right\|
+\leqslant
+\sup_{s\in[t+h,t]}\|u(s)-u(t)\|
+\longrightarrow0
+\]
+当 \(\displaystyle h\uparrow0\). 两侧极限相同，故 \(\displaystyle F'(t)=u(t)\). 在 \(\displaystyle a,b\) 只保留合法的一侧即得端点单侧导数.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[C][连续曲线与有界算子交换]{ii04:continuous-curve-operator}
+若 \(\displaystyle\mathcal T\in\mathcal B(X,Y)\) 且 \(\displaystyle u:[a,b]\to X\) 连续，则
+\[
+\mathcal T\left(\int_a^bu(t)\,\mathrm{d}t\right)
+=
+\int_a^b\mathcal Tu(t)\,\mathrm{d}t.
+\]
+\end{FACorollary}
+
+\begin{FAProof}
+由\autoref{ii04:continuous-curve-integrable}，\(\displaystyle u\) Bochner可积，再直接应用\autoref{fa:BOCH-B02}.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAApplication}[未来的半群轨道积分接口]\label{ii04:semigroup-orbit-interface}
+II-08 将定义强连续 \(\displaystyle C_0\) 半群. 一旦后续已经证明某轨道
+\(\displaystyle t\longmapsto\mathcal T(t)x\)
+在范数中连续，\autoref{ii04:continuous-curve-integrable}立即保证它在任意紧时间区间上Bochner可积，因此表达式
+\[
+\int_0^t\mathcal T(s)x\,\mathrm{d}s
+\]
+在本章建立的意义下合法. 本章只提供这一积分接口，不定义半群生成元，不使用Hille--Yosida、Lumer--Phillips、Laplace预解表示或Duhamel公式.
+\end{FAApplication}
+
+\begin{FARemark}[未来依赖边界]
+II-08 将使用本章的轨道积分处理半群；II-09 才进入预解与Laplace表示；II-11 才进入抽象 Cauchy 问题与Duhamel型公式；II-15 才进入演化 PDE. 这些后续结果在本章均只作预告，不参与任何证明.
+\end{FARemark}
+
+\subsection*{本章习题}\label{sec:ii04-exercises}
+
+\begin{FAExercise}[Banach值简单函数]{ex:ii04-01}
+设 \(\displaystyle s:\Omega\to X\) 只有有限个取值. 证明：\(\displaystyle s\) 可测当且仅当每个非空水平集 \(\displaystyle s^{-1}(\{x\})\) 可测；并把任意有限和表示改写成两两不交的规范表示.
+\end{FAExercise}
+
+\begin{FAExercise}[强可测推出范数可测]{ex:ii04-02}
+从强可测定义出发，显式构造一个与 \(\displaystyle f\) 几乎处处相等的处处Borel可测版本，并据此证明 \(\displaystyle\|f\|\) 可测. 不得直接引用Pettis可测性定理.
+\end{FAExercise}
+
+\begin{FAExercise}[强可测推出弱可测]{ex:ii04-03}
+对任意 \(\displaystyle x^*\in X^*\)，把简单逼近逐项标量化，完整证明 \(\displaystyle x^*\circ f\) 可测，并指出连续性在哪一步用于极限传递.
+\end{FAExercise}
+
+\begin{FAExercise}[本质可分值]{ex:ii04-04}
+给定强可测 \(\displaystyle f\) 的有限值简单逼近 \(\displaystyle s_n\)，证明 \(\displaystyle\overline{\operatorname{span}\bigcup_ns_n(\Omega)}\) 可分，并在共同零测集外包含 \(\displaystyle f\) 的全部取值.
+\end{FAExercise}
+
+\begin{FAExercise}[Borel加可分判据]{ex:ii04-05}
+重建\autoref{ii04:borel-separable-criterion}. 必须写出 \(\displaystyle\{k_n=k\}\) 的可测集合表达式，并解释为什么选择“达到最小值的最小指标”消除了并列最小值的不唯一性.
+\end{FAExercise}
+
+\begin{FAExercise}[强可测的几乎处处极限闭性]{ex:ii04-06}
+设 \(\displaystyle f_n\) 强可测且 \(\displaystyle f_n\to f\) 几乎处处. 用可数个本质可分值子空间的闭线性张成构造统一可分空间，再应用Borel加可分判据证明 \(\displaystyle f\) 强可测.
+\end{FAExercise}
+
+\begin{FAExercise}[弱可测不推出强可测]{ex:ii04-07}
+对 \(\displaystyle H=\ell^2([0,1])\) 与 \(\displaystyle f(t)=e_t\)，先证明每个 \(\displaystyle y\in H\) 只有可数支集，再证明 \(\displaystyle f\) 弱可测但不本质可分值. 最后验证 \(\displaystyle\|f(t)\|=1\) 并解释为什么弱可测加范数可积仍不足以得到Bochner可积.
+\end{FAExercise}
+
+\begin{FAExercise}[简单积分的表示无关性]{ex:ii04-08}
+给出同一可积简单函数的两种两两不交表示，对全部交集 \(\displaystyle E_j\cap F_k\) 作共同细分，逐项证明积分定义与表示无关. 必须处理零值项与无限测度水平集的边界.
+\end{FAExercise}
+
+\begin{FAExercise}[简单积分范数估计]{ex:ii04-09}
+从有限和三角不等式证明 \(\displaystyle\|\int_Es\,\mathrm{d}\mu\|\leqslant\int_E\|s\|\,\mathrm{d}\mu\)，并用共同细分证明简单积分线性与限制积分公式.
+\end{FAExercise}
+
+\begin{FAExercise}[强 \(\displaystyle L^1\) 简单逼近]{ex:ii04-10}
+从任意强可测简单逼近 \(\displaystyle u_n\to f\) 出发，构造正文集合 \(\displaystyle A_n\) 与 \(\displaystyle s_n=1_{A_n}u_n\). 证明 \(\displaystyle A_n\) 可测、\(\displaystyle s_n\to f\) 几乎处处、\(\displaystyle\|s_n-f\|\leqslant\|f\|\)，并由标量支配收敛得到 \(\displaystyle L^1\) 收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[Bochner积分的存在、唯一与基本代数的完备性角色]{ex:ii04-11}
+重建\autoref{fa:BOCH-A01}的 Cauchy 估计与逼近独立性证明，并精确指出若 \(\displaystyle X\) 只有赋范结构而不完备，证明在哪一步无法保证积分极限仍属于 \(\displaystyle X\).
+\end{FAExercise}
+
+\begin{FAExercise}[Bochner积分范数估计与 \(\displaystyle L^1\) 连续性]{ex:ii04-12}
+先对可积简单函数证明限制积分的范数估计，再通过 \(\displaystyle L^1\) 简单逼近得到\autoref{fa:BOCH-C01}. 随后证明积分映射 \(\displaystyle\mathcal I:L^1(\Omega;X)\to X\) 连续.
+\end{FAExercise}
+
+\begin{FAExercise}[有界算子与积分交换]{ex:ii04-13}
+设 \(\displaystyle\mathcal T\in\mathcal B(X,Y)\). 证明简单函数情形的交换公式，再用 \(\displaystyle L^1\) 逼近与 \(\displaystyle\mathcal T\) 的连续性证明\autoref{fa:BOCH-B02}.
+\end{FAExercise}
+
+\begin{FAExercise}[对偶标量化边界]{ex:ii04-14}
+把 \(\displaystyle x^*\in X^*\) 作为有界算子应用\autoref{fa:BOCH-B02}，推出对偶标量化公式. 解释为什么该方向不能反向用来在本章定义Pettis积分.
+\end{FAExercise}
+
+\begin{FAExercise}[Bochner支配收敛]{ex:ii04-15}
+完整重建\autoref{fa:BOCH-B01}. 必须分别证明极限的强可测性、\(\displaystyle\|f\|\leqslant g\)、各函数Bochner可积、\(\displaystyle\|f_n-f\|\leqslant2g\) 与积分的范数收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[Bochner\(\displaystyle L^p\) 范数]{ex:ii04-16}
+对 \(\displaystyle1\leqslant p<\infty\) 用标量Minkowski证明三角不等式，并单独处理 \(\displaystyle p=\infty\). 同时证明范数为零当且仅当函数几乎处处为零.
+\end{FAExercise}
+
+\begin{FAExercise}[有限 \(\displaystyle p\)的完备性]{ex:ii04-17}
+对 \(\displaystyle1\leqslant p<\infty\)，从 Cauchy 列选取几何快子列，构造 \(\displaystyle g_k\) 与 \(\displaystyle G=\sum_kg_k\)，用Minkowski与 Fatou 证明 \(\displaystyle G\in L^p\)，再完成点态Banach极限与全列 \(\displaystyle L^p\) 收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^\infty\)的完备性]{ex:ii04-18}
+从 \(\displaystyle L^\infty\)-Cauchy 列选取满足几何尾估计的子列，移除可数并零测集后证明点态 \(\displaystyle X\)-Cauchy，再证明所得极限与子列本质一致收敛，并由原列 Cauchy 性得到全列收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[有限 \(\displaystyle p\) 简单函数稠密与 \(\displaystyle L^\infty\) 边界]{ex:ii04-19}
+对 \(\displaystyle1\leqslant p<\infty\) 使用正文截断式简单逼近证明稠密性，并说明为什么该证明只给出 \(\displaystyle\|s_n-f\|_{L^p}\to0\)，不能自动推出 \(\displaystyle L^\infty\) 中的本质一致逼近.
+\end{FAExercise}
+
+\begin{FAExercise}[有界算子诱导的 \(\displaystyle L^p\) 映射]{ex:ii04-20}
+证明 \(\displaystyle\mathcal T_p\) 在几乎处处等价类上良定义，并对全部 \(\displaystyle1\leqslant p\leqslant\infty\) 证明 \(\displaystyle\|\mathcal T_p\|\leqslant\|\mathcal T\|\). 给出零测度空间作为不能无条件推出范数等号的边界例.
+\end{FAExercise}
+
+\begin{FAExercise}[连续曲线与基本微积分定理]{ex:ii04-21}
+从紧区间上的一致连续性构造有限值阶梯函数一致逼近，证明连续Banach值曲线Bochner可积. 再对 \(\displaystyle F(t)=\int_a^tu(s)\,\mathrm{d}s\) 分别处理 \(\displaystyle h>0\) 与 \(\displaystyle h<0\)，证明 \(\displaystyle F'(t)=u(t)\).
+\end{FAExercise}
+
+\begin{FAExercise}[半群接口与Pettis边界辨析]{ex:ii04-22}
+假设未来 II-08 已知轨道 \(\displaystyle t\mapsto\mathcal T(t)x\) 在范数中连续，只用本章结论说明 \(\displaystyle\int_0^t\mathcal T(s)x\,\mathrm{d}s\) 为什么合法. 同时列出本章不能调用的半群生成元、Hille--Yosida、Lumer--Phillips、Laplace预解、Duhamel与Pettis存在理论，并解释这些边界如何避免前向定理依赖.
+\end{FAExercise}

@@ -1,0 +1,282 @@
+\chapter{Morse 理论与 Conley 指标导论（高级选读）}\label{chap:III-11}
+\FAChapterOpening
+{本章只建立高级选读所需的最小入口：在有限维实内积空间中定义非退化临界点与 Morse 指标，建立实 Hilbert 空间中 Hessian 的有界自伴算子表示并说明 Fredholm 型 Hessian 算子不自动给有限 Morse 指标，再由 Hilbert 梯度写出局部负梯度流的能量恒等式. Conley 部分只给依赖边界，不建立 Conley 指标正式理论.}
+{本章的规范前置为 III-02、III-09 与 III-10. 本章实际复用 III-01 的 Fr\'echet 导数、链式法则与高阶导数接口\autoref{fa:DIFF-A01}、\autoref{fa:DIFF-A02}、\autoref{fa:DIFF-B02}，I-04 的 Hilbert Riesz 表示\autoref{fa:HIL-A02}，I-11 的 Hilbert 伴随\autoref{fa:ADJ-A02}，I-13 的 Fredholm 定义\autoref{i13:fredholm-definition}，以及 III-09 的临界点与局部 Picard/流构造\autoref{fa:DEF-B01}. III-10 只提供极小极大后续语境，不作为本章局部计算的证明前置.}
+{\begin{center}
+\begin{tikzpicture}[x=0.88cm,y=0.78cm]
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (iii02) at (0.8,3.3) {III-02};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (iii09) at (3.3,3.3) {III-09};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (iii10) at (5.8,3.3) {III-10};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (hil) at (8.3,3.3) {Riesz表示定理/Hilbert伴随};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (entry) at (4.5,1.7) {III-11 选读入口};
+\node[fa/node,draw,dashed,font=\scriptsize,inner xsep=3pt] (morse) at (1.5,0.0) {Morse理论高级结果（延后）};
+\node[fa/node,draw,dashed,font=\scriptsize,inner xsep=3pt] (conley) at (7.2,0.0) {Conley指标理论（延后）};
+\node[fa/node,draw,dashed,font=\scriptsize,inner xsep=3pt] (dyn) at (6.1,-1.5) {后续动力系统};
+\node[fa/node,draw,dashed,font=\scriptsize,inner xsep=3pt] (src) at (9.1,-1.5) {后续专门文献};
+\draw[fa/arrow] (iii02) -- (entry);
+\draw[fa/arrow] (iii09) -- (entry);
+\draw[fa/arrow] (iii10) -- (entry);
+\draw[fa/arrow] (hil) -- (entry);
+\draw[fa/arrow,dashed] (entry) -- (morse);
+\draw[fa/arrow,dashed] (entry) -- (conley);
+\draw[fa/arrow,dashed] (dyn) -- (conley);
+\draw[fa/arrow,dashed] (src) -- (conley);
+\end{tikzpicture}
+\end{center}}
+
+本章固定标量域为 \(\displaystyle\mathbb R\). 其角色不是继续扩张第三卷的 A/B/C 主线，而是把已经冻结的 \(\displaystyle C^2\) 微积分、临界点机制、Fredholm 术语与 Hilbert 梯度连接成一个可检查的 D 级入口. Morse理论高级结果与Conley指标正式理论在本章均保持延后；正文只建立不依赖这些后续专门理论的局部事实.
+
+\section{Morse 理论最小入口}\label{sec:iii11-morse-minimum-entry}
+\index{Morse index@Morse 指标}\index{critical point@临界点!Morse 入口}\index{Hessian@Hessian!有限维}
+
+设 \(\displaystyle E\) 为 \(\displaystyle n\)-维实内积空间，\(\displaystyle\Phi\in C^2(E;\mathbb R)\). 若 \(\displaystyle x_*\in E\) 满足 \(\displaystyle D\Phi(x_*)=0\)，则称 \(\displaystyle x_*\) 为临界点. 二阶 Fr\'echet 导数
+\(\displaystyle D^2\Phi(x_*)\in\mathcal B^2(E,\mathbb R)\)
+称为 \(\displaystyle\Phi\) 在 \(\displaystyle x_*\) 的 Hessian 双线性型.
+
+先补足本章实际需要的对称性，而不把它作为未证明的标准事实调用. 固定 \(\displaystyle h,k\in E\)，令
+\(\displaystyle g(s,t):=\Phi(x_*+sh+tk), \; (s,t)\in\mathbb R^2\).
+由 \(\displaystyle\Phi\in C^2\) 与链式法则，\(\displaystyle g\in C^2\). 对充分小的 \(\displaystyle r>0\)，记
+\(\displaystyle R_r := g(r,r)-g(r,0)-g(0,r)+g(0,0)\).
+先沿 \(\displaystyle s\) 再沿 \(\displaystyle t\) 使用一维微积分基本定理，得到
+\[
+R_r
+=
+\int_0^r\int_0^r
+\partial_t\partial_s g(s,t)
+\,\mathrm{d}t\,\mathrm{d}s.
+\]
+反过来先沿 \(\displaystyle t\) 再沿 \(\displaystyle s\)，得到
+\[
+R_r
+=
+\int_0^r\int_0^r
+\partial_s\partial_t g(s,t)
+\,\mathrm{d}s\,\mathrm{d}t.
+\]
+两式分别除以 \(\displaystyle r^2\)，再令 \(\displaystyle r\downarrow0\). 两个被积函数连续，因此两个矩形平均分别趋于其在 \(\displaystyle(0,0)\) 的值. 又
+\(\displaystyle \partial_t\partial_s g(0,0) = D^2\Phi(x_*)[k,h], \; \partial_s\partial_t g(0,0) = D^2\Phi(x_*)[h,k]\).
+故
+\(\displaystyle D^2\Phi(x_*)[h,k] = D^2\Phi(x_*)[k,h]\).
+这给出本章后续所需的 Hessian 对称性；证明只发生在二维仿射切片上，不调用任何 Morse 引理.
+
+由有限维 Riesz 同构，存在唯一 \(\displaystyle\mathcal H_*\in\mathcal B(E)\) 使
+\(\displaystyle D^2\Phi(x_*)[h,k] = \langle\mathcal H_*h,k\rangle_E\)
+对全部 \(\displaystyle h,k\in E\) 成立. 对称性给 \(\displaystyle\mathcal H_*\) 自伴. 因而有限维正交对角化给一组标准正交特征向量，且全部特征值为实数.
+
+本章采用如下有限维局部术语. 若 \(\displaystyle\mathcal H_*\) 可逆，则称 \(\displaystyle x_*\) 非退化；否则称退化. Morse 指标定义为 \(\displaystyle D^2\Phi(x_*)\) 在其上负定的线性子空间的最大维数. 若 \(\displaystyle q\) 是 \(\displaystyle\mathcal H_*\) 的负特征值按重数计数的个数，则负谱子空间 \(\displaystyle E_-\) 有 \(\displaystyle\dim E_-=q\)，并且 Hessian 在 \(\displaystyle E_-\setminus\{0\}\) 上严格为负. 反之，若 \(\displaystyle W\subseteq E\) 是负定子空间且 \(\displaystyle\dim W>q\)，则维数计数迫使 \(\displaystyle W\) 与非负谱子空间有非零交；该向量的 Hessian 二次型值非负，与负定性矛盾. 因而有限维 Morse 指标恰等于负特征值按重数计数. 这一结论只在本节的有限维背景中建立.
+
+\begin{FAExample}[有限维 Morse 二次模型]\label{iii11:finite-morse-model}
+固定 \(\displaystyle p,q\in\mathbb N_0\)，在 \(\displaystyle E=\mathbb R^p\times\mathbb R^q\) 上定义
+\(\displaystyle \Phi(x,y) := \frac{1}{2}\bigl(\|x\|^2-\|y\|^2\bigr)\).
+则 \(\displaystyle0\) 是唯一临界点，Hessian 的惯性指标为 \(\displaystyle(p,q)\)，Morse 指标为 \(\displaystyle q\).
+\end{FAExample}
+
+\begin{FAProof}
+对任意 \(\displaystyle(h,k)\in\mathbb R^p\times\mathbb R^q\)，由二次型导数公式，
+\(\displaystyle D\Phi(x,y)[h,k] = \langle x,h\rangle - \langle y,k\rangle\).
+因此 \(\displaystyle D\Phi(x,y)=0\) 对全部方向成立当且仅当 \(\displaystyle x=0\) 且 \(\displaystyle y=0\)，故 \(\displaystyle0\) 是唯一临界点. 再对两个方向 \(\displaystyle(h_1,k_1)\)、\(\displaystyle(h_2,k_2)\)，
+\(\displaystyle D^2\Phi(0)[(h_1,k_1),(h_2,k_2)] = \langle h_1,h_2\rangle - \langle k_1,k_2\rangle\).
+关联自伴算子为 \(\displaystyle\operatorname{diag}(\mathcal I_{\mathbb R^p},-\mathcal I_{\mathbb R^q})\). 它有 \(\displaystyle p\) 个正特征值与 \(\displaystyle q\) 个负特征值，并且没有零特征值. 因而 \(\displaystyle0\) 非退化，惯性指标为 \(\displaystyle(p,q)\)，有限维 Morse 指标等于 \(\displaystyle q\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[退化临界点：\(\displaystyle t^4\)]\label{iii11:degenerate-t4}
+令 \(\displaystyle\varphi:\mathbb R\to\mathbb R\) 为 \(\displaystyle\varphi(t)=t^4\). 则
+\(\displaystyle \varphi'(t)=4t^3, \; \varphi''(t)=12t^2\).
+所以 \(\displaystyle0\) 是临界点，但 \(\displaystyle D^2\varphi(0)=0\)，故它退化. 同时 \(\displaystyle0\) 又是严格局部极小值. 因而在退化点，二阶二次信息本身不足以恢复局部行为；例如 \(\displaystyle t^4\) 与 \(\displaystyle-t^4\) 在 \(\displaystyle0\) 具有同一个零 Hessian，却分别给严格局部极小值与严格局部极大值. 本章不由此引入有限维 Morse 引理.
+\end{FACounterexample}
+
+\section{Fredholm 型 Hessian 算子}\label{sec:iii11-fredholm-hessian}
+\index{Hessian@Hessian!Hilbert 算子表示}\index{Fredholm Hessian@Fredholm 型 Hessian 算子}\index{self-adjoint operator@自伴算子!Hessian}
+
+设 \(\displaystyle H\) 为实 Hilbert 空间，\(\displaystyle\Phi\in C^2(H;\mathbb R)\)，并令 \(\displaystyle u\) 为临界点. 与上一节相同的二维切片论证对任意 \(\displaystyle h,k\in H\) 都成立，因此 \(\displaystyle D^2\Phi(u)\) 是有界对称双线性型.
+
+现建立 Hessian 算子接口. 固定 \(\displaystyle h\in H\)，映射
+\(\displaystyle k\longmapsto D^2\Phi(u)[h,k]\)
+是连续线性泛函. 由\autoref{fa:HIL-A02}，存在唯一向量 \(\displaystyle\mathcal L_uh\in H\)，使
+\(\displaystyle D^2\Phi(u)[h,k] = \langle\mathcal L_uh,k\rangle_H\)
+对全部 \(\displaystyle k\in H\) 成立. Riesz 表示的唯一性与双线性性给 \(\displaystyle h\mapsto\mathcal L_uh\) 线性. 又由有界性，
+\[
+\|\mathcal L_uh\|_H
+=
+\sup_{\|k\|_H\leqslant1}
+|D^2\Phi(u)[h,k]|
+\leqslant
+\|D^2\Phi(u)\|\|h\|_H,
+\]
+故 \(\displaystyle\mathcal L_u\in\mathcal B(H)\). Hessian 对称性给
+\(\displaystyle \langle\mathcal L_uh,k\rangle_H = D^2\Phi(u)[h,k] = D^2\Phi(u)[k,h] = \langle h,\mathcal L_uk\rangle_H\).
+由\autoref{fa:ADJ-A02}的唯一性，\(\displaystyle\mathcal L_u^*=\mathcal L_u\). 因而每个实 Hilbert \(\displaystyle C^2\) 临界点都有唯一有界自伴 Hessian 算子表示.
+
+本节只采用面向读者的工作术语：若 \(\displaystyle\mathcal L_u\) 按\autoref{i13:fredholm-definition}是 Fredholm 算子，则称 \(\displaystyle u\) 具有 Fredholm 型 Hessian 算子；若 \(\displaystyle\mathcal L_u\) 可逆，则称 \(\displaystyle u\) 非退化. 这两个名称只服务于 III-11 的接口，不另立新的定理层级.
+
+\begin{FACounterexample}[Fredholm 型 Hessian 算子不推出有限 Morse 指标]\label{iii11:fredholm-minus-identity}
+设 \(\displaystyle H\) 为无限维实 Hilbert 空间，并取 \(\displaystyle\mathcal L=-\mathcal I_H\). 则 \(\displaystyle\mathcal L\) 有界、自伴、可逆且 Fredholm，但其整个空间都是负定方向空间. 因而 Fredholm 性本身不能推出有限 Morse 指标.
+\end{FACounterexample}
+
+\begin{FAProof}
+由 \(\displaystyle\mathcal L=-\mathcal I_H\) 直接得到 \(\displaystyle\|\mathcal L\|=1\) 且 \(\displaystyle\mathcal L^*=\mathcal L\). 逆算子为 \(\displaystyle-\mathcal I_H\)，所以 \(\displaystyle\ker\mathcal L=\{0\}\)、\(\displaystyle\operatorname{Ran}\mathcal L=H\)，值域闭且余维数为 \(\displaystyle0\). 因而\autoref{i13:fredholm-definition}给出 \(\displaystyle\mathcal L\) Fredholm. 另一方面，对每个 \(\displaystyle0\neq h\in H\)，
+\(\displaystyle \langle\mathcal Lh,h\rangle_H = -\|h\|_H^2 <0\).
+所以整个无限维空间 \(\displaystyle H\) 是负定子空间. 若把有限维定义中的“最大负定子空间维数”仅作为边界诊断延伸到此例，其值为无限，而不是有限. 因此自伴 Fredholm，甚至可逆，都不足以保证有限 Morse 指标；要得到有限指标还需额外谱或本质正性类假设，而这些条件尚未在本书冻结.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[延后结果：无限维 Morse 边界]
+本节没有建立无限维 Morse 引理、分裂引理、有限指标 Fredholm 型 Hessian 判据、谱流或任何临界群定理. 特别地，Morse理论高级结果仍是后续 D 级结果；本节只提供 Hessian 算子与 Fredholm 边界两个可复用接口.
+\end{FARemark}
+
+\section{梯度流}\label{sec:iii11-gradient-flow}
+\index{gradient flow@梯度流}\index{gradient@梯度!Hilbert}\index{energy identity@能量恒等式!梯度流}
+
+设 \(\displaystyle H\) 为实 Hilbert 空间，\(\displaystyle\Phi\in C^1(H;\mathbb R)\). 对每个 \(\displaystyle u\in H\)，\(\displaystyle\Phi'(u)\in H^*\). 由\autoref{fa:HIL-A02}，存在唯一 \(\displaystyle\nabla\Phi(u)\in H\) 使
+\(\displaystyle \Phi'(u)[v] = \langle\nabla\Phi(u),v\rangle_H\)
+对全部 \(\displaystyle v\in H\) 成立. 这是 Hilbert 空间特有的 Riesz 同构；在一般 Banach 空间中本章不写规范梯度向量.
+
+若映射 \(\displaystyle\nabla\Phi:H\to H\) 局部 Lipschitz，则向量场 \(\displaystyle G(u)=-\nabla\Phi(u)\) 局部 Lipschitz.\autoref{fa:DEF-B01}证明中的局部 Picard 压缩映射论证对这种向量场直接适用，所以对每个初值 \(\displaystyle u_0\in H\) 存在唯一局部经典轨道
+\(\displaystyle u'(t)=-\nabla\Phi(u(t)), \; u(0)=u_0\).
+这里不从局部 Lipschitz 性推出全局存在性；\autoref{fa:DEF-B01}的全局结论还使用有界向量场，当前一般梯度并无该假设.
+
+\begin{FARemark}[局部梯度流能量恒等式]\label{iii11:gradient-energy-local}
+在上述假设下，若经典轨道 \(\displaystyle u:I\to H\) 在区间 \(\displaystyle I\) 上存在，则对每个 \(\displaystyle t\in I\)，
+\[
+\frac{\mathrm{d}}{\mathrm{d}t}\Phi(u(t))
+=
+-\|\nabla\Phi(u(t))\|_H^2
+\leqslant0.
+\]
+若进一步 \(\displaystyle[0,\tau]\subseteq I\)，则
+\[
+\Phi(u(0))-\Phi(u(\tau))
+=
+\int_0^\tau\|\nabla\Phi(u(t))\|_H^2\,\mathrm{d}t.
+\]
+\end{FARemark}
+
+\begin{FAProof}
+由\autoref{fa:DIFF-A02}的链式法则与轨道方程，
+\[
+\begin{aligned}
+\displaystyle \frac{\mathrm{d}}{\mathrm{d}t}\Phi(u(t))
+&=\displaystyle \Phi'(u(t))[u'(t)]\\[6pt]
+&=\displaystyle \langle\nabla\Phi(u(t)),u'(t)\rangle_H\\
+&=-\displaystyle \|\nabla\Phi(u(t))\|_H^2.
+\end{aligned}
+\]
+右端非正，所以能量单调不增. 若轨道在 \(\displaystyle[0,\tau]\) 上存在，则上式连续，可在 \(\displaystyle[0,\tau]\) 上积分，得到
+\[
+\Phi(u(\tau))-\Phi(u(0))
+=
+-\int_0^\tau\|\nabla\Phi(u(t))\|_H^2\,\mathrm{d}t,
+\]
+移项即得所述恒等式.\hfill\(\square\)
+\end{FAProof}
+
+上述局部能量恒等式只在本章使用，不作为独立的 D 级结果，也不进入第三卷 A/B/C 主依赖链. 特别地，它不建立 Morse理论高级结果或Conley指标正式理论；这里只把 III-09 的常微分方程局部流构造与 Hilbert 空间中的 Riesz 同构接起来.
+
+静止点与临界点在这一框架中完全等价. 若常值轨道 \(\displaystyle u(t)\equiv u_*\) 满足负梯度方程，则 \(\displaystyle0=u'(t)=-\nabla\Phi(u_*)\)，故 \(\displaystyle\Phi'(u_*)=0\). 反之若 \(\displaystyle\Phi'(u_*)=0\)，Riesz 表示的唯一性给 \(\displaystyle\nabla\Phi(u_*)=0\)，于是常值轨道满足方程. 因而平衡点集恰是临界点集.
+
+\begin{FAExample}[有限维二次梯度流]\label{iii11:quadratic-gradient-flow}
+对第一节的
+\(\displaystyle \Phi(x,y) = \frac{1}{2}\bigl(\|x\|^2-\|y\|^2\bigr)\)
+有 \(\displaystyle\nabla\Phi(x,y)=(x,-y)\). 负梯度方程为
+\(\displaystyle x'(t)=-x(t), \; y'(t)=y(t)\),
+故显式解是
+\(\displaystyle x(t)=\mathrm{e}^{-t}x_0, \; y(t)=\mathrm{e}^t y_0\).
+在正向时间中，\(\displaystyle\mathbb R^p\times\{0\}\) 上的坐标衰减，\(\displaystyle\{0\}\times\mathbb R^q\) 上的非零坐标增长. 这里“稳定/不稳定方向”只描述该显式线性模型的坐标行为，不升级为稳定/不稳定流形定理.
+\end{FAExample}
+
+\begin{FARemark}[梯度流结论边界]
+能量单调性不自动推出全局轨道、有界轨道、预紧性、收敛到临界点或渐近临界点的唯一性. 这些结论需要额外假设. 本章不建立 ω 极限紧性、Morse--Smale 横截性或稳定/不稳定流形理论.
+\end{FARemark}
+
+\section{Conley 理论最小入口}\label{sec:iii11-conley-minimum-entry}
+\index{Conley index@Conley 指标}\index{isolating neighborhood@隔离邻域}\index{invariant set@不变集}
+
+Conley 理论的正式构造需要一个本书当前尚未闭合的动力系统层，并且专门来源尚未冻结. 因而本节只记录后续依赖图，不把任何箭头当作当前定理：
+\[
+\begin{aligned}
+&\text{连续/全局流}\longrightarrow\text{不变集}\\
+&\longrightarrow\text{孤立不变集 / 隔离邻域}\\
+&\longrightarrow\text{Conley 指标}.
+\end{aligned}
+\]
+这条链只说明未来理论的先后依赖. 当前正文不正式定义 Conley 指标正式理论，不构造指标对，不计算同伦型，也不证明延拓或不变性性质.
+
+\begin{FAExample}[仅作直观说明：\(\displaystyle x'=-x\) 在 \(\displaystyle\mathbb R\)]\label{iii11:conley-intuition}
+显式流为 \(\displaystyle\Theta_t(x)=\mathrm{e}^{-t}x\). 点 \(\displaystyle0\) 是平衡点；对 \(\displaystyle x_0\neq0\)，正向轨道 \(\displaystyle\mathrm{e}^{-t}x_0\) 趋于 \(\displaystyle0\)，而反向时间中其绝对值增长. 这个模型只帮助区分平衡点与邻近轨道行为. 本章不对 \(\displaystyle0\) 指派任何 Conley 指标同伦型.
+\end{FAExample}
+
+\begin{FARemark}[延后结果：Conley 指标正式理论]
+要把上一段直观升级为 Conley 正式理论，至少还需建立可供调用的全局/连续动力系统框架、不变集与隔离机制，并冻结专门文献. 这两类前置当前都不满足，所以 Conley指标正式理论保持延后；其任何不变性、延拓或指标对定理均不在本章使用.
+\end{FARemark}
+
+\section{范围边界}\label{sec:iii11-boundary-of-scope}
+\index{deferred result@后续结果!Morse/Conley}
+
+III-10 已经闭合第三卷的 A/B/C 主线. III-11 只在主线之后提供 D 级选读入口，因此本章不会反向成为第一至第三卷任一 A/B 定理的前置. 当前建立的有限维 Morse 入口、Hessian 算子接口与局部梯度流恒等式可以独立使用；Morse理论高级结果与Conley指标正式理论仍未在本书建立.
+
+以下内容全部保持延后结果：
+\begin{itemize}
+\item 无限维 Morse 引理；
+\item 分裂引理；
+\item 有限指标 Fredholm 型 Hessian 判据；
+\item Morse 不等式；
+\item Morse 复形与 Morse 同调；
+\item 稳定/不稳定流形定理；
+\item Morse--Smale 横截性；
+\item 谱流；
+\item Conley 指标的正式构造；
+\item 指标对；
+\item 延拓/不变性定理；
+\item Floer 理论.
+\end{itemize}
+
+本版同样不新增这些后续高级专题. 它们作为高级专题继续延后；其中与 Morse/Conley 相关的后续高级专题只是 III-11 的后续链接，不是当前章节的证明依赖. 因而本章结束后，第三卷的正式章节序列到 III-11 为止，下一步应是全书依赖与证明审计，而不是继续添加新的正式章节.
+
+\subsection*{本章习题}\label{sec:iii11-exercises}
+
+\begin{FAExercise}[有限维 Hessian 对称性]{ex:iii11-01}
+设 \(\displaystyle E\) 为有限维实内积空间，\(\displaystyle\Phi\in C^2(E;\mathbb R)\). 对固定 \(\displaystyle h,k\in E\)，重做本节二维切片论证，严格从矩形增量推出 \(\displaystyle D^2\Phi(x)[h,k]=D^2\Phi(x)[k,h]\).
+\end{FAExercise}
+
+\begin{FAExercise}[非退化性与 Morse 指标]{ex:iii11-02}
+设 Hessian 算子在某标准正交基下为对角矩阵 \(\displaystyle\operatorname{diag}(\lambda_1,\dots,\lambda_n)\). 用特征值判定非退化性，并证明有限维 Morse 指标等于负 \(\displaystyle\lambda_j\) 按重数计数.
+\end{FAExercise}
+
+\begin{FAExercise}[Morse 二次模型]{ex:iii11-03}
+对 \(\displaystyle\Phi(x,y)=\frac{1}{2}(\|x\|^2-\|y\|^2)\) 完整重建唯一临界点、Hessian 算子、惯性指标与 Morse 指标的计算.
+\end{FAExercise}
+
+\begin{FAExercise}[退化 \(\displaystyle t^4\)]{ex:iii11-04}
+计算 \(\displaystyle\varphi(t)=t^4\) 在 \(\displaystyle0\) 的一阶、二阶导数，证明该点退化但为严格局部极小值. 再比较 \(\displaystyle-t^4\)，说明零 Hessian 为什么不能决定退化临界点的局部极小值/极大行为.
+\end{FAExercise}
+
+\begin{FAExercise}[二次型惯性指标]{ex:iii11-05}
+对 \(\displaystyle Q(z)=\frac{1}{2}\sum_{j=1}^n\lambda_jz_j^2\)，分别讨论零、正与负特征值. 给出非退化的必要充分条件，并计算每种惯性指标的有限维 Morse 指标.
+\end{FAExercise}
+
+\begin{FAExercise}[Hilbert Hessian 算子表示]{ex:iii11-06}
+设 \(\displaystyle H\) 为实 Hilbert 空间，\(\displaystyle\Phi\in C^2(H;\mathbb R)\). 从\autoref{fa:HIL-A02}出发构造 \(\displaystyle\mathcal L_u\)，证明线性性、有界性、唯一性与自伴性. 不得把 Hessian 对称性当作未证明黑箱；先引用本章二维切片论证.
+\end{FAExercise}
+
+\begin{FAExercise}[Fredholm 与无限维负方向]{ex:iii11-07}
+设 \(\displaystyle H\) 无限维，\(\displaystyle\mathcal L=-\mathcal I_H\). 用\autoref{i13:fredholm-definition}验证 \(\displaystyle\mathcal L\) Fredholm，并证明 \(\displaystyle H\) 本身是负定子空间. 解释为什么这否定“自伴 Fredholm 自动给有限 Morse 指标”.
+\end{FAExercise}
+
+\begin{FAExercise}[梯度流能量恒等式]{ex:iii11-08}
+设 \(\displaystyle\nabla\Phi\) 局部 Lipschitz，且经典轨道满足 \(\displaystyle u'=-\nabla\Phi(u)\). 只使用 Riesz 恒等式与\autoref{fa:DIFF-A02}，完整证明 \(\displaystyle\frac{\mathrm{d}}{\mathrm{d}t}\Phi(u(t))=-\|\nabla\Phi(u(t))\|^2\).
+\end{FAExercise}
+
+\begin{FAExercise}[二次梯度流]{ex:iii11-09}
+求解\autoref{iii11:quadratic-gradient-flow}的线性常微分方程，并直接核验能量恒等式. 分别描述 \(\displaystyle y_0=0\) 与 \(\displaystyle y_0\neq0\) 时正向时间行为，但不得调用不变流形定理.
+\end{FAExercise}
+
+\begin{FAExercise}[临界点与平衡点]{ex:iii11-10}
+证明负梯度流的静止点当且仅当是 \(\displaystyle\Phi\) 的临界点. 若轨道在 \(\displaystyle[0,\tau]\) 上存在，再从微分恒等式推出积分能量下降公式.
+\end{FAExercise}
+
+\begin{FAExercise}[Conley 前置条件审计]{ex:iii11-11}
+把本节后续依赖图写成四个依次的层级，并逐项指出当前书中尚缺的动力系统或专门文献输入. 不得定义 Conley 指标，也不得计算 \(\displaystyle x'=-x\) 的 Conley 同伦型.
+\end{FAExercise}
+
+\begin{FAExercise}[已建立结果与延后结果分类]{ex:iii11-12}
+把下列陈述分类为本章已建立或后续延后，并给出一句依赖理由：有限维二次模型的 Morse 指标、Hilbert Hessian 自伴表示、Fredholm 性推出有限 Morse 指标、梯度流能量恒等式、全局收敛到临界点、Morse 引理、Morse 不等式、Conley 指标构造、延拓定理、Floer 理论.
+\end{FAExercise}

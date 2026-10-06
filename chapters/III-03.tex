@@ -1,0 +1,589 @@
+\chapter{非线性紧映射与 Banach/Brouwer/Schauder 不动点}\label{chap:III-03}
+\FAChapterOpening
+{分层区分度量压缩映射与拓扑不动点：复用 Banach 压缩原理得到唯一性、Picard 迭代与误差估计；以 Sperner 引理证明 Brouwer 不动点定理；再以紧像的非线性有限维逼近与 Brouwer 定理证明 Schauder 不动点定理，并应用于非线性积分方程.}
+{I-02 的完备度量工具、Banach 压缩映射原理\autoref{fa:FP-A01}与 Arzelà--Ascoli 定理\autoref{fa:FND-B04}；I-13 的相对紧性与紧算子接口\autoref{fa:COMP-A01}.}
+{\begin{center}
+\begin{tikzpicture}[x=0.90cm,y=0.92cm]
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (fpa) at (0,1.2) {Banach压缩原理};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (fpb) at (4.5,1.2) {不动点应用模板};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (fpc) at (9.0,1.2) {Picard误差估计};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (simp) at (0,-0.2) {有限单纯形};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (sperner) at (4.5,-0.2) {Sperner引理};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (brouwer) at (9.0,-0.2) {Brouwer不动点};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (comp) at (0,-1.6) {紧算子};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (approx) at (4.5,-1.6) {紧像有限维逼近};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (schauder) at (9.0,-1.6) {Schauder不动点};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (aa) at (4.5,-3.0) {Arzelà--Ascoli定理};
+\node[fa/node,font=\scriptsize,inner xsep=4pt] (inteq) at (9.0,-3.0) {积分方程};
+\draw[fa/arrow] (fpa) -- (fpb);
+\draw[fa/arrow] (fpb) -- (fpc);
+\draw[fa/arrow] (simp) -- (sperner);
+\draw[fa/arrow] (sperner) -- (brouwer);
+\draw[fa/arrow] (comp) -- (approx);
+\draw[fa/arrow] (brouwer) -- (schauder);
+\draw[fa/arrow] (approx) -- (schauder);
+\draw[fa/arrow] (aa) -- (inteq);
+\draw[fa/arrow] (schauder) -- (inteq);
+\end{tikzpicture}
+\end{center}}
+
+本章有三种彼此不同的不动点机制. Banach 压缩映射使用完备度量结构与定量常数 \(\displaystyle q<1\)，给出存在性、唯一性、构造性的 Picard 迭代与误差估计. Brouwer 使用有限维实空间中的紧凸集的拓扑结构，只给出存在性. Schauder 在实或复 Banach 空间中使用非空闭有界凸不变集与非线性紧映射，通过有限维逼近和 Brouwer 得到存在性；它本身既不给唯一性，也不给 Picard 迭代收敛. 本章不会把这三种机制混成同一证明，也不使用 III-04 的度或延拓理论.
+
+\section{Banach 压缩映射回顾}\label{sec:iii03-banach}
+\index{fixed point@不动点!Banach 压缩映射}\index{Picard iteration@Picard迭代!误差估计}
+
+I-02 已经在完整度量空间上证明\autoref{fa:FP-A01}. 本节不重证该 A 级本体，而把它转化为 Banach 空间中最常用的不变闭集模板，并补全典型误差估计.
+
+\begin{FATheorem}[B][Banach 不动点应用模板]{fa:FP-B01}
+设 \(\displaystyle X\) 为实或复 Banach 空间，\(\displaystyle C\subseteq X\) 非空且闭，\(\displaystyle \mathcal T:C\to C\)，并且存在 \(\displaystyle q\in[0,1)\) 使
+\(\displaystyle \|\mathcal T x-\mathcal T y\| \leqslant q\|x-y\|, \; x,y\in C.\)
+则存在唯一 \(\displaystyle x_*\in C\) 满足 \(\displaystyle \mathcal T x_*=x_*\). 对任意 \(\displaystyle x_0\in C\)，递归定义的 Picard 迭代 \(\displaystyle x_{n+1}=\mathcal T x_n\) 对全部 \(\displaystyle n\geqslant0\) 合法，并且 \(\displaystyle x_n\to x_*\).
+\end{FATheorem}
+
+\begin{FAProof}
+Banach 空间 \(\displaystyle X\) 完备，而 \(\displaystyle C\) 闭，所以由\autoref{fa:FND-C02}（i），\(\displaystyle C\) 取继承的范数度量后完备. 条件 \(\displaystyle \mathcal T:C\to C\) 保证每次迭代都仍落在 \(\displaystyle C\) 中，压缩不等式给出压缩常数 \(\displaystyle q<1\). 因而把\autoref{fa:FP-A01}应用于完备度量空间 \(\displaystyle C\)，立即得到不动点的存在唯一性与任意初值的 Picard 迭代收敛. 这里闭性只负责完备性，自映射条件只负责不变性，而 \(\displaystyle q<1\) 的压缩性是唯一性的来源.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FATheorem}[C][Picard 迭代误差估计]{fa:FP-C01}
+在\autoref{fa:FP-B01}的假设下，对 \(\displaystyle n\geqslant0\)，有先验估计
+\(\displaystyle \|x_n-x_*\| \leqslant q^n\|x_0-x_*\|,\)
+以及可计算的先验估计
+\(\displaystyle \|x_n-x_*\| \leqslant \frac{q^n}{1-q}\|x_1-x_0\|.\)
+对 \(\displaystyle n\geqslant1\)，还有后验估计
+\(\displaystyle \|x_n-x_*\| \leqslant \frac{q}{1-q}\|x_n-x_{n-1}\|.\)
+\end{FATheorem}
+
+\begin{FAProof}
+由 \(\displaystyle \mathcal T x_*=x_*\) 与压缩不等式，归纳得到
+\(\displaystyle \|x_n-x_*\| = \|\mathcal T^n x_0-\mathcal T^n x_*\| \leqslant q^n\|x_0-x_*\|,\)
+这给出第一条估计.
+
+另一方面，对每个 \(\displaystyle k\geqslant0\)，反复使用压缩不等式得
+\(\displaystyle \|x_{k+1}-x_k\| \leqslant q^k\|x_1-x_0\|.\)
+固定 \(\displaystyle n\geqslant0\). 因为 \(\displaystyle x_m\to x_*\)，对 \(\displaystyle m>n\) 有
+\[
+\|x_m-x_n\|
+\leqslant
+\sum_{k=n}^{m-1}\|x_{k+1}-x_k\|
+\leqslant
+\|x_1-x_0\|\sum_{k=n}^{m-1}q^k.
+\]
+令 \(\displaystyle m\to\infty\) 得
+\(\displaystyle \|x_n-x_*\| \leqslant \frac{q^n}{1-q}\|x_1-x_0\|.\)
+最后固定 \(\displaystyle n\geqslant1\). 对 \(\displaystyle k\geqslant n\)，由
+\(\displaystyle \|x_{k+1}-x_k\| \leqslant q^{k-n+1}\|x_n-x_{n-1}\|\)
+以及同一望远镜求和估计，令末端趋于 \(\displaystyle x_*\)，得到
+\[
+\|x_n-x_*\|
+\leqslant
+\sum_{k=n}^{\infty}q^{k-n+1}\|x_n-x_{n-1}\|
+=
+\frac{q}{1-q}\|x_n-x_{n-1}\|.
+\]
+三条估计均只来自压缩不等式与几何级数.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FARemark}[度量不动点与拓扑不动点的分界]
+Banach 压缩映射的输入包含完备度量结构与定量的 \(\displaystyle q<1\)，所以它能给出唯一性、迭代与误差控制. Brouwer 与 Schauder 不要求压缩常数，其结论只保证至少一个不动点；证明依赖有限维紧凸集的拓扑结构、紧像逼近与不变自映射，而不是上述度量压缩映射机制. 因而后两者不能自动推出唯一性或 Picard 迭代收敛.
+\end{FARemark}
+
+\section{非线性紧映射}\label{sec:iii03-compact-maps}
+\index{compact map@紧映射!非线性}
+
+以下设 \(\displaystyle X,Y\) 为实或复 Banach 空间，\(\displaystyle D\subseteq X\). I-13 的\autoref{fa:COMP-A01}只给出紧线性算子的典型接口；本节保留“有界集合的像相对紧”这一紧性模式，但不把线性条件带入非线性定义.
+
+\begin{FADefinition}[B][非线性紧映射]{iii03:compact-nonlinear-map}
+连续映射 \(\displaystyle \mathcal T:D\to Y\) 称为非线性紧映射，如果对 \(\displaystyle D\) 中每个有界集 \(\displaystyle B\)，\(\displaystyle \mathcal T(B)\) 在 \(\displaystyle Y\) 中相对紧. 这里紧映射不表示定义域 \(\displaystyle D\) 紧，也不要求 \(\displaystyle \mathcal T\) 线性. 若 \(\displaystyle D\) 本身有界，则该条件等价于 \(\displaystyle \mathcal T(D)\) 相对紧.
+\end{FADefinition}
+
+\begin{FAProof}
+若 \(\displaystyle \mathcal T\) 把每个有界子集送到相对紧集，则取 \(\displaystyle B=D\) 即得 \(\displaystyle \mathcal T(D)\) 相对紧. 反之，若 \(\displaystyle \overline{\mathcal T(D)}\) 紧，则对任意 \(\displaystyle B\subseteq D\)，有 \(\displaystyle \overline{\mathcal T(B)}\subseteq\overline{\mathcal T(D)}\). 左侧是紧度量空间的闭子集，故紧. 因而 \(\displaystyle \mathcal T(B)\) 相对紧.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FAProposition}[C][非线性紧映射的安全复合规则]{iii03:compact-composition}
+设 \(\displaystyle \mathcal T:D\to Y\) 紧.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 若 \(\displaystyle \mathcal S:Y\to Z\) 连续，则 \(\displaystyle \mathcal S\circ\mathcal T:D\to Z\) 紧.
+\item 若 \(\displaystyle E_0\subseteq E\)，\(\displaystyle \mathcal R:E_0\to D\) 连续，并且 \(\displaystyle \mathcal R\) 把 \(\displaystyle E_0\) 的有界集送到 \(\displaystyle D\) 的有界集，则 \(\displaystyle \mathcal T\circ\mathcal R:E_0\to Y\) 紧.
+\item 若 \(\displaystyle \mathcal T(D)\) 包含于有限维子空间 \(\displaystyle F\subseteq Y\)，且 \(\displaystyle \mathcal T\) 把有界集送到有界集，则 \(\displaystyle \mathcal T\) 紧.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+对（i），任取有界 \(\displaystyle B\subseteq D\). 集合 \(\displaystyle K=\overline{\mathcal T(B)}\) 紧，而连续像 \(\displaystyle \mathcal S(K)\) 紧. 因为 \(\displaystyle (\mathcal S\circ\mathcal T)(B)\subseteq\mathcal S(K)\)，其闭包紧. 连续性由复合连续性得到.
+
+对（ii），有界 \(\displaystyle B\subseteq E_0\) 的像 \(\displaystyle \mathcal R(B)\) 有界，所以 \(\displaystyle \mathcal T(\mathcal R(B))\) 相对紧；连续性同样由复合连续性得到.
+
+对（iii），有界 \(\displaystyle B\subseteq D\) 的像 \(\displaystyle \mathcal T(B)\) 是有限维空间 \(\displaystyle F\) 中的有界集. 它的闭包在 \(\displaystyle F\) 中闭且有界，故由有限维 Heine--Borel 定理紧. 因而 \(\displaystyle \mathcal T(B)\) 相对紧.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FAWarning}[紧像不推出连续性]
+“每个有界集的像相对紧”本身不推出映射连续，因此连续性已经作为\autoref{iii03:compact-nonlinear-map}的定义组成部分. 同样，任意连续映射也不必把有界集送到有界集，所以有限维值域只有在有界像假设实际成立时才能直接给出紧性.
+\end{FAWarning}
+
+\begin{FALemma}[B][紧像的非线性有限维逼近]{fa:COMP-MAP-B01}
+设 \(\displaystyle X\) 为赋范空间，\(\displaystyle K\subseteq X\) 非空且紧. 对每个 \(\displaystyle \varepsilon>0\)，存在有限点 \(\displaystyle y_1,\dots,y_m\in K\) 与连续映射
+\(\displaystyle \mathcal P_{\varepsilon}:K\to\operatorname{conv}\{y_1,\dots,y_m\}\)
+使
+\(\displaystyle \|\mathcal P_{\varepsilon}(y)-y\|<\varepsilon, \; y\in K.\)
+\end{FALemma}
+
+\begin{FAProof}
+固定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle 0<\delta<\varepsilon\). 由 \(\displaystyle K\) 紧，特别地它总有界，所以存在有限 \(\displaystyle \frac{\delta}{2}\)-网 \(\displaystyle y_1,\dots,y_m\in K\). 对 \(\displaystyle y\in K\) 定义
+\(\displaystyle w_i(y) := \max\{0,\delta-\|y-y_i\|\}, \; 1\leqslant i\leqslant m.\)
+每个 \(\displaystyle w_i\) 连续且非负. 对任意 \(\displaystyle y\in K\)，存在某个 \(\displaystyle i\) 使 \(\displaystyle \|y-y_i\|<\frac{\delta}{2}\)，于是 \(\displaystyle w_i(y)>\frac{\delta}{2}>0\). 因而
+\[
+W(y):=\sum_{j=1}^{m}w_j(y)>0
+\]
+处处成立. 令
+\[
+\lambda_i(y)
+:=
+\frac{w_i(y)}{W(y)},
+\quad
+\mathcal P_{\varepsilon}(y)
+:=
+\sum_{i=1}^{m}\lambda_i(y)y_i.
+\]
+分母处处为正，所以每个 \(\displaystyle \lambda_i\) 连续；同时 \(\displaystyle \lambda_i(y)\geqslant0\) 且 \(\displaystyle \sum_i\lambda_i(y)=1\). 因而 \(\displaystyle \mathcal P_{\varepsilon}\) 连续，且其像位于有限点的凸包中.
+
+若 \(\displaystyle \lambda_i(y)>0\)，则 \(\displaystyle w_i(y)>0\)，从而 \(\displaystyle \|y-y_i\|<\delta\). 因此
+\[
+\begin{aligned}
+\|\mathcal P_{\varepsilon}(y)-y\|
+&=
+\left\|\sum_{i=1}^{m}\lambda_i(y)(y_i-y)\right\|\\
+&\leqslant
+\sum_{i=1}^{m}\lambda_i(y)\|y_i-y\|
+<
+\delta\sum_{i=1}^{m}\lambda_i(y)
+=
+\delta
+<
+\varepsilon.
+\end{aligned}
+\]
+这是非线性重心逼近；整个构造没有假设 \(\displaystyle X\) 具有逼近性质，也没有构造有界线性有限秩算子.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FAWarning}[逼近性质的边界]
+\autoref{fa:COMP-MAP-B01}只在给定紧集合上构造非线性连续映射 \(\displaystyle \mathcal P_{\varepsilon}\). 它绝不意味着一般 Banach 空间存在有限秩有界线性算子在紧集合上一致逼近恒等映射，也不意味着一般非线性紧映射是有限秩线性映射的范数极限.
+\end{FAWarning}
+
+\section{Brouwer 不动点定理}\label{sec:iii03-brouwer}
+\index{Sperner lemma@Sperner引理}\index{Brouwer fixed point theorem@Brouwer不动点定理}
+
+本节只在有限维实赋范空间中讨论核心拓扑论证. 对有限维复赋范空间，若需要使用 Brouwer，只把它视为底层实有限维赋范空间；本节不涉及复定向或复度.
+
+\begin{FADefinition}[B][单纯形三角剖分与 Sperner 标号]{iii03:sperner-language}
+对 \(\displaystyle n\geqslant1\)，记标准单纯形
+\[
+\Delta^n
+=
+\left\{x\in\mathbb R^{n+1}:x_i\geqslant0,\ \sum_{i=0}^{n}x_i=1\right\}.
+\]
+有限三角剖分是由有限多个单纯形构成的分割，使任意两个单纯形的交为空或为二者的共同面，且其并为 \(\displaystyle \Delta^n\). 三角剖分的零维单纯形称为顶点. 对 \(\displaystyle J\subseteq\{0,\dots,n\}\)，由坐标顶点 \(\displaystyle e_j\)（\(\displaystyle j\in J\)）张成的单纯形称为面. 标号是把每个三角剖分顶点 \(\displaystyle v\) 指派一个标号 \(\displaystyle \ell(v)\in\{0,\dots,n\}\). 若 \(\displaystyle v\) 位于指标集 \(\displaystyle J\) 张成的面，则要求 \(\displaystyle \ell(v)\in J\)，称为 Sperner 边界规则. 一个 \(\displaystyle n\)-单纯形若其 \(\displaystyle n+1\) 个顶点的标号恰为 \(\displaystyle0,\dots,n\)，则称完全标号. 位于 \(\displaystyle \partial\Delta^n\) 的余维一面称为边界面.
+\end{FADefinition}
+
+\begin{FATheorem}[B][Sperner 引理]{fa:SPERNER-B01}
+对 \(\displaystyle n\geqslant1\)，标准单纯形 \(\displaystyle \Delta^n\) 的任意有限三角剖分与任意满足 Sperner 边界规则的标号，都含有至少一个完全标号 \(\displaystyle n\)-单纯形. 更强地，完全标号 \(\displaystyle n\)-单纯形的数目为奇数.
+\end{FATheorem}
+
+\begin{FAProof}
+对 \(\displaystyle n\) 归纳. 当 \(\displaystyle n=1\) 时，\(\displaystyle \Delta^1\) 是线段. 把其三角剖分顶点按顺序写为 \(\displaystyle v_0,\dots,v_N\)，其中边界标号规则强迫 \(\displaystyle \ell(v_0)=0\)、\(\displaystyle \ell(v_N)=1\). 每当相邻标号不同就得到一个完全标号边. 从起点标号 \(\displaystyle0\) 到终点标号 \(\displaystyle1\)，标号改变的次数必为奇数，因此完全标号边有奇数个.
+
+现设结论对维数 \(\displaystyle n-1\) 成立. 在 \(\displaystyle \Delta^n\) 的三角剖分中，把一个余维一单纯形称为特殊面，如果它的顶点标号恰为 \(\displaystyle0,\dots,n-1\). 先看边界特殊面. 若一个边界面位于遗漏坐标 \(\displaystyle j<n\) 的大面中，则 Sperner 边界规则禁止标号 \(\displaystyle j\)，所以它不可能是特殊面. 因而边界特殊面只能位于特殊面
+\(\displaystyle F_n:=\{x\in\Delta^n:x_n=0\},\)
+而三角剖分限制到 \(\displaystyle F_n\) 后给出一个 \(\displaystyle (n-1)\)-维三角剖分，且标号仍满足 Sperner 标号规则. 由归纳假设，\(\displaystyle F_n\) 中的完全标号 \(\displaystyle (n-1)\)-单纯形，也就是边界特殊面，数目为奇数.
+
+现在计数关联对
+\[
+I
+:=
+\{(\sigma,\tau):\sigma\text{ 为 }n\text{-单纯形},\ \tau\text{ 为 }\sigma\text{ 的特殊余维一面}\}.
+\]
+每个内部特殊面恰属于两个 \(\displaystyle n\)-单纯形，每个边界特殊面恰属于一个，所以
+\(\displaystyle |I| \equiv \#\{\text{边界特殊面}\} \equiv 1 \pmod 2.\)
+另一方面，对一个固定 \(\displaystyle n\)-单纯形 \(\displaystyle \sigma\)，若其标号包含 \(\displaystyle0,\dots,n\) 各一次，则 \(\displaystyle \sigma\) 完全标号，并且恰有一个特殊面，即删去标号 \(\displaystyle n\) 的顶点. 若 \(\displaystyle \sigma\) 不是完全标号，但仍含有全部标号 \(\displaystyle0,\dots,n-1\)，则它的 \(\displaystyle n+1\) 个顶点中某个标号 \(\displaystyle0,\dots,n-1\) 重复一次且标号 \(\displaystyle n\) 缺失，此时恰有两个特殊面；其余情形没有特殊面. 因而
+\(\displaystyle |I| \equiv \#\{\text{完全标号 }n\text{-单纯形}\} \pmod 2.\)
+结合前式，完全标号 \(\displaystyle n\)-单纯形的数目为奇数，特别地非零. 归纳完成. 论证只用了有限单纯形组合学与奇偶计数，没有使用同调、度或定向理论.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FALemma}[C][网格直径趋零的三角剖分]{iii03:mesh-to-zero}
+对 \(\displaystyle n\geqslant1\)，存在 \(\displaystyle \Delta^n\) 的有限三角剖分 \(\displaystyle \mathcal T_m\). 对任意有限三角剖分 \(\displaystyle\mathcal T\)，记其网格直径为
+\[
+\mu(\mathcal T)
+:=
+\max_{\sigma\in\mathcal T}\operatorname{diam}(\sigma).
+\]
+则 \(\displaystyle\mu(\mathcal T_m)\to0\).
+\end{FALemma}
+
+\begin{FAProof}
+从 \(\displaystyle \Delta^n\) 开始反复作重心剖分. 对任意维数 \(\displaystyle r\leqslant n\) 的单纯形 \(\displaystyle \sigma\)，其一次重心剖分中的任一最高维单纯形的顶点是一条非空面链 \(\displaystyle F_0\subsetneq\dots\subsetneq F_r\) 的重心. 若 \(\displaystyle A\subsetneq B\) 是两组顶点，\(\displaystyle |A|=p\)、\(\displaystyle |B|=q\)，则
+\(\displaystyle b_B = \frac{p}{q}b_A + \frac{q-p}{q}b_{B\setminus A},\)
+所以
+\[
+\|b_B-b_A\|
+\leqslant
+\frac{q-p}{q}\operatorname{diam}(\sigma)
+\leqslant
+\frac{r}{r+1}\operatorname{diam}(\sigma)
+\leqslant
+\frac{n}{n+1}\operatorname{diam}(\sigma).
+\]
+因此每次细分都把网格直径至少乘以 \(\displaystyle \frac{n}{n+1}<1\). 第 \(\displaystyle m\) 次细分满足
+\[
+\mu(\mathcal T_m)
+\leqslant
+\left(\frac{n}{n+1}\right)^m\operatorname{diam}(\Delta^n)
+\longrightarrow0.
+\]
+这正是后续 Brouwer 证明所需的网格直径收缩依据，不需要单纯形逼近定理.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FATheorem}[A][Brouwer 不动点定理]{fa:BROUWER-A01}
+设 \(\displaystyle E\) 为有限维实赋范空间，\(\displaystyle C\subseteq E\) 非空紧凸，且 \(\displaystyle \mathcal T:C\to C\) 连续. 则存在 \(\displaystyle x\in C\) 使 \(\displaystyle \mathcal T x=x\).
+\end{FATheorem}
+
+\begin{FAProof}
+先证明单纯形形式. 若 \(\displaystyle n=0\)，\(\displaystyle \Delta^0\) 只有一个点，结论平凡. 设 \(\displaystyle n\geqslant1\)，并令 \(\displaystyle F:\Delta^n\to\Delta^n\) 连续. 取\autoref{iii03:mesh-to-zero}给出的三角剖分 \(\displaystyle \mathcal T_m\). 对 \(\displaystyle \mathcal T_m\) 的任一顶点 \(\displaystyle v\)，若 \(\displaystyle F(v)=v\)，已经得到不动点. 否则
+\[
+\sum_{i=0}^{n}\bigl(v_i-F_i(v)\bigr)=0
+\]
+且这些差不全为零，因此至少有某个 \(\displaystyle i\) 满足 \(\displaystyle v_i>F_i(v)\). 选取这样的一个 \(\displaystyle i\) 作为 \(\displaystyle v\) 的标号. 若 \(\displaystyle v_i=0\)，则 \(\displaystyle F_i(v)\geqslant0\)，不可能有 \(\displaystyle v_i>F_i(v)\). 因而被选中的 \(\displaystyle i\) 必满足 \(\displaystyle v_i>0\)，所以它属于 \(\displaystyle v\) 所在最小面的指标集. 于是标号满足 Sperner 边界规则.
+
+由\autoref{fa:SPERNER-B01}，每个 \(\displaystyle \mathcal T_m\) 含完全标号 \(\displaystyle n\)-单纯形 \(\displaystyle \sigma_m\). 对每个 \(\displaystyle i\in\{0,\dots,n\}\)，记 \(\displaystyle v_m^{(i)}\) 为 \(\displaystyle \sigma_m\) 中标号 \(\displaystyle i\) 的顶点. 由网格直径趋于零，
+\[
+\max_{0\leqslant i,j\leqslant n}\|v_m^{(i)}-v_m^{(j)}\|
+\longrightarrow0.
+\]
+\(\displaystyle \Delta^n\) 的紧性给出一个子列，使 \(\displaystyle v_m^{(0)}\to x\in\Delta^n\). 沿同一子列，对每个 \(\displaystyle i\) 都有 \(\displaystyle v_m^{(i)}\to x\). 标号 \(\displaystyle i\) 的定义给出
+\(\displaystyle \bigl(v_m^{(i)}\bigr)_i > F_i\bigl(v_m^{(i)}\bigr).\)
+取极限并用 \(\displaystyle F\) 连续性得
+\(\displaystyle x_i\geqslant F_i(x), \; 0\leqslant i\leqslant n.\)
+但 \(\displaystyle \sum_i x_i=\sum_iF_i(x)=1\)，所以每个上述不等式都必须是等式. 因而 \(\displaystyle F(x)=x\). 单纯形形式已证.
+
+现在证明定理的一般紧凸形式. 若仿射包 \(\displaystyle A=\operatorname{aff}(C)\) 为零维，则 \(\displaystyle C\) 为单点集，结论平凡. 以下设 \(\displaystyle d=\dim A\geqslant1\). 固定 \(\displaystyle a_0\in A\)，把 \(\displaystyle A-a_0\) 视为 \(\displaystyle d\)-维实向量空间，并在其上任选欧几里得内积. 有限维范数等价性保证原范数拓扑与欧几里得拓扑相同，因此紧性与连续性不变.
+
+先建立欧几里得最近点投影. 对任意 \(\displaystyle z\in A\)，取 \(\displaystyle c_0\in C\). 因为任何 距离极小化序列最终都可限制在闭有界集合
+\(\displaystyle C\cap\overline B(z,\|z-c_0\|+1),\)
+该集合在有限维空间中紧，所以存在 \(\displaystyle p\in C\) 使 \(\displaystyle \|z-p\|=\operatorname{dist}(z,C)\). 若 \(\displaystyle p,q\in C\) 都是极小点，凸性给出 \(\displaystyle \frac{p+q}{2}\in C\)，而平行四边形恒等式给出
+\[
+\left\|z-\frac{p+q}{2}\right\|^2
++
+\frac{1}{4}\|p-q\|^2
+=
+\frac{1}{2}\|z-p\|^2+
+\frac{1}{2}\|z-q\|^2.
+\]
+若 \(\displaystyle p\neq q\)，左侧第一项会严格小于最小距离的平方，矛盾. 因而极小点唯一，记为 \(\displaystyle P_Cz\).
+
+令 \(\displaystyle p=P_Cx\). 对任意 \(\displaystyle c\in C\)，路径 \(\displaystyle p+t(c-p)\in C\)（\(\displaystyle0\leqslant t\leqslant1\)）在 \(\displaystyle t=0\) 处使距离平方最小，所以右导数非负，即
+\(\displaystyle \langle x-p,c-p\rangle\leqslant0.\)
+对 \(\displaystyle p=P_Cx\)、\(\displaystyle q=P_Cy\)，分别取 \(\displaystyle c=q\) 与 \(\displaystyle c=p\)，得到
+\(\displaystyle \|p-q\|^2 \leqslant \langle x-y,p-q\rangle \leqslant \|x-y\|\|p-q\|.\)
+所以 \(\displaystyle \|P_Cx-P_Cy\|\leqslant\|x-y\|\)，即 \(\displaystyle P_C:A\to C\) 为 1-Lipschitz，特别地连续.
+
+因为 \(\displaystyle C\) 紧，所以有界. 选取正交归一坐标使 \(\displaystyle C\subseteq[-R,R]^d\) 对某个 \(\displaystyle R>0\) 成立. 令 \(\displaystyle v_0=(-R,\dots,-R)\)，并对 \(\displaystyle1\leqslant j\leqslant d\) 令
+\(\displaystyle v_j=v_0+2dR e_j.\)
+则单纯形 \(\displaystyle S=\operatorname{conv}\{v_0,\dots,v_d\}\) 包含整个立方体 \(\displaystyle[-R,R]^d\)：若 \(\displaystyle x\) 在该立方体中，则
+\[
+x=v_0+\sum_{j=1}^{d}\alpha_j(2dR e_j),
+\quad
+\alpha_j=\frac{x_j+R}{2dR}\geqslant0,
+\quad
+\sum_j\alpha_j\leqslant1.
+\]
+因此 \(\displaystyle C\subseteq S\).
+
+定义
+\(\displaystyle G:S\to S, \; G(z):=\mathcal T(P_Cz).\)
+它连续，且 \(\displaystyle G(S)\subseteq C\subseteq S\). 由已证的单纯形 Brouwer 定理，存在 \(\displaystyle z\in S\) 使 \(\displaystyle G(z)=z\). 因 \(\displaystyle G(z)\in C\)，有 \(\displaystyle z\in C\)，于是 \(\displaystyle P_Cz=z\). 因而
+\(\displaystyle \mathcal Tz = \mathcal T(P_Cz) = G(z) = z.\)
+一般有限维紧凸形式得证. 全部证明没有使用 Brouwer 度、无收缩定理或区域不变性定理.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FACounterexample}[不变性失效]\label{iii03:no-invariance-fixed-point}
+令 \(\displaystyle C=[0,1]\)，\(\displaystyle \mathcal T:C\to\mathbb R\) 定义为 \(\displaystyle \mathcal T(x)=x+1\). 该映射连续，但 \(\displaystyle \mathcal T(C)\nsubseteq C\)，并且在 \(\displaystyle C\) 中不存在 \(\displaystyle x=\mathcal T(x)\). 这不是 Brouwer 定理的反例，而是说明不变自映射假设不能删除.
+\end{FACounterexample}
+
+\newpage
+\section{Schauder 不动点定理}\label{sec:iii03-schauder}
+\index{Schauder fixed point theorem@Schauder不动点定理}\index{compact map@紧映射!Schauder}
+
+\begin{FATheorem}[A][Schauder 不动点定理]{fa:SCHAUDER-A01}
+设 \(\displaystyle X\) 为实或复 Banach 空间，\(\displaystyle C\subseteq X\) 非空闭有界凸，\(\displaystyle \mathcal T:C\to C\) 连续且紧. 则存在 \(\displaystyle x\in C\) 使 \(\displaystyle \mathcal T x=x\).
+\end{FATheorem}
+
+\begin{FAProof}
+令
+\(\displaystyle K:=\overline{\mathcal T(C)}.\)
+因为 \(\displaystyle C\) 有界且 \(\displaystyle \mathcal T\) 紧，\(\displaystyle K\) 紧. 又因 \(\displaystyle \mathcal T(C)\subseteq C\) 且 \(\displaystyle C\) 闭，有 \(\displaystyle K\subseteq C\). 取任意 \(\displaystyle \varepsilon_n\downarrow0\). 对每个 \(\displaystyle n\)，把\autoref{fa:COMP-MAP-B01}应用于 \(\displaystyle K\)，得到有限点
+\(\displaystyle y_{n,1},\dots,y_{n,m_n}\in K\)
+以及连续映射
+\[
+\mathcal P_n:K\to C_n,
+\quad
+C_n:=\operatorname{conv}\{y_{n,1},\dots,y_{n,m_n}\},
+\]
+满足
+\[
+\sup_{y\in K}\|\mathcal P_n(y)-y\|<\varepsilon_n.
+\]
+每个 \(\displaystyle y_{n,j}\in K\subseteq C\)，而 \(\displaystyle C\) 凸，所以 \(\displaystyle C_n\subseteq C\). 集合 \(\displaystyle C_n\) 非空且凸，并位于有限点的实仿射张成空间中. 若 \(\displaystyle X\) 为复 Banach 空间，这里把该有限维张成空间视为底层实有限维空间. 由于 \(\displaystyle C_n\) 是有限维单纯形的连续仿射像，它紧.
+
+定义
+\(\displaystyle \mathcal T_n := \mathcal P_n\circ\mathcal T|_{C_n} : C_n\to C_n.\)
+这里 \(\displaystyle \mathcal T(C_n)\subseteq\mathcal T(C)\subseteq K\)，所以复合良定义；两层映射都连续，所以 \(\displaystyle \mathcal T_n\) 连续. 由\autoref{fa:BROUWER-A01}，存在 \(\displaystyle x_n\in C_n\) 使
+\(\displaystyle x_n = \mathcal P_n(\mathcal T x_n).\)
+因此
+\(\displaystyle \|x_n-\mathcal T x_n\| < \varepsilon_n.\)
+这给出近似不动点序列.
+
+又因为 \(\displaystyle \mathcal T x_n\in\mathcal T(C)\subseteq K\) 且 \(\displaystyle K\) 紧，存在子列 \(\displaystyle (x_{n_j})\) 与 \(\displaystyle y\in K\) 使
+\(\displaystyle \mathcal T x_{n_j}\to y.\)
+由 \(\displaystyle \|x_{n_j}-\mathcal T x_{n_j}\|<\varepsilon_{n_j}\to0\)，同时有 \(\displaystyle x_{n_j}\to y\). 因 \(\displaystyle y\in K\subseteq C\)，可对 \(\displaystyle \mathcal T\) 使用连续性，得到
+\(\displaystyle \mathcal T x_{n_j}\to\mathcal T y.\)
+同一序列已经趋于 \(\displaystyle y\)，故极限唯一性给出 \(\displaystyle \mathcal T y=y\). 这就得到所需不动点.
+
+证明只使用紧像、非线性有限维逼近与 Brouwer 定理；没有假设 \(\displaystyle C\) 紧，没有使用一般逼近性质、弱紧性、Eberlein--Šmulian、Leray--Schauder 度或 III-04 延拓.\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FACounterexample}[缺紧性时不动点可失效]\label{iii03:no-compact-fixed-point}
+取 \(\displaystyle X=\ell^1\) 及其闭单位球
+\(\displaystyle C:=\{x\in\ell^1:\|x\|_1\leqslant1\}.\)
+定义
+\(\displaystyle \mathcal T(x_1,x_2,\dots) := (1-\|x\|_1,x_1,x_2,\dots).\)
+对 \(\displaystyle x\in C\)，有 \(\displaystyle1-\|x\|_1\geqslant0\)，并且
+\(\displaystyle \|\mathcal T x\|_1 = 1-\|x\|_1+\|x\|_1 = 1,\)
+所以 \(\displaystyle \mathcal T(C)\subseteq C\). 对 \(\displaystyle x,y\in C\)，
+\[
+\|\mathcal T x-\mathcal T y\|_1
+\leqslant
+\bigl|\|x\|_1-\|y\|_1\bigr|+\|x-y\|_1
+\leqslant
+2\|x-y\|_1,
+\]
+故 \(\displaystyle \mathcal T\) 连续.
+
+若 \(\displaystyle x=\mathcal T x\)，则 \(\displaystyle x_{n+1}=x_n\) 对全部 \(\displaystyle n\geqslant1\) 成立，所以所有坐标相等. 属于 \(\displaystyle \ell^1\) 强迫这个常数为 \(\displaystyle0\)，于是 \(\displaystyle x=0\). 但第一坐标方程又要求 \(\displaystyle x_1=1-\|x\|_1=1\)，矛盾. 因而没有不动点.
+
+最后，对标准基 \(\displaystyle e_n\)，有 \(\displaystyle \mathcal T(e_n)=e_{n+1}\). 序列 \(\displaystyle (e_{n+1})\) 中任意不同两项距离均为 \(\displaystyle2\)，所以不存在范数收敛子列. 因而 \(\displaystyle \mathcal T\) 不紧. 这个例子说明闭、有界、凸与不变性单独不足以保证不动点，Schauder 中的紧性不能删除.
+\end{FACounterexample}
+
+\begin{FARemark}[Kakutani 边界]
+Kakutani 类型理论处理多值映射，并需要上半连续性与凸紧值 等额外结构. 这些内容属于更高阶不动点理论；本章不建立 Kakutani 定理、集合值映射的度或微分包含.
+\end{FARemark}
+
+\section{应用}\label{sec:iii03-applications}
+\index{nonlinear integral equation@非线性积分方程}\index{Arzela-Ascoli theorem@Arzelà--Ascoli定理!非线性积分算子}
+
+\subsection{非线性积分方程的 Schauder 存在性}
+
+令
+\[
+X=C([0,1];\mathbb R),
+\quad
+\|u\|_\infty:=\max_{x\in[0,1]}|u(x)|.
+\]
+取 \(\displaystyle g\in C([0,1];\mathbb R)\)、\(\displaystyle k\in C([0,1]^2;\mathbb R)\)、连续 \(\displaystyle \varphi:\mathbb R\to\mathbb R\) 与 \(\displaystyle \lambda\in\mathbb R\). 定义
+\[
+(\mathcal T u)(x)
+:=
+g(x)
++
+\lambda\int_0^1k(x,t)\varphi(u(t))\,\mathrm{d}t.
+\]
+固定 \(\displaystyle R>0\)，令
+\[
+C_R:=\{u\in X:\|u\|_\infty\leqslant R\},
+\quad
+M_R:=\max_{|s|\leqslant R}|\varphi(s)|.
+\]
+假设不变球不等式
+\(\displaystyle \|g\|_\infty + |\lambda|\|k\|_\infty M_R \leqslant R.\)
+
+\begin{FAApplication}[Schauder 给出的非线性积分方程解]
+在上述假设下，积分方程
+\[
+u(x)
+=
+g(x)
++
+\lambda\int_0^1k(x,t)\varphi(u(t))\,\mathrm{d}t
+\]
+至少有一个 \(\displaystyle u\in C_R\) 的连续解.
+\end{FAApplication}
+
+\begin{FAProof}
+首先 \(\displaystyle C_R\) 非空，因为 \(\displaystyle0\in C_R\)；它是范数-闭、有界且凸.
+
+若 \(\displaystyle u\in C_R\)，则 \(\displaystyle |u(t)|\leqslant R\)，所以 \(\displaystyle |\varphi(u(t))|\leqslant M_R\). 被积函数 \(\displaystyle t\mapsto k(x,t)\varphi(u(t))\) 连续，且由参数 \(\displaystyle x\) 的连续性可知 \(\displaystyle \mathcal T u\in C([0,1])\)，故 \(\displaystyle \mathcal T\) 良定义. 并且
+\[
+\begin{aligned}
+|\mathcal T u(x)|
+&\leqslant
+\|g\|_\infty
++
+|\lambda|\int_0^1|k(x,t)|\,|\varphi(u(t))|\,\mathrm{d}t\\
+&\leqslant
+\|g\|_\infty
++
+|\lambda|\|k\|_\infty M_R
+\leqslant
+R.
+\end{aligned}
+\]
+所以 \(\displaystyle \mathcal T(C_R)\subseteq C_R\).
+
+再证连续性. 若 \(\displaystyle u_n\to u\) 于上确界范数且 \(\displaystyle u_n,u\in C_R\)，则 \(\displaystyle \varphi\) 在紧区间 \(\displaystyle[-R,R]\) 上一致地连续，所以
+\[
+\sup_{t\in[0,1]}|\varphi(u_n(t))-\varphi(u(t))|
+\longrightarrow0.
+\]
+于是
+\[
+\|\mathcal T u_n-\mathcal T u\|_\infty
+\leqslant
+|\lambda|\|k\|_\infty
+\sup_{t\in[0,1]}|\varphi(u_n(t))-\varphi(u(t))|
+\longrightarrow0.
+\]
+故 \(\displaystyle \mathcal T:C_R\to C_R\) 连续.
+
+最后证紧性. 不变-球估计已经给出 \(\displaystyle \mathcal T(C_R)\) 一致有界. 对 \(\displaystyle u\in C_R\) 与 \(\displaystyle x,y\in[0,1]\)，有
+\[
+\begin{aligned}
+|\mathcal T u(x)-\mathcal T u(y)|
+&\leqslant
+|g(x)-g(y)|\\
+&\mathrel{+}
+|\lambda|M_R\int_0^1|k(x,t)-k(y,t)|\,\mathrm{d}t.
+\end{aligned}
+\]
+函数 \(\displaystyle g\) 在 \(\displaystyle[0,1]\) 上一致地连续，而 \(\displaystyle k\) 在紧集合 \(\displaystyle[0,1]^2\) 上一致地连续. 因此当 \(\displaystyle |x-y|\to0\) 时，右侧关于 \(\displaystyle u\in C_R\) 一致地趋于 \(\displaystyle0\). 所以 \(\displaystyle \mathcal T(C_R)\) 等度连续. 由\autoref{fa:FND-B04}，\(\displaystyle \mathcal T(C_R)\) 在上确界范数下相对紧. 因而 \(\displaystyle \mathcal T\) 是非线性紧映射.
+
+现在 \(\displaystyle C_R\) 非空闭有界凸，\(\displaystyle \mathcal T:C_R\to C_R\) 连续紧. 由\autoref{fa:SCHAUDER-A01}，存在至少一个 \(\displaystyle u\in C_R\) 满足 \(\displaystyle \mathcal T u=u\)，即得到积分方程的连续解.\hfill\(\square\)
+
+\end{FAProof}
+
+\subsection{更强的压缩映射唯一性层}
+
+若进一步假设 \(\displaystyle \varphi\) 在 \(\displaystyle[-R,R]\) 上 Lipschitz，常数为 \(\displaystyle L\)，并且
+\(\displaystyle q:=|\lambda|L\|k\|_\infty<1,\)
+则对 \(\displaystyle u,v\in C_R\)，
+\[
+\begin{aligned}
+\|\mathcal T u-\mathcal T v\|_\infty
+&\leqslant
+|\lambda|\|k\|_\infty
+\sup_{t\in[0,1]}|\varphi(u(t))-\varphi(v(t))|\\
+&\leqslant
+q\|u-v\|_\infty.
+\end{aligned}
+\]
+因此 \(\displaystyle \mathcal T\) 是 \(\displaystyle C_R\) 上压缩映射. 由\autoref{fa:FP-B01}，解不仅存在而且唯一，任意 \(\displaystyle u_0\in C_R\) 的 Picard 迭代 \(\displaystyle u_{n+1}=\mathcal T u_n\) 收敛到该解；\autoref{fa:FP-C01}进一步给出先验与后验误差估计. 这层结论使用了比 Schauder 存在性更强的 Lipschitz 小量条件，不能从 Schauder 存在性本身推出唯一性.
+
+\begin{FARemark}[III-04 前向接口]
+下一章将正式建立 Brouwer 度、Leray--Schauder 度、同伦与延拓. 本章只把 Brouwer/Schauder 不动点存在性作为前向接口，不使用任何度、延拓或后续变分/单调算子理论.
+\end{FARemark}
+
+\subsection{习题}
+
+\begin{FAExercise}[闭子集完备性与 Banach 不动点应用模板]{ex:iii03-01}
+设 \(\displaystyle X\) 为 Banach 空间，\(\displaystyle C\subseteq X\) 非空闭，\(\displaystyle \mathcal T:C\to C\) 为压缩映射. 用\autoref{fa:FND-C02}与\autoref{fa:FP-A01}重建\autoref{fa:FP-B01}，并分别指出闭性、不变性与压缩性各自承担什么逻辑角色.
+\end{FAExercise}
+
+\begin{FAExercise}[Picard 唯一性]{ex:iii03-02}
+设 \(\displaystyle x_*\) 与 \(\displaystyle y_*\) 都是同一 \(\displaystyle q\)-压缩映射的不动点. 只用一行范数估计证明 \(\displaystyle x_*=y_*\)，并解释为什么同一论证不能应用于一般 Brouwer 或 Schauder 自映射.
+\end{FAExercise}
+
+\begin{FAExercise}[Picard 迭代的可计算先验误差估计]{ex:iii03-03}
+从 \(\displaystyle \|x_{n+1}-x_n\|\leqslant q^n\|x_1-x_0\|\) 出发，不引用\autoref{fa:FP-C01}的证明，推导 \(\displaystyle \|x_n-x_*\|\leqslant q^n(1-q)^{-1}\|x_1-x_0\|\).
+\end{FAExercise}
+
+\begin{FAExercise}[Picard 迭代的后验误差估计]{ex:iii03-04}
+证明对 \(\displaystyle n\geqslant1\)，有 \(\displaystyle \|x_n-x_*\|\leqslant q(1-q)^{-1}\|x_n-x_{n-1}\|\)，并说明该估计为什么可以作为停止准则的理论依据.
+\end{FAExercise}
+
+\begin{FAExercise}[非线性紧映射的定义边界]{ex:iii03-05}
+分别判断并证明：非线性紧映射是否要求定义域紧；是否要求线性；是否可从有界-像紧性自动推出连续性. 对最后一个问题给出明确理由，而不是把连续性当成推论.
+\end{FAExercise}
+
+\begin{FAExercise}[有限维值域的非线性紧性]{ex:iii03-06}
+设 \(\displaystyle \mathcal T:D\to Y\) 连续，且其值域包含于有限维子空间 \(\displaystyle F\subseteq Y\). 假设 \(\displaystyle \mathcal T\) 把 \(\displaystyle D\) 的有界集合送到有界集合. 证明 \(\displaystyle \mathcal T\) 紧，并指出有界像假设不能从连续性单独得到.
+\end{FAExercise}
+
+\begin{FAExercise}[紧集合的有限网]{ex:iii03-07}
+设 \(\displaystyle K\) 为紧度量空间. 对任意 \(\displaystyle \delta>0\)，直接由紧性构造有限 \(\displaystyle \delta\)-网，并把结论应用于\autoref{fa:COMP-MAP-B01}的第一步.
+\end{FAExercise}
+
+\begin{FAExercise}[重心权重]{ex:iii03-08}
+取有限 \(\displaystyle \frac{\delta}{2}\)-网 \(\displaystyle y_1,\dots,y_m\)，定义 \(\displaystyle w_i(y)=\max\{0,\delta-\|y-y_i\|\}\). 证明分母 \(\displaystyle \sum_iw_i(y)\) 处处严格为正，并验证归一化权重的连续性、非负性与单位分解恒等式.
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建紧像的非线性有限维逼近]{ex:iii03-09}
+不用线性投影或逼近性质，完整重建\autoref{fa:COMP-MAP-B01}，并证明 \(\displaystyle \sup_{y\in K}\|\mathcal P_{\varepsilon}(y)-y\|<\varepsilon\).
+\end{FAExercise}
+
+\begin{FAExercise}[Sperner的 \(\displaystyle n=1\) 情形]{ex:iii03-10}
+把 \(\displaystyle \Delta^1\) 的三角剖分顶点按顺序排列，证明满足边界标号规则的标号中完全标号边的数目为奇数.
+\end{FAExercise}
+
+\begin{FAExercise}[Sperner 奇偶性归纳]{ex:iii03-11}
+选定一个特殊边界面 \(\displaystyle F_n\)，定义特殊余维一面，分别从边界关联计数与逐单纯形计数计算奇偶性，完成\autoref{fa:SPERNER-B01}的归纳步骤.
+\end{FAExercise}
+
+\begin{FAExercise}[重心剖分的网格直径收缩]{ex:iii03-12}
+对嵌套面 \(\displaystyle A\subsetneq B\) 的重心推导 \(\displaystyle \|b_B-b_A\|\leqslant n(n+1)^{-1}\operatorname{diam}(\sigma)\)，并据此证明反复重心剖分的网格直径趋于零.
+\end{FAExercise}
+
+\begin{FAExercise}[Brouwer 标号边界规则]{ex:iii03-13}
+设 \(\displaystyle F:\Delta^n\to\Delta^n\) 连续. 在没有顶点不动点时，用 \(\displaystyle v_i>F_i(v)\) 选择标号. 证明至少有一个标号可选，并严格证明若 \(\displaystyle v_i=0\) 则标号 \(\displaystyle i\) 不可选.
+\end{FAExercise}
+
+\begin{FAExercise}[完整单纯形 Brouwer]{ex:iii03-14}
+从 Sperner 引理与网格直径趋零的三角剖分出发，构造完全标号单纯形 \(\displaystyle \sigma_m\)，抽取同极限顶点，并从 \(\displaystyle x_i\geqslant F_i(x)\) 与坐标和等于 \(\displaystyle1\) 推出 \(\displaystyle F(x)=x\). 不得使用度或无收缩定理.
+\end{FAExercise}
+
+\begin{FAExercise}[有限维紧凸推广]{ex:iii03-15}
+在有限维欧几里得仿射包上证明最近点投影存在性、唯一性与 1-Lipschitz 估计，再构造一个包含给定有界集合的充分大单纯形，完整推出\autoref{fa:BROUWER-A01}的紧凸形式.
+\end{FAExercise}
+
+\begin{FAExercise}[不变性失效]{ex:iii03-16}
+分析 \(\displaystyle C=[0,1]\)、\(\displaystyle \mathcal T(x)=x+1\). 证明它连续且在 \(\displaystyle C\) 中无不动点，并准确说明为什么它只是自映射假设失效，而不是 Brouwer 定理的反例.
+\end{FAExercise}
+
+\begin{FAExercise}[Schauder 近似不动点]{ex:iii03-17}
+从 \(\displaystyle K=\overline{\mathcal T(C)}\) 与\autoref{fa:COMP-MAP-B01}构造 \(\displaystyle C_n\)、\(\displaystyle \mathcal T_n\) 与 \(\displaystyle x_n\)，证明 \(\displaystyle \|x_n-\mathcal T x_n\|<\varepsilon_n\). 特别验证 \(\displaystyle C_n\) 非空、紧、凸且有限维.
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建 Schauder 不动点定理]{ex:iii03-18}
+从习题\ref{ex:iii03-17}的近似不动点出发，使用 \(\displaystyle K\) 的紧性 抽取子列，证明 \(\displaystyle \mathcal T x_{n_j}\to y\)、\(\displaystyle x_{n_j}\to y\)、\(\displaystyle \mathcal T y=y\). 不得使用弱紧性或 Leray--Schauder 度.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle \ell^1\) 非紧反例]{ex:iii03-19}
+对\autoref{iii03:no-compact-fixed-point}的映射逐项验证自映射、连续性、无不动点性与非紧性. 非紧性必须使用 \(\displaystyle \mathcal T(e_n)=e_{n+1}\) 的分离序列.
+\end{FAExercise}
+
+\begin{FAExercise}[积分算子的连续性与不变球]{ex:iii03-20}
+在本节非线性积分算子的假设下，证明 \(\displaystyle C_R\) 闭有界凸，证明 \(\displaystyle \mathcal T(C_R)\subseteq C_R\)，并用 \(\displaystyle \varphi\) 在 \(\displaystyle[-R,R]\) 上一致连续性证明 \(\displaystyle \mathcal T\) 的上确界范数连续性.
+\end{FAExercise}
+
+\begin{FAExercise}[Arzelà--Ascoli 与 Schauder 存在性]{ex:iii03-21}
+对 \(\displaystyle \mathcal T(C_R)\) 写出统一的有界性与等度连续估计，用\autoref{fa:FND-B04}证明相对紧性，并由\autoref{fa:SCHAUDER-A01}得到至少一个连续解.
+\end{FAExercise}
+
+\begin{FAExercise}[三种机制与后续度边界]{ex:iii03-22}
+比较 Banach 压缩映射、Brouwer 与 Schauder 的假设与结论：分别标明完备性、紧性、凸性、不变性、压缩常数、唯一性与迭代保证是否出现. 最后只说明 III-04 将引入度与延拓；不得调用任何 III-04 形式化定理.
+\end{FAExercise}

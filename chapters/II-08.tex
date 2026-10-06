@@ -1,0 +1,787 @@
+\chapter{\texorpdfstring{\(\displaystyle C_0\)}{C0} 半群与生成元}\label{chap:II-08}
+\FAChapterOpening
+{建立强连续 \(\displaystyle C_0\) 半群、生成元及增长界；从强连续性推出局部一致有界、轨道全局连续与生成元轨道微分；证明生成元稠密定义且闭，并由 Bochner--Laplace 积分得到右半平面预解公式；最后完整构造平移半群与 Dirichlet 热半群两个规范模型.}
+{II-04 的 Bochner 积分与连续曲线基本微积分接口；II-05 的闭算子与无界预解接口；I-12 的预解集、谱与预解算子术语.}
+{\begin{center}
+\begin{tikzpicture}[x=0.78cm,y=1.02cm]
+\node[fa/node] (boch) at (0,1.35) {Bochner积分};
+\node[fa/node] (unb) at (0,-1.35) {无界算子基础};
+\node[fa/node] (a01) at (3.6,0) {\(\displaystyle C_0\)半群/生成元};
+\node[fa/node] (b01) at (7.1,1.55) {局部一致有界};
+\node[fa/node] (c01) at (10.6,1.55) {指数增长界};
+\node[fa/node] (b02) at (7.1,-1.55) {轨道微分};
+\node[fa/node] (a02) at (10.6,-1.55) {生成元闭稠密/预解};
+\draw[fa/arrow] (boch) -- (a01);
+\draw[fa/arrow] (unb) -- (a01);
+\draw[fa/arrow] (a01) -- (b01);
+\draw[fa/arrow] (b01) -- (c01);
+\draw[fa/arrow] (a01) -- (b02);
+\draw[fa/arrow] (b02) -- (a02);
+\draw[fa/arrow] (boch) to[bend left=18] (a02);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle X\) 为复 Banach 空间，\(\displaystyle\mathcal B(X)\) 为 \(\displaystyle X\) 上的有界线性算子空间，\(\displaystyle\mathcal I\) 为恒等算子. 复标量域使 Laplace 参数 \(\displaystyle\lambda\in\mathbb C\) 与 I-12、II-05 的预解语言直接兼容；实 Banach 空间的复化不在本章展开. Banach 完备性将在一致有界性原理的定义域、Bochner 积分极限以及无限区间 Laplace 积分的 Cauchy 极限中显式使用. 半群的局部一致有界性的证明还会显式调用 I-08 的\autoref{fa:UBP-A01}作为辅助既有结果；它不是本章正式前置依赖，也不参与 \(\displaystyle C_0\) 半群与生成元的定义. II-07 只在最后的热半群模型中作为辅助模型接口复用，不进入 \(\displaystyle C_0\) 半群与生成元、生成元闭稠密与 Laplace 预解的核心证明链.
+
+\section{\texorpdfstring{\(\displaystyle C_0\)}{C0} 半群}\label{sec:ii08-c0-semigroup}
+\index{C0 semigroup@\(\displaystyle C_0\) 半群}\index{strong continuity@强连续}\index{generator@生成元}
+
+\begin{FADefinition}[A][\(\displaystyle C_0\) 半群与生成元]{fa:SG-A01}
+算子族 \(\displaystyle(\mathcal T(t))_{t\geqslant0}\subseteq\mathcal B(X)\) 称为 \(\displaystyle C_0\) 半群，当且仅当
+\(\displaystyle \mathcal T(0)=\mathcal I,\)
+\(\displaystyle \mathcal T(t+s)=\mathcal T(t)\mathcal T(s) \; \forall\,s,t\geqslant0,\)
+并且对全部 \(\displaystyle x\in X\) 有
+\[
+\lim_{t\downarrow0}\mathcal T(t)x=x.
+\]
+其生成元定义为线性候选算子 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to X\)，其中
+\[
+D(\mathcal A)
+=
+\left\{
+ x\in X:
+ \lim_{h\downarrow0}\frac{\mathcal T(h)x-x}{h}
+ \text{ 在 }X\text{ 中存在}
+\right\},
+\]
+并对 \(\displaystyle x\in D(\mathcal A)\) 定义
+\[
+\mathcal Ax
+=
+\lim_{h\downarrow0}\frac{\mathcal T(h)x-x}{h}.
+\]
+\end{FADefinition}
+
+\begin{FARemark}[强连续不等于算子范数连续]
+\autoref{fa:SG-A01}的连续性逐轨道要求 \(\displaystyle\|\mathcal T(t)x-x\|\to0\)，并不要求 \(\displaystyle\|\mathcal T(t)-\mathcal I\|\to0\). 后面的平移半群给出典型的强连续但非算子范数连续现象；本章所有核心证明只使用强连续性.
+\end{FARemark}
+
+\begin{FACounterexample}[半群律不推出强连续]\label{ii08:non-c0-semigroup}
+定义
+\(\displaystyle \mathcal S(0)=\mathcal I, \; \mathcal S(t)=0 \;(t>0).\)
+则 \(\displaystyle(\mathcal S(t))_{t\geqslant0}\subseteq\mathcal B(X)\) 满足半群律，但当 \(\displaystyle X\neq\{0\}\) 时不是 \(\displaystyle C_0\) 半群.
+\end{FACounterexample}
+
+\begin{FAProof}
+若 \(\displaystyle s=t=0\)，则 \(\displaystyle\mathcal S(s+t)=\mathcal I=\mathcal S(s)\mathcal S(t)\). 若 \(\displaystyle s+t>0\)，则至少一个参数为正，故 \(\displaystyle\mathcal S(s+t)=0\)，而 \(\displaystyle\mathcal S(s)\mathcal S(t)=0\). 因而半群律对全部非负参数成立. 但若 \(\displaystyle x\neq0\)，则对每个 \(\displaystyle t>0\) 有 \(\displaystyle\mathcal S(t)x=0\)，所以 \(\displaystyle\mathcal S(t)x\not\to x\) 当 \(\displaystyle t\downarrow0\). 因而半群律本身不蕴含强连续性.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][单轨道在紧时间区间上有界]{ii08:pointwise-orbit-bounded}
+若 \(\displaystyle(\mathcal T(t))_{t\geqslant0}\) 为 \(\displaystyle C_0\) 半群，则对任意 \(\displaystyle a>0\) 与 \(\displaystyle x\in X\)，有 \(\displaystyle \sup_{0\leqslant t\leqslant a}\|\mathcal T(t)x\|<\infty\).
+\end{FALemma}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in X\). 由 \(\displaystyle\mathcal T(r)x\to x\) 当 \(\displaystyle r\downarrow0\)，存在 \(\displaystyle\delta>0\) 使
+\(\displaystyle C_x:=\sup_{0\leqslant r\leqslant\delta}\|\mathcal T(r)x\|<\infty.\)
+对任意 \(\displaystyle0\leqslant t\leqslant a\)，写 \(\displaystyle t=n\delta+r\)，其中 \(\displaystyle n\in\mathbb N_0\)、\(\displaystyle0\leqslant r<\delta\). 当 \(\displaystyle t\leqslant a\) 时 \(\displaystyle n\) 只取有限多个值. 由半群律，
+\(\displaystyle \mathcal T(t)x = \mathcal T(\delta)^n\mathcal T(r)x.\)
+于是
+\(\displaystyle \|\mathcal T(t)x\| \leqslant \left(\max_{0\leqslant n\leqslant\lfloor \frac{a}{\delta}\rfloor}\|\mathcal T(\delta)^n\|\right)C_x<\infty.\)
+因此单轨道在 \(\displaystyle[0,a]\) 上有界. 这里先利用固定算子 \(\displaystyle\mathcal T(\delta)^n\) 的有界性，而没有预设轨道已经在整个紧区间连续.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][半群的局部一致有界性]{fa:SG-B01}
+若 \(\displaystyle(\mathcal T(t))_{t\geqslant0}\) 为 \(\displaystyle C_0\) 半群，则对任意 \(\displaystyle a>0\)，
+\[
+M_a
+:=
+\sup_{0\leqslant t\leqslant a}\|\mathcal T(t)\|
+<\infty.
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+固定 \(\displaystyle a>0\). 由\autoref{ii08:pointwise-orbit-bounded}，对每个 \(\displaystyle x\in X\) 有
+\(\displaystyle \sup_{0\leqslant t\leqslant a}\|\mathcal T(t)x\|<\infty.\)
+因此算子族 \(\displaystyle\{\mathcal T(t):0\leqslant t\leqslant a\}\subseteq\mathcal B(X)\) 在 Banach 空间 \(\displaystyle X\) 上逐点有界. 对该族应用 I-08 的一致有界性原理\autoref{fa:UBP-A01}，得到
+\(\displaystyle \sup_{0\leqslant t\leqslant a}\|\mathcal T(t)\|<\infty.\)
+Banach 完备性在此正是\autoref{fa:UBP-A01}的定义域完备性假设.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][每条轨道在全部时间连续]{ii08:global-orbit-continuity}
+若 \(\displaystyle(\mathcal T(t))_{t\geqslant0}\) 为 \(\displaystyle C_0\) 半群，则对任意 \(\displaystyle x\in X\)，映射 \(\displaystyle t\mapsto\mathcal T(t)x\) 在 \(\displaystyle[0,\infty)\) 上范数连续.
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle t\geqslant0\). 对 \(\displaystyle h>0\)，半群律给
+\(\displaystyle \mathcal T(t+h)x-\mathcal T(t)x = \mathcal T(t)(\mathcal T(h)x-x),\)
+故右连续性由 \(\displaystyle\mathcal T(h)x\to x\) 得到.
+
+若 \(\displaystyle t>0\) 且 \(\displaystyle h<0\)、\(\displaystyle|h|<t\)，则
+\(\displaystyle \mathcal T(t+h)x-\mathcal T(t)x = \mathcal T(t+h)(x-\mathcal T(-h)x).\)
+取 \(\displaystyle a=t+1\). 由\autoref{fa:SG-B01}，\(\displaystyle\sup_{0\leqslant u\leqslant a}\|\mathcal T(u)\|=M_a<\infty\). 因而当 \(\displaystyle h\uparrow0\) 时
+\(\displaystyle \|\mathcal T(t+h)x-\mathcal T(t)x\| \leqslant M_a\|x-\mathcal T(-h)x\| \longrightarrow0.\)
+这给出每个 \(\displaystyle t>0\) 的左连续性，与右连续性合并即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][指数增长界与增长界]{fa:SG-C01}
+若 \(\displaystyle(\mathcal T(t))_{t\geqslant0}\) 为 \(\displaystyle C_0\) 半群，则存在 \(\displaystyle M\geqslant1\) 与 \(\displaystyle\omega\in\mathbb R\) 使
+\(\displaystyle \|\mathcal T(t)\| \leqslant M\mathrm{e}^{\omega t} \; \forall\,t\geqslant0.\)
+定义其增长界为
+\[
+\omega_0(\mathcal T)
+:=
+\inf
+\left\{
+ \omega\in\mathbb R:
+ \exists\,M\geqslant1,\
+ \|\mathcal T(t)\|\leqslant M\mathrm{e}^{\omega t}
+ \ \forall\,t\geqslant0
+\right\}.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{fa:SG-B01}，
+\(\displaystyle M_1:=\sup_{0\leqslant t\leqslant1}\|\mathcal T(t)\|<\infty.\)
+因为 \(\displaystyle\mathcal T(0)=\mathcal I\)，故 \(\displaystyle M_1\geqslant1\). 对 \(\displaystyle t\geqslant0\)，写 \(\displaystyle t=n+r\)，其中 \(\displaystyle n\in\mathbb N_0\)、\(\displaystyle0\leqslant r<1\). 半群律给
+\(\displaystyle \|\mathcal T(t)\| \leqslant \|\mathcal T(1)\|^n\|\mathcal T(r)\| \leqslant M_1^{n+1}.\)
+取 \(\displaystyle M=M_1\) 与 \(\displaystyle\omega=\log M_1\). 因 \(\displaystyle n\leqslant t\)，有 \(\displaystyle M_1^{n+1}\leqslant M_1\mathrm{e}^{(\log M_1)t}\)，故所需指数界成立. 因而增长界定义中的集合非空，\(\displaystyle\omega_0(\mathcal T)\) 定义合法. 本章不把它与谱界作等同.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{生成元}\label{sec:ii08-generator}
+\index{generator domain@生成元定义域}\index{orbit differentiation@轨道微分}
+
+\begin{FAProposition}[B][生成元的线性]{ii08:generator-linearity}
+\autoref{fa:SG-A01}中的 \(\displaystyle D(\mathcal A)\) 是 \(\displaystyle X\) 的线性子空间，且 \(\displaystyle\mathcal A:D(\mathcal A)\to X\) 线性.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle x,y\in D(\mathcal A)\) 且 \(\displaystyle\alpha,\beta\in\mathbb C\)，则
+\[
+\frac{\mathcal T(h)(\alpha x+\beta y)-(\alpha x+\beta y)}{h}
+=
+\alpha\frac{\mathcal T(h)x-x}{h}
++
+\beta\frac{\mathcal T(h)y-y}{h}.
+\]
+令 \(\displaystyle h\downarrow0\)，右侧在 \(\displaystyle X\) 中收敛到 \(\displaystyle\alpha\mathcal Ax+\beta\mathcal Ay\). 因而 \(\displaystyle\alpha x+\beta y\in D(\mathcal A)\)，并且 \(\displaystyle\mathcal A(\alpha x+\beta y)=\alpha\mathcal Ax+\beta\mathcal Ay\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][生成元域不变与轨道微分]{fa:SG-B02}
+设 \(\displaystyle x\in D(\mathcal A)\). 则对全部 \(\displaystyle t\geqslant0\)，
+\(\displaystyle \mathcal T(t)x\in D(\mathcal A),\)
+且
+\(\displaystyle \mathcal A\mathcal T(t)x = \mathcal T(t)\mathcal Ax.\)
+轨道 \(\displaystyle t\mapsto\mathcal T(t)x\) 在每个 \(\displaystyle t>0\) 范数可微，并满足
+\[
+\frac{\mathrm{d}}{\mathrm{d}t}\mathcal T(t)x
+=
+\mathcal T(t)\mathcal Ax
+=
+\mathcal A\mathcal T(t)x.
+\]
+在 \(\displaystyle t=0\) 存在右导数 \(\displaystyle\mathcal Ax\). 此外，对全部 \(\displaystyle t\geqslant0\)，
+\[
+\mathcal T(t)x-x
+=
+\int_0^t\mathcal T(s)\mathcal Ax\,\mathrm{d}s.
+\]
+\end{FATheorem}
+
+\begin{FAProof}
+固定 \(\displaystyle t\geqslant0\). 对 \(\displaystyle h>0\)，由半群律
+\[
+\frac{\mathcal T(h)\mathcal T(t)x-\mathcal T(t)x}{h}
+=
+\mathcal T(t)\frac{\mathcal T(h)x-x}{h}
+\longrightarrow
+\mathcal T(t)\mathcal Ax.
+\]
+故 \(\displaystyle\mathcal T(t)x\in D(\mathcal A)\) 且 \(\displaystyle\mathcal A\mathcal T(t)x=\mathcal T(t)\mathcal Ax\). 同一计算还给出轨道在每个 \(\displaystyle t\geqslant0\) 的右导数.
+
+现设 \(\displaystyle t>0\). 对 \(\displaystyle h<0\) 令 \(\displaystyle k=-h>0\)，并取 \(\displaystyle0<k<t\). 则
+\[
+\frac{\mathcal T(t-k)x-\mathcal T(t)x}{-k}
+=
+\mathcal T(t-k)q_k,
+\;
+q_k:=\frac{\mathcal T(k)x-x}{k}.
+\]
+有 \(\displaystyle q_k\to\mathcal Ax\). 由\autoref{fa:SG-B01}，\(\displaystyle M_t:=\sup_{0\leqslant s\leqslant t}\|\mathcal T(s)\|<\infty\)，而\autoref{ii08:global-orbit-continuity}应用于 \(\displaystyle\mathcal Ax\) 给 \(\displaystyle\mathcal T(t-k)\mathcal Ax\to\mathcal T(t)\mathcal Ax\). 因此
+\[
+\begin{aligned}
+\displaystyle \|\mathcal T(t-k)q_k-\mathcal T(t)\mathcal Ax\| &\displaystyle \leqslant M_t\|q_k-\mathcal Ax\|\\
+\displaystyle &\displaystyle \mathrel{\phantom{\leqslant}}+ \|\mathcal T(t-k)\mathcal Ax-\mathcal T(t)\mathcal Ax\| \longrightarrow0.
+\end{aligned}
+\]
+左右导数相同，故轨道在 \(\displaystyle t>0\) 可微，且导数等于 \(\displaystyle\mathcal T(t)\mathcal Ax=\mathcal A\mathcal T(t)x\).
+
+由\autoref{ii08:global-orbit-continuity}，映射 \(\displaystyle s\mapsto\mathcal T(s)\mathcal Ax\) 在 \(\displaystyle[0,t]\) 连续. 对它应用 II-04 的连续曲线 Bochner 基本微积分接口\autoref{ii04:continuous-curve-ftc}，得到积分原函数
+\[
+G(r)=\int_0^r\mathcal T(s)\mathcal Ax\,\mathrm{d}s
+\]
+满足 \(\displaystyle G'(r)=\mathcal T(r)\mathcal Ax\)，端点取相应单侧导数. 另一方面 \(\displaystyle F(r)=\mathcal T(r)x-x\) 具有同一导数且 \(\displaystyle F(0)=G(0)=0\). 对 \(\displaystyle H=F-G\)，其导数恒为零；由差商定义在紧区间上的有限覆盖论证，\(\displaystyle H\) 为常值，故 \(\displaystyle F=G\). 因而得到所述轨道积分恒等式.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{闭性与稠密性}\label{sec:ii08-closed-dense}
+\index{dense generator domain@生成元定义域!稠密}\index{closed generator@生成元!闭性}
+
+\begin{FAProposition}[B][轨道积分正则化进入生成元定义域]{ii08:orbit-integral-domain}
+对任意 \(\displaystyle x\in X\) 与 \(\displaystyle t>0\)，令
+\[
+y_t
+:=
+\int_0^t\mathcal T(s)x\,\mathrm{d}s.
+\]
+则 \(\displaystyle y_t\in D(\mathcal A)\)，并且
+\(\displaystyle \mathcal Ay_t = \mathcal T(t)x-x.\)
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii08:global-orbit-continuity}与 II-04 的连续曲线积分接口，\(\displaystyle y_t\) 的 Bochner 积分合法. 对 \(\displaystyle h>0\)，由有界算子与 Bochner 积分交换\autoref{fa:BOCH-B02}及半群律，
+\[
+\begin{aligned}
+\displaystyle \mathcal T(h)y_t &\displaystyle = \int_0^t\mathcal T(h)\mathcal T(s)x\,\mathrm{d}s\\
+\displaystyle &\displaystyle = \int_0^t\mathcal T(s+h)x\,\mathrm{d}s = \int_h^{t+h}\mathcal T(r)x\,\mathrm{d}r.
+\end{aligned}
+\]
+因此
+\[
+\frac{\mathcal T(h)y_t-y_t}{h}
+=
+\frac{1}{h}
+\left(
+\int_t^{t+h}\mathcal T(r)x\,\mathrm{d}r
+-
+\int_0^h\mathcal T(r)x\,\mathrm{d}r
+\right).
+\]
+由\autoref{fa:BOCH-C01}与轨道连续性，
+\[
+\left\|
+\frac{1}{h}\int_t^{t+h}\mathcal T(r)x\,\mathrm{d}r-\mathcal T(t)x
+\right\|
+\leqslant
+\sup_{t\leqslant r\leqslant t+h}\|\mathcal T(r)x-\mathcal T(t)x\|
+\longrightarrow0,
+\]
+且同理
+\[
+\left\|
+\frac{1}{h}\int_0^h\mathcal T(r)x\,\mathrm{d}r-x
+\right\|
+\longrightarrow0.
+\]
+故差商在 \(\displaystyle h\downarrow0\) 时收敛到 \(\displaystyle\mathcal T(t)x-x\)，从而 \(\displaystyle y_t\in D(\mathcal A)\) 且 \(\displaystyle\mathcal Ay_t=\mathcal T(t)x-x\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[A][生成元定义域稠密]{ii08:generator-domain-dense}
+生成元满足
+\(\displaystyle \overline{D(\mathcal A)}=X.\)
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in X\). 对 \(\displaystyle t>0\) 定义
+\[
+x_t
+:=
+\frac1t\int_0^t\mathcal T(s)x\,\mathrm{d}s.
+\]
+由\autoref{ii08:orbit-integral-domain}与\autoref{ii08:generator-linearity}，\(\displaystyle x_t\in D(\mathcal A)\). 又由\autoref{fa:BOCH-C01}，
+\[
+\|x_t-x\|
+\leqslant
+\frac1t\int_0^t\|\mathcal T(s)x-x\|\,\mathrm{d}s
+\leqslant
+\sup_{0\leqslant s\leqslant t}\|\mathcal T(s)x-x\|.
+\]
+右侧由 \(\displaystyle0\) 点强连续性趋于 \(\displaystyle0\). 因而 \(\displaystyle x_t\to x\)，且每个 \(\displaystyle x_t\in D(\mathcal A)\). \(\displaystyle x\) 任意，故 \(\displaystyle\overline{D(\mathcal A)}=X\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[A][生成元闭性]{ii08:generator-closed}
+生成元 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq X\to X\) 是闭算子.
+\end{FAProposition}
+
+\begin{FAProof}
+设 \(\displaystyle x_n\in D(\mathcal A)\)、\(\displaystyle x_n\to x\) 且 \(\displaystyle\mathcal Ax_n\to y\) 于 \(\displaystyle X\). 对固定 \(\displaystyle t>0\)，\autoref{fa:SG-B02}给
+\[
+\mathcal T(t)x_n-x_n
+=
+\int_0^t\mathcal T(s)\mathcal Ax_n\,\mathrm{d}s.
+\]
+左侧趋于 \(\displaystyle\mathcal T(t)x-x\). 由\autoref{fa:SG-B01}，\(\displaystyle M_t:=\sup_{0\leqslant s\leqslant t}\|\mathcal T(s)\|<\infty\)，故\autoref{fa:BOCH-C01}给
+\[
+\left\|
+\int_0^t\mathcal T(s)(\mathcal Ax_n-y)\,\mathrm{d}s
+\right\|
+\leqslant
+tM_t\|\mathcal Ax_n-y\|
+\longrightarrow0.
+\]
+因此
+\[
+\mathcal T(t)x-x
+=
+\int_0^t\mathcal T(s)y\,\mathrm{d}s.
+\]
+除以 \(\displaystyle t\) 得
+\[
+\frac{\mathcal T(t)x-x}{t}
+=
+\frac1t\int_0^t\mathcal T(s)y\,\mathrm{d}s.
+\]
+当 \(\displaystyle t\downarrow0\) 时，右侧由轨道在 \(\displaystyle0\) 的强连续性与同一平均估计收敛到 \(\displaystyle y\). 因而 \(\displaystyle x\in D(\mathcal A)\) 且 \(\displaystyle\mathcal Ax=y\). 由 II-05 的闭算子序列判据，\(\displaystyle\mathcal A\) 闭.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{Laplace 预解}\label{sec:ii08-laplace-resolvent}
+\index{Laplace resolvent@Laplace预解}\index{resolvent set@预解集!半群生成元}
+
+固定\autoref{fa:SG-C01}给出的一个增长估计
+\(\displaystyle \|\mathcal T(t)\| \leqslant M\mathrm{e}^{\omega t} ,\; (t\geqslant0),\)
+其中 \(\displaystyle M\geqslant1\)、\(\displaystyle\omega\in\mathbb R\).
+
+\begin{FAProposition}[B][无限区间 Bochner--Laplace 积分]{ii08:laplace-bochner}
+若 \(\displaystyle\lambda\in\mathbb C\) 且 \(\displaystyle\operatorname{Re}\lambda>\omega\)，则对每个 \(\displaystyle x\in X\)，极限
+\[
+\mathcal R_\lambda x
+:=
+\lim_{b\to\infty}
+\int_0^b
+\mathrm{e}^{-\lambda t}\mathcal T(t)x\,\mathrm{d}t
+\]
+在 \(\displaystyle X\) 中存在，因而定义一个有界线性算子 \(\displaystyle\mathcal R_\lambda\in\mathcal B(X)\). 并且
+\[
+\|\mathcal R_\lambda\|
+\leqslant
+\frac{M}{\operatorname{Re}\lambda-\omega}.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii08:global-orbit-continuity}，对任意有限 \(\displaystyle b>0\)，映射 \(\displaystyle t\mapsto\mathrm{e}^{-\lambda t}\mathcal T(t)x\) 在 \(\displaystyle[0,b]\) 上连续，故由 II-04 可作 Bochner 积分. 令 \(\displaystyle\alpha=\operatorname{Re}\lambda-\omega>0\). 若 \(\displaystyle b_2>b_1\geqslant0\)，则由\autoref{fa:BOCH-C01}，
+\[
+\begin{aligned}
+\displaystyle \left\| \int_{b_1}^{b_2}\mathrm{e}^{-\lambda t}\mathcal T(t)x\,\mathrm{d}t \right\| &\displaystyle \leqslant \int_{b_1}^{b_2}\mathrm{e}^{-\operatorname{Re}\lambda t}\|\mathcal T(t)x\|\,\mathrm{d}t\\
+\displaystyle &\displaystyle \leqslant M\|x\|\int_{b_1}^{b_2}\mathrm{e}^{-\alpha t}\,\mathrm{d}t.
+\end{aligned}
+\]
+右侧在 \(\displaystyle b_1,b_2\to\infty\) 时趋于 \(\displaystyle0\). 因而截断积分为 \(\displaystyle X\) 中的 Cauchy 网；\(\displaystyle X\) 的 Banach 完备性给出极限 \(\displaystyle\mathcal R_\lambda x\). 线性由有限区间 Bochner 积分的线性及取极限得到. 再令 \(\displaystyle b_1=0\)、\(\displaystyle b_2\to\infty\)，得到
+\[
+\|\mathcal R_\lambda x\|
+\leqslant
+M\|x\|\int_0^\infty\mathrm{e}^{-\alpha t}\,\mathrm{d}t
+=
+\frac{M}{\alpha}\|x\|.
+\]
+故 \(\displaystyle\mathcal R_\lambda\in\mathcal B(X)\) 且具有所述范数估计.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][截断 Laplace 积分的生成元恒等式]{ii08:truncated-laplace-domain}
+对 \(\displaystyle b>0\)、\(\displaystyle x\in X\) 令
+\[
+y_b
+:=
+\int_0^b\mathrm{e}^{-\lambda t}\mathcal T(t)x\,\mathrm{d}t.
+\]
+则 \(\displaystyle y_b\in D(\mathcal A)\)，并且
+\(\displaystyle \mathcal Ay_b = \lambda y_b-x+ \mathrm{e}^{-\lambda b}\mathcal T(b)x.\)
+\end{FAProposition}
+
+\begin{FAProof}
+对 \(\displaystyle h>0\)，由\autoref{fa:BOCH-B02}与半群律，
+\[
+\begin{aligned}
+\displaystyle \mathcal T(h)y_b &\displaystyle = \int_0^b\mathrm{e}^{-\lambda t}\mathcal T(t+h)x\,\mathrm{d}t\\
+\displaystyle &\displaystyle = \mathrm{e}^{\lambda h} \int_h^{b+h}\mathrm{e}^{-\lambda s}\mathcal T(s)x\,\mathrm{d}s.
+\end{aligned}
+\]
+记 \(\displaystyle f(s)=\mathrm{e}^{-\lambda s}\mathcal T(s)x\). 则
+\[
+\begin{aligned}
+\displaystyle \frac{\mathcal T(h)y_b-y_b}{h} &\displaystyle = \frac{\mathrm{e}^{\lambda h}-1}{h}y_b\\[12pt]
+\displaystyle &\displaystyle \mathrel{\phantom{=}}+ \mathrm{e}^{\lambda h} \frac{1}{h} \left( \int_b^{b+h}f(s)\,\mathrm{d}s - \int_0^hf(s)\,\mathrm{d}s \right).
+\end{aligned}
+\]
+函数 \(\displaystyle f\) 连续，故由\autoref{fa:BOCH-C01}的平均估计，
+\[
+\frac{1}{h}\int_b^{b+h}f(s)\,\mathrm{d}s
+\longrightarrow
+f(b),
+\;
+\frac{1}{h}\int_0^hf(s)\,\mathrm{d}s
+\longrightarrow
+f(0)=x.
+\]
+同时 \(\displaystyle\frac{\mathrm{e}^{\lambda h}-1}{h}\to\lambda\). 因此差商收敛到
+\(\displaystyle \lambda y_b-x+ \mathrm{e}^{-\lambda b}\mathcal T(b)x.\)
+由生成元定义得到所述结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][Laplace 算子是右逆]{ii08:laplace-right-inverse}
+若 \(\displaystyle\operatorname{Re}\lambda>\omega\)，则对每个 \(\displaystyle x\in X\)，
+\[
+\mathcal R_\lambda x\in D(\mathcal A),
+\;
+(\lambda\mathcal I-\mathcal A)\mathcal R_\lambda x=x.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii08:laplace-bochner}，\(\displaystyle y_b\to\mathcal R_\lambda x\). 又
+\(\displaystyle \|\mathrm{e}^{-\lambda b}\mathcal T(b)x\| \leqslant M\mathrm{e}^{-(\operatorname{Re}\lambda-\omega)b}\|x\| \longrightarrow0.\)
+因此\autoref{ii08:truncated-laplace-domain}给
+\(\displaystyle \mathcal Ay_b = \lambda y_b-x+ \mathrm{e}^{-\lambda b}\mathcal T(b)x \longrightarrow \lambda\mathcal R_\lambda x-x.\)
+由\autoref{ii08:generator-closed}的闭性，\(\displaystyle\mathcal R_\lambda x\in D(\mathcal A)\) 且 \(\displaystyle\mathcal A\mathcal R_\lambda x=\lambda\mathcal R_\lambda x-x\). 整理即得右逆公式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][Laplace 算子是左逆]{ii08:laplace-left-inverse}
+若 \(\displaystyle\operatorname{Re}\lambda>\omega\)，则对每个 \(\displaystyle x\in D(\mathcal A)\)，
+\(\displaystyle \mathcal R_\lambda(\lambda\mathcal I-\mathcal A)x=x.\)
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in D(\mathcal A)\). 由\autoref{fa:SG-B02}，对 \(\displaystyle t>0\)，
+\(\displaystyle \frac{\mathrm{d}}{\mathrm{d}t} \left( \mathrm{e}^{-\lambda t}\mathcal T(t)x \right) = \mathrm{e}^{-\lambda t}\mathcal T(t)(\mathcal A-\lambda\mathcal I)x,\)
+且右端由\autoref{ii08:global-orbit-continuity}连续. 对该连续导数使用与\autoref{ii04:continuous-curve-ftc}相同的 Banach 值 Newton--Leibniz 论证，得到对每个 \(\displaystyle b>0\)，
+\[
+\mathrm{e}^{-\lambda b}\mathcal T(b)x-x
+=
+\int_0^b
+\mathrm{e}^{-\lambda t}\mathcal T(t)(\mathcal A-\lambda\mathcal I)x
+\,\mathrm{d}t.
+\]
+由于
+\(\displaystyle \|\mathrm{e}^{-\lambda b}\mathcal T(b)x\| \leqslant M\mathrm{e}^{-(\operatorname{Re}\lambda-\omega)b}\|x\| \longrightarrow0,\)
+令 \(\displaystyle b\to\infty\)，并使用\autoref{ii08:laplace-bochner}对向量 \(\displaystyle(\lambda\mathcal I-\mathcal A)x\) 的定义，得到
+\(\displaystyle \mathcal R_\lambda(\lambda\mathcal I-\mathcal A)x=x.\)
+这正是左逆公式.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][生成元闭稠密与 Laplace 预解]{fa:SG-A02}
+设 \(\displaystyle(\mathcal T(t))_{t\geqslant0}\) 为 \(\displaystyle C_0\) 半群，生成元为 \(\displaystyle\mathcal A\). 则：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle D(\mathcal A)\) 在 \(\displaystyle X\) 中稠密；
+\item \(\displaystyle\mathcal A\) 为闭算子；
+\item 若 \(\displaystyle\|\mathcal T(t)\|\leqslant M\mathrm{e}^{\omega t}\) 对全部 \(\displaystyle t\geqslant0\) 成立，且 \(\displaystyle\operatorname{Re}\lambda>\omega\)，则 \(\displaystyle\lambda\in\rho(\mathcal A)\)，并且
+\[
+R(\lambda,\mathcal A)x
+=
+(\lambda\mathcal I-\mathcal A)^{-1}x
+=
+\int_0^\infty
+\mathrm{e}^{-\lambda t}\mathcal T(t)x
+\,\mathrm{d}t,
+\]
+以及
+\[
+\|R(\lambda,\mathcal A)\|
+\leqslant
+\frac{M}{\operatorname{Re}\lambda-\omega}.
+\]
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+（i）由\autoref{ii08:generator-domain-dense}；（ii）由\autoref{ii08:generator-closed}. 对（iii），\autoref{ii08:laplace-right-inverse}与\autoref{ii08:laplace-left-inverse}分别给出 \(\displaystyle\mathcal R_\lambda\) 是 \(\displaystyle\lambda\mathcal I-\mathcal A:D(\mathcal A)\to X\) 的右逆与左逆，因此该算子双射，且其逆正是 \(\displaystyle\mathcal R_\lambda\in\mathcal B(X)\). 按 II-05 的无界预解接口，\(\displaystyle\lambda\in\rho(\mathcal A)\)，而积分公式与范数估计由\autoref{ii08:laplace-bochner}给出.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[当前可得的谱边界]
+若 \(\displaystyle\|\mathcal T(t)\|\leqslant M\mathrm{e}^{\omega t}\)，则\autoref{fa:SG-A02}只推出
+\(\displaystyle \{\lambda\in\mathbb C:\operatorname{Re}\lambda>\omega\} \subseteq \rho(\mathcal A).\)
+本章不证明半群谱映射定理，也不证明增长界等于谱界. Hille--Yosida 的预解幂估计作为生成判据留到 II-09.
+\end{FARemark}
+
+\section{模型}\label{sec:ii08-models}
+\index{translation semigroup@平移半群}\index{heat semigroup@热半群}
+
+\subsection{平移半群}
+
+令 \(\displaystyle X=C_0(\mathbb R)\) 为所有在无穷远处消失的复值连续函数组成的 Banach 空间，赋予上确界范数. 对 \(\displaystyle t\geqslant0\) 定义
+\(\displaystyle (\mathcal T_{\mathrm{tr}}(t)f)(s) := f(s+t).\)
+
+\begin{FAExample}[等距 \(\displaystyle C_0\) 半群]\label{ii08:translation-semigroup}
+算子族 \(\displaystyle(\mathcal T_{\mathrm{tr}}(t))_{t\geqslant0}\) 是 \(\displaystyle C_0(\mathbb R)\) 上的等距 \(\displaystyle C_0\) 半群，并且
+\(\displaystyle \|\mathcal T_{\mathrm{tr}}(t)\|=1 \; \forall\,t\geqslant0.\)
+\end{FAExample}
+
+\begin{FAProof}
+平移保持连续性与无穷远消失性，因此 \(\displaystyle\mathcal T_{\mathrm{tr}}(t)\) 映射 \(\displaystyle C_0(\mathbb R)\) 到自身. 由定义，\(\displaystyle(\mathcal T_{\mathrm{tr}}(0)f)(x)=f(x)\) 对全部 \(\displaystyle f\in C_0(\mathbb R)\) 成立，故 \(\displaystyle\mathcal T_{\mathrm{tr}}(0)=\mathcal I\)，且
+\(\displaystyle \mathcal T_{\mathrm{tr}}(t+r)f = \mathcal T_{\mathrm{tr}}(t)\mathcal T_{\mathrm{tr}}(r)f.\)
+又因为 \(\displaystyle s\mapsto s+t\) 是 \(\displaystyle\mathbb R\) 的双射，
+\(\displaystyle \|\mathcal T_{\mathrm{tr}}(t)f\|_\infty = \sup_{s\in\mathbb R}|f(s+t)| = \|f\|_\infty,\)
+故 \(\displaystyle\|\mathcal T_{\mathrm{tr}}(t)\|=1\).
+
+现证每个 \(\displaystyle f\in C_0(\mathbb R)\) 一致连续. 给定 \(\displaystyle\varepsilon>0\)，取 \(\displaystyle R>0\) 使 \(\displaystyle|f(u)|<\frac{\varepsilon}{3}\) 当 \(\displaystyle|u|>R\). 在紧区间 \(\displaystyle[-R-1,R+1]\) 上，\(\displaystyle f\) 一致连续，故存在 \(\displaystyle0<\delta<1\) 使该区间内 \(\displaystyle|u-v|<\delta\) 蕴含 \(\displaystyle|f(u)-f(v)|<\varepsilon\). 若 \(\displaystyle|u-v|<\delta\) 且两点都在该紧区间内，结论已得；若至少一点在其外，则另一点必满足绝对值大于 \(\displaystyle R\)，故两点都落在消失尾部，得到 \(\displaystyle|f(u)-f(v)|<2\frac{\varepsilon}{3}\). 因此 \(\displaystyle f\) 在 \(\displaystyle\mathbb R\) 上一致连续.
+
+于是
+\(\displaystyle \|\mathcal T_{\mathrm{tr}}(t)f-f\|_\infty = \sup_{s\in\mathbb R}|f(s+t)-f(s)| \longrightarrow0\)
+当 \(\displaystyle t\downarrow0\). 因而该算子族为等距 \(\displaystyle C_0\) 半群.
+\hfill\(\square\)
+\end{FAProof}
+
+定义
+\[
+C_0^1(\mathbb R)
+:=
+\left\{
+ f\in C_0(\mathbb R):
+ f\in C^1(\mathbb R),\ f'\in C_0(\mathbb R)
+\right\}.
+\]
+
+\begin{FAProposition}[B][平移半群生成元的精确定义域]{ii08:translation-generator}
+若 \(\displaystyle\mathcal A_{\mathrm{tr}}\) 是平移半群模型的生成元，则
+\(\displaystyle D(\mathcal A_{\mathrm{tr}}) = C_0^1(\mathbb R), \; \mathcal A_{\mathrm{tr}}f=f'.\)
+\end{FAProposition}
+
+\begin{FAProof}
+先设 \(\displaystyle f\in C_0^1(\mathbb R)\). 因 \(\displaystyle f'\in C_0(\mathbb R)\)，上一步同样证明 \(\displaystyle f'\) 一致连续. 对 \(\displaystyle h>0\)，标量基本微积分定理给
+\[
+\frac{f(s+h)-f(s)}h-f'(s)
+=
+\frac{1}{h}\int_0^h(f'(s+r)-f'(s))\,\mathrm{d}r.
+\]
+因此
+\[
+\left\|
+\frac{\mathcal T_{\mathrm{tr}}(h)f-f}{h}-f'
+\right\|_\infty
+\leqslant
+\sup_{s\in\mathbb R}\sup_{0\leqslant r\leqslant h}|f'(s+r)-f'(s)|
+\longrightarrow0.
+\]
+故 \(\displaystyle f\in D(\mathcal A_{\mathrm{tr}})\) 且 \(\displaystyle\mathcal A_{\mathrm{tr}}f=f'\).
+
+反之，设 \(\displaystyle f\in D(\mathcal A_{\mathrm{tr}})\)，并令
+\(\displaystyle q_h(s)=\frac{f(s+h)-f(s)}h.\)
+则存在 \(\displaystyle g\in C_0(\mathbb R)\) 使 \(\displaystyle\|q_h-g\|_\infty\to0\) 当 \(\displaystyle h\downarrow0\). 因而对每个固定 \(\displaystyle s\)，右导数存在且等于 \(\displaystyle g(s)\). 对左导数，若 \(\displaystyle h>0\)，则
+\(\displaystyle \frac{f(s-h)-f(s)}{-h} = q_h(s-h).\)
+于是
+\(\displaystyle |q_h(s-h)-g(s)| \leqslant \|q_h-g\|_\infty+|g(s-h)-g(s)| \longrightarrow0.\)
+故左导数也存在且等于 \(\displaystyle g(s)\). 因此 \(\displaystyle f\in C^1(\mathbb R)\)、\(\displaystyle f'=g\in C_0(\mathbb R)\)，即 \(\displaystyle f\in C_0^1(\mathbb R)\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][平移半群的 Laplace 预解]{ii08:translation-resolvent}
+若 \(\displaystyle\operatorname{Re}\lambda>0\)，则
+\[
+\left(
+(\lambda\mathcal I-\mathcal A_{\mathrm{tr}})^{-1}f
+\right)(s)
+=
+\int_0^\infty\mathrm{e}^{-\lambda t}f(s+t)\,\mathrm{d}t.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由平移半群模型可取增长估计 \(\displaystyle M=1\)、\(\displaystyle\omega=0\). 将\autoref{fa:SG-A02}应用于 \(\displaystyle\mathcal T_{\mathrm{tr}}\)，得到
+\[
+(\lambda\mathcal I-\mathcal A_{\mathrm{tr}})^{-1}f
+=
+\int_0^\infty\mathrm{e}^{-\lambda t}\mathcal T_{\mathrm{tr}}(t)f\,\mathrm{d}t
+\]
+于 \(\displaystyle C_0(\mathbb R)\). 对固定 \(\displaystyle s\)，点值泛函 \(\displaystyle\delta_s:f\mapsto f(s)\) 属于 \(\displaystyle C_0(\mathbb R)^*\)，由\autoref{fa:BOCH-B02}与积分交换，得到所述逐点公式.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Dirichlet 热半群}
+
+以下只在模型层复用 II-06、II-07 已冻结的 Dirichlet Laplace 算子
+\(\displaystyle \mathcal L_D:D(\mathcal L_D)\subseteq H\to H,\; H=L^2(0,1),\)
+其中 \(\displaystyle\mathcal L_D\) 自伴、非负，且 II-07 已得 \(\displaystyle\sigma(\mathcal L_D)\subseteq[0,\infty)\) 以及\autoref{fa:UST-A02}的可测函数演算. 这些结果只用于构造 Dirichlet 热半群模型，不是 \(\displaystyle C_0\) 半群与生成元、生成元闭稠密与 Laplace 预解的核心依赖.
+
+对 \(\displaystyle t\geqslant0\) 定义
+\[
+\mathcal H(t)
+:=
+\mathrm{e}^{-t\mathcal L_D}
+=
+\int_{[0,\infty)}\mathrm{e}^{-t\lambda}\,\mathrm{d}E_{\mathcal L_D}(\lambda).
+\]
+
+\begin{FAExample}[Dirichlet 热半群]\label{ii08:heat-semigroup}
+算子族 \(\displaystyle(\mathcal H(t))_{t\geqslant0}\) 是 \(\displaystyle L^2(0,1)\) 上的收缩 \(\displaystyle C_0\) 半群，并且
+\(\displaystyle \|\mathcal H(t)\|\leqslant1 \; \forall\,t\geqslant0.\)
+\end{FAExample}
+
+\begin{FAProof}
+对 \(\displaystyle\lambda\geqslant0\)，有 \(\displaystyle0<\mathrm{e}^{-t\lambda}\leqslant1\). 因而 II-07 的有界谱函数演算给 \(\displaystyle\|\mathcal H(t)\|\leqslant1\). 函数演算乘法性给
+\[
+\mathcal H(t+s)
+=
+(\mathrm{e}^{-(t+s)\lambda})(\mathcal L_D)
+=
+(\mathrm{e}^{-t\lambda})(\mathcal L_D)(\mathrm{e}^{-s\lambda})(\mathcal L_D)
+=
+\mathcal H(t)\mathcal H(s),
+\]
+且 \(\displaystyle\mathcal H(0)=\mathcal I\).
+
+固定 \(\displaystyle x\in H\). 由 II-07 的谱积分向量范数恒等式，
+\[
+\|\mathcal H(t)x-x\|^2
+=
+\int_{[0,\infty)}
+|\mathrm{e}^{-t\lambda}-1|^2
+\,\mathrm{d}\mu_x^{\mathcal L_D}(\lambda).
+\]
+对每个 \(\displaystyle\lambda\geqslant0\)，被积函数在 \(\displaystyle t\downarrow0\) 时趋于 \(\displaystyle0\)，且
+\(\displaystyle |\mathrm{e}^{-t\lambda}-1|^2\leqslant4.\)
+因为 \(\displaystyle\mu_x^{\mathcal L_D}([0,\infty))=\|x\|^2<\infty\)，标量支配收敛定理给 \(\displaystyle\mathcal H(t)x\to x\). 因而 \(\displaystyle\mathcal H\) 是收缩 \(\displaystyle C_0\) 半群.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][热半群生成元的精确识别]{ii08:heat-generator}
+Dirichlet 热半群模型的生成元满足
+\(\displaystyle \operatorname{Gen}(\mathcal H) = -\mathcal L_D\)
+作为算子等式，即两侧定义域相同且作用值相同.
+\end{FAProposition}
+
+\begin{FAProof}
+先设 \(\displaystyle x\in D(\mathcal L_D)\). 由 II-07 的定义域刻画，
+\[
+\int_{[0,\infty)}\lambda^2\,\mathrm{d}\mu_x^{\mathcal L_D}(\lambda)<\infty.
+\]
+对 \(\displaystyle t>0\) 令
+\(\displaystyle a_t(\lambda)=\frac{1-\mathrm{e}^{-t\lambda}}t.\)
+则对 \(\displaystyle\lambda\geqslant0\)，
+\(\displaystyle 0\leqslant a_t(\lambda)\leqslant\lambda,\; a_t(\lambda)\longrightarrow\lambda.\)
+由谱积分范数恒等式，
+\[
+\left\|
+\frac{\mathcal H(t)x-x}{t}+\mathcal L_Dx
+\right\|^2
+=
+\int_{[0,\infty)}
+|\lambda-a_t(\lambda)|^2
+\,\mathrm{d}\mu_x^{\mathcal L_D}(\lambda).
+\]
+被积函数点态趋于 \(\displaystyle0\)，且 \(\displaystyle|\lambda-a_t(\lambda)|^2\leqslant\lambda^2\). 标量支配收敛定理给
+\(\displaystyle \frac{\mathcal H(t)x-x}{t} \longrightarrow -\mathcal L_Dx.\)
+故 \(\displaystyle D(\mathcal L_D)\subseteq D(\operatorname{Gen}(\mathcal H))\)，并且生成元在该定义域上等于 \(\displaystyle-\mathcal L_D\).
+
+反之，设 \(\displaystyle x\in D(\operatorname{Gen}(\mathcal H))\). 取任意 \(\displaystyle t_n\downarrow0\). 差商在 \(\displaystyle H\) 中收敛，因此其范数有界. 又由谱积分范数恒等式，
+\[
+\left\|
+\frac{\mathcal H(t_n)x-x}{t_n}
+\right\|^2
+=
+\int_{[0,\infty)}a_{t_n}(\lambda)^2
+\,\mathrm{d}\mu_x^{\mathcal L_D}(\lambda).
+\]
+对每个 \(\displaystyle\lambda\geqslant0\)，有 \(\displaystyle a_{t_n}(\lambda)^2\to\lambda^2\). Fatou 引理给
+\[
+\int_{[0,\infty)}\lambda^2\,\mathrm{d}\mu_x^{\mathcal L_D}(\lambda)
+\leqslant
+\liminf_{n\to\infty}
+\int_{[0,\infty)}a_{t_n}(\lambda)^2
+\,\mathrm{d}\mu_x^{\mathcal L_D}(\lambda)
+<\infty.
+\]
+由 II-07 的自伴谱定义域刻画，\(\displaystyle x\in D(\mathcal L_D)\). 已证的第一方向于是识别差商极限为 \(\displaystyle-\mathcal L_Dx\). 因而两个算子的定义域与作用完全相同.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[解析半群边界]
+热半群事实上具有比强连续更高的时间正则性，但本章只记录这一面向读者的预告. 扇形算子、复时间全纯延拓及解析半群的生成理论属于后续 D 级扩展，本章不定义也不证明.
+\end{FARemark}
+
+\begin{FAWarning}[II-09、II-10 与 II-11 边界]
+II-09 才正式建立 Hille--Yosida、Lumer--Phillips、Yosida 逼近与耗散算子生成理论；本章没有使用这些生成定理来证明平移半群或热半群存在. II-10 才建立 Stone 定理，本章没有用 Stone 定理证明任何半群. II-11 才正式把 \(\displaystyle u(t)=\mathcal T(t)x\) 解释为抽象 Cauchy 问题的解，并建立 温和解与 Duhamel 公式/常数变易公式；这些内容在本章均不作为定理使用.
+\end{FAWarning}
+
+\subsection*{本章习题}\label{sec:ii08-exercises}
+
+\begin{FAExercise}[代数半群与 \(\displaystyle C_0\) 条件]{ex:ii08-01}
+验证 本节的局部非 \(\displaystyle C_0\) 反例 的全部半群律分情况，并说明删去强连续性后为什么生成元差商不再具有本章所需的统一意义.
+\end{FAExercise}
+
+\begin{FAExercise}[强连续不推出算子范数连续]{ex:ii08-02}
+对平移半群模型，构造对任意固定 \(\displaystyle t>0\) 的函数 \(\displaystyle f\in C_0(\mathbb R)\)、\(\displaystyle\|f\|_\infty=1\)，使 \(\displaystyle\|\mathcal T_{\mathrm{tr}}(t)f-f\|_\infty\) 有严格正下界；据此说明强连续与算子范数连续的差别.
+\end{FAExercise}
+
+\begin{FAExercise}[单轨道紧区间有界]{ex:ii08-03}
+不用轨道全局连续性，完整重建\autoref{ii08:pointwise-orbit-bounded}，并解释为什么分解 \(\displaystyle\mathcal T(t)x=\mathcal T(\delta)^n\mathcal T(r)x\) 避免了循环使用\autoref{fa:SG-B01}.
+\end{FAExercise}
+
+\begin{FAExercise}[半群的局部一致有界性与一致有界性原理]{ex:ii08-04}
+对固定 \(\displaystyle a>0\)，逐项验证算子族 \(\displaystyle\{\mathcal T(t):0\leqslant t\leqslant a\}\) 满足\autoref{fa:UBP-A01}的假设，并指出 Banach 完备性在何处使用.
+\end{FAExercise}
+
+\begin{FAExercise}[全部时间的轨道连续性]{ex:ii08-05}
+分别从右侧与左侧证明\autoref{ii08:global-orbit-continuity}. 左连续证明必须显式写出 \(\displaystyle\mathcal T(t+h)(x-\mathcal T(-h)x)\) 并使用半群的局部一致有界性.
+\end{FAExercise}
+
+\begin{FAExercise}[指数增长估计]{ex:ii08-06}
+从 \(\displaystyle M_1=\sup_{0\leqslant t\leqslant1}\|\mathcal T(t)\|\) 出发，对 \(\displaystyle t=n+r\) 推出 \(\displaystyle\|\mathcal T(t)\|\leqslant M_1^{n+1}\)，再给出一组显式 \(\displaystyle M,\omega\) 使 \(\displaystyle\|\mathcal T(t)\|\leqslant M\mathrm{e}^{\omega t}\).
+\end{FAExercise}
+
+\begin{FAExercise}[增长界的基本不变性]{ex:ii08-07}
+设 \(\displaystyle\mathcal S(t)=\mathrm{e}^{-ct}\mathcal T(t)\)，其中 \(\displaystyle c\in\mathbb R\). 直接由增长界定义证明 \(\displaystyle\omega_0(\mathcal S)=\omega_0(\mathcal T)-c\)，不得使用任何谱结论.
+\end{FAExercise}
+
+\begin{FAExercise}[生成元定义域与线性]{ex:ii08-08}
+从差商定义重新证明 \(\displaystyle D(\mathcal A)\) 为线性子空间且 \(\displaystyle\mathcal A\) 线性，并说明该步骤尚未使用定义域稠密性.
+\end{FAExercise}
+
+\begin{FAExercise}[生成元域不变与轨道微分的域不变性]{ex:ii08-09}
+对 \(\displaystyle x\in D(\mathcal A)\)，只用半群律与生成元定义证明 \(\displaystyle\mathcal T(t)x\in D(\mathcal A)\) 以及 \(\displaystyle\mathcal A\mathcal T(t)x=\mathcal T(t)\mathcal Ax\).
+\end{FAExercise}
+
+\begin{FAExercise}[轨道的左导数]{ex:ii08-10}
+在\autoref{fa:SG-B02}中单独重建 \(\displaystyle t>0\) 的左导数证明. 必须把差商写成 \(\displaystyle\mathcal T(t-k)q_k\)，并显式使用局部一致有界性与 \(\displaystyle\mathcal Ax\) 的轨道连续性.
+\end{FAExercise}
+
+\begin{FAExercise}[轨道积分公式]{ex:ii08-11}
+从\autoref{fa:SG-B02}的轨道微分公式和 II-04 的连续 Banach 值曲线积分接口推出 \(\displaystyle\mathcal T(t)x-x=\int_0^t\mathcal T(s)\mathcal Ax\,\mathrm{d}s\)，并补全“导数恒为零的 Banach 值函数为常值”的紧区间论证.
+\end{FAExercise}
+
+\begin{FAExercise}[轨道积分正则化]{ex:ii08-12}
+对任意 \(\displaystyle x\in X\)、\(\displaystyle t>0\)，从 \(\displaystyle y_t=\int_0^t\mathcal T(s)x\,\mathrm{d}s\) 出发，完整计算 \(\displaystyle\frac{\mathcal T(h)y_t-y_t}{h}\) 并证明 \(\displaystyle y_t\in D(\mathcal A)\)、\(\displaystyle\mathcal Ay_t=\mathcal T(t)x-x\).
+\end{FAExercise}
+
+\begin{FAExercise}[平均正则化与定义域稠密]{ex:ii08-13}
+令 \(\displaystyle x_t=t^{-1}\int_0^t\mathcal T(s)x\,\mathrm{d}s\). 证明 \(\displaystyle x_t\in D(\mathcal A)\) 且 \(\displaystyle x_t\to x\)，由此独立重建生成元定义域稠密性.
+\end{FAExercise}
+
+\begin{FAExercise}[生成元闭性]{ex:ii08-14}
+设 \(\displaystyle x_n\to x\)、\(\displaystyle\mathcal Ax_n\to y\). 用轨道积分公式、半群的局部一致有界性与 Bochner 范数估计证明 \(\displaystyle\mathcal T(t)x-x=\int_0^t\mathcal T(s)y\,\mathrm{d}s\)，再令 \(\displaystyle t\downarrow0\) 推出闭性.
+\end{FAExercise}
+
+\begin{FAExercise}[截断 Laplace 恒等式]{ex:ii08-15}
+对 \(\displaystyle y_b=\int_0^b\mathrm{e}^{-\lambda t}\mathcal T(t)x\,\mathrm{d}t\)，逐步推导 \(\displaystyle\mathcal T(h)y_b=\mathrm{e}^{\lambda h}\int_h^{b+h}\mathrm{e}^{-\lambda s}\mathcal T(s)x\,\mathrm{d}s\)，并由差商证明\autoref{ii08:truncated-laplace-domain}.
+\end{FAExercise}
+
+\begin{FAExercise}[无限区间 Bochner--Laplace 收敛]{ex:ii08-16}
+在 \(\displaystyle\operatorname{Re}\lambda>\omega\) 下，用尾积分估计证明截断积分是 \(\displaystyle X\) 中 Cauchy 网，并明确指出为什么需要 \(\displaystyle X\) 完备；同时重建 \(\displaystyle\|\mathcal R_\lambda\|\leqslant \frac{M}{\operatorname{Re}\lambda-\omega}\).
+\end{FAExercise}
+
+\begin{FAExercise}[右半平面预解]{ex:ii08-17}
+分别证明 \(\displaystyle(\lambda\mathcal I-\mathcal A)\mathcal R_\lambda=\mathcal I\) 与 \(\displaystyle\mathcal R_\lambda(\lambda\mathcal I-\mathcal A)=\mathcal I\)，并据 II-05 的无界预解定义推出 \(\displaystyle\{\operatorname{Re}\lambda>\omega\}\subseteq\rho(\mathcal A)\).
+\end{FAExercise}
+
+\begin{FAExercise}[平移半群的 \(\displaystyle C_0\) 性]{ex:ii08-18}
+完整证明每个 \(\displaystyle f\in C_0(\mathbb R)\) 一致连续，并据此证明平移半群强连续与等距. 不得把 \(\displaystyle C_0(\mathbb R)\) 的一致连续性只作为未证事实引用.
+\end{FAExercise}
+
+\begin{FAExercise}[平移生成元与预解]{ex:ii08-19}
+证明 \(\displaystyle D(\mathcal A_{\mathrm{tr}})=C_0^1(\mathbb R)\) 的两个方向，反向必须处理左导数；随后用生成元闭稠密与 Laplace 预解推出 \(\displaystyle\operatorname{Re}\lambda>0\) 时的积分预解公式.
+\end{FAExercise}
+
+\begin{FAExercise}[热半群的强连续性]{ex:ii08-20}
+使用 \(\displaystyle\mu_x^{\mathcal L_D}\) 与标量支配收敛定理证明 \(\displaystyle\mathrm{e}^{-t\mathcal L_D}x\to x\)，并说明此证明只需要 II-07 的谱函数演算，不需要任何生成定理.
+\end{FAExercise}
+
+\begin{FAExercise}[热半群生成元]{ex:ii08-21}
+重建 \(\displaystyle\operatorname{Gen}(\mathcal H)=-\mathcal L_D\) 的两个定义域方向. 第一方向使用 \(\displaystyle0\leqslant\frac{1-\mathrm{e}^{-t\lambda}}{t}\leqslant\lambda\)，第二方向沿 \(\displaystyle t_n\downarrow0\) 使用 Fatou 引理.
+\end{FAExercise}
+
+\begin{FAExercise}[生成定理与后续理论边界]{ex:ii08-22}
+仅依据本章已证结果，列出从一个已知 \(\displaystyle C_0\) 半群可以推出的生成元性质与右半平面预解性质；再说明为什么这些结论尚不能反向判定给定闭算子是否生成半群，并标明 Hille--Yosida、Lumer--Phillips、Stone、温和解与 Duhamel 公式分别属于后续哪一章的正式理论.
+\end{FAExercise}

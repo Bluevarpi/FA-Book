@@ -1,0 +1,1000 @@
+\chapter{对称、自伴、本质自伴与闭二次型}\label{chap:II-06}
+\FAChapterOpening
+{在复 Hilbert 空间中严格区分对称、自伴与本质自伴；建立非实参数下的值域、下界与预解判据；以闭的非负共轭对称型构造关联自伴算子；最后通过一阶微分算子的边界条件与 Dirichlet 能量型说明定义域决定算子.}
+{II-05，特别是\autoref{fa:UNB-A02}；I-04，特别是\autoref{fa:HIL-A02}.}
+{\begin{center}
+\begin{tikzpicture}[x=0.78cm,y=0.92cm]
+\node[fa/node] (unb) at (0,1.4) {无界伴随};
+\node[fa/node] (hil) at (0,-1.4) {Riesz表示定理};
+\node[fa/node] (a01) at (4.0,1.4) {对称/自伴};
+\node[fa/node] (c01) at (7.8,1.4) {对称算子工具};
+\node[fa/node] (a02) at (11.6,1.4) {自伴值域判据};
+\node[fa/node] (b01) at (11.6,-0.8) {本质自伴判据};
+\node[fa/node] (form) at (7.8,-1.4) {闭型关联算子};
+\draw[fa/arrow] (unb) -- (a01);
+\draw[fa/arrow] (a01) -- (c01);
+\draw[fa/arrow] (c01) -- (a02);
+\draw[fa/arrow] (a01) -- (b01);
+\draw[fa/arrow] (a02) -- (b01);
+\draw[fa/arrow] (hil) -- (form);
+\draw[fa/arrow] (c01) -- (form);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle H\) 为复 Hilbert 空间，内积对第一变量线性、对第二变量共轭线性. 对每个可能无界算子始终显式写
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq H\to H.\)
+算子等式 \(\displaystyle\mathcal A=\mathcal B\) 同时要求 \(\displaystyle D(\mathcal A)=D(\mathcal B)\) 与作用相等. 特别地，\(\displaystyle\mathcal A=\mathcal A^*\) 是定义域敏感的算子等式，而不是形式作用公式的相等.
+
+\newpage
+\section{对称/自伴}\label{sec:ii06-symmetric-selfadjoint}
+\index{symmetric operator@对称算子}\index{self-adjoint operator@自伴算子}\index{essentially self-adjoint@本质自伴}
+
+\begin{FADefinition}[A][对称、自伴与本质自伴]{fa:SA-A01}
+设
+\(\displaystyle \mathcal A:D(\mathcal A)\subseteq H\to H\)
+稠密定义.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 若
+\[
+\langle\mathcal Ax,y\rangle_H
+=
+\langle x,\mathcal Ay\rangle_H
+\;
+\forall\,x,y\in D(\mathcal A),
+\]
+则称 \(\displaystyle\mathcal A\) 为对称算子.
+\item 若 \(\displaystyle\mathcal A=\mathcal A^*\) 作为算子等式成立，即
+\[
+D(\mathcal A)=D(\mathcal A^*),
+\;
+\mathcal Ax=\mathcal A^*x
+\;
+\forall\,x\in D(\mathcal A),
+\]
+则称 \(\displaystyle\mathcal A\) 为自伴算子.
+\item 若 \(\displaystyle\mathcal A\) 可闭且闭包 \(\displaystyle\overline{\mathcal A}\) 自伴，则称 \(\displaystyle\mathcal A\) 为本质自伴算子.
+\end{enumerate}
+\end{FADefinition}
+
+\begin{FAProposition}[B][对称性等价于伴随包含]{ii06:symmetric-adjoint-inclusion}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 稠密定义. 则
+\(\displaystyle \mathcal A\text{ 对称} \iff \mathcal A\subseteq\mathcal A^*.\)
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle\mathcal A\) 对称，固定 \(\displaystyle y\in D(\mathcal A)\). 对全部 \(\displaystyle x\in D(\mathcal A)\)，
+\(\displaystyle |\langle\mathcal Ax,y\rangle_H| = |\langle x,\mathcal Ay\rangle_H| \leqslant \|x\|_H\|\mathcal Ay\|_H.\)
+由 II-05 的无界伴随定义，\(\displaystyle y\in D(\mathcal A^*)\) 且 \(\displaystyle\mathcal A^*y=\mathcal Ay\). 因此 \(\displaystyle\mathcal A\subseteq\mathcal A^*\).
+
+反之，若 \(\displaystyle\mathcal A\subseteq\mathcal A^*\)，则对任意 \(\displaystyle x,y\in D(\mathcal A)\)，有 \(\displaystyle y\in D(\mathcal A^*)\) 与 \(\displaystyle\mathcal A^*y=\mathcal Ay\)，故
+\(\displaystyle \langle\mathcal Ax,y\rangle_H = \langle x,\mathcal A^*y\rangle_H = \langle x,\mathcal Ay\rangle_H.\)
+所以 \(\displaystyle\mathcal A\) 对称.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][对称算子的可闭性与闭包对称性]{ii06:symmetric-closable-closure}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 稠密定义且对称. 则 \(\displaystyle\mathcal A\) 可闭，并且 \(\displaystyle\overline{\mathcal A}\) 仍对称.
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{ii06:symmetric-adjoint-inclusion}，
+\(\displaystyle D(\mathcal A)\subseteq D(\mathcal A^*).\)
+因为 \(\displaystyle D(\mathcal A)\) 在 \(\displaystyle H\) 中稠密，所以 \(\displaystyle D(\mathcal A^*)\) 也稠密. 由\autoref{fa:UNB-A02}，\(\displaystyle\mathcal A\) 可闭且
+\(\displaystyle \mathcal A^{**}=\overline{\mathcal A}.\)
+另一方面，\(\displaystyle\mathcal A\subseteq\mathcal A^*\). 由 II-05 的伴随反转延拓包含\autoref{ii05:adjoint-extension-reversal}，
+\(\displaystyle \mathcal A^{**}\subseteq\mathcal A^*.\)
+故
+\(\displaystyle \overline{\mathcal A}\subseteq\mathcal A^*.\)
+又 \(\displaystyle(\overline{\mathcal A})^*=\mathcal A^*\) 由\autoref{fa:UNB-A02}已建立，因此
+\(\displaystyle \overline{\mathcal A} \subseteq (\overline{\mathcal A})^*.\)
+由\autoref{ii06:symmetric-adjoint-inclusion}，\(\displaystyle\overline{\mathcal A}\) 对称.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[A][自伴算子必闭]{ii06:selfadjoint-closed}
+若 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 自伴，则 \(\displaystyle\mathcal A\) 闭.
+\end{FACorollary}
+
+\begin{FAProof}
+II-05 已证明任一稠密定义算子的伴随 \(\displaystyle\mathcal A^*\) 为闭算子. 自伴性给 \(\displaystyle\mathcal A=\mathcal A^*\) 作为算子等式，故 \(\displaystyle\mathcal A\) 闭.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][对称算子的二次值为实数]{ii06:symmetric-real-quadratic-values}
+若 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 对称，则
+\(\displaystyle \langle\mathcal Ax,x\rangle_H\in\mathbb R \; \forall\,x\in D(\mathcal A).\)
+\end{FAProposition}
+
+\begin{FAProof}
+对任意 \(\displaystyle x\in D(\mathcal A)\)，对称性与内积的共轭对称性给
+\(\displaystyle \langle\mathcal Ax,x\rangle_H = \langle x,\mathcal Ax\rangle_H = \overline{\langle\mathcal Ax,x\rangle_H}.\)
+因此该标量为实数.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[无界乘法算子模型的自伴性]
+II-05 已对 \(\displaystyle\ell^2\) 上的乘法算子
+\(\displaystyle D(\mathcal M)=\{x=(x_n)\in\ell^2:(nx_n)\in\ell^2\}, \; \mathcal Mx=(nx_n)\)
+完整证明
+\[
+D(\mathcal M^*)=D(\mathcal M),
+\;
+\mathcal M^*x=\mathcal Mx
+\;
+\forall\,x\in D(\mathcal M).
+\]
+故按\autoref{fa:SA-A01}，\(\displaystyle\mathcal M\) 自伴. II-05 还已直接计算 \(\displaystyle\sigma(\mathcal M)=\mathbb N\)；这里仅复用该既有事实，不调用 II-07 的无界谱定理.
+\end{FAExample}
+
+\section{基本判据}\label{sec:ii06-basic-criteria}
+\index{range@值域}\index{resolvent@预解}\index{self-adjoint criterion@自伴判据}
+
+\begin{FAProposition}[C][对称算子的值域与非实参数工具]{fa:SA-C01}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 稠密定义.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item 对任意 \(\displaystyle\lambda\in\mathbb C\)，
+\[
+\operatorname{Ran}(\mathcal A-\lambda\mathcal I)^\perp
+=
+\ker(\mathcal A^*-\overline\lambda\mathcal I).
+\]
+\item 若 \(\displaystyle\mathcal A\) 对称，则对任意 \(\displaystyle x\in D(\mathcal A)\) 与 \(\displaystyle\lambda\in\mathbb C\)，
+\[
+\|(\mathcal A-\lambda\mathcal I)x\|_H^2
+=
+\|(\mathcal A-\operatorname{Re}\lambda\mathcal I)x\|_H^2
++
+|\operatorname{Im}\lambda|^2\|x\|_H^2.
+\]
+特别地，若 \(\displaystyle\operatorname{Im}\lambda\neq0\)，则
+\(\displaystyle \|(\mathcal A-\lambda\mathcal I)x\|_H \geqslant |\operatorname{Im}\lambda|\|x\|_H.\)
+\item 若 \(\displaystyle\mathcal A\) 闭且对称，并且 \(\displaystyle\operatorname{Im}\lambda\neq0\)，则 \(\displaystyle\operatorname{Ran}(\mathcal A-\lambda\mathcal I)\) 为 \(\displaystyle H\) 的闭子空间.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+先证（i）. 固定 \(\displaystyle y\in H\). 条件 \(\displaystyle y\in\operatorname{Ran}(\mathcal A-\lambda\mathcal I)^\perp\) 等价于对全部 \(\displaystyle x\in D(\mathcal A)\)，
+\(\displaystyle 0 = \langle(\mathcal A-\lambda\mathcal I)x,y\rangle_H = \langle\mathcal Ax,y\rangle_H - \lambda\langle x,y\rangle_H.\)
+由于第二变量共轭线性，
+\(\displaystyle \lambda\langle x,y\rangle_H = \langle x,\overline\lambda y\rangle_H.\)
+故上式等价于
+\(\displaystyle \langle\mathcal Ax,y\rangle_H = \langle x,\overline\lambda y\rangle_H ,\; \forall\,x\in D(\mathcal A).\)
+这恰好表示 \(\displaystyle y\in D(\mathcal A^*)\) 且 \(\displaystyle\mathcal A^*y=\overline\lambda y\)，即 \(\displaystyle y\in\ker(\mathcal A^*-\overline\lambda\mathcal I)\).
+
+再证（ii）. 写 \(\displaystyle\lambda=a+\mathrm{i}b\)，其中 \(\displaystyle a,b\in\mathbb R\)，并令 \(\displaystyle\mathcal B=\mathcal A-a\mathcal I\) 在 \(\displaystyle D(\mathcal A)\) 上作用. 因 \(\displaystyle\mathcal A\) 对称，\(\displaystyle\mathcal B\) 对称，故由\autoref{ii06:symmetric-real-quadratic-values}，\(\displaystyle\langle\mathcal Bx,x\rangle_H\in\mathbb R\). 于是
+\[
+\begin{aligned}
+\displaystyle \|(\mathcal A-\lambda\mathcal I)x\|_H^2 &\displaystyle = \|\mathcal Bx-\mathrm{i}b x\|_H^2\\
+\displaystyle &\displaystyle = \|\mathcal Bx\|_H^2+b^2\|x\|_H^2 +\mathrm{i}b\langle\mathcal Bx,x\rangle_H -\mathrm{i}b\langle x,\mathcal Bx\rangle_H\\
+\displaystyle &\displaystyle = \|\mathcal Bx\|_H^2+b^2\|x\|_H^2.
+\end{aligned}
+\]
+开平方即得非实参数下界.
+
+最后证（iii）. 设
+\(\displaystyle y_n=(\mathcal A-\lambda\mathcal I)x_n,\; x_n\in D(\mathcal A),\)
+且 \(\displaystyle y_n\to y\) 于 \(\displaystyle H\). 由（ii），
+\(\displaystyle \|x_n-x_m\|_H \leqslant \frac{1}{|\operatorname{Im}\lambda|}\|y_n-y_m\|_H,\)
+所以 \(\displaystyle(x_n)\) 为 Cauchy 列，存在 \(\displaystyle x\in H\) 使 \(\displaystyle x_n\to x\). 又
+\(\displaystyle \mathcal Ax_n=y_n+\lambda x_n\longrightarrow y+\lambda x.\)
+由 \(\displaystyle\mathcal A\) 闭，\(\displaystyle x\in D(\mathcal A)\) 且 \(\displaystyle\mathcal Ax=y+\lambda x\). 因而 \(\displaystyle y=(\mathcal A-\lambda\mathcal I)x\)，所以值域闭.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[A][自伴性的非实值域判据]{fa:SA-A02}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 稠密定义且对称. 则以下条件等价：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle\mathcal A\) 自伴.
+\item
+\[
+\operatorname{Ran}(\mathcal A-\mathrm{i}\mathcal I)=H,
+\;
+\operatorname{Ran}(\mathcal A+\mathrm{i}\mathcal I)=H.
+\]
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle\mathcal A\) 自伴. 由\autoref{ii06:selfadjoint-closed}，\(\displaystyle\mathcal A\) 闭. 因此\autoref{fa:SA-C01}给出 \(\displaystyle\operatorname{Ran}(\mathcal A\pm\mathrm{i}\mathcal I)\) 均闭. 同时
+\(\displaystyle \operatorname{Ran}(\mathcal A-\mathrm{i}\mathcal I)^\perp = \ker(\mathcal A^*+\mathrm{i}\mathcal I) = \ker(\mathcal A+\mathrm{i}\mathcal I).\)
+若 \(\displaystyle x\in\ker(\mathcal A+\mathrm{i}\mathcal I)\)，则\autoref{fa:SA-C01}的非实参数下界给
+\(\displaystyle 0 = \|(\mathcal A+\mathrm{i}\mathcal I)x\|_H \geqslant \|x\|_H,\)
+故 \(\displaystyle x=0\). 所以 \(\displaystyle\operatorname{Ran}(\mathcal A-\mathrm{i}\mathcal I)^\perp=\{0\}\)，其值域稠密又闭，因而等于 \(\displaystyle H\). 另一符号完全同理，故（ii）成立.
+
+反之，设（ii）成立. 已知 \(\displaystyle\mathcal A\subseteq\mathcal A^*\). 任取 \(\displaystyle y\in D(\mathcal A^*)\). 由 \(\displaystyle\operatorname{Ran}(\mathcal A-\mathrm{i}\mathcal I)=H\)，存在 \(\displaystyle x\in D(\mathcal A)\) 使
+\(\displaystyle (\mathcal A-\mathrm{i}\mathcal I)x = (\mathcal A^*-\mathrm{i}\mathcal I)y.\)
+令 \(\displaystyle h=y-x\). 因 \(\displaystyle x\in D(\mathcal A)\subseteq D(\mathcal A^*)\)，有 \(\displaystyle h\in D(\mathcal A^*)\)，且
+\(\displaystyle (\mathcal A^*-\mathrm{i}\mathcal I)h=0.\)
+另一方面，\autoref{fa:SA-C01}对参数 \(\displaystyle-\mathrm{i}\) 给
+\(\displaystyle \ker(\mathcal A^*-\mathrm{i}\mathcal I) = \operatorname{Ran}(\mathcal A+\mathrm{i}\mathcal I)^\perp = \{0\}.\)
+故 \(\displaystyle h=0\)，即 \(\displaystyle y=x\in D(\mathcal A)\). 因此 \(\displaystyle D(\mathcal A^*)\subseteq D(\mathcal A)\). 与 \(\displaystyle\mathcal A\subseteq\mathcal A^*\) 合并得到 \(\displaystyle\mathcal A=\mathcal A^*\) 作为算子等式，所以 \(\displaystyle\mathcal A\) 自伴.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[A][自伴算子的非实预解与实谱]{ii06:selfadjoint-nonreal-resolvent}
+若 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 自伴，则
+\[
+\mathbb C\setminus\mathbb R\subseteq\rho(\mathcal A),
+\;
+\sigma(\mathcal A)\subseteq\mathbb R.
+\]
+并且对每个 \(\displaystyle\lambda\in\mathbb C\setminus\mathbb R\)，
+\[
+\|(\mathcal A-\lambda\mathcal I)^{-1}\|_{\mathcal B(H)}
+\leqslant
+\frac{1}{|\operatorname{Im}\lambda|}.
+\]
+\end{FACorollary}
+
+\begin{FAProof}
+固定 \(\displaystyle\lambda\in\mathbb C\setminus\mathbb R\). 自伴算子闭，所以\autoref{fa:SA-C01}给出 \(\displaystyle\operatorname{Ran}(\mathcal A-\lambda\mathcal I)\) 闭. 又
+\(\displaystyle \operatorname{Ran}(\mathcal A-\lambda\mathcal I)^\perp = \ker(\mathcal A-\overline\lambda\mathcal I).\)
+由非实参数下界，右端等于 \(\displaystyle\{0\}\). 因而值域稠密且闭，即
+\(\displaystyle \operatorname{Ran}(\mathcal A-\lambda\mathcal I)=H.\)
+同一下界还给出 \(\displaystyle\ker(\mathcal A-\lambda\mathcal I)=\{0\}\)，故 \(\displaystyle\mathcal A-\lambda\mathcal I:D(\mathcal A)\to H\) 双射. 于是 \(\displaystyle\lambda\mathcal I-\mathcal A\) 也双射，所以按 II-05 的预解定义 \(\displaystyle\lambda\in\rho(\mathcal A)\).
+
+若 \(\displaystyle y=(\mathcal A-\lambda\mathcal I)x\)，则
+\(\displaystyle \|y\|_H \geqslant |\operatorname{Im}\lambda|\|x\|_H,\)
+故
+\(\displaystyle \|(\mathcal A-\lambda\mathcal I)^{-1}y\|_H \leqslant \frac{1}{|\operatorname{Im}\lambda|}\|y\|_H.\)
+这给出所述预解估计. 因全部非实数属于预解集，\(\displaystyle\sigma(\mathcal A)\subseteq\mathbb R\). 证明未使用 II-07 的无界谱定理.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{本质自伴}\label{sec:ii06-essential-selfadjoint}
+\index{deficiency subspace@亏子空间}\index{essentially self-adjoint@本质自伴}
+
+\begin{FADefinition}[B][亏子空间]{ii06:deficiency-subspaces}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 稠密定义且对称. 定义
+\[
+N_+
+=
+\ker(\mathcal A^*-\mathrm{i}\mathcal I),
+\;
+N_-
+=
+\ker(\mathcal A^*+\mathrm{i}\mathcal I).
+\]
+本章只把 \(\displaystyle N_+,N_-\) 作为本质自伴性的局部证明工具，不建立亏指数完整分类，也不建立自伴延拓的 von Neumann 分类.
+\end{FADefinition}
+
+\begin{FAProposition}[B][闭包与非实值域的桥梁]{ii06:closure-range-bridge}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 稠密定义且对称. 则
+\[
+\overline{\operatorname{Ran}(\mathcal A\pm\mathrm{i}\mathcal I)}
+=
+\operatorname{Ran}(\overline{\mathcal A}\pm\mathrm{i}\mathcal I).
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{ii06:symmetric-closable-closure}，\(\displaystyle\overline{\mathcal A}\) 闭且对称. 因 \(\displaystyle\mathcal A\subseteq\overline{\mathcal A}\)，
+\(\displaystyle \operatorname{Ran}(\mathcal A\pm\mathrm{i}\mathcal I) \subseteq \operatorname{Ran}(\overline{\mathcal A}\pm\mathrm{i}\mathcal I).\)
+由\autoref{fa:SA-C01}，右侧值域闭，因此
+\(\displaystyle \overline{\operatorname{Ran}(\mathcal A\pm\mathrm{i}\mathcal I)} \subseteq \operatorname{Ran}(\overline{\mathcal A}\pm\mathrm{i}\mathcal I).\)
+反向包含中，任取 \(\displaystyle x\in D(\overline{\mathcal A})\). 由 II-05 的闭包序列刻画\autoref{ii05:closure-characterization}，存在 \(\displaystyle x_n\in D(\mathcal A)\) 使
+\(\displaystyle x_n\to x,\; \mathcal Ax_n\to\overline{\mathcal A}x.\)
+故
+\(\displaystyle (\mathcal A\pm\mathrm{i}\mathcal I)x_n \longrightarrow (\overline{\mathcal A}\pm\mathrm{i}\mathcal I)x.\)
+所以右侧值域中的每个元素属于左侧闭包. 两包含合并即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][本质自伴性的闭包、值域与亏子空间判据]{fa:SA-B01}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 稠密定义且对称. 则以下条件等价：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle\mathcal A\) 本质自伴.
+\item \(\displaystyle\overline{\mathcal A}=\mathcal A^*\) 作为算子等式成立.
+\item
+\[
+\overline{\operatorname{Ran}(\mathcal A-\mathrm{i}\mathcal I)}=H,
+\;
+\overline{\operatorname{Ran}(\mathcal A+\mathrm{i}\mathcal I)}=H.
+\]
+\item \(\displaystyle N_+=N_-=\{0\}\).
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{ii06:symmetric-closable-closure}，\(\displaystyle\overline{\mathcal A}\) 闭且对称. 按定义，（i）等价于 \(\displaystyle\overline{\mathcal A}\) 自伴. 由\autoref{fa:SA-A02}，这又等价于
+\(\displaystyle \operatorname{Ran}(\overline{\mathcal A}-\mathrm{i}\mathcal I)=H,\; \operatorname{Ran}(\overline{\mathcal A}+\mathrm{i}\mathcal I)=H.\)
+结合\autoref{ii06:closure-range-bridge}得（i）与（iii）等价.
+
+由 II-05 的\autoref{fa:UNB-A02}，
+\(\displaystyle (\overline{\mathcal A})^*=\mathcal A^*.\)
+若（i）成立，则
+\(\displaystyle \overline{\mathcal A} = (\overline{\mathcal A})^* = \mathcal A^*,\)
+即（ii）成立. 反之，若 \(\displaystyle\overline{\mathcal A}=\mathcal A^*\)，则
+\(\displaystyle (\overline{\mathcal A})^* = \mathcal A^* = \overline{\mathcal A},\)
+所以 \(\displaystyle\overline{\mathcal A}\) 自伴，即（i）成立. 因此（i）与（ii）等价.
+
+最后，由\autoref{fa:SA-C01}，
+\(\displaystyle \operatorname{Ran}(\mathcal A+\mathrm{i}\mathcal I)^\perp = \ker(\mathcal A^*-\mathrm{i}\mathcal I) = N_+,\)
+以及
+\(\displaystyle \operatorname{Ran}(\mathcal A-\mathrm{i}\mathcal I)^\perp = \ker(\mathcal A^*+\mathrm{i}\mathcal I) = N_-.\)
+Hilbert 空间中线性子空间稠密当且仅当其正交补为 \(\displaystyle\{0\}\)，故（iii）与（iv）等价.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[亏子空间理论的边界]
+\autoref{fa:SA-B01}只使用 \(\displaystyle N_+,N_-\) 是否为零. 本章不引入其维数所形成的完整亏指数理论，不证明 \(\displaystyle D(\mathcal A^*)\) 的 von Neumann 分解，也不参数化全部自伴延拓. 这些属于 D 级高级边界，不参与本章 A/B 主线.
+\end{FARemark}
+
+\section{闭二次型}\label{sec:ii06-closed-forms}
+\index{sesquilinear form@半双线性型}\index{closed form@闭型}\index{quadratic form@二次型}\index{associated operator@关联算子}
+
+设 \(\displaystyle V\subseteq H\) 为稠密线性子空间. 本节的型始终指
+\(\displaystyle \mathfrak a:V\times V\to\mathbb C\)
+对第一变量线性、对第二变量共轭线性的半双线性型.
+
+\begin{FADefinition}[B][共轭对称非负型、二次型与闭型]{ii06:closed-form-definition}
+称 \(\displaystyle\mathfrak a\) 为共轭对称型，若
+\(\displaystyle \mathfrak a(u,v) = \overline{\mathfrak a(v,u)} \; \forall\,u,v\in V.\)
+称其非负，若
+\(\displaystyle \mathfrak a(u,u)\geqslant0 \; \forall\,u\in V.\)
+对应二次型为 \(\displaystyle q_{\mathfrak a}(u)=\mathfrak a(u,u)\). 对共轭对称非负型定义
+\(\displaystyle \langle u,v\rangle_{\mathfrak a} = \langle u,v\rangle_H+\mathfrak a(u,v),\)
+以及
+\(\displaystyle \|u\|_{\mathfrak a}^2 = \|u\|_H^2+\mathfrak a(u,u).\)
+若 \(\displaystyle(V,\|\cdot\|_{\mathfrak a})\) 完备，则称 \(\displaystyle\mathfrak a\) 为闭的非负型.
+\end{FADefinition}
+
+\begin{FAProposition}[B][非负共轭对称型的 Cauchy--Schwarz 不等式]{ii06:positive-form-cs}
+若 \(\displaystyle\mathfrak a\) 为共轭对称非负型，则
+\(\displaystyle |\mathfrak a(u,v)|^2 \leqslant \mathfrak a(u,u)\mathfrak a(v,v) \; \forall\,u,v\in V.\)
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle u,v\in V\)，记 \(\displaystyle c=\mathfrak a(u,v)\) 与 \(\displaystyle b=\mathfrak a(v,v)\geqslant0\).
+
+若 \(\displaystyle b=0\)，则对任意 \(\displaystyle\lambda\in\mathbb C\)，非负性给
+\(\displaystyle 0 \leqslant \mathfrak a(u-\lambda v,u-\lambda v) = \mathfrak a(u,u)-\lambda\overline c-\overline\lambda c.\)
+若 \(\displaystyle c\neq0\)，取 \(\displaystyle\lambda=t c\) 且 \(\displaystyle t>0\)，得到
+\(\displaystyle 0 \leqslant \mathfrak a(u,u)-2t|c|^2,\)
+令 \(\displaystyle t\to\infty\) 矛盾. 故 \(\displaystyle c=0\)，所需不等式成立.
+
+若 \(\displaystyle b>0\)，取 \(\displaystyle\lambda=\frac{c}{b}\). 则
+\[
+\begin{aligned}
+\displaystyle &\displaystyle 0\leqslant\mathfrak a(u-\lambda v,u-\lambda v)=\mathfrak a(u,u)-\lambda\overline c-\overline\lambda c+|\lambda|^2b\\[6pt]
+\displaystyle &\displaystyle {}=\mathfrak a(u,u)-\frac{|c|^2}{b}.
+\end{aligned}
+\]
+故 \(\displaystyle|c|^2\leqslant\mathfrak a(u,u)b\)，即结论.
+\hfill\(\square\)
+\end{FAProof}
+
+由\autoref{ii06:positive-form-cs}，\(\displaystyle\langle\cdot,\cdot\rangle_{\mathfrak a}\) 为共轭对称半双线性型；且 \(\displaystyle\langle u,u\rangle_{\mathfrak a}\geqslant\|u\|_H^2\)，所以只有 \(\displaystyle u=0\) 才可能取零. 因而它确为 \(\displaystyle V\) 上的内积，而\autoref{ii06:closed-form-definition}的闭性就是该内积空间的 Hilbert 完备性.
+
+\begin{FALemma}[B][满射正移位给出自伴性]{ii06:plus-one-selfadjoint-lemma}
+设 \(\displaystyle\mathcal B:D(\mathcal B)\subseteq H\to H\) 稠密定义且对称. 若
+\(\displaystyle \operatorname{Ran}(\mathcal B+\mathcal I)=H,\)
+则 \(\displaystyle\mathcal B\) 自伴.
+\end{FALemma}
+
+\begin{FAProof}
+任取 \(\displaystyle y\in D(\mathcal B^*)\). 由满射性，存在 \(\displaystyle x\in D(\mathcal B)\) 使
+\(\displaystyle (\mathcal B+\mathcal I)x = (\mathcal B^*+\mathcal I)y.\)
+因为 \(\displaystyle\mathcal B\subseteq\mathcal B^*\)，令 \(\displaystyle h=y-x\) 得
+\(\displaystyle h\in\ker(\mathcal B^*+\mathcal I).\)
+由\autoref{fa:SA-C01}对 \(\displaystyle\lambda=-1\) 的值域正交恒等式，
+\(\displaystyle \ker(\mathcal B^*+\mathcal I) = \operatorname{Ran}(\mathcal B+\mathcal I)^\perp = \{0\}.\)
+故 \(\displaystyle y=x\in D(\mathcal B)\). 因此 \(\displaystyle D(\mathcal B^*)\subseteq D(\mathcal B)\)，与 \(\displaystyle\mathcal B\subseteq\mathcal B^*\) 合并得到 \(\displaystyle\mathcal B=\mathcal B^*\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][闭非负型的关联自伴算子]{fa:FORM-B01}
+设 \(\displaystyle H\) 为复 Hilbert 空间，\(\displaystyle V\subseteq H\) 稠密，且 \(\displaystyle\mathfrak a:V\times V\to\mathbb C\) 为 共轭对称、非负、闭的半双线性型. 定义
+\[
+D(\mathcal A_{\mathfrak a})
+=
+\left\{
+u\in V:
+\exists\,f\in H\text{ 使 }\mathfrak a(u,v)=\langle f,v\rangle_H
+\ \forall\,v\in V
+\right\}.
+\]
+由 \(\displaystyle V\) 在 \(\displaystyle H\) 中稠密，表示向量 \(\displaystyle f\) 唯一；定义 \(\displaystyle\mathcal A_{\mathfrak a}u=f\). 则 \(\displaystyle\mathcal A_{\mathfrak a}:D(\mathcal A_{\mathfrak a})\subseteq H\to H\) 为线性算子，并且：
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \(\displaystyle D(\mathcal A_{\mathfrak a})\) 在 \(\displaystyle H\) 中稠密.
+\item \(\displaystyle\mathcal A_{\mathfrak a}\) 对称.
+\item
+\[
+\langle\mathcal A_{\mathfrak a}u,u\rangle_H
+=
+\mathfrak a(u,u)
+\geqslant0
+\;
+\forall\,u\in D(\mathcal A_{\mathfrak a}).
+\]
+\item
+\(\displaystyle \operatorname{Ran}(\mathcal A_{\mathfrak a}+\mathcal I)=H.\)
+\item \(\displaystyle\mathcal A_{\mathfrak a}\) 自伴.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+先核对定义. 若 \(\displaystyle f_1,f_2\in H\) 都表示同一 \(\displaystyle u\in V\)，则
+\(\displaystyle \langle f_1-f_2,v\rangle_H=0 ,\; \forall\,v\in V.\)
+由 \(\displaystyle V\) 稠密，取 \(\displaystyle v_n\in V\) 使 \(\displaystyle v_n\to f_1-f_2\)，连续性给 \(\displaystyle\|f_1-f_2\|_H^2=0\)，所以表示向量唯一. 若 \(\displaystyle u_1,u_2\in D(\mathcal A_{\mathfrak a})\) 且 \(\displaystyle\alpha,\beta\in\mathbb C\)，则半双线性型对第一变量线性给
+\(\displaystyle \mathfrak a(\alpha u_1+\beta u_2,v) = \langle\alpha\mathcal A_{\mathfrak a}u_1+\beta\mathcal A_{\mathfrak a}u_2,v\rangle_H,\)
+故定义域为线性子空间且 \(\displaystyle\mathcal A_{\mathfrak a}\) 线性.
+
+证明（iv）. 固定 \(\displaystyle f\in H\). 因 \(\displaystyle\mathfrak a\) 闭，\(\displaystyle(V,\langle\cdot,\cdot\rangle_{\mathfrak a})\) 为 Hilbert 空间. 映射
+\(\displaystyle \varphi_f(v)=\langle v,f\rangle_H\)
+对 \(\displaystyle v\) 线性，且
+\(\displaystyle |\varphi_f(v)| \leqslant \|v\|_H\|f\|_H \leqslant \|v\|_{\mathfrak a}\|f\|_H.\)
+由 I-04 的 Riesz 表示定理\autoref{fa:HIL-A02}，存在唯一 \(\displaystyle u\in V\) 使
+\(\displaystyle \langle v,u\rangle_{\mathfrak a} = \langle v,f\rangle_H ,\; \forall\,v\in V.\)
+取共轭并使用两种内积的共轭对称性，得到
+\(\displaystyle \langle u,v\rangle_{\mathfrak a} = \langle f,v\rangle_H ,\; \forall\,v\in V.\)
+因此
+\(\displaystyle \mathfrak a(u,v) = \langle f-u,v\rangle_H ,\; \forall\,v\in V.\)
+故 \(\displaystyle u\in D(\mathcal A_{\mathfrak a})\)，\(\displaystyle\mathcal A_{\mathfrak a}u=f-u\)，从而
+\(\displaystyle (\mathcal A_{\mathfrak a}+\mathcal I)u=f.\)
+所以（iv）成立.
+
+证明（i）. 设 \(\displaystyle y\perp D(\mathcal A_{\mathfrak a})\). 由（iv），存在 \(\displaystyle u\in D(\mathcal A_{\mathfrak a})\) 使
+\(\displaystyle (\mathcal A_{\mathfrak a}+\mathcal I)u=y.\)
+因为 \(\displaystyle u\in D(\mathcal A_{\mathfrak a})\) 且 \(\displaystyle y\perp D(\mathcal A_{\mathfrak a})\)，有 \(\displaystyle\langle u,y\rangle_H=0\). 又
+\[
+0=\langle u,y\rangle_H=\langle u,\mathcal A_{\mathfrak a}u\rangle_H+\|u\|_H^2=\mathfrak a(u,u)+\|u\|_H^2.
+\]
+最后一式使用 \(\displaystyle\langle u,\mathcal A_{\mathfrak a}u\rangle_H=\overline{\langle\mathcal A_{\mathfrak a}u,u\rangle_H}=\mathfrak a(u,u)\in\mathbb R\). 两项均非负，所以 \(\displaystyle u=0\)，继而 \(\displaystyle y=0\). 因而 \(\displaystyle D(\mathcal A_{\mathfrak a})^\perp=\{0\}\)，定义域稠密.
+
+证明（ii）与（iii）. 对 \(\displaystyle u,v\in D(\mathcal A_{\mathfrak a})\)，定义给
+\(\displaystyle \langle\mathcal A_{\mathfrak a}u,v\rangle_H = \mathfrak a(u,v) = \overline{\mathfrak a(v,u)} = \langle u,\mathcal A_{\mathfrak a}v\rangle_H.\)
+故 \(\displaystyle\mathcal A_{\mathfrak a}\) 对称. 令 \(\displaystyle v=u\) 即得
+\(\displaystyle \langle\mathcal A_{\mathfrak a}u,u\rangle_H = \mathfrak a(u,u) \geqslant0.\)
+
+最后，由（i）、（ii）、（iv）与\autoref{ii06:plus-one-selfadjoint-lemma}，\(\displaystyle\mathcal A_{\mathfrak a}\) 自伴，得到（v）. 整个构造只使用 Hilbert 空间 Riesz 表示与本章已经证明的值域工具，没有使用 Lax--Milgram 定理.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{边界条件}\label{sec:ii06-boundary-conditions}
+\index{boundary condition@边界条件}\index{derivative operator@微分算子}\index{Dirichlet Laplacian@Dirichlet Laplace 算子}
+
+本节取
+\(\displaystyle H=L^2(0,1)\)
+为复 Hilbert 空间，内积为
+\[
+\langle f,g\rangle
+=
+\int_0^1 f(t)\overline{g(t)}\,\mathrm{d}t.
+\]
+所有绝对连续函数都以其连续代表元理解，端点值因此有确定含义.
+
+\subsection{零边界绝对连续域的稠密性}
+
+定义
+\[
+V_0
+=
+\left\{
+ f\in AC[0,1]:f'\in L^2(0,1),\ f(0)=f(1)=0
+\right\}.
+\]
+
+\begin{FALemma}[B][Dirichlet 绝对连续域在 \(\displaystyle L^2\) 中稠密]{ii06:v0-dense}
+\(\displaystyle V_0\) 在 \(\displaystyle L^2(0,1)\) 中稠密.
+\end{FALemma}
+
+\begin{FAProof}
+由 II-03 的\autoref{ii03:ck-dense-l2}应用于紧度量空间 \(\displaystyle[0,1]\) 与 Lebesgue 测度，\(\displaystyle C[0,1]\) 在 \(\displaystyle L^2(0,1)\) 中稠密. 因此只需逼近任意 \(\displaystyle g\in C[0,1]\).
+
+固定 \(\displaystyle\varepsilon>0\). 由 \(\displaystyle g\) 一致连续，取充分细的分割并以节点值作线性插值，可得分段线性函数 \(\displaystyle p\) 满足
+\(\displaystyle \|g-p\|_\infty<\frac{\varepsilon}{2}.\)
+于是 \(\displaystyle\|g-p\|_2<\frac{\varepsilon}{2}\).
+
+对 \(\displaystyle0<\delta<\frac{1}{2}\)，定义分段线性截断
+\[
+\chi_\delta(t)
+=
+\begin{cases}
+ \frac{t}{\delta},&0\leqslant t\leqslant\delta,\\
+ 1,&\delta\leqslant t\leqslant1-\delta,\\
+ \frac{1-t}{\delta},&1-\delta\leqslant t\leqslant1.
+\end{cases}
+\]
+令 \(\displaystyle u=\chi_\delta p\). 两个分段线性函数均绝对连续，所以 \(\displaystyle u\in AC[0,1]\)，并且
+\(\displaystyle u' = \chi_\delta' p+\chi_\delta p' ,\;\text{几乎处处}\)
+为分段有界函数，故 \(\displaystyle u'\in L^2(0,1)\). 同时 \(\displaystyle u(0)=u(1)=0\)，故 \(\displaystyle u\in V_0\). 又
+\(\displaystyle \|p-u\|_2 = \|(1-\chi_\delta)p\|_2 \leqslant \|p\|_\infty\sqrt{2\delta}.\)
+选取充分小的 \(\displaystyle\delta\) 使右端小于 \(\displaystyle\frac{\varepsilon}{2}\)，得到 \(\displaystyle\|g-u\|_2<\varepsilon\). 因而 \(\displaystyle V_0\) 稠密.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{最小一阶微分算子：对称但非自伴}
+
+定义
+\[
+\mathcal A_0:D(\mathcal A_0)=V_0\subseteq L^2(0,1)\to L^2(0,1),
+\;
+\mathcal A_0f=-\mathrm{i}f'.
+\]
+由\autoref{ii06:v0-dense}，\(\displaystyle\mathcal A_0\) 稠密定义.
+
+\begin{FAProposition}[B][最小一阶微分算子的闭性]{ii06:minimal-derivative-closed}
+\(\displaystyle\mathcal A_0\) 为闭算子.
+\end{FAProposition}
+
+\begin{FAProof}
+设 \(\displaystyle f_n\in V_0\)、\(\displaystyle f_n\to f\) 于 \(\displaystyle L^2\)，且 \(\displaystyle\mathcal A_0f_n\to g\) 于 \(\displaystyle L^2\). 因 \(\displaystyle\mathcal A_0f_n=-\mathrm{i}f_n'\)，乘以 \(\displaystyle\mathrm{i}\) 得
+\(\displaystyle f_n'\longrightarrow h:=\mathrm{i}g ,\;\text{于 }L^2(0,1).\)
+由 \(\displaystyle f_n(0)=0\)，
+\[
+f_n(x)
+=
+\int_0^x f_n'(t)\,\mathrm{d}t.
+\]
+定义
+\[
+F(x)
+=
+\int_0^x h(t)\,\mathrm{d}t.
+\]
+则 \(\displaystyle F\in AC[0,1]\)、\(\displaystyle F'=h\in L^2\)、\(\displaystyle F(0)=0\)，并且 Cauchy--Schwarz 不等式给
+\(\displaystyle \sup_{0\leqslant x\leqslant1}|f_n(x)-F(x)| \leqslant \|f_n'-h\|_2 \longrightarrow0.\)
+所以 \(\displaystyle f_n\to F\) 一致，从而也在 \(\displaystyle L^2\) 中收敛到 \(\displaystyle F\). 与已知 \(\displaystyle f_n\to f\) 的 \(\displaystyle L^2\) 极限唯一性比较，\(\displaystyle f=F\) 几乎处处 又因 \(\displaystyle f_n(1)=0\) 且一致收敛，\(\displaystyle F(1)=0\). 因此 \(\displaystyle F\in V_0\)，并且
+\(\displaystyle \mathcal A_0F = -\mathrm{i}F' = -\mathrm{i}(\mathrm{i}g) = g.\)
+故 \(\displaystyle\mathcal A_0\) 闭.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][一阶微分的边界恒等式]{ii06:derivative-boundary-identity}
+若 \(\displaystyle f,g\in AC[0,1]\) 且 \(\displaystyle f',g'\in L^2(0,1)\)，则 \(\displaystyle f\overline g\in AC[0,1]\)，
+\(\displaystyle (f\overline g)' = f'\overline g+f\overline{g'} \;\text{几乎处处},\)
+并且
+\[
+\langle-\mathrm{i}f',g\rangle
+-
+\langle f,-\mathrm{i}g'\rangle
+=
+-\mathrm{i}\left[f\overline g\right]_0^1.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+绝对连续函数在紧区间上有界，其乘积仍绝对连续，并满足乘积法则 几乎处处 因 \(\displaystyle f',g'\in L^2(0,1)\subseteq L^1(0,1)\)，两项 \(\displaystyle f'\overline g\) 与 \(\displaystyle f\overline{g'}\) 都可积. 由绝对连续函数的微积分基本定理，
+\[
+\int_0^1
+\left(f'\overline g+f\overline{g'}\right)\,\mathrm{d}t
+=
+\left[f\overline g\right]_0^1.
+\]
+在第一变量线性的内积约定下，
+\[
+\langle-\mathrm{i}f',g\rangle
+=
+-\mathrm{i}\int_0^1 f'\overline g\,\mathrm{d}t,
+\]
+而第二变量共轭线性给
+\[
+\langle f,-\mathrm{i}g'\rangle
+=
+\mathrm{i}\int_0^1 f\overline{g'}\,\mathrm{d}t.
+\]
+两式相减即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][最小一阶微分算子对称]{ii06:minimal-derivative-symmetric}
+\(\displaystyle\mathcal A_0\) 对称.
+\end{FAProposition}
+
+\begin{FAProof}
+对任意 \(\displaystyle f,g\in V_0\)，\autoref{ii06:derivative-boundary-identity}给
+\(\displaystyle \langle\mathcal A_0f,g\rangle - \langle f,\mathcal A_0g\rangle = -\mathrm{i}\left[f\overline g\right]_0^1.\)
+因为 \(\displaystyle f(0)=f(1)=g(0)=g(1)=0\)，边界项为零. 故 \(\displaystyle\langle\mathcal A_0f,g\rangle=\langle f,\mathcal A_0g\rangle\)，即 \(\displaystyle\mathcal A_0\) 对称.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[对称不蕴含自伴]
+取 \(\displaystyle y(t)=1\). 由于 \(\displaystyle y(0)=y(1)=1\neq0\)，端点条件不成立，因此 \(\displaystyle y\notin D(\mathcal A_0)\). 但对任意 \(\displaystyle f\in D(\mathcal A_0)\)，
+\[
+\langle\mathcal A_0f,1\rangle
+=
+-\mathrm{i}\int_0^1f'(t)\,\mathrm{d}t
+=
+-\mathrm{i}(f(1)-f(0))
+=
+0
+=
+\langle f,0\rangle.
+\]
+所以 \(\displaystyle1\in D(\mathcal A_0^*)\) 且 \(\displaystyle\mathcal A_0^*1=0\). 因而
+\(\displaystyle D(\mathcal A_0) \neq D(\mathcal A_0^*),\)
+故 \(\displaystyle\mathcal A_0\) 对称但不自伴. 失败的原因完全是定义域不同，而不是作用公式的形式不对称.
+\end{FACounterexample}
+
+\begin{FAProposition}[B][最小一阶微分算子不是本质自伴]{ii06:minimal-derivative-not-essential}
+\(\displaystyle\mathcal A_0\) 不是本质自伴.
+\end{FAProposition}
+
+\begin{FAProof}
+令
+\(\displaystyle y_+(t)=\mathrm{e}^{-t},\; y_-(t)=\mathrm{e}^{t}.\)
+二者都属于 \(\displaystyle AC[0,1]\)，且导数属于 \(\displaystyle L^2(0,1)\). 对任意 \(\displaystyle f\in V_0\)，由\autoref{ii06:derivative-boundary-identity}与 \(\displaystyle f(0)=f(1)=0\)，
+\(\displaystyle \langle\mathcal A_0f,y_\pm\rangle = \langle f,-\mathrm{i}y_\pm'\rangle.\)
+故 \(\displaystyle y_\pm\in D(\mathcal A_0^*)\)，并且
+\(\displaystyle \mathcal A_0^*y_+ = -\mathrm{i}(-y_+) = \mathrm{i}y_+,\)
+以及
+\(\displaystyle \mathcal A_0^*y_- = -\mathrm{i}y_- = -\mathrm{i}y_-.\)
+因此
+\(\displaystyle N_+\neq\{0\},\; N_-\neq\{0\}.\)
+由\autoref{fa:SA-B01}，\(\displaystyle\mathcal A_0\) 不是本质自伴. 本证明只给出两个非零亏向量，不计算完整亏指数，也不分类自伴延拓.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{周期边界条件给出的自伴实现}
+
+定义
+\[
+V_{\mathrm{per}}
+=
+\left\{
+ f\in AC[0,1]:f'\in L^2(0,1),\ f(1)=f(0)
+\right\},
+\]
+以及
+\[
+\mathcal A_{\mathrm{per}}:
+D(\mathcal A_{\mathrm{per}})=V_{\mathrm{per}}
+\subseteq L^2(0,1)
+\to L^2(0,1),
+\;
+\mathcal A_{\mathrm{per}}f=-\mathrm{i}f'.
+\]
+因为 \(\displaystyle V_0\subseteq V_{\mathrm{per}}\) 且 \(\displaystyle V_0\) 稠密，\(\displaystyle\mathcal A_{\mathrm{per}}\) 稠密定义.
+
+\begin{FAProposition}[B][周期一阶微分算子自伴]{ii06:periodic-derivative-selfadjoint}
+\(\displaystyle\mathcal A_{\mathrm{per}}\) 自伴.
+\end{FAProposition}
+
+\begin{FAProof}
+先证对称. 对 \(\displaystyle f,g\in V_{\mathrm{per}}\)，\autoref{ii06:derivative-boundary-identity}给
+\[
+\langle\mathcal A_{\mathrm{per}}f,g\rangle
+-
+\langle f,\mathcal A_{\mathrm{per}}g\rangle
+=
+-\mathrm{i}\bigl(f(1)\overline{g(1)}-f(0)\overline{g(0)}\bigr)
+=
+0.
+\]
+故 \(\displaystyle\mathcal A_{\mathrm{per}}\) 对称.
+
+现在用\autoref{fa:SA-A02}证明两个值域均为全部 \(\displaystyle L^2(0,1)\). 固定任意 \(\displaystyle g\in L^2(0,1)\).
+
+先解
+\(\displaystyle (\mathcal A_{\mathrm{per}}-\mathrm{i}\mathcal I)f=g.\)
+该方程等价于
+\(\displaystyle f'+f=\mathrm{i}g.\)
+乘以积分因子 \(\displaystyle\mathrm{e}^t\)，得到
+\(\displaystyle (\mathrm{e}^t f(t))' = \mathrm{i}\mathrm{e}^t g(t) ,\;\text{几乎处处}\)
+所以全部绝对连续解为
+\[
+f(t)
+=
+\mathrm{e}^{-t}
+\left(
+C+
+\mathrm{i}\int_0^t\mathrm{e}^{s}g(s)\,\mathrm{d}s
+\right).
+\]
+记 \(\displaystyle I_+=\int_0^1\mathrm{e}^{s}g(s)\,\mathrm{d}s\). 周期条件 \(\displaystyle f(1)=f(0)=C\) 等价于
+\(\displaystyle \mathrm{e}^{-1}(C+\mathrm{i}I_+)=C,\)
+即
+\(\displaystyle C = \frac{\mathrm{i}I_+}{\mathrm{e}-1}.\)
+因为 \(\displaystyle\mathrm{e}-1\neq0\)，常数唯一确定. 由 \(\displaystyle g\in L^2(0,1)\subseteq L^1(0,1)\)，上述积分函数绝对连续且有界，所以 \(\displaystyle f\in L^2(0,1)\). 方程给 \(\displaystyle f'=\mathrm{i}g-f\in L^2(0,1)\)，因此 \(\displaystyle f\in V_{\mathrm{per}}\). 于是
+\(\displaystyle \operatorname{Ran}(\mathcal A_{\mathrm{per}}-\mathrm{i}\mathcal I) = L^2(0,1).\)
+
+再解
+\(\displaystyle (\mathcal A_{\mathrm{per}}+\mathrm{i}\mathcal I)f=g,\)
+等价于
+\(\displaystyle f'-f=\mathrm{i}g.\)
+乘以 \(\displaystyle\mathrm{e}^{-t}\) 得
+\(\displaystyle (\mathrm{e}^{-t}f(t))' = \mathrm{i}\mathrm{e}^{-t}g(t).\)
+故
+\[
+f(t)
+=
+\mathrm{e}^{t}
+\left(
+C+
+\mathrm{i}\int_0^t\mathrm{e}^{-s}g(s)\,\mathrm{d}s
+\right).
+\]
+记 \(\displaystyle I_-=\int_0^1\mathrm{e}^{-s}g(s)\,\mathrm{d}s\). 周期条件给
+\(\displaystyle \mathrm{e}(C+\mathrm{i}I_-)=C,\)
+所以唯一常数为
+\(\displaystyle C = -\frac{\mathrm{i}\mathrm{e}I_-}{\mathrm{e}-1}.\)
+同样得到 \(\displaystyle f\in V_{\mathrm{per}}\)，故
+\(\displaystyle \operatorname{Ran}(\mathcal A_{\mathrm{per}}+\mathrm{i}\mathcal I) = L^2(0,1).\)
+由\autoref{fa:SA-A02}，\(\displaystyle\mathcal A_{\mathrm{per}}\) 自伴. 该证明只使用显式一阶方程求解，没有使用 Stone 定理或自伴延拓分类.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[相同微分表达式不决定算子]
+\(\displaystyle\mathcal A_0\) 与 \(\displaystyle\mathcal A_{\mathrm{per}}\) 的作用公式都为 \(\displaystyle-\mathrm{i}\,\frac{\mathrm{d}}{\mathrm{d}t}\)，但定义域分别为零端点条件与周期条件. 前者闭、对称但非自伴，并且不是本质自伴；后者自伴. 因而 形式微分表达式不能单独决定算子，自伴性取决于完整的定义域与边界条件.
+\end{FARemark}
+
+\subsection{Dirichlet 能量型与一维 Laplace 算子}
+
+继续使用 \(\displaystyle V_0\)，定义
+\[
+\mathfrak a_D(u,v)
+=
+\int_0^1u'(t)\overline{v'(t)}\,\mathrm{d}t
+\;
+\forall\,u,v\in V_0.
+\]
+对任意 \(\displaystyle u,v\in V_0\)，由积分的共轭性质有 \(\displaystyle\mathfrak a_D(u,v)=\overline{\mathfrak a_D(v,u)}\)，并且 \(\displaystyle\mathfrak a_D(u,u)=\|u'\|_2^2\geqslant0\). 因而 \(\displaystyle\mathfrak a_D\) 共轭对称且非负，并且
+\(\displaystyle \|u\|_{\mathfrak a_D}^2 = \|u\|_2^2+\|u'\|_2^2.\)
+
+\begin{FAProposition}[B][Dirichlet 能量型闭]{ii06:dirichlet-form-closed}
+\(\displaystyle\mathfrak a_D\) 是 \(\displaystyle L^2(0,1)\) 上定义域为 \(\displaystyle V_0\) 的稠密定义、共轭对称、非负闭型.
+\end{FAProposition}
+
+\begin{FAProof}
+定义域稠密由\autoref{ii06:v0-dense}已证. 只需证明 \(\displaystyle(V_0,\|\cdot\|_{\mathfrak a_D})\) 完备. 设 \(\displaystyle(u_n)\) 为型范数 Cauchy 列. 则分别存在 \(\displaystyle u,g\in L^2(0,1)\) 使
+\(\displaystyle u_n\to u,\; u_n'\to g ,\;\text{于 }L^2(0,1).\)
+因为 \(\displaystyle u_n(0)=0\)，
+\[
+u_n(x)=\int_0^x u_n'(t)\,\mathrm{d}t.
+\]
+定义
+\[
+U(x)=\int_0^x g(t)\,\mathrm{d}t.
+\]
+则
+\(\displaystyle \sup_{0\leqslant x\leqslant1}|u_n(x)-U(x)| \leqslant \|u_n'-g\|_2 \longrightarrow0.\)
+故 \(\displaystyle u_n\to U\) 一致，也在 \(\displaystyle L^2\) 中收敛到 \(\displaystyle U\). 与 \(\displaystyle u_n\to u\) 比较得 \(\displaystyle u=U\) 几乎处处 又 \(\displaystyle U(0)=0\)，且由 \(\displaystyle u_n(1)=0\) 与一致收敛得 \(\displaystyle U(1)=0\). 因此 \(\displaystyle U\in V_0\)，\(\displaystyle U'=g\)，并且
+\(\displaystyle \|u_n-U\|_{\mathfrak a_D}^2 = \|u_n-U\|_2^2+\|u_n'-g\|_2^2 \longrightarrow0.\)
+所以该型闭.
+\hfill\(\square\)
+\end{FAProof}
+
+由\autoref{fa:FORM-B01}，存在唯一关联算子
+\(\displaystyle \mathcal L_D:D(\mathcal L_D)\subseteq L^2(0,1)\to L^2(0,1)\)
+满足
+\[
+D(\mathcal L_D)\subseteq V_0,
+\;
+\mathfrak a_D(u,v)
+=
+\langle\mathcal L_Du,v\rangle
+\;
+\forall\,u\in D(\mathcal L_D),\ v\in V_0.
+\]
+而且 \(\displaystyle\mathcal L_D\) 自伴且非负.
+
+\begin{FATheorem}[B][Dirichlet Laplace 算子的精确定义域]{ii06:dirichlet-laplacian-domain}
+上述关联算子满足
+\[
+D(\mathcal L_D)
+=
+\left\{
+ u\in V_0:
+ u'\text{ 有一个绝对连续代表元，且 }u''\in L^2(0,1)
+\right\},
+\]
+并且
+\(\displaystyle \mathcal L_Du=-u'' \; \forall\,u\in D(\mathcal L_D).\)
+因此 \(\displaystyle\mathcal L_D\) 是 \(\displaystyle L^2(0,1)\) 上的 Dirichlet Laplace 算子，且自伴、非负.
+\end{FATheorem}
+
+\begin{FAProof}
+先证右侧包含于 \(\displaystyle D(\mathcal L_D)\). 设 \(\displaystyle u\in V_0\)，且 \(\displaystyle u'\) 有绝对连续代表元并满足 \(\displaystyle u''\in L^2(0,1)\). 对任意 \(\displaystyle v\in V_0\)，乘积 \(\displaystyle u'\overline v\) 绝对连续，分部积分给
+\[
+\begin{aligned}
+\displaystyle \mathfrak a_D(u,v) &\displaystyle = \int_0^1u'\overline{v'}\,\mathrm{d}t\\
+\displaystyle &\displaystyle = \left[u'\overline v\right]_0^1 - \int_0^1u''\overline v\,\mathrm{d}t\\
+\displaystyle &\displaystyle = \langle-u'',v\rangle.
+\end{aligned}
+\]
+因为 \(\displaystyle v(0)=v(1)=0\)，边界项消失. 所以 \(\displaystyle u\in D(\mathcal L_D)\) 且 \(\displaystyle\mathcal L_Du=-u''\).
+
+反之，设 \(\displaystyle u\in D(\mathcal L_D)\)，令 \(\displaystyle f=\mathcal L_Du\in L^2(0,1)\). 则
+\[
+\int_0^1u'\overline{v'}\,\mathrm{d}t
+=
+\int_0^1f\overline v\,\mathrm{d}t
+\;
+\forall\,v\in V_0.
+\]
+定义
+\[
+F(x)=\int_0^x f(t)\,\mathrm{d}t.
+\]
+于是 \(\displaystyle F\in AC[0,1]\) 且 \(\displaystyle F'=f\) 几乎处处 对任意 \(\displaystyle v\in V_0\)，分部积分给
+\[
+\int_0^1F\overline{v'}\,\mathrm{d}t
+=
+\left[F\overline v\right]_0^1
+-
+\int_0^1f\overline v\,\mathrm{d}t
+=
+-
+\int_0^1f\overline v\,\mathrm{d}t.
+\]
+因此
+\[
+\int_0^1(u'+F)\overline{v'}\,\mathrm{d}t
+=
+0
+\;
+\forall\,v\in V_0.
+\]
+现在精确识别导数值域. 对任意 \(\displaystyle v\in V_0\)，
+\[
+\int_0^1v'(t)\,\mathrm{d}t
+=
+v(1)-v(0)
+=
+0,
+\]
+所以
+\[
+\{v':v\in V_0\}
+\subseteq
+\left\{
+ g\in L^2(0,1):\int_0^1g(t)\,\mathrm{d}t=0
+\right\}.
+\]
+反之，若 \(\displaystyle g\in L^2(0,1)\) 且积分为零，定义
+\[
+v(x)=\int_0^x g(t)\,\mathrm{d}t.
+\]
+则 \(\displaystyle v\in AC[0,1]\)、\(\displaystyle v'=g\in L^2\)、\(\displaystyle v(0)=0\)，且由零均值 \(\displaystyle v(1)=0\). 故 \(\displaystyle v\in V_0\). 因此
+\[
+\{v':v\in V_0\}
+=
+\left\{
+ g\in L^2(0,1):\int_0^1g(t)\,\mathrm{d}t=0
+\right\}.
+\]
+令 \(\displaystyle w=u'+F\in L^2(0,1)\). 上述正交关系说明 \(\displaystyle w\) 与全部零均值函数正交. 取
+\[
+c=\int_0^1w(t)\,\mathrm{d}t,
+\;
+g=w-c.
+\]
+则 \(\displaystyle g\) 零均值，故
+\(\displaystyle 0 = \langle w,g\rangle = \langle g+c,g\rangle = \|g\|_2^2+c\langle1,g\rangle = \|g\|_2^2.\)
+因此 \(\displaystyle w=c\) 几乎处处，即
+\(\displaystyle u'(x)=c-F(x) ,\;\text{几乎处处}\)
+右侧是绝对连续函数，故 \(\displaystyle u'\) 有绝对连续代表元，且
+\(\displaystyle u''=-F'=-f ,\;\text{几乎处处}\)
+于是 \(\displaystyle u''\in L^2(0,1)\) 且 \(\displaystyle f=-u''\). 这给出反向包含与作用公式. 自伴性和非负性已由\autoref{fa:FORM-B01}得到. 全部论证只使用一维绝对连续函数与 \(\displaystyle L^2\) 计算，没有使用 Sobolev 或分布理论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[边界条件与定义域治理]
+同一个 形式微分表达式不能单独确定算子. 一个可能无界微分算子至少必须同时给出：环境 Hilbert 空间、定义域、边界条件与作用公式. 自伴性是 \(\displaystyle\mathcal A=\mathcal A^*\) 的算子等式，因此同时包含 \(\displaystyle D(\mathcal A)=D(\mathcal A^*)\). 本节的一阶例子直接展示了改变边界条件可以改变自伴性；Dirichlet 能量型则展示了闭型如何自动产生一个精确域上的自伴非负算子.
+\end{FARemark}
+
+\begin{FARemark}[后续理论边界]
+II-07 才正式建立无界自伴谱定理、PVM 定义域刻画与无界可测函数演算；II-10 才建立 Stone 定理. 本章没有使用这些后续结果. 一般亏指数分类、von Neumann 自伴延拓分类、一般扇形型与极大扇形算子也不在本章主线中.
+\end{FARemark}
+
+\subsection*{习题}
+\addcontentsline{toc}{subsection}{习题}
+
+\begin{FAExercise}[对称性与算子包含]{ex:ii06-01}
+设 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 稠密定义. 从无界伴随的定义出发，完整证明 \(\displaystyle\mathcal A\) 对称当且仅当 \(\displaystyle\mathcal A\subseteq\mathcal A^*\). 解释为什么 \(\displaystyle\mathcal A=\mathcal A^*\) 还必须额外要求 \(\displaystyle D(\mathcal A)=D(\mathcal A^*)\)，不能只比较作用公式.
+\end{FAExercise}
+
+\begin{FAExercise}[对称算子的可闭性与闭包]{ex:ii06-02}
+设 \(\displaystyle\mathcal A\) 稠密定义且对称. 只使用\autoref{fa:UNB-A02}与伴随反转包含证明 \(\displaystyle\mathcal A\) 可闭、\(\displaystyle\overline{\mathcal A}=\mathcal A^{**}\)，并证明 \(\displaystyle\overline{\mathcal A}\) 仍对称.
+\end{FAExercise}
+
+\begin{FAExercise}[自伴闭性与实二次值]{ex:ii06-03}
+证明自伴算子必闭. 再证明任意对称算子满足 \(\displaystyle\langle\mathcal Ax,x\rangle_H\in\mathbb R\) 对全部 \(\displaystyle x\in D(\mathcal A)\) 成立，并指出复 Hilbert 内积的第一变量线性约定在哪一步使用.
+\end{FAExercise}
+
+\begin{FAExercise}[无界乘法算子模型的自伴复用]{ex:ii06-04}
+对 II-05 的 \(\displaystyle\mathcal Mx=(nx_n)\)，只复用已经证明的 \(\displaystyle D(\mathcal M^*)=D(\mathcal M)\) 与 \(\displaystyle\mathcal M^*=\mathcal M\) 的作用等式，说明 \(\displaystyle\mathcal M\) 自伴. 再解释为什么这一结论不需要 II-07 的无界谱定理.
+\end{FAExercise}
+
+\begin{FAExercise}[值域正交补与伴随核]{ex:ii06-05}
+对任意稠密定义 \(\displaystyle\mathcal A:D(\mathcal A)\subseteq H\to H\) 与 \(\displaystyle\lambda\in\mathbb C\)，从定义逐步证明
+\[
+\operatorname{Ran}(\mathcal A-\lambda\mathcal I)^\perp
+=
+\ker(\mathcal A^*-\overline\lambda\mathcal I).
+\]
+必须显式核对为什么右侧参数是 \(\displaystyle\overline\lambda\) 而不是 \(\displaystyle\lambda\).
+\end{FAExercise}
+
+\begin{FAExercise}[非实参数下界与闭值域]{ex:ii06-06}
+设 \(\displaystyle\mathcal A\) 对称. 展开 \(\displaystyle\|(\mathcal A-\lambda\mathcal I)x\|^2\) 并证明\autoref{fa:SA-C01}的范数恒等式. 在 \(\displaystyle\mathcal A\) 进一步闭且 \(\displaystyle\operatorname{Im}\lambda\neq0\) 时，用该下界与闭性证明值域闭.
+\end{FAExercise}
+
+\begin{FAExercise}[自伴性的非实值域判据：正向]{ex:ii06-07}
+设 \(\displaystyle\mathcal A\) 自伴. 不使用谱定理，证明 \(\displaystyle\operatorname{Ran}(\mathcal A\pm\mathrm{i}\mathcal I)=H\). 证明中必须分别说明值域闭、值域稠密以及相应伴随核为零.
+\end{FAExercise}
+
+\begin{FAExercise}[自伴性的非实值域判据：反向]{ex:ii06-08}
+设 \(\displaystyle\mathcal A\) 稠密定义且对称，并假设 \(\displaystyle\operatorname{Ran}(\mathcal A\pm\mathrm{i}\mathcal I)=H\). 任取 \(\displaystyle y\in D(\mathcal A^*)\)，按\autoref{fa:SA-A02}的证明构造 \(\displaystyle x\in D(\mathcal A)\)，并完整推出 \(\displaystyle D(\mathcal A^*)\subseteq D(\mathcal A)\).
+\end{FAExercise}
+
+\begin{FAExercise}[非实预解估计]{ex:ii06-09}
+设 \(\displaystyle\mathcal A\) 自伴，\(\displaystyle\lambda\in\mathbb C\setminus\mathbb R\). 证明 \(\displaystyle\mathcal A-\lambda\mathcal I\) 双射，并证明
+\(\displaystyle \|(\mathcal A-\lambda\mathcal I)^{-1}\| \leqslant |\operatorname{Im}\lambda|^{-1}.\)
+据此直接推出 \(\displaystyle\sigma(\mathcal A)\subseteq\mathbb R\)，不得调用 II-07.
+\end{FAExercise}
+
+\begin{FAExercise}[亏子空间的符号审计]{ex:ii06-10}
+定义 \(\displaystyle N_+=\ker(\mathcal A^*-\mathrm{i}\mathcal I)\)、\(\displaystyle N_-=\ker(\mathcal A^*+\mathrm{i}\mathcal I)\). 证明
+\[
+N_+
+=
+\operatorname{Ran}(\mathcal A+\mathrm{i}\mathcal I)^\perp,
+\;
+N_-
+=
+\operatorname{Ran}(\mathcal A-\mathrm{i}\mathcal I)^\perp.
+\]
+只讨论零空间判据，不引入亏指数维数.
+\end{FAExercise}
+
+\begin{FAExercise}[闭包与值域闭包]{ex:ii06-11}
+设 \(\displaystyle\mathcal A\) 稠密定义且对称. 逐方向证明
+\[
+\overline{\operatorname{Ran}(\mathcal A\pm\mathrm{i}\mathcal I)}
+=
+\operatorname{Ran}(\overline{\mathcal A}\pm\mathrm{i}\mathcal I).
+\]
+指出右侧闭值域的证明依赖哪些已经建立的结果.
+\end{FAExercise}
+
+\begin{FAExercise}[本质自伴性的闭包、值域与亏子空间判据：四条件等价]{ex:ii06-12}
+完整重建\autoref{fa:SA-B01}. 必须分别证明本质自伴与闭包自伴、\(\displaystyle\overline{\mathcal A}=\mathcal A^*\)、两侧非实值域稠密以及 \(\displaystyle N_+=N_-=\{0\}\) 四个条件的等价关系.
+\end{FAExercise}
+
+\begin{FAExercise}[非负型的 Cauchy--Schwarz]{ex:ii06-13}
+设 \(\displaystyle\mathfrak a\) 共轭对称且非负. 分别处理 \(\displaystyle\mathfrak a(v,v)=0\) 与 \(\displaystyle\mathfrak a(v,v)>0\) 两种情形，从 \(\displaystyle\mathfrak a(u-\lambda v,u-\lambda v)\geqslant0\) 推出型的 Cauchy--Schwarz 不等式.
+\end{FAExercise}
+
+\begin{FAExercise}[闭型与型范数]{ex:ii06-14}
+证明 \(\displaystyle\langle u,v\rangle_{\mathfrak a}=\langle u,v\rangle_H+\mathfrak a(u,v)\) 是 \(\displaystyle V\) 上的内积，并说明 \(\displaystyle\mathfrak a\) 闭等价于该内积诱导范数下 \(\displaystyle V\) 完备. 构造一个简单有限维例子并直接核验闭性.
+\end{FAExercise}
+
+\begin{FAExercise}[闭非负型的关联自伴算子的 Riesz 构造]{ex:ii06-15}
+固定 \(\displaystyle f\in H\)，在 \(\displaystyle(V,\langle\cdot,\cdot\rangle_{\mathfrak a})\) 上对线性泛函 \(\displaystyle v\mapsto\langle v,f\rangle_H\) 使用\autoref{fa:HIL-A02}. 必须正确取共轭并推出 \(\displaystyle(\mathcal A_{\mathfrak a}+\mathcal I)u=f\).
+\end{FAExercise}
+
+\begin{FAExercise}[关联算子的定义域与自伴性]{ex:ii06-16}
+对\autoref{fa:FORM-B01}，证明表示向量唯一、定义域为线性子空间、关联算子线性. 再证明定义域稠密、算子对称且非负，并从 \(\displaystyle\operatorname{Ran}(\mathcal A_{\mathfrak a}+\mathcal I)=H\) 直接推出自伴性. 不得使用 Lax--Milgram 定理.
+\end{FAExercise}
+
+\begin{FAExercise}[零边界绝对连续域与最小导数闭性]{ex:ii06-17}
+先按\autoref{ii06:v0-dense}的路线证明 \(\displaystyle V_0\) 在 \(\displaystyle L^2(0,1)\) 中稠密. 再设 \(\displaystyle\mathcal A_0f=-\mathrm{i}f'\)，用导数的 \(\displaystyle L^2\) 极限构造绝对连续极限代表元并证明 \(\displaystyle\mathcal A_0\) 闭.
+\end{FAExercise}
+
+\begin{FAExercise}[边界恒等式与对称但非自伴的反例]{ex:ii06-18}
+证明\autoref{ii06:derivative-boundary-identity}，并据此证明 \(\displaystyle\mathcal A_0\) 对称. 再用常数函数 \(\displaystyle1\) 证明 \(\displaystyle1\in D(\mathcal A_0^*)\setminus D(\mathcal A_0)\)，从而正式重建对称但非自伴的反例.
+\end{FAExercise}
+
+\begin{FAExercise}[两个非零亏向量]{ex:ii06-19}
+直接验证 \(\displaystyle\mathrm{e}^{-t}\in N_+\) 与 \(\displaystyle\mathrm{e}^{t}\in N_-\). 使用\autoref{fa:SA-B01}推出 \(\displaystyle\mathcal A_0\) 不是本质自伴. 不得继续计算亏指数或分类全部自伴延拓.
+\end{FAExercise}
+
+\begin{FAExercise}[周期导数的自伴性：非实值域判据]{ex:ii06-20}
+设 \(\displaystyle D(\mathcal A_{\mathrm{per}})=V_{\mathrm{per}}\)、\(\displaystyle\mathcal A_{\mathrm{per}}f=-\mathrm{i}f'\). 对任意 \(\displaystyle g\in L^2(0,1)\)，分别显式解 \(\displaystyle(\mathcal A_{\mathrm{per}}\mp\mathrm{i}\mathcal I)f=g\)，由周期条件确定唯一积分常数，并证明所得 \(\displaystyle f\in V_{\mathrm{per}}\). 最后应用\autoref{fa:SA-A02}.
+\end{FAExercise}
+
+\begin{FAExercise}[Dirichlet 能量型闭性]{ex:ii06-21}
+对 \(\displaystyle\mathfrak a_D(u,v)=\int_0^1u'\overline{v'}\,\mathrm{d}t\)，证明 共轭对称、非负与闭性. 必须从型范数 Cauchy 列同时得到 \(\displaystyle u_n\to u\) 与 \(\displaystyle u_n'\to g\)，并用端点条件证明极限仍属于 \(\displaystyle V_0\).
+\end{FAExercise}
+
+\begin{FAExercise}[Dirichlet Laplace 算子模型的精确域与后续边界]{ex:ii06-22}
+从\autoref{fa:FORM-B01}出发构造 \(\displaystyle\mathcal L_D\)，再完整证明\autoref{ii06:dirichlet-laplacian-domain}的双向定义域包含，特别证明
+\[
+\{v':v\in V_0\}
+=
+\left\{g\in L^2(0,1):\int_0^1g(t)\,\mathrm{d}t=0\right\}.
+\]
+最后说明本题可以得到自伴与非负，但不得使用 II-07 的 PVM/无界函数演算、II-10 的 Stone 定理、完整亏指数分类、Sobolev 理论或分布理论.
+\end{FAExercise}

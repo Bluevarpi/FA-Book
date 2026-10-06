@@ -1,0 +1,559 @@
+\chapter{局部凸空间与Fr\'echet空间}\label{chap:II-01}
+\FAChapterOpening
+{从Hausdorff拓扑向量空间出发，以半范数族建立局部凸拓扑；证明局部凸邻域与Minkowski泛函的等价刻画、连续线性映射的半范数判据与连续对偶分离；建立Fr\'echet空间的标准度量、典型非赋范例与Schwartz空间完备性；最后以Baire纲方法完整证明Fr\'echet开映射定理并建立连续逆、闭图像与弱*对偶接口.}
+{I-07的弱/弱*拓扑，I-08的Baire纲定理，I-09的Banach开映射结构；I-06的Hahn--Banach延拓仅用于连续对偶分离.}
+{\begin{center}
+\begin{tikzpicture}[x=1.55cm,y=1.05cm]
+\node[fa/node] (wt) at (0,1.25) {弱/弱*拓扑};
+\node[fa/node] (bai) at (0,0) {Baire纲定理};
+\node[fa/node] (omt) at (0,-1.25) {开映射};
+\node[fa/node] (lcsa) at (3.1,1.25) {局部凸/半范数};
+\node[fa/node] (lcsc) at (5.55,1.25) {局部凸邻域工具};
+\node[fa/node] (lcsb2) at (7.95,1.25) {连续判据};
+\node[fa/node] (lcsb1) at (5.55,-0.45) {Fréchet开映射};
+\draw[fa/arrow] (wt) -- (lcsa);
+\draw[fa/arrow] (lcsa) -- (lcsc);
+\draw[fa/arrow] (lcsc) -- (lcsb2);
+\draw[fa/arrow] (bai) -- (lcsb1);
+\draw[fa/arrow] (omt) -- (lcsb1);
+\draw[fa/arrow] (lcsa) -- (lcsb1);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). 从本章起，术语“拓扑向量空间”默认包含Hausdorff条件. 局部凸空间的连续对偶记为 \(\displaystyle E'\)，而不是把赋范空间语境中的 \(\displaystyle X^*\) 无条件推广到这里. 本章只建立局部凸与Fr\'echet线性理论；强对偶、桶空间、核空间、一般分布论、分布导数、Banach代数、无界算子以及非线性Fr\'echet逆函数理论均不进入当前证明链.
+
+\section{拓扑向量空间}\label{sec:ii01-tvs}
+\index{topological vector space@拓扑向量空间}\index{absorbing set@吸收集}\index{seminorm@半范数}
+
+\begin{FADefinition}[C][拓扑向量空间约定]{ii01:tvs-definition}
+设 \(\displaystyle E\) 为实或复向量空间. 若Hausdorff拓扑 \(\displaystyle \tau\) 使加法 \(\displaystyle +:E\times E\to E\) 与标量乘法 \(\displaystyle \mathbb K\times E\to E\) 连续，则称 \(\displaystyle (E,\tau)\) 为拓扑向量空间.
+\end{FADefinition}
+
+\begin{FAProposition}[C][拓扑向量空间的局部工具]{ii01:tvs-local-tools}
+设 \(\displaystyle E\) 为拓扑向量空间. 则：
+\begin{enumerate}[label=(\roman*)]
+\item 对每个 \(\displaystyle a\in E\)，平移 \(\displaystyle x\mapsto x+a\) 是同胚.
+\item 对每个 \(\displaystyle \lambda\in\mathbb K\setminus\{0\}\)，映射 \(\displaystyle x\mapsto\lambda x\) 是同胚.
+\item 线性映射 \(\displaystyle \mathcal T:E\to F\) 连续当且仅当它在 \(\displaystyle0\) 连续.
+\item 每个 \(\displaystyle0\)-邻域都是吸收集，即对每个 \(\displaystyle x\in E\)，存在 \(\displaystyle r>0\) 使 \(\displaystyle x\in tU\) 对全部 \(\displaystyle t\geqslant r\) 成立.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+平移 \(\displaystyle \tau_a(x)=x+a\) 连续，且逆映射为连续的 \(\displaystyle \tau_{-a}\)，故第一项成立. 当 \(\displaystyle \lambda\neq0\) 时，标量乘法给出 \(\displaystyle m_\lambda(x)=\lambda x\) 连续，其逆为 \(\displaystyle m_{\lambda^{-1}}\)，故第二项成立.
+
+若 \(\displaystyle \mathcal T\) 在 \(\displaystyle0\) 连续，则对任意 \(\displaystyle x_0\in E\) 及 \(\displaystyle F\) 中 \(\displaystyle \mathcal Tx_0\) 的邻域 \(\displaystyle \mathcal Tx_0+V\)，可取 \(\displaystyle E\) 中 \(\displaystyle0\)-邻域 \(\displaystyle U\) 使 \(\displaystyle \mathcal T(U)\subseteq V\). 线性性给出 \(\displaystyle \mathcal T(x_0+U)\subseteq\mathcal Tx_0+V\)，所以 \(\displaystyle \mathcal T\) 在 \(\displaystyle x_0\) 连续. 反向只需把连续性命题限制到零点，即取 \(\displaystyle x_0=0\)，故第三项成立.
+
+最后设 \(\displaystyle U\) 为 \(\displaystyle0\)-邻域并固定 \(\displaystyle x\in E\). 映射 \(\displaystyle \lambda\mapsto\lambda x\) 在 \(\displaystyle0\in\mathbb K\) 连续，因此存在 \(\displaystyle \delta>0\) 使 \(\displaystyle |\lambda|<\delta\Rightarrow\lambda x\in U\). 取 \(\displaystyle r>\delta^{-1}\). 若 \(\displaystyle t\geqslant r\)，则 \(\displaystyle |t^{-1}|<\delta\)，从而 \(\displaystyle t^{-1}x\in U\)，即 \(\displaystyle x\in tU\). 故第四项成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[C][半范数]{ii01:seminorm-definition}
+映射 \(\displaystyle p:E\to[0,\infty)\) 称为半范数，如果对任意 \(\displaystyle x,y\in E\) 与 \(\displaystyle \lambda\in\mathbb K\) 有
+\(\displaystyle p(x+y)\leqslant p(x)+p(y), \; p(\lambda x)=|\lambda|p(x).\)
+半范数不要求 \(\displaystyle p(x)=0\Rightarrow x=0\). 因而 \(\displaystyle \ker p:=\{x:p(x)=0\}\) 可以非零.
+\end{FADefinition}
+
+\begin{FAProposition}[B][半范数族生成向量拓扑]{ii01:seminorm-topology}
+设 \(\displaystyle \mathcal P\) 为 \(\displaystyle E\) 上的一族半范数. 对 \(\displaystyle p_1,\dots,p_m\in\mathcal P\) 与 \(\displaystyle \varepsilon>0\) 定义
+\[
+U(p_1,\dots,p_m;\varepsilon)
+:=
+\left\{x\in E:\max_{1\leqslant j\leqslant m}p_j(x)<\varepsilon\right\}.
+\]
+这些集合构成某个向量拓扑的 \(\displaystyle0\)-邻域基. 每个这样的基本邻域都凸、平衡且吸收.
+\end{FAProposition}
+
+\begin{FAProof}
+记 \(\displaystyle U=U(p_1,\dots,p_m;\varepsilon)\). 由半范数满足 \(\displaystyle p_j(0)=0\)，有 \(\displaystyle0\in U\). 有限个基本邻域之交仍含有一个同型基本邻域：若另有 \(\displaystyle V=U(q_1,\dots,q_n;\delta)\)，则
+\[
+U(p_1,\dots,p_m,q_1,\dots,q_n;\min\{\varepsilon,\delta\}) \subseteq U\cap V.
+\]
+还需验证这些集合确实给出局部基. 若 \(\displaystyle x\in U\)，令 \(\displaystyle \rho=\varepsilon-\max_jp_j(x)>0\). 对任意 \(\displaystyle h\in U(p_1,\dots,p_m;\rho)\)，由次可加性有 \(\displaystyle p_j(x+h)\leqslant p_j(x)+p_j(h)<\varepsilon\)，故 \(\displaystyle x+U(p_1,\dots,p_m;\rho)\subseteq U\). 因而由平移得到的这些集合构成拓扑基.
+
+若 \(\displaystyle x,y\in U(p_1,\dots,p_m;\frac{\varepsilon}{2})\)，则对每个 \(\displaystyle j\) 有 \(\displaystyle p_j(x+y)\leqslant p_j(x)+p_j(y)<\varepsilon\)，故
+\(\displaystyle U(p_1,\dots,p_m;\frac{\varepsilon}{2}) + U(p_1,\dots,p_m;\frac{\varepsilon}{2}) \subseteq U.\)
+若 \(\displaystyle |\lambda|\leqslant1\) 且 \(\displaystyle x\in U\)，则 \(\displaystyle p_j(\lambda x)=|\lambda|p_j(x)<\varepsilon\)，所以 \(\displaystyle \lambda U\subseteq U\). 这同时证明平衡性.
+
+凸性来自半范数的次可加性与齐次性. 若 \(\displaystyle x,y\in U\) 且 \(\displaystyle0\leqslant t\leqslant1\)，则
+\(\displaystyle p_j(tx+(1-t)y) \leqslant t p_j(x)+(1-t)p_j(y) <\varepsilon,\)
+故 \(\displaystyle tx+(1-t)y\in U\). 对固定 \(\displaystyle x\in E\)，令 \(\displaystyle M=\max_{1\leqslant j\leqslant m}p_j(x)\). 若 \(\displaystyle M=0\)，则 \(\displaystyle x\in tU\) 对全部 \(\displaystyle t>0\) 成立；若 \(\displaystyle M>0\)，则只要 \(\displaystyle t>\frac{M}{\varepsilon}\)，便有 \(\displaystyle p_j(t^{-1}x)<\varepsilon\)，所以 \(\displaystyle x\in tU\). 因而 \(\displaystyle U\) 吸收.
+
+以这些集合为 \(\displaystyle0\)-邻域基，并令任意点 \(\displaystyle a\) 的基本邻域为 \(\displaystyle a+U\)，得到平移不变拓扑. 上述和集包含保证加法在 \(\displaystyle(0,0)\) 连续，继而由平移连续得到处处连续. 对标量乘法，固定基本邻域 \(\displaystyle U(p_1,\dots,p_m;\varepsilon)\). 若 \(\displaystyle x_0\in E\)、\(\displaystyle \lambda_0\in\mathbb K\)，取 \(\displaystyle M=1+\max_jp_j(x_0)\). 选 \(\displaystyle \eta>0\) 使 \(\displaystyle \eta M<\frac{\varepsilon}{2}\)，再取 \(\displaystyle V=U(p_1,\dots,p_m;\delta)\)，其中 \(\displaystyle \delta>0\) 满足 \(\displaystyle (|\lambda_0|+\eta)\delta<\frac{\varepsilon}{2}\). 当 \(\displaystyle |\lambda-\lambda_0|<\eta\) 且 \(\displaystyle h\in V\) 时，
+\[
+p_j(\lambda(x_0+h)-\lambda_0x_0)
+\leqslant
+|\lambda-\lambda_0|p_j(x_0)+|\lambda|p_j(h)
+<\varepsilon.
+\]
+故标量乘法连续. 由此得到向量拓扑.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][半范数拓扑的Hausdorff判据]{ii01:seminorm-hausdorff}
+由 \(\displaystyle \mathcal P\) 生成的拓扑Hausdorff，当且仅当 \(\displaystyle \mathcal P\) 分离点，即
+\(\displaystyle x\neq0 \Longrightarrow \exists\,p\in\mathcal P:\ p(x)>0.\)
+\end{FAProposition}
+
+\begin{FAProof}
+先设 \(\displaystyle \mathcal P\) 分离点. 若 \(\displaystyle x\neq y\)，选 \(\displaystyle p\in\mathcal P\) 使 \(\displaystyle p(x-y)>0\)，并令 \(\displaystyle \varepsilon=\frac{p(x-y)}{3}\). 若某点 \(\displaystyle z\) 同时属于 \(\displaystyle x+\{u:p(u)<\varepsilon\}\) 与 \(\displaystyle y+\{u:p(u)<\varepsilon\}\)，则
+\(\displaystyle p(x-y) \leqslant p(x-z)+p(z-y) <2\varepsilon,\)
+矛盾. 因而 \(\displaystyle x,y\) 有不交邻域.
+
+反之，若 \(\displaystyle \mathcal P\) 不分离点，则存在 \(\displaystyle x\neq0\) 使 \(\displaystyle p(x)=0\) 对全部 \(\displaystyle p\in\mathcal P\) 成立. 对任意基本 \(\displaystyle0\)-邻域 \(\displaystyle U\) 都有 \(\displaystyle x\in U\)，故 \(\displaystyle0\) 与 \(\displaystyle x\) 不能由不交邻域分离，拓扑非Hausdorff.\hfill\(\square\)
+\end{FAProof}
+
+\section{局部凸}\label{sec:ii01-locally-convex}
+\index{locally convex space@局部凸空间}\index{balanced set@平衡集}\index{absolutely convex set@绝对凸集}\index{Minkowski functional@Minkowski泛函}
+
+称集合 \(\displaystyle U\subseteq E\) 为平衡的，如果 \(\displaystyle |\lambda|\leqslant1\Rightarrow\lambda U\subseteq U\). 称 \(\displaystyle U\) 绝对凸，如果它同时凸且平衡.
+
+\begin{FADefinition}[A][局部凸空间与半范数刻画]{fa:LCS-A01}
+Hausdorff拓扑向量空间 \(\displaystyle E\) 称为局部凸空间，如果 \(\displaystyle0\) 有绝对凸邻域基. 此条件等价于：\(\displaystyle E\) 的拓扑由一族分离点的半范数生成.
+\end{FADefinition}
+
+为证明反向刻画，先建立Minkowski工具.
+
+\begin{FALemma}[B][开绝对凸集的Minkowski泛函]{ii01:minkowski-gauge}
+设 \(\displaystyle U\) 是拓扑向量空间 \(\displaystyle E\) 中开、绝对凸、吸收的 \(\displaystyle0\)-邻域. 定义
+\(\displaystyle p_U(x) := \inf\{t>0:x\in tU\}.\)
+则 \(\displaystyle p_U\) 是半范数，并且
+\(\displaystyle U=\{x\in E:p_U(x)<1\}.\)
+\end{FALemma}
+
+\begin{FAProof}
+吸收性保证定义中的集合非空，所以 \(\displaystyle p_U(x)<\infty\). 由于 \(\displaystyle0\in tU\) 对每个 \(\displaystyle t>0\) 成立，定义直接给出 \(\displaystyle p_U(0)=0\).
+
+先证次可加性. 给定 \(\displaystyle a>p_U(x)\)、\(\displaystyle b>p_U(y)\)，可取 \(\displaystyle a'<a\)、\(\displaystyle b'<b\) 使 \(\displaystyle x\in a'U\)、\(\displaystyle y\in b'U\). 写 \(\displaystyle x=a'u\)、\(\displaystyle y=b'v\)，其中 \(\displaystyle u,v\in U\). 由凸性，
+\(\displaystyle \frac{x+y}{a'+b'} = \frac{a'}{a'+b'}u+ \frac{b'}{a'+b'}v \in U.\)
+所以 \(\displaystyle p_U(x+y)\leqslant a'+b'<a+b\). 令 \(\displaystyle a\downarrow p_U(x)\)、\(\displaystyle b\downarrow p_U(y)\)，得到 \(\displaystyle p_U(x+y)\leqslant p_U(x)+p_U(y)\).
+
+若 \(\displaystyle r>0\)，则
+\(\displaystyle p_U(rx) = \inf\{t>0:x\in \bigl(\frac{t}{r}\bigr)U\} = r p_U(x).\)
+若 \(\displaystyle |\zeta|=1\)，平衡性给出 \(\displaystyle \zeta U\subseteq U\)，而对 \(\displaystyle \zeta^{-1}\) 同样成立，因此 \(\displaystyle \zeta U=U\)，从而 \(\displaystyle p_U(\zeta x)=p_U(x)\). 合并两点得到 \(\displaystyle p_U(\lambda x)=|\lambda|p_U(x)\)；\(\displaystyle \lambda=0\) 时也成立. 因而 \(\displaystyle p_U\) 为半范数.
+
+若 \(\displaystyle p_U(x)<1\)，取 \(\displaystyle t<1\) 使 \(\displaystyle x\in tU\). 因 \(\displaystyle U\) 平衡，\(\displaystyle tU\subseteq U\)，故 \(\displaystyle x\in U\). 反之若 \(\displaystyle x\in U\)，由映射 \(\displaystyle s\mapsto sx\) 在 \(\displaystyle s=1\) 连续且 \(\displaystyle U\) 开，存在 \(\displaystyle s>1\) 足够接近 \(\displaystyle1\) 使 \(\displaystyle sx\in U\). 因而 \(\displaystyle x\in s^{-1}U\)，所以 \(\displaystyle p_U(x)\leqslant s^{-1}<1\). 集合恢复式得证.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProof}[\autoref{fa:LCS-A01}的等价刻画证明]
+若拓扑由分离点的半范数族 \(\displaystyle \mathcal P\) 生成，则\autoref{ii01:seminorm-topology}已证明其基本 \(\displaystyle0\)-邻域绝对凸，而\autoref{ii01:seminorm-hausdorff}给出Hausdorff性，因此 \(\displaystyle E\) 局部凸.
+
+反之设 \(\displaystyle E\) 局部凸，并取绝对凸 \(\displaystyle0\)-邻域基 \(\displaystyle \mathcal U\). 若 \(\displaystyle U\in\mathcal U\)，则 \(\displaystyle U\) 是 \(\displaystyle0\)-邻域，故 \(\displaystyle0\in\operatorname{int}U\). 凸集的内部仍凸；对 \(\displaystyle0<|\lambda|\leqslant1\)，非零标量伸缩同胚与 \(\displaystyle \lambda U\subseteq U\) 给出 \(\displaystyle \lambda\operatorname{int}U=\operatorname{int}(\lambda U)\subseteq\operatorname{int}U\)，而 \(\displaystyle \lambda=0\) 时由 \(\displaystyle0\in\operatorname{int}U\) 得到同一包含. 因而 \(\displaystyle \operatorname{int}U\) 是开绝对凸 \(\displaystyle0\)-邻域，且这些内部仍构成邻域基. 以该内部族替换原邻域基并仍记为 \(\displaystyle \mathcal U\). 由\autoref{ii01:tvs-local-tools}，每个 \(\displaystyle U\in\mathcal U\) 都吸收. 对每个这样的 \(\displaystyle U\) 定义 \(\displaystyle p_U\). 由\autoref{ii01:minkowski-gauge}，\(\displaystyle p_U\) 是半范数且 \(\displaystyle U=\{x:p_U(x)<1\}\). 更一般地，\(\displaystyle \varepsilon U=\{x:p_U(x)<\varepsilon\}\)，所以这些半范数生成的拓扑恰为原拓扑.
+
+还需证明分离点. 若 \(\displaystyle x\neq0\)，Hausdorff性给出某个 \(\displaystyle0\)-邻域 \(\displaystyle W\) 不含 \(\displaystyle x\). 取 \(\displaystyle U\in\mathcal U\) 使 \(\displaystyle U\subseteq W\). 若 \(\displaystyle p_U(x)=0\)，则特别有 \(\displaystyle p_U(x)<1\)，由集合恢复式得 \(\displaystyle x\in U\subseteq W\)，矛盾. 故 \(\displaystyle p_U(x)>0\). 因而所得半范数族分离点.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][局部凸邻域工具]{fa:LCS-C01}
+设 \(\displaystyle E\) 为局部凸空间，并用分离点半范数族 \(\displaystyle \mathcal P\) 描述其拓扑. 则有：
+\begin{enumerate}[label=(\roman*)]
+\item 有限半范数球 \(\displaystyle U(p_1,\dots,p_m;\varepsilon)\) 构成绝对凸 \(\displaystyle0\)-邻域基.
+\item 对每个 \(\displaystyle0\)-邻域 \(\displaystyle U\)，存在绝对凸 \(\displaystyle0\)-邻域 \(\displaystyle V\) 使 \(\displaystyle V+V\subseteq U\).
+\item 若 \(\displaystyle0<\theta<1\)，则 \(\displaystyle \theta U(p_1,\dots,p_m;\varepsilon)\subseteq U(p_1,\dots,p_m;\varepsilon)\)，并且 \(\displaystyle \theta U(p_1,\dots,p_m;\varepsilon)=U(p_1,\dots,p_m;\theta\varepsilon)\).
+\item 若半范数 \(\displaystyle p\) 连续，则 \(\displaystyle \{x:p(x)<1\}\) 是绝对凸 \(\displaystyle0\)-邻域，而 \(\displaystyle \{x:p(x)\leqslant1\}\) 是闭绝对凸集.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+第一项已由\autoref{ii01:seminorm-topology}得到. 对第二项，先取基本绝对凸邻域 \(\displaystyle W\subseteq U\)，再令 \(\displaystyle V=\frac12W\). 若 \(\displaystyle x,y\in V\)，则 \(\displaystyle2x,2y\in W\)，由凸性有 \(\displaystyle x+y=\frac12(2x)+\frac12(2y)\in W\subseteq U\). 第三项直接由半范数齐次性得到. 对第四项，连续性使 \(\displaystyle p^{-1}([0,1))\) 开且含 \(\displaystyle0\)，而次可加性与齐次性给出绝对凸性；\(\displaystyle p^{-1}([0,1])\) 由闭集的连续原像为闭，并同样绝对凸.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{弱拓扑与弱*拓扑的局部凸重释}
+
+设 \(\displaystyle X\) 为赋范空间. I-07的 \(\displaystyle \sigma(X,X^*)\) 正是由半范数族
+\(\displaystyle p_{x^*}(x):=|x^*(x)|,\; x^*\in X^*,\)
+生成的拓扑. I-06的Hahn--Banach定理保证 \(\displaystyle X^*\) 分离 \(\displaystyle X\) 的点，因此该拓扑Hausdorff且局部凸. 对 \(\displaystyle X^*\) 上的弱*拓扑 \(\displaystyle \sigma(X^*,X)\) 由
+\(\displaystyle p_x(x^*):=|x^*(x)|,\; x\in X,\)
+生成. 若 \(\displaystyle x^*\neq y^*\)，按泛函不等可取 \(\displaystyle x\in X\) 使 \(\displaystyle x^*(x)\neq y^*(x)\)，故这些点值半范数分离不同泛函，所以该拓扑也是Hausdorff局部凸拓扑. 这里仅重新解释I-07已经建立的拓扑，不改写其收敛理论，也不改变 I-07 已说明的边界：任意弱收敛网的整个取值范围未必范数有界.
+
+\begin{FATheorem}[B][半范数连续线性映射判据]{fa:LCS-B02}
+设局部凸空间 \(\displaystyle E\) 的拓扑由半范数族 \(\displaystyle \mathcal P\) 生成，\(\displaystyle F\) 的拓扑由半范数族 \(\displaystyle \mathcal Q\) 生成，且 \(\displaystyle \mathcal T:E\to F\) 线性. 则下列条件等价：
+\begin{enumerate}[label=(\roman*)]
+\item \(\displaystyle \mathcal T\) 连续.
+\item 对每个 \(\displaystyle q\in\mathcal Q\)，存在 \(\displaystyle p_1,\dots,p_m\in\mathcal P\) 与 \(\displaystyle C>0\)，使
+\(\displaystyle q(\mathcal Tx) \leqslant C\max_{1\leqslant j\leqslant m}p_j(x)\)
+对全部 \(\displaystyle x\in E\) 成立.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+设第一项成立并固定 \(\displaystyle q\in\mathcal Q\). 集合 \(\displaystyle \{y:q(y)<1\}\) 是 \(\displaystyle F\) 中的 \(\displaystyle0\)-邻域. 由 \(\displaystyle \mathcal T\) 在 \(\displaystyle0\) 连续，存在 \(\displaystyle p_1,\dots,p_m\in\mathcal P\) 与 \(\displaystyle \varepsilon>0\)，使
+\(\displaystyle M(x):=\max_{1\leqslant j\leqslant m}p_j(x)<\varepsilon \Longrightarrow q(\mathcal Tx)<1.\)
+固定 \(\displaystyle x\in E\). 若 \(\displaystyle M(x)=0\)，则对任意 \(\displaystyle t>0\) 都有 \(\displaystyle M(tx)=0<\varepsilon\)，所以 \(\displaystyle tq(\mathcal Tx)=q(\mathcal T(tx))<1\). 令 \(\displaystyle t\to\infty\)，只能有 \(\displaystyle q(\mathcal Tx)=0\).
+
+若 \(\displaystyle M(x)>0\)，取 \(\displaystyle \lambda=\frac{\varepsilon}{2M(x)}\). 则 \(\displaystyle M(\lambda x)=\frac{\varepsilon}{2}<\varepsilon\)，故
+\(\displaystyle q(\mathcal T(\lambda x))<1.\)
+齐次性给出 \(\displaystyle q(\mathcal Tx)<\frac{2M(x)}{\varepsilon}\). 因而第二项成立，可取 \(\displaystyle C=\frac{2}{\varepsilon}\).
+
+反之设第二项成立. 给定 \(\displaystyle q_1,\dots,q_r\in\mathcal Q\) 与 \(\displaystyle \eta>0\). 对每个 \(\displaystyle q_k\)，由第二项取有限子族 \(\displaystyle \mathcal P_k\subseteq\mathcal P\) 与常数 \(\displaystyle C_k>0\). 令 \(\displaystyle C=\max_kC_k\)，并取 \(\displaystyle \delta=\frac{\eta}{1+C}\). 若 \(\displaystyle p(x)<\delta\) 对全部 \(\displaystyle p\in\bigcup_{k=1}^r\mathcal P_k\) 成立，则 \(\displaystyle q_k(\mathcal Tx)<C\delta<\eta\) 对全部 \(\displaystyle k\) 成立. 因而 \(\displaystyle \mathcal T\) 在 \(\displaystyle0\) 连续，再由\autoref{ii01:tvs-local-tools}得到处处连续.\hfill\(\square\)
+\end{FAProof}
+
+取 \(\displaystyle F=\mathbb K\) 与半范数 \(\displaystyle q(z)=|z|\)，立刻得到连续线性泛函判据：线性泛函 \(\displaystyle f:E\to\mathbb K\) 连续，当且仅当存在有限多个 \(\displaystyle p_1,\dots,p_m\in\mathcal P\) 与 \(\displaystyle C>0\) 使
+\(\displaystyle |f(x)| \leqslant C\max_{1\leqslant j\leqslant m}p_j(x)\)
+对全部 \(\displaystyle x\in E\) 成立.
+
+\begin{FAProposition}[B][连续对偶分离点]{ii01:dual-separates}
+若 \(\displaystyle E\) 为局部凸空间，\(\displaystyle E'\) 为其连续对偶，则对每个 \(\displaystyle x\neq0\) 都存在 \(\displaystyle f\in E'\) 使 \(\displaystyle f(x)\neq0\).
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{fa:LCS-A01}，取一个连续半范数 \(\displaystyle p\) 使 \(\displaystyle p(x)>0\). 令 \(\displaystyle N=\ker p\)，并在商空间 \(\displaystyle E/N\) 上定义 \(\displaystyle \|y+N\|_p:=p(y)\). 这给出范数，因为 \(\displaystyle p(y-z)=0\) 当且仅当 \(\displaystyle y+N=z+N\). 记商映射为 \(\displaystyle Q:E\to E/N\). 由于 \(\displaystyle Qx\neq0\)，I-06的Hahn--Banach定理给出 \(\displaystyle g\in(E/N)^*\) 满足 \(\displaystyle g(Qx)=\|Qx\|_p=p(x)\) 且 \(\displaystyle |g(Qy)|\leqslant\|Qy\|_p=p(y)\). 令 \(\displaystyle f=g\circ Q\). 则 \(\displaystyle f\) 线性、\(\displaystyle f(x)=p(x)\neq0\)，并由 \(\displaystyle |f(y)|\leqslant p(y)\) 与\autoref{fa:LCS-B02}得 \(\displaystyle f\in E'\).\hfill\(\square\)
+\end{FAProof}
+
+\section{Fr\'echet空间}\label{sec:ii01-frechet}
+\index{Frechet space@Fr\'echet空间}\index{complete metric space@完备度量空间}
+
+\begin{FADefinition}[A][Fr\'echet空间]{ii01:frechet-definition}
+局部凸空间 \(\displaystyle E\) 称为Fr\'echet空间，如果其拓扑可由可数分离半范数族 \(\displaystyle (p_n)_{n\geqslant1}\) 生成，并且某个与该拓扑相容的平移不变度量完备. 对给定的 \(\displaystyle (p_n)\)，本章使用标准度量
+\[
+d(x,y)
+:=
+\sum_{n=1}^{\infty}
+2^{-n}\min\{1,p_n(x-y)\}.
+\]
+\end{FADefinition}
+
+\begin{FAProposition}[A][Fr\'echet标准度量]{ii01:frechet-standard-metric}
+上述 \(\displaystyle d\) 是平移不变度量，并诱导 \(\displaystyle (p_n)\) 生成的拓扑. 对序列 \(\displaystyle (x_k)\) 有
+\(\displaystyle x_k\to x \Longleftrightarrow p_n(x_k-x)\to0 \;\text{对每个 }n.\)
+此外，\(\displaystyle (x_k)\) 为 \(\displaystyle d\)-Cauchy序列，当且仅当它对每个 \(\displaystyle n\) 都是 \(\displaystyle p_n\)-Cauchy，即 \(\displaystyle p_n(x_k-x_\ell)\to0\) 当 \(\displaystyle k,\ell\to\infty\).
+\end{FAProposition}
+
+\begin{FAProof}
+级数逐项非负且由 \(\displaystyle \sum_n2^{-n}=1\) 控制，因此定义良好. 对称性和平移不变性直接来自半范数性质. 若 \(\displaystyle d(x,y)=0\)，则每项均为零，所以 \(\displaystyle p_n(x-y)=0\) 对全部 \(\displaystyle n\) 成立；分离性给出 \(\displaystyle x=y\). 对任意 \(\displaystyle a,b\geqslant0\)，有
+\(\displaystyle \min\{1,a+b\} \leqslant \min\{1,a\}+\min\{1,b\}.\)
+结合 \(\displaystyle p_n(x-z)\leqslant p_n(x-y)+p_n(y-z)\) 后逐项求和，得到三角不等式. 因而 \(\displaystyle d\) 为平移不变度量.
+
+现证拓扑相同. 给定 \(\displaystyle d\)-球半径 \(\displaystyle r>0\)，先选 \(\displaystyle N\) 使 \(\displaystyle \sum_{n>N}2^{-n}<\frac{r}{2}\)，再取 \(\displaystyle0<\delta<1\) 使 \(\displaystyle \delta\sum_{n=1}^{N}2^{-n}<\frac{r}{2}\). 若 \(\displaystyle p_n(x)<\delta\) 对 \(\displaystyle1\leqslant n\leqslant N\) 成立，则
+\[
+d(x,0)
+<
+\delta\sum_{n=1}^{N}2^{-n}
++
+\sum_{n>N}2^{-n}
+<r.
+\]
+故每个度量邻域包含半范数基本邻域.
+
+反向，给定有限集合 \(\displaystyle n_1,\dots,n_m\) 与 \(\displaystyle \varepsilon>0\)，可把 \(\displaystyle \varepsilon\) 缩小到 \(\displaystyle0<\varepsilon\leqslant1\). 令
+\(\displaystyle r := \min_{1\leqslant j\leqslant m} 2^{-n_j}\varepsilon.\)
+若 \(\displaystyle d(x,0)<r\)，则对每个 \(\displaystyle j\)，
+\(\displaystyle 2^{-n_j}\min\{1,p_{n_j}(x)\}<r\leqslant2^{-n_j}\varepsilon,\)
+从而 \(\displaystyle p_{n_j}(x)<\varepsilon\). 因此半范数邻域也包含度量球，两个拓扑相同.
+
+拓扑等价立即给出收敛刻画，也可直接由同一有限项与尾项估计验证. 对Cauchy性质，若 \(\displaystyle (x_k)\) 为 \(\displaystyle d\)-Cauchy，则固定 \(\displaystyle n\) 与 \(\displaystyle0<\eta<1\)，当 \(\displaystyle d(x_k,x_\ell)<2^{-n}\eta\) 时必有 \(\displaystyle p_n(x_k-x_\ell)<\eta\). 反之，若对每个 \(\displaystyle n\) 都是 \(\displaystyle p_n\)-Cauchy，给定 \(\displaystyle r>0\)，先把级数尾控制在 \(\displaystyle \frac{r}{2}\)，再用有限多个Cauchy条件把前 \(\displaystyle N\) 项控制在 \(\displaystyle \frac{r}{2}\)，即可得到 \(\displaystyle d(x_k,x_\ell)<r\).\hfill\(\square\)
+\end{FAProof}
+
+每个Banach空间都是Fr\'echet空间：只取 \(\displaystyle p_1(x)=\|x\|\)，则半范数拓扑就是范数拓扑，且范数完备. 反向不成立，下面给出最直接的非赋范例.
+
+\begin{FAExample}[可数乘积是非赋范Fr\'echet空间]
+令 \(\displaystyle E=\mathbb K^{\mathbb N}\) 带乘积拓扑，并定义
+\(\displaystyle p_n(x) := \max_{1\leqslant k\leqslant n}|x_k|.\)
+半范数族 \(\displaystyle (p_n)\) 可数且分离点，并且生成乘积拓扑. 若 \(\displaystyle (x^{(j)})\) 对每个 \(\displaystyle p_n\) 都Cauchy，则对每个固定坐标 \(\displaystyle k\)，标量序列 \(\displaystyle x_k^{(j)}\) Cauchy，故收敛到某个 \(\displaystyle x_k\in\mathbb K\). 令 \(\displaystyle x=(x_k)\). 对固定 \(\displaystyle n\)，有限个坐标同时收敛给出 \(\displaystyle p_n(x^{(j)}-x)\to0\). 由\autoref{ii01:frechet-standard-metric}，\(\displaystyle E\) 完备，故为Fr\'echet空间.
+
+它不可能由某个范数诱导同一拓扑. 否则范数单位球 \(\displaystyle B=\{x:\|x\|<1\}\) 是乘积拓扑的 \(\displaystyle0\)-邻域，因此包含某个只限制前 \(\displaystyle N\) 个坐标的基本乘积邻域 \(\displaystyle U\). 对任意 \(\displaystyle t\in\mathbb K\)，向量 \(\displaystyle te_{N+1}\) 的前 \(\displaystyle N\) 个坐标全为零，所以 \(\displaystyle te_{N+1}\in U\subseteq B\). 于是 \(\displaystyle |t|\|e_{N+1}\|<1\) 对全部 \(\displaystyle t\) 成立，矛盾. 因而该Fr\'echet空间不可赋范.
+\end{FAExample}
+
+\subsection{Schwartz空间}
+\index{Schwartz space@Schwartz空间}
+
+对 \(\displaystyle m,n\in\mathbb N_0\) 定义
+\[
+p_{m,n}(\varphi)
+:=
+\sup_{x\in\mathbb R^d}
+(1+|x|)^m
+\max_{|\alpha|\leqslant n}
+|\partial^\alpha\varphi(x)|,
+\]
+并令
+\[
+\mathcal S(\mathbb R^d)
+:=
+\left\{
+\varphi\in C^\infty(\mathbb R^d):
+p_{m,n}(\varphi)<\infty
+\text{ 对全部 }m,n
+\right\}.
+\]
+每个 \(\displaystyle p_{m,n}\) 都由导数线性、绝对值三角不等式与标量齐次性直接给出半范数性质. 该族由 \(\displaystyle \mathbb N_0^2\) 参数化，故可数；若 \(\displaystyle \varphi\neq0\)，则存在 \(\displaystyle x\) 使 \(\displaystyle |\varphi(x)|>0\)，所以 \(\displaystyle p_{0,0}(\varphi)>0\)，故它分离点. 因而这些半范数生成Hausdorff局部凸可度量拓扑.
+
+\begin{FATheorem}[B][Schwartz空间完备性]{ii01:schwartz-complete}
+\(\displaystyle \mathcal S(\mathbb R^d)\) 在半范数族 \(\displaystyle (p_{m,n})\) 所生成的拓扑下完备，因此是Fr\'echet空间.
+\end{FATheorem}
+
+\begin{FAProof}
+设 \(\displaystyle (\varphi_j)\) 对每个 \(\displaystyle p_{m,n}\) 都Cauchy. 固定multiindex \(\displaystyle \alpha\). 取 \(\displaystyle n\geqslant|\alpha|\) 并令 \(\displaystyle m=0\)，则
+\[
+\sup_{x\in\mathbb R^d}
+|\partial^\alpha\varphi_j(x)-\partial^\alpha\varphi_\ell(x)|
+\leqslant
+p_{0,n}(\varphi_j-\varphi_\ell)
+\to0.
+\]
+所以 \(\displaystyle (\partial^\alpha\varphi_j)\) 在一致范数下Cauchy，存在连续函数 \(\displaystyle g_\alpha:\mathbb R^d\to\mathbb K\) 使 \(\displaystyle \partial^\alpha\varphi_j\to g_\alpha\) 一致. 记 \(\displaystyle g_0\) 为 \(\displaystyle \varphi_j\) 的一致极限.
+
+必须验证这些极限仍满足导数关系. 固定 \(\displaystyle \alpha\)、坐标方向 \(\displaystyle e_r\)、点 \(\displaystyle x\in\mathbb R^d\) 与 \(\displaystyle h\in\mathbb R\). 对每个 \(\displaystyle j\)，一维微积分基本定理给出
+\[
+\partial^\alpha\varphi_j(x+he_r)
+-
+\partial^\alpha\varphi_j(x)
+=
+\int_0^h
+\partial^{\alpha+e_r}\varphi_j(x+te_r)\,\mathrm{d}t.
+\]
+左端由一致收敛趋于 \(\displaystyle g_\alpha(x+he_r)-g_\alpha(x)\). 右端的被积函数在整个 \(\displaystyle \mathbb R^d\) 上一致趋于 \(\displaystyle g_{\alpha+e_r}\)，故在该有限线段上可直接由一致误差估计取极限，得到
+\[
+g_\alpha(x+he_r)-g_\alpha(x)
+=
+\int_0^h g_{\alpha+e_r}(x+te_r)\,\mathrm{d}t.
+\]
+由于 \(\displaystyle g_{\alpha+e_r}\) 连续，右端关于 \(\displaystyle h\) 可微，故 \(\displaystyle \partial_r g_\alpha=g_{\alpha+e_r}\). 从 \(\displaystyle \alpha=0\) 逐阶归纳得到 \(\displaystyle g_0\in C^\infty(\mathbb R^d)\) 且 \(\displaystyle g_\alpha=\partial^\alpha g_0\) 对全部 \(\displaystyle \alpha\) 成立.
+
+现固定 \(\displaystyle m,n\) 与 \(\displaystyle \eta>0\). 由Cauchy性，存在 \(\displaystyle J\) 使对 \(\displaystyle j,\ell\geqslant J\) 有 \(\displaystyle p_{m,n}(\varphi_j-\varphi_\ell)<\eta\). 固定 \(\displaystyle j\geqslant J\) 并令 \(\displaystyle \ell\to\infty\). 对每个 \(\displaystyle x\) 与每个 \(\displaystyle |\alpha|\leqslant n\)，得到
+\(\displaystyle (1+|x|)^m |\partial^\alpha\varphi_j(x)-\partial^\alpha g_0(x)| \leqslant\eta.\)
+对有限个 \(\displaystyle \alpha\) 取最大值再对 \(\displaystyle x\) 取上确界，得到
+\(\displaystyle p_{m,n}(\varphi_j-g_0) \leqslant\eta.\)
+特别地，取某个 \(\displaystyle j\geqslant J\)，由三角不等式有 \(\displaystyle p_{m,n}(g_0)\leqslant p_{m,n}(\varphi_j)+\eta<\infty\). 因而 \(\displaystyle g_0\in\mathcal S(\mathbb R^d)\)，并且 \(\displaystyle \varphi_j\to g_0\) 对每个Schwartz半范数成立. 由\autoref{ii01:frechet-standard-metric}，该空间完备.\hfill\(\square\)
+\end{FAProof}
+
+Schwartz半范数还满足有向性：若 \(\displaystyle m'\geqslant m\)、\(\displaystyle n'\geqslant n\)，则
+\(\displaystyle p_{m,n}(\varphi) \leqslant p_{m',n'}(\varphi).\)
+这一点将在第四节把有限个连续性估计压缩成单个Schwartz半范数估计.
+
+\subsection{Fr\'echet开映射定理}
+\index{open mapping theorem@开映射定理}
+
+下面固定与Fr\'echet拓扑相容的完备平移不变度量 \(\displaystyle d_E,d_F\). 本章的证明不把Banach空间的范数球论证直接照搬，而只使用邻域吸收性、Baire纲定理、平移不变度量和完备性.
+
+\begin{FALemma}[B][Baire稠密邻域引理]{ii01:frechet-omt-density}
+设 \(\displaystyle E,F\) 为Fr\'echet空间，\(\displaystyle \mathcal T:E\to F\) 连续线性且满射. 对每个 \(\displaystyle r>0\)，存在 \(\displaystyle F\) 中的 \(\displaystyle0\)-邻域 \(\displaystyle V\)，使
+\(\displaystyle V \subseteq \overline{\mathcal T(B_{d_E}(0,r))}.\)
+\end{FALemma}
+
+\begin{FAProof}
+令 \(\displaystyle B=B_{d_E}(0,\frac{r}{2})\). 因 \(\displaystyle B\) 是 \(\displaystyle0\)-邻域，\autoref{ii01:tvs-local-tools}给出
+\(\displaystyle E= \bigcup_{m=1}^{\infty}mB.\)
+由满射性，
+\(\displaystyle F = \bigcup_{m=1}^{\infty}\mathcal T(mB) \subseteq \bigcup_{m=1}^{\infty}\overline{\mathcal T(mB)} \subseteq F,\)
+故右端闭集覆盖 \(\displaystyle F\). 因 \(\displaystyle F\) 对 \(\displaystyle d_F\) 完备，I-08的\autoref{fa:BAI-A01}及其闭集覆盖形式说明某个 \(\displaystyle \overline{\mathcal T(mB)}\) 有非空内部. 非零标量伸缩是同胚，且 \(\displaystyle \mathcal T(mB)=m\mathcal T(B)\)，所以 \(\displaystyle \overline{\mathcal T(B)}\) 也有非空内部.
+
+因此可取 \(\displaystyle y_0\in F\) 与 \(\displaystyle0\)-邻域 \(\displaystyle W\) 使
+\(\displaystyle y_0+W \subseteq \overline{\mathcal T(B)}.\)
+可再缩小 \(\displaystyle W\) 使 \(\displaystyle0\in W\)，于是 \(\displaystyle y_0\in\overline{\mathcal T(B)}\). 固定 \(\displaystyle w\in W\). 由于 \(\displaystyle F\) 可度量，可取 \(\displaystyle b_k,c_k\in B\) 使
+\(\displaystyle \mathcal Tb_k\to y_0+w,\; \mathcal Tc_k\to y_0.\)
+于是 \(\displaystyle \mathcal T(b_k-c_k)\to w\). 由平移不变性与三角不等式，
+\(\displaystyle d_E(b_k-c_k,0) \leqslant d_E(b_k,0)+d_E(c_k,0) <r,\)
+故 \(\displaystyle b_k-c_k\in B_{d_E}(0,r)\). 因而 \(\displaystyle w\in\overline{\mathcal T(B_{d_E}(0,r))}\). 对全部 \(\displaystyle w\in W\) 成立，所以取 \(\displaystyle V=W\) 即得结论.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][Fr\'echet开映射定理]{fa:LCS-B01}
+设 \(\displaystyle E,F\) 为Fr\'echet空间，\(\displaystyle \mathcal T:E\to F\) 连续线性且满射. 则 \(\displaystyle \mathcal T\) 是开映射.
+\end{FATheorem}
+
+\begin{FAProof}
+只需证明对任意 \(\displaystyle E\) 中 \(\displaystyle0\)-邻域 \(\displaystyle U\)，集合 \(\displaystyle \mathcal T(U)\) 含有 \(\displaystyle F\) 中某个 \(\displaystyle0\)-邻域. 取 \(\displaystyle \varepsilon>0\) 使
+\(\displaystyle B_{d_E}(0,\varepsilon) \subseteq U.\)
+定义
+\(\displaystyle a_n:=2^{-n-1}\varepsilon,\; n\geqslant1.\)
+对每个 \(\displaystyle n\)，由\autoref{ii01:frechet-omt-density}先取 \(\displaystyle0\)-邻域 \(\displaystyle W_n\) 使 \(\displaystyle W_n\subseteq\overline{\mathcal T(B_{d_E}(0,a_n))}\)，再令
+\(\displaystyle V_n := W_n\cap B_{d_F}(0,2^{-n}).\)
+于是 \(\displaystyle V_n\) 仍是 \(\displaystyle0\)-邻域，并满足
+\(\displaystyle V_n \subseteq \overline{\mathcal T(B_{d_E}(0,a_n))} \cap B_{d_F}(0,2^{-n}).\)
+
+固定 \(\displaystyle y\in V_1\) 并令 \(\displaystyle y_0=y\). 递归构造 \(\displaystyle x_n\in B_{d_E}(0,a_n)\) 与
+\[
+y_n
+:=
+y-
+\mathcal T\left(\sum_{k=1}^{n}x_k\right)
+\in V_{n+1}.
+\]
+假设 \(\displaystyle y_{n-1}\in V_n\) 已成立. 因 \(\displaystyle V_n\subseteq\overline{\mathcal T(B_{d_E}(0,a_n))}\)，而 \(\displaystyle y_{n-1}-V_{n+1}\) 是 \(\displaystyle y_{n-1}\) 的邻域，所以
+\(\displaystyle \bigl(y_{n-1}-V_{n+1}\bigr) \cap \mathcal T(B_{d_E}(0,a_n)) \neq\varnothing.\)
+选 \(\displaystyle x_n\in B_{d_E}(0,a_n)\) 使 \(\displaystyle \mathcal Tx_n\in y_{n-1}-V_{n+1}\). 则 \(\displaystyle y_n=y_{n-1}-\mathcal Tx_n\in V_{n+1}\)，递归合法.
+
+令 \(\displaystyle s_n=\sum_{k=1}^{n}x_k\). 若 \(\displaystyle m>n\)，平移不变性与三角不等式给出
+\[
+d_E(s_m,s_n)
+\leqslant
+\sum_{k=n+1}^{m}d_E(x_k,0)
+<
+\sum_{k=n+1}^{m}a_k.
+\]
+右端随 \(\displaystyle n\to\infty\) 一致趋于零，所以 \(\displaystyle (s_n)\) 为 \(\displaystyle d_E\)-Cauchy序列. 由 \(\displaystyle E\) 完备，存在 \(\displaystyle x\in E\) 使 \(\displaystyle s_n\to x\). 又
+\[
+d_E(x,0)
+\leqslant
+\sum_{n=1}^{\infty}a_n
+=
+\frac{\varepsilon}{2}
+<\varepsilon,
+\]
+故 \(\displaystyle x\in U\).
+
+另一方面，\(\displaystyle y_n\in V_{n+1}\subseteq B_{d_F}(0,2^{-n-1})\)，所以 \(\displaystyle y_n\to0\). 连续性给出 \(\displaystyle \mathcal Ts_n\to\mathcal Tx\)，而定义又给 \(\displaystyle \mathcal Ts_n=y-y_n\to y\). 因而 \(\displaystyle \mathcal Tx=y\). 于是 \(\displaystyle V_1\subseteq\mathcal T(U)\)，证明 \(\displaystyle \mathcal T(U)\) 是 \(\displaystyle0\)-邻域. 对任意开集用平移即可得到 \(\displaystyle \mathcal T\) 为开映射.\hfill\(\square\)
+\end{FAProof}
+
+该证明中四个假设各有明确位置：目标空间完备性用于Baire步骤；满射性用于把 \(\displaystyle F\) 写成 \(\displaystyle \mathcal T(mB)\) 的可数并；源空间完备性用于使 \(\displaystyle \sum_nx_n\) 收敛；\(\displaystyle \mathcal T\) 的连续性用于从 \(\displaystyle s_n\to x\) 推出 \(\displaystyle \mathcal Ts_n\to\mathcal Tx\).
+
+\begin{FACorollary}[B][Fr\'echet连续逆]{ii01:frechet-continuous-inverse}
+若 \(\displaystyle \mathcal T:E\to F\) 是Fr\'echet空间之间的连续线性双射，则 \(\displaystyle \mathcal T^{-1}:F\to E\) 连续.
+\end{FACorollary}
+
+\begin{FAProof}
+由\autoref{fa:LCS-B01}，\(\displaystyle \mathcal T\) 为开映射. 因而对每个 \(\displaystyle E\) 中开集 \(\displaystyle U\)，集合 \(\displaystyle (\mathcal T^{-1})^{-1}(U)=\mathcal T(U)\) 在 \(\displaystyle F\) 中开，所以 \(\displaystyle \mathcal T^{-1}\) 连续. 这里不使用“有界逆”术语，因为一般Fr\'echet空间未必可赋范.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][Fr\'echet闭图像推论]{ii01:frechet-closed-graph}
+设 \(\displaystyle E,F\) 为Fr\'echet空间，\(\displaystyle \mathcal T:E\to F\) 为处处定义的线性映射. 若图像
+\(\displaystyle G(\mathcal T) := \{(x,\mathcal Tx):x\in E\}\)
+在 \(\displaystyle E\times F\) 中闭，则 \(\displaystyle \mathcal T\) 连续.
+\end{FACorollary}
+
+\begin{FAProof}
+乘积空间 \(\displaystyle E\times F\) 是Fr\'echet空间：把两个可数半范数族交错排列即可得到可数分离半范数族，而 \(\displaystyle D((x,y),(x',y')):=d_E(x,x')+d_F(y,y')\) 是相容的完备平移不变度量. 闭子空间 \(\displaystyle G(\mathcal T)\) 因而也是Fr\'echet空间.
+
+坐标投影
+\(\displaystyle \pi_E:G(\mathcal T)\to E,\; (x,\mathcal Tx)\mapsto x\)
+是连续线性双射. 由\autoref{ii01:frechet-continuous-inverse}，\(\displaystyle \pi_E^{-1}:E\to G(\mathcal T)\) 连续. 另一坐标投影 \(\displaystyle \pi_F:E\times F\to F\) 连续，因此
+\(\displaystyle \mathcal T = \pi_F\circ\pi_E^{-1}\)
+连续.\hfill\(\square\)
+\end{FAProof}
+
+I-09的不完备性反例已经说明：删除完备性后，开映射或连续逆型结论可以失败. 本章只把这一既有边界带入Fr\'echet语境，不建立新的不完备反例.
+
+\section{对偶接口}\label{sec:ii01-dual-interface}
+\index{continuous dual@连续对偶}\index{weak-star topology@弱*拓扑}\index{transpose operator@转置算子}
+
+对局部凸空间 \(\displaystyle E\)，记
+\(\displaystyle E' := \{f:E\to\mathbb K:f\text{ 线性且连续}\}.\)
+本章不给 \(\displaystyle E'\) 赋强对偶拓扑. 只考虑由点值映射生成的弱*拓扑 \(\displaystyle \sigma(E',E)\)，即由半范数
+\(\displaystyle p_x(f):=|f(x)|,\; x\in E,\)
+生成的局部凸拓扑. 若 \(\displaystyle f\neq g\)，则存在 \(\displaystyle x\in E\) 使 \(\displaystyle f(x)\neq g(x)\)，所以这些点值半范数分离点，\(\displaystyle \sigma(E',E)\) 为Hausdorff局部凸拓扑.
+
+\begin{FAProposition}[C][转置的弱*连续性]{ii01:transpose-weakstar}
+若 \(\displaystyle \mathcal T:E\to F\) 连续线性，则定义
+\(\displaystyle \mathcal T':F'\to E', \; \mathcal T'f:=f\circ\mathcal T.\)
+该映射良定义且线性，并且
+\(\displaystyle \mathcal T':(F',\sigma(F',F)) \to (E',\sigma(E',E))\)
+连续.
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle f\in F'\)，则 \(\displaystyle f\circ\mathcal T\) 是连续线性泛函，故 \(\displaystyle \mathcal T'f\in E'\)，良定义成立；线性性由复合直接得到. 固定 \(\displaystyle x\in E\). 目标弱*拓扑的生成半范数满足
+\(\displaystyle p_x(\mathcal T'f) = |(\mathcal T'f)(x)| = |f(\mathcal Tx)| = p_{\mathcal Tx}(f),\)
+而右端正是 \(\displaystyle F'\) 的弱*生成半范数之一. 由\autoref{fa:LCS-B02}，\(\displaystyle \mathcal T'\) 连续. 本论证不为 \(\displaystyle \mathcal T'\) 引入算子范数.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Schwartz对偶接口}
+
+记 \(\displaystyle \mathcal S'(\mathbb R^d)\) 为 \(\displaystyle \mathcal S(\mathbb R^d)\) 的连续对偶. 本章只把它作为局部凸连续对偶，不建立一般分布或缓增分布的运算理论.
+
+\begin{FAProposition}[B][Schwartz对偶的连续性估计]{ii01:schwartz-dual-criterion}
+线性泛函 \(\displaystyle u:\mathcal S(\mathbb R^d)\to\mathbb K\) 连续，当且仅当存在 \(\displaystyle m,n\in\mathbb N_0\) 与 \(\displaystyle C>0\)，使
+\(\displaystyle |u(\varphi)| \leqslant C p_{m,n}(\varphi)\)
+对全部 \(\displaystyle \varphi\in\mathcal S(\mathbb R^d)\) 成立.
+\end{FAProposition}
+
+\begin{FAProof}
+若有该估计，则\autoref{fa:LCS-B02}直接给出连续性. 反之若 \(\displaystyle u\) 连续，连续泛函判据给出有限多个 \(\displaystyle p_{m_1,n_1},\dots,p_{m_r,n_r}\) 与 \(\displaystyle C>0\)，使
+\(\displaystyle |u(\varphi)| \leqslant C\max_{1\leqslant j\leqslant r}p_{m_j,n_j}(\varphi).\)
+令 \(\displaystyle m=\max_jm_j\)、\(\displaystyle n=\max_jn_j\). Schwartz半范数的有向性给出 \(\displaystyle p_{m_j,n_j}\leqslant p_{m,n}\)，故得到所需单半范数估计.\hfill\(\square\)
+\end{FAProof}
+
+这里的 \(\displaystyle \mathcal S'(\mathbb R^d)\) 仅表示Schwartz空间的连续对偶. 分布导数、支集、卷积、光滑化核、Fourier变换与缓增分布的进一步结构均留待II-12相应层级；本章没有建立或使用分布与弱导数规范节点.
+
+\section{后续专题接口}\label{sec:ii01-future}
+
+Fr\'echet线性开映射与连续逆成立，并不意味着Banach空间的非线性逆函数定理能无条件推广到任意Fr\'echet空间；具体失败机制以及驯顺Fr\'echet/Nash--Moser修复留到III-02 及后续的驯顺 Fréchet 与 Nash--Moser 专题. 本章对普通 Fréchet 空间中逆函数定理失效的反例只作这一延后预告，不构造反例，也不证明Nash--Moser定理.
+
+桶空间与核空间属于后续D级专题，本章只保留名称，不给出定义或形式理论. II-12将正式建立分布与弱导数接口；III-01将建立Fr\'echet导数；III-02将处理Banach逆函数定理及普通Fr\'echet空间的失败边界；后续专题再进入驯顺Fr\'echet与Nash--Moser. 这些未来结果均未被本章调用.
+
+\subsection*{本章习题}\label{sec:ii01-exercises}
+\addcontentsline{toc}{subsection}{本章习题}
+
+\begin{FAExercise}[平移与伸缩同胚]{ex:ii01-01}
+从加法和标量乘法连续性出发，证明拓扑向量空间中的平移与非零标量伸缩都是同胚，并据此独立证明线性映射连续当且仅当在零点连续.
+\end{FAExercise}
+
+\begin{FAExercise}[零邻域吸收性]{ex:ii01-02}
+设 \(\displaystyle U\) 为拓扑向量空间中的 \(\displaystyle0\)-邻域. 固定 \(\displaystyle x\)，只使用 \(\displaystyle \lambda\mapsto\lambda x\) 在 \(\displaystyle0\) 连续证明 \(\displaystyle U\) 吸收，并写出一个可选的吸收半径.
+\end{FAExercise}
+
+\begin{FAExercise}[半范数核]{ex:ii01-03}
+证明半范数 \(\displaystyle p\) 的核 \(\displaystyle \ker p\) 是线性子空间. 再证明 \(\displaystyle p\) 在商空间 \(\displaystyle E/\ker p\) 上诱导范数 \(\displaystyle \|x+\ker p\|=p(x)\).
+\end{FAExercise}
+
+\begin{FAExercise}[半范数向量拓扑]{ex:ii01-04}
+完整重建\autoref{ii01:seminorm-topology}，特别验证标量乘法在任意 \(\displaystyle(\lambda_0,x_0)\) 连续，而不只验证在 \(\displaystyle(0,0)\) 连续.
+\end{FAExercise}
+
+\begin{FAExercise}[Hausdorff判据]{ex:ii01-05}
+证明半范数族生成的拓扑Hausdorff当且仅当该族分离点. 在反向中说明为什么若 \(\displaystyle p(x)=0\) 对全部生成半范数成立，则 \(\displaystyle x\) 落入每个 \(\displaystyle0\)-邻域.
+\end{FAExercise}
+
+\begin{FAExercise}[Minkowski泛函]{ex:ii01-06}
+设 \(\displaystyle U\) 开、绝对凸且吸收. 从定义出发证明 \(\displaystyle p_U\) 的次可加性与绝对齐次性，并独立补全 \(\displaystyle U=\{x:p_U(x)<1\}\) 中两个方向的严格不等式细节.
+\end{FAExercise}
+
+\begin{FAExercise}[局部凸邻域工具]{ex:ii01-07}
+证明对任意局部凸 \(\displaystyle0\)-邻域 \(\displaystyle U\)，存在绝对凸 \(\displaystyle V\) 满足 \(\displaystyle V+V\subseteq U\). 再证明连续半范数的开单位球与闭单位球分别是开绝对凸集与闭绝对凸集.
+\end{FAExercise}
+
+\begin{FAExercise}[弱拓扑是局部凸拓扑]{ex:ii01-08}
+设 \(\displaystyle X\) 为赋范空间. 用 \(\displaystyle p_{x^*}(x)=|x^*(x)|\) 重建弱拓扑，并明确指出Hausdorff性在哪一步使用I-06的Hahn--Banach分离结论.
+\end{FAExercise}
+
+\begin{FAExercise}[弱*拓扑是局部凸拓扑]{ex:ii01-09}
+用点值半范数 \(\displaystyle p_x(x^*)=|x^*(x)|\) 重建 \(\displaystyle \sigma(X^*,X)\)，并直接证明这些半范数分离 \(\displaystyle X^*\) 中不同元素.
+\end{FAExercise}
+
+\begin{FAExercise}[半范数连续线性映射判据必要性中的零情形]{ex:ii01-10}
+在\autoref{fa:LCS-B02}中，设连续性给出 \(\displaystyle M(x)<\varepsilon\Rightarrow q(\mathcal Tx)<1\). 分别处理 \(\displaystyle M(x)=0\) 与 \(\displaystyle M(x)>0\)，不得省略用任意正标量证明 \(\displaystyle M(x)=0\Rightarrow q(\mathcal Tx)=0\) 的步骤.
+\end{FAExercise}
+
+\begin{FAExercise}[连续泛函判据]{ex:ii01-11}
+从\autoref{fa:LCS-B02}取值域 \(\displaystyle F=\mathbb K\)，证明局部凸空间上的线性泛函连续当且仅当它被有限个生成半范数的最大值控制.
+\end{FAExercise}
+
+\begin{FAExercise}[连续对偶分离点]{ex:ii01-12}
+设 \(\displaystyle E\) 为局部凸空间、\(\displaystyle x\neq0\). 选取 \(\displaystyle p(x)>0\)，在 \(\displaystyle E/\ker p\) 上使用I-06 Hahn--Banach定理构造 \(\displaystyle f\in E'\) 使 \(\displaystyle f(x)\neq0\)，并证明 \(\displaystyle |f(y)|\leqslant p(y)\).
+\end{FAExercise}
+
+\begin{FAExercise}[Fr\'echet标准度量]{ex:ii01-13}
+对 \(\displaystyle d(x,y)=\sum_n2^{-n}\min\{1,p_n(x-y)\}\)，逐项证明正定性、三角不等式和平移不变性，并用有限项加尾项估计证明它与半范数拓扑相容.
+\end{FAExercise}
+
+\begin{FAExercise}[半范数Cauchy刻画]{ex:ii01-14}
+证明一个序列为标准度量Cauchy当且仅当它对每个生成半范数都Cauchy. 两个方向都要求给出显式的单项下界或有限项加尾项估计.
+\end{FAExercise}
+
+\begin{FAExercise}[乘积Fr\'echet空间]{ex:ii01-15}
+对 \(\displaystyle \mathbb K^{\mathbb N}\) 与 \(\displaystyle p_n(x)=\max_{k\leqslant n}|x_k|\)，证明半范数拓扑等于乘积拓扑，并从逐坐标极限证明完备性.
+\end{FAExercise}
+
+\begin{FAExercise}[乘积拓扑不可赋范]{ex:ii01-16}
+反设某范数诱导 \(\displaystyle \mathbb K^{\mathbb N}\) 的乘积拓扑. 从范数单位球包含一个只限制前 \(\displaystyle N\) 个坐标的基本乘积邻域出发，用 \(\displaystyle te_{N+1}\) 给出矛盾. 不得调用一般局部有界可赋范判据.
+\end{FAExercise}
+
+\begin{FAExercise}[Schwartz半范数]{ex:ii01-17}
+证明每个 \(\displaystyle p_{m,n}\) 都是半范数，半范数族可数、分离点且有向. 对有向性显式使用 \(\displaystyle (1+|x|)^m\leqslant(1+|x|)^{m'}\) 与导数指标集合的包含关系.
+\end{FAExercise}
+
+\begin{FAExercise}[Schwartz完备性]{ex:ii01-18}
+完整重建\autoref{ii01:schwartz-complete}. 特别要求从逐坐标线段上的微积分基本定理证明 \(\displaystyle g_{\alpha+e_r}=\partial_rg_\alpha\)，不得把“一致导数极限仍为导数”作为未证明黑箱.
+\end{FAExercise}
+
+\begin{FAExercise}[Fr\'echet开映射的Baire步骤]{ex:ii01-19}
+对给定 \(\displaystyle r>0\)，从 \(\displaystyle E=\bigcup_mmB\) 与满射性推出 \(\displaystyle F\) 的闭集覆盖，再用Baire纲定理证明某个 \(\displaystyle0\)-邻域落入 \(\displaystyle \overline{\mathcal T(B_{d_E}(0,r))}\). 明确写出中心平移与差集步骤.
+\end{FAExercise}
+
+\begin{FAExercise}[Fr\'echet开映射的迭代提升]{ex:ii01-20}
+使用 \(\displaystyle a_n=2^{-n-1}\varepsilon\) 和邻域 \(\displaystyle V_n\)，逐步构造 \(\displaystyle x_n\) 与残差 \(\displaystyle y_n\). 证明部分和在源空间Cauchy、极限落入 \(\displaystyle U\)，并说明源完备、目标完备、满射与连续性分别在证明何处使用.
+\end{FAExercise}
+
+\begin{FAExercise}[连续逆与闭图像]{ex:ii01-21}
+先从Fr\'echet开映射定理证明连续线性双射的逆连续，再把闭图像 \(\displaystyle G(\mathcal T)\) 看成 \(\displaystyle E\times F\) 的闭Fr\'echet子空间，证明处处定义线性算子的闭图像推论.
+\end{FAExercise}
+
+\begin{FAExercise}[Schwartz对偶与未来边界]{ex:ii01-22}
+先由有限半范数连续性判据与Schwartz半范数有向性证明 \(\displaystyle u\in\mathcal S'(\mathbb R^d)\) 当且仅当存在单个 \(\displaystyle p_{m,n}\) 控制 \(\displaystyle |u(\varphi)|\). 再辨析以下陈述：本章已经建立Schwartz空间为Fr\'echet空间与其连续对偶接口，但尚未建立分布导数、强对偶拓扑、普通Fr\'echet空间上的非线性逆函数定理或Nash--Moser定理.
+\end{FAExercise}

@@ -1,0 +1,517 @@
+\chapter{凸性、弱下半连续与强制性}\label{chap:III-06}
+\FAChapterOpening
+{建立实 Banach 空间上的真扩展实值凸泛函、范数下半连续性、弱下半连续性与强制性的规范接口，证明凸泛函的范数下半连续性蕴含弱下半连续性，并以椭圆能量泛函验证这些结构；本章只冻结直接法所需的拓扑与序工具，不证明极小元存在性.}
+{I-06 的 Hahn--Banach 凸分离定理\autoref{fa:HB-A02}；I-07 的弱拓扑\autoref{fa:WT-A01}；III-01 的 Fréchet 微分\autoref{fa:DIFF-A01}. 第四节另调用 II-13 的 \(\displaystyle H_0^1\) 能量空间与 Poincaré 接口\autoref{fa:SOB-B01}、\autoref{ii13:gradient-norm-equivalence}.}
+{\begin{center}
+\begin{tikzpicture}[x=0.88cm,y=0.80cm]
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (wt) at (0.5,3.2) {弱/弱*拓扑};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (hb) at (3.5,3.2) {凸集分离定理};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (sob) at (9.5,3.2) {II-13};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (diff) at (12.0,3.2) {Fréchet微分};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (vara) at (1.7,2.0) {凸/下半连续/强制性};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (varb1) at (5.2,2.0) {凸的范数下半连续到弱下半连续};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (varc) at (1.7,0.8) {凸泛函工具};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (varb2) at (5.2,0.8) {强制性/子水平集};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (energy) at (8.3,0.8) {椭圆能量模型};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (direct) at (1.0,-0.65) {III-07 / 直接法};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (ek) at (4.2,-0.65) {III-08 / Ekeland原理};
+\draw[fa/arrow] (wt) -- (vara);
+\draw[fa/arrow] (hb) -- (vara);
+\draw[fa/arrow] (hb) -- (varb1);
+\draw[fa/arrow] (vara) -- (varb1);
+\draw[fa/arrow] (vara) -- (varc);
+\draw[fa/arrow] (vara.south east) -- (varb2.north);
+\draw[fa/arrow] (varc) -- (varb2);
+\draw[fa/arrow] (varb1.east) -- (energy.north west);
+\draw[fa/arrow] (varb2) -- (energy);
+\draw[fa/arrow] (sob.south) -- (energy.north east);
+\draw[fa/arrow] (diff.south west) -- (energy.east);
+\draw[fa/arrow,dashed] (vara.west) -- (0,2.0) -- (0,0) -- (direct.north);
+\draw[fa/arrow,dashed] (varc.south east) -- (ek.north west);
+\end{tikzpicture}
+\end{center}}
+
+本章主线固定在实 Banach 空间 \(\displaystyle X\). 泛函取值于 \(\displaystyle(-\infty,+\infty]\)，但绝不取 \(\displaystyle-\infty\). 除非明确讨论空对象，规范定义默认泛函真. 凸性是线性结构性质；范数下半连续与弱下半连续是相对于指定拓扑的闭性性质；强制性由指定范数控制无穷远行为. 三者不能互相替代.
+
+\section{凸性}\label{sec:iii06-convexity}
+\index{convex functional@凸泛函}\index{effective domain@有效定义域}\index{epigraph@上图集}\index{sublevel set@下水平集}
+
+\begin{FADefinition}[A][凸泛函、下半连续与强制性的规范定义]{fa:VAR-A01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi:X\to(-\infty,+\infty]\). 定义有效定义域
+\(\displaystyle \operatorname{dom}\Phi := \{x\in X:\Phi(x)<+\infty\}.\)
+若 \(\displaystyle\operatorname{dom}\Phi\neq\varnothing\)，则称 \(\displaystyle\Phi\) 真. 本章以下默认真，且值域约定已排除 \(\displaystyle-\infty\).
+
+若对任意 \(\displaystyle x,y\in X\) 与 \(\displaystyle t\in[0,1]\) 都有
+\(\displaystyle \Phi((1-t)x+ty) \leqslant (1-t)\Phi(x)+t\Phi(y),\)
+则称 \(\displaystyle\Phi\) 凸. 若对任意互异的 \(\displaystyle x,y\in\operatorname{dom}\Phi\) 与 \(\displaystyle0<t<1\) 都有严格不等式
+\(\displaystyle \Phi((1-t)x+ty) < (1-t)\Phi(x)+t\Phi(y),\)
+则称 \(\displaystyle\Phi\) 严格凸.
+
+定义上图与有限子水平集
+\[
+\operatorname{epi}\Phi
+:=
+\{(x,r)\in X\times\mathbb R:\Phi(x)\leqslant r\},
+\;
+[\Phi\leqslant a]
+:=
+\{x\in X:\Phi(x)\leqslant a\},
+\quad a\in\mathbb R.
+\]
+相对于范数拓扑，若每个 \(\displaystyle[\Phi\leqslant a]\) 都范数闭，则称 \(\displaystyle\Phi\) 范数下半连续. 相对于弱拓扑 \(\displaystyle\sigma(X,X^*)\)，若每个 \(\displaystyle[\Phi\leqslant a]\) 都弱闭，则称 \(\displaystyle\Phi\) 弱下半连续.
+
+最后，固定 \(\displaystyle X\) 上的范数 \(\displaystyle\|\cdot\|\). 若任意满足 \(\displaystyle\|x\|\to\infty\) 的过程都使 \(\displaystyle\Phi(x)\to+\infty\)，则称 \(\displaystyle\Phi\) 强制. 等价地，对每个 \(\displaystyle M\in\mathbb R\)，存在 \(\displaystyle R>0\)，使
+\(\displaystyle \|x\|\geqslant R \;\Longrightarrow\; \Phi(x)>M.\)
+\end{FADefinition}
+
+扩展实值约定使凸不等式在某一端取 \(\displaystyle+\infty\) 时自动成立，因此真正需要检查的是有限值定义域点. 特别地，严格凸性的严格比较只对 \(\displaystyle\operatorname{dom}\Phi\) 中互异点提出要求.
+
+\begin{FARemark}[线性结构与拓扑结构的边界]
+凸性与严格凸性只依赖 \(\displaystyle X\) 的实线性结构. 范数下半连续与弱下半连续分别依赖范数拓扑与 \(\displaystyle\sigma(X,X^*)\). 同一个泛函可以范数连续却不弱下半连续；后文的范数连续但非弱下半连续反例正是这种现象. 因而不能把“凸”与“弱下半连续”当作同一类条件.
+\end{FARemark}
+
+\section{下半连续/弱下半连续}\label{sec:iii06-lsc}
+\index{lower semicontinuity@下半连续}\index{weak lower semicontinuity@弱下半连续}\index{net@网!下半连续判别}
+
+先比较两种拓扑. 弱拓扑 \(\displaystyle\sigma(X,X^*)\) 比范数拓扑弱，即每个弱开集合都范数开. 因而每个弱闭集合都范数闭. 直接代入\autoref{fa:VAR-A01}的子水平集定义得到
+\(\displaystyle \text{弱下半连续} \;\Longrightarrow\; \text{范数下半连续}\)
+对任意真扩展实值泛函都成立，不需要凸性. 反向蕴含一般错误，必须增加结构；\autoref{fa:VAR-B01}将证明凸性正是这里的关键充分条件.
+
+\subsection{一般拓扑下的网判据}
+
+设 \(\displaystyle\tau\) 是集合 \(\displaystyle X\) 上任意拓扑，且 \(\displaystyle\Phi:X\to(-\infty,+\infty]\). 对实扩展值网 \(\displaystyle(a_\alpha)\)，定义
+\[
+\liminf_\alpha a_\alpha
+:=
+\sup_\alpha\inf_{\beta\geqslant\alpha}a_\beta.
+\]
+则 \(\displaystyle\Phi\) 相对于 \(\displaystyle\tau\) 下半连续当且仅当对每个满足 \(\displaystyle x_\alpha\to x\)（关于 \(\displaystyle\tau\)）的网都有
+\[
+\Phi(x)
+\leqslant
+\liminf_\alpha\Phi(x_\alpha).
+\]
+这里必须使用网；一般弱拓扑不可无条件假设第一可数，也不能把拓扑下半连续性偷换成只检查序列.
+
+\begin{FAProof}
+先设每个子水平集 \(\displaystyle[\Phi\leqslant a]\) 都 \(\displaystyle\tau\)-闭. 固定网 \(\displaystyle x_\alpha\to x\)，并令 \(\displaystyle L=\liminf_\alpha\Phi(x_\alpha)\). 若 \(\displaystyle\Phi(x)\leqslant L\)，结论已得. 反设 \(\displaystyle L<\Phi(x)\). 取 \(\displaystyle a\in\mathbb R\) 满足 \(\displaystyle L<a<\Phi(x)\)；当 \(\displaystyle\Phi(x)=+\infty\) 时同样可取任意有限 \(\displaystyle a>L\). 因 \(\displaystyle x\notin[\Phi\leqslant a]\) 且该集合闭，其补集
+\(\displaystyle U_a:=\{y\in X:\Phi(y)>a\}\)
+是含 \(\displaystyle x\) 的 \(\displaystyle\tau\)-开邻域. 由网收敛，存在 \(\displaystyle\alpha_0\) 使 \(\displaystyle\alpha\geqslant\alpha_0\) 时 \(\displaystyle x_\alpha\in U_a\). 故
+\[
+\inf_{\beta\geqslant\alpha_0}\Phi(x_\beta)
+\geqslant a,
+\]
+从而 \(\displaystyle L\geqslant a\)，与 \(\displaystyle L<a\) 矛盾. 因此网不等式成立.
+
+反之，假设所有收敛网都满足 下极限不等式. 固定 \(\displaystyle a\in\mathbb R\)，令 \(\displaystyle C=[\Phi\leqslant a]\). 若 \(\displaystyle C\) 不闭，则存在 \(\displaystyle x\in\overline C\setminus C\). 以 \(\displaystyle x\) 的全部邻域为有向集，序关系取反包含：\(\displaystyle U\preceq V\) 当 \(\displaystyle V\subseteq U\). 因 \(\displaystyle x\in\overline C\)，每个邻域 \(\displaystyle U\) 都与 \(\displaystyle C\) 相交；选择 \(\displaystyle x_U\in U\cap C\). 按该序关系，网 \(\displaystyle(x_U)\) 收敛到 \(\displaystyle x\)，且每个 \(\displaystyle\Phi(x_U)\leqslant a\). 因而
+\[
+\Phi(x)
+\leqslant
+\liminf_U\Phi(x_U)
+\leqslant a,
+\]
+这说明 \(\displaystyle x\in C\)，矛盾. 故每个子水平集闭，\(\displaystyle\Phi\) 为 \(\displaystyle\tau\)-下半连续.
+
+分别取 \(\displaystyle\tau\) 为范数拓扑与 \(\displaystyle\sigma(X,X^*)\)，即得到范数下半连续与弱下半连续的网判据.
+\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FAProposition}[C][凸泛函计算工具]{fa:VAR-C01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi:X\to(-\infty,+\infty]\) 真.
+\begin{enumerate}
+\item 若 \(\displaystyle\Phi\) 凸，则 \(\displaystyle\operatorname{dom}\Phi\) 与每个 \(\displaystyle[\Phi\leqslant a]\) 都凸，且 \(\displaystyle\operatorname{epi}\Phi\subseteq X\times\mathbb R\) 凸. 反之，若 \(\displaystyle\operatorname{epi}\Phi\) 凸，则 \(\displaystyle\Phi\) 凸.
+\item 若 \(\displaystyle c>0\)，则 \(\displaystyle c\Phi\) 保持凸性；若 \(\displaystyle\Phi\) 严格凸，则 \(\displaystyle c\Phi\) 严格凸.
+\item 若 \(\displaystyle\ell\in X^*\)、\(\displaystyle b\in\mathbb R\)，则 \(\displaystyle x\mapsto\Phi(x)+\ell(x)+b\) 在 \(\displaystyle\Phi\) 凸时仍凸，在 \(\displaystyle\Phi\) 严格凸时仍严格凸. 若 \(\displaystyle\Phi\) 范数下半连续，则该扰动范数下半连续；若 \(\displaystyle\Phi\) 弱下半连续，则该扰动弱下半连续.
+\item 若 \(\displaystyle\Phi\) 严格凸且极小元存在，则极小元至多一个；严格凸性本身不推出极小元存在.
+\item 若 \(\displaystyle\Phi\) 凸，\(\displaystyle x_1,\dots,x_n\in X\)，\(\displaystyle\lambda_j\geqslant0\) 且 \(\displaystyle\sum_{j=1}^n\lambda_j=1\)，则有限 Jensen 不等式
+\[
+\Phi\!\left(\sum_{j=1}^n\lambda_jx_j\right)
+\leqslant
+\sum_{j=1}^n\lambda_j\Phi(x_j)
+\]
+成立，其中右端按扩展实值约定解释.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle x,y\in\operatorname{dom}\Phi\) 且 \(\displaystyle0\leqslant t\leqslant1\)，凸不等式的右端有限，所以 \(\displaystyle(1-t)x+ty\in\operatorname{dom}\Phi\)；故有效定义域凸. 若再有 \(\displaystyle\Phi(x),\Phi(y)\leqslant a\)，则
+\(\displaystyle \Phi((1-t)x+ty) \leqslant (1-t)a+ta =a,\)
+故每个子水平集凸.
+
+若 \(\displaystyle(x,r),(y,s)\in\operatorname{epi}\Phi\)，则
+\(\displaystyle \Phi((1-t)x+ty) \leqslant (1-t)\Phi(x)+t\Phi(y) \leqslant (1-t)r+ts,\)
+所以 \(\displaystyle((1-t)x+ty,(1-t)r+ts)\in\operatorname{epi}\Phi\). 反之，若上图凸且 \(\displaystyle x,y\in\operatorname{dom}\Phi\)，则 \(\displaystyle(x,\Phi(x))\)、\(\displaystyle(y,\Phi(y))\) 属于上图，故
+\(\displaystyle \bigl((1-t)x+ty,(1-t)\Phi(x)+t\Phi(y)\bigr) \in \operatorname{epi}\Phi,\)
+这正是凸不等式. 若某端不在有效定义域，右端为 \(\displaystyle+\infty\)，不等式自动成立.
+
+对 \(\displaystyle c>0\)，把凸不等式两侧乘以 \(\displaystyle c\) 即得正倍数缩放；严格不等式同理. 对仿射扰动 \(\displaystyle h(x)=\ell(x)+b\)，恒有
+\(\displaystyle h((1-t)x+ty) = (1-t)h(x)+th(y),\)
+所以把该恒等式与凸或严格凸不等式相加即可.
+
+现证下半连续保持性. 对范数拓扑，\(\displaystyle h\) 由 \(\displaystyle\ell\in X^*\) 连续；对弱拓扑 \(\displaystyle\sigma(X,X^*)\)，\(\displaystyle\ell\) 按拓扑定义仍连续. 统一记所选拓扑为 \(\displaystyle\tau\). 若 \(\displaystyle x_\alpha\to x\)（关于 \(\displaystyle\tau\)），则 \(\displaystyle h(x_\alpha)\to h(x)\). 固定 \(\displaystyle\varepsilon>0\)，最终有 \(\displaystyle h(x_\alpha)\geqslant h(x)-\varepsilon\)，于是
+\[
+\liminf_\alpha\bigl(\Phi(x_\alpha)+h(x_\alpha)\bigr)
+\geqslant
+\liminf_\alpha\Phi(x_\alpha)+h(x)-\varepsilon
+\geqslant
+\Phi(x)+h(x)-\varepsilon.
+\]
+令 \(\displaystyle\varepsilon\downarrow0\)，并用刚证明的网判据，即得 \(\displaystyle\Phi+h\) 为 \(\displaystyle\tau\)-下半连续
+
+若 \(\displaystyle u\neq v\) 都是严格凸 \(\displaystyle\Phi\) 的极小元，令共同最小值为 \(\displaystyle m\). 则
+\[
+\Phi\!\left(\frac{u+v}{2}\right)
+<
+\frac{\Phi(u)+\Phi(v)}{2}
+=m,
+\]
+与 \(\displaystyle m\) 为最小值矛盾. 这只证明存在时唯一性，不提供存在性.
+
+最后对有限 Jensen 不等式作归纳. \(\displaystyle n=2\) 就是凸性. 假设结论对 \(\displaystyle n-1\) 成立. 若 \(\displaystyle\lambda_n=1\) 则平凡；否则令 \(\displaystyle s=1-\lambda_n>0\) 与
+\[
+y
+:=
+\sum_{j=1}^{n-1}\frac{\lambda_j}{s}x_j.
+\]
+由二点凸性与归纳假设，
+\[
+\Phi(sy+\lambda_nx_n)
+\leqslant
+s\Phi(y)+\lambda_n\Phi(x_n)
+\leqslant
+\sum_{j=1}^n\lambda_j\Phi(x_j).
+\]
+故所有结论成立.
+\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FATheorem}[B][凸的范数下半连续蕴含弱下半连续]{fa:VAR-B01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi:X\to(-\infty,+\infty]\) 真、凸且范数下半连续，则 \(\displaystyle\Phi\) 相对于弱拓扑 \(\displaystyle\sigma(X,X^*)\) 弱下半连续.
+\end{FATheorem}
+
+\begin{FAProof}
+固定任意 \(\displaystyle a\in\mathbb R\)，令
+\(\displaystyle C:=[\Phi\leqslant a].\)
+由\autoref{fa:VAR-C01}，\(\displaystyle C\) 凸；由范数下半连续，\(\displaystyle C\) 范数闭. 若 \(\displaystyle C=\varnothing\) 或 \(\displaystyle C=X\)，则它显然弱闭. 以下设 \(\displaystyle C\) 非空且 \(\displaystyle C\neq X\).
+
+固定 \(\displaystyle x_0\in X\setminus C\). 由点与非空范数闭凸集合的 Hahn--Banach 分离\autoref{fa:HB-A02}，存在 \(\displaystyle x^*\in X^*\) 使
+\[
+\sup_{c\in C}x^*(c)
+<
+x^*(x_0).
+\]
+取实数 \(\displaystyle\gamma\) 满足
+\[
+\sup_{c\in C}x^*(c)
+<
+\gamma
+<
+x^*(x_0).
+\]
+因为弱拓扑正是 \(\displaystyle\sigma(X,X^*)\)，映射 \(\displaystyle x\mapsto x^*(x)\) 弱连续. 因而
+\(\displaystyle U_{x_0} := \{x\in X:x^*(x)>\gamma\}\)
+是包含 \(\displaystyle x_0\) 的弱开集合. 对每个 \(\displaystyle c\in C\) 都有 \(\displaystyle x^*(c)<\gamma\)，所以 \(\displaystyle U_{x_0}\cap C=\varnothing\).
+
+因此 \(\displaystyle X\setminus C\) 中每个点都拥有一个完全包含在 \(\displaystyle X\setminus C\) 内的弱开邻域，故 \(\displaystyle X\setminus C\) 弱开，亦即 \(\displaystyle C\) 弱闭. 因 \(\displaystyle a\) 任意，每个有限子水平集都弱闭，所以 \(\displaystyle\Phi\) 弱下半连续.
+\hfill\(\square\)
+
+\end{FAProof}
+
+结合本节开头的一般方向弱下半连续 \(\displaystyle\Longrightarrow\) 范数下半连续与\autoref{fa:VAR-B01}，得到：对真凸扩展实值泛函，范数下半连续与弱下半连续等价. 这里凸性只在范数下半连续 \(\displaystyle\Longrightarrow\) 弱下半连续的方向不可缺少.
+
+\begin{FACounterexample}[范数连续不推出弱下半连续]
+取实 Hilbert 空间 \(\displaystyle X=\ell^2\)，定义
+\(\displaystyle \Phi(x):=-\|x\|_2.\)
+反三角不等式给
+\(\displaystyle |\Phi(x)-\Phi(y)| = \bigl|\|x\|_2-\|y\|_2\bigr| \leqslant \|x-y\|_2,\)
+故 \(\displaystyle\Phi\) 范数连续，特别地范数下半连续但它不凸. 令 \(\displaystyle e_n\) 为标准正交基. 对任意 \(\displaystyle y=(y_k)\in\ell^2\)，有
+\(\displaystyle \langle e_n,y\rangle_{\ell^2} =y_n \longrightarrow0,\)
+故 \(\displaystyle e_n\rightharpoonup0\). 然而
+\[
+\Phi(0)=0
+>
+-1
+=
+\liminf_{n\to\infty}\Phi(e_n),
+\]
+所以弱下半连续的网判据已被这个序列特例违反.
+
+再令 \(\displaystyle B=\{x\in\ell^2:\|x\|_2\leqslant1\}\). 在 \(\displaystyle B\) 上有 \(\displaystyle\inf_B\Phi=-1\)，且每个 \(\displaystyle e_n\) 都是极小元，从而也是极小化序列；它们弱收敛到 \(\displaystyle0\)，但 \(\displaystyle0\) 不是极小元. 该例准确说明缺少弱下半连续时，弱极限可以丢失最小值. 它不反驳\autoref{fa:VAR-B01}，因为这里缺失的关键假设正是凸性.
+\end{FACounterexample}
+
+\section{强制性}\label{sec:iii06-coercivity}
+\index{coercivity@强制性}\index{sublevel set@下水平集!有界性}
+
+\autoref{fa:VAR-A01}已把强制性写成 \(\displaystyle\|x\|\to\infty\Rightarrow\Phi(x)\to+\infty\). 这里先验证其量词形式. 若 \(\displaystyle\Phi\) 强制而存在 \(\displaystyle M\in\mathbb R\) 使对每个 \(\displaystyle R>0\) 都能找到 \(\displaystyle x_R\) 满足 \(\displaystyle\|x_R\|\geqslant R\) 与 \(\displaystyle\Phi(x_R)\leqslant M\)，取 \(\displaystyle R=n\) 即得 \(\displaystyle\|x_n\|\to\infty\) 而 \(\displaystyle\Phi(x_n)\not\to+\infty\)，矛盾. 反之，若量词形式成立而 \(\displaystyle\|x_\alpha\|\to\infty\)，则对任意 \(\displaystyle M\) 最终有 \(\displaystyle\Phi(x_\alpha)>M\)，这正是 \(\displaystyle\Phi(x_\alpha)\to+\infty\).
+
+\begin{FATheorem}[B][强制性与有限子水平集有界性]{fa:VAR-B02}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi:X\to(-\infty,+\infty]\) 真. 则以下两条等价：
+\begin{enumerate}
+\item \(\displaystyle\Phi\) 相对于给定范数 \(\displaystyle\|\cdot\|\) 强制.
+\item 对每个 \(\displaystyle a\in\mathbb R\)，有限子水平集 \(\displaystyle[\Phi\leqslant a]\) 都范数有界.
+\end{enumerate}
+该等价不需要自反性、凸性或下半连续性.
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle\Phi\) 强制. 固定 \(\displaystyle a\in\mathbb R\). 由强制性的量词形式，存在 \(\displaystyle R>0\) 使
+\(\displaystyle \|x\|\geqslant R \;\Longrightarrow\; \Phi(x)>a.\)
+因此若 \(\displaystyle x\in[\Phi\leqslant a]\)，必有 \(\displaystyle\|x\|<R\). 故 \(\displaystyle[\Phi\leqslant a]\subseteq B_X(0,R)\)，子水平集有界.
+
+反之，假设每个有限子水平集都有界，而 \(\displaystyle\Phi\) 非强制. 由量词形式的否定，存在 \(\displaystyle M\in\mathbb R\)，使对每个 \(\displaystyle R>0\) 都存在 \(\displaystyle x_R\in X\) 满足
+\(\displaystyle \|x_R\|\geqslant R, \; \Phi(x_R)\leqslant M.\)
+特别地取 \(\displaystyle R=n\)，得到序列 \(\displaystyle(x_n)\subseteq[\Phi\leqslant M]\) 且 \(\displaystyle\|x_n\|\geqslant n\). 因而 \(\displaystyle[\Phi\leqslant M]\) 无界，与假设矛盾. 所以 \(\displaystyle\Phi\) 强制.
+\hfill\(\square\)
+
+\end{FAProof}
+
+\begin{FACounterexample}[有下界、严格凸与下半连续都不替代强制性]
+取 \(\displaystyle X=\mathbb R\)，定义
+\(\displaystyle \Phi(x):=\mathrm{e}^{-x}.\)
+它连续，且二阶导数 \(\displaystyle\Phi''(x)=\mathrm{e}^{-x}>0\)，故严格凸. 又 \(\displaystyle\Phi(x)>0\) 对全部 \(\displaystyle x\) 成立，并且 \(\displaystyle\inf_{\mathbb R}\Phi=0\). 但沿 \(\displaystyle x\to+\infty\)，
+\(\displaystyle |x|\to\infty, \; \Phi(x)=\mathrm{e}^{-x}\to0,\)
+所以 \(\displaystyle\Phi\) 不强制. 取极小化序列 \(\displaystyle x_n=n\)，则 \(\displaystyle\Phi(x_n)\to0\) 且 \(\displaystyle|x_n|\to\infty\)，而没有任何有限 \(\displaystyle x\) 满足 \(\displaystyle\Phi(x)=0\). 因而下确界不被取得.
+
+更具体地，对任意 \(\displaystyle a>0\)，
+\(\displaystyle [\Phi\leqslant a] = [-\log a,+\infty),\)
+该子水平集向 \(\displaystyle+\infty\) 无界，与\autoref{fa:VAR-B02}完全一致. 这说明有下界、凸性、严格凸性与下半连续均不等于强制性.
+\end{FACounterexample}
+
+\begin{FARemark}[三个独立机制]
+弱下半连续保证弱极限处的泛函值不超过相应下极限；强制性控制极小化候选不逃向范数无穷；弱紧性才负责从有界候选对象中提供弱聚点子网. 本章只建立前两种机制及其相互独立性. 把它们与弱紧性组合成极小元存在性定理属于 III-07，本章不作该组合.
+\end{FARemark}
+
+\section{能量泛函例}\label{sec:iii06-energy}
+\index{energy functional@能量泛函}\index{elliptic energy@椭圆能量}
+
+\begin{FAApplication}[椭圆能量泛函]
+设 \(\displaystyle d\in\mathbb N\)，\(\displaystyle\Omega\subset\mathbb R^d\) 为非空有界 Lipschitz 区域，并取实 Hilbert 空间
+\(\displaystyle X:=H_0^1(\Omega;\mathbb R), \; \|u\|_X:=\|\nabla u\|_{L^2(\Omega)}.\)
+该范数的合法性与完备性已由 II-13 的 Poincaré/能量空间接口\autoref{fa:SOB-B01}、\autoref{ii13:gradient-norm-equivalence}建立. 固定 \(\displaystyle f\in L^2(\Omega)\)，定义
+\[
+\mathcal E(u)
+:=
+\frac{1}{2}\int_\Omega|\nabla u|^2\,\mathrm{d}x
+-
+\int_\Omega fu\,\mathrm{d}x.
+\]
+本节证明 \(\displaystyle\mathcal E:X\to\mathbb R\) 良定义、严格凸、范数连续、弱下半连续、强制且 Fréchet 可微. 本节不证明临界点或极小元存在.
+\end{FAApplication}
+
+\subsection{良定义性、凸性与弱下半连续}
+
+由 Hölder 与 Poincaré，存在只依赖于 \(\displaystyle\Omega\) 的常数 \(\displaystyle C_P>0\) 使对每个 \(\displaystyle u\in X\)，
+\[
+\left|\int_\Omega fu\,\mathrm{d}x\right|
+\leqslant
+\|f\|_{L^2}\|u\|_{L^2}
+\leqslant
+C_P\|f\|_{L^2}\|\nabla u\|_{L^2}
+=
+C_P\|f\|_{L^2}\|u\|_X.
+\]
+因此载荷项有限且连续线性，二次项也有限，所以 \(\displaystyle\mathcal E\) 在整个 \(\displaystyle X\) 上良定义. 这一步只使用 II-13 的 Poincaré 接口，不使用 Lax--Milgram 或椭圆存在性.
+
+对任意 \(\displaystyle u,v\in X\) 与 \(\displaystyle0<t<1\)，Hilbert 范数恒等式给
+\(\displaystyle \|(1-t)u+tv\|_X^2 = (1-t)\|u\|_X^2+t\|v\|_X^2 -t(1-t)\|u-v\|_X^2.\)
+由于载荷项线性，故
+\[
+\mathcal E((1-t)u+tv)
+=
+(1-t)\mathcal E(u)+t\mathcal E(v)
+-
+\frac{1}{2}t(1-t)\|u-v\|_X^2.
+\]
+若 \(\displaystyle u\neq v\)，则 \(\displaystyle\|u-v\|_X>0\). 这里若梯度差为零，Poincaré 会给 \(\displaystyle u-v=0\)，所以能量范数确实区分点. 因而 \(\displaystyle\mathcal E\) 严格凸，特别地凸.
+
+再证范数连续性. 对 \(\displaystyle u,v\in X\)，
+\[
+\left|
+\frac{1}{2}\|u\|_X^2-
+\frac{1}{2}\|v\|_X^2
+\right|
+\leqslant
+\frac{1}{2}(\|u\|_X+\|v\|_X)\|u-v\|_X,
+\]
+而
+\[
+\left|\int_\Omega f(u-v)\,\mathrm{d}x\right|
+\leqslant
+C_P\|f\|_{L^2}\|u-v\|_X.
+\]
+因此 \(\displaystyle u_n\to u\) 于 \(\displaystyle X\) 时 \(\displaystyle\mathcal E(u_n)\to\mathcal E(u)\). 所以 \(\displaystyle\mathcal E\) 范数连续，因而范数下半连续. 由凸性与\autoref{fa:VAR-B01}，\(\displaystyle\mathcal E\) 相对于 \(\displaystyle\sigma(X,X^*)\) 弱下半连续. 这里没有使用“弱收敛蕴含范数收敛”之类错误命题.
+
+\subsection{强制性}
+
+同一 Hölder--Poincaré 估计给
+\(\displaystyle \mathcal E(u) \geqslant \frac{1}{2}\|u\|_X^2 - C_P\|f\|_{L^2}\|u\|_X.\)
+右端是关于 \(\displaystyle\|u\|_X\) 的一元二次多项式，其首项系数为正. 因此当 \(\displaystyle\|u\|_X\to\infty\) 时
+\(\displaystyle \mathcal E(u)\to+\infty.\)
+故 \(\displaystyle\mathcal E\) 强制. 再由\autoref{fa:VAR-B02}，每个有限子水平集 \(\displaystyle[\mathcal E\leqslant a]\) 都在 \(\displaystyle X\) 中有界. 到这里仍没有使用弱紧性，也没有推出极小元存在性.
+
+\subsection{Fréchet 导数与条件式极小元关系}
+
+固定 \(\displaystyle u\in X\)，定义线性泛函
+\[
+L_u(v)
+:=
+\int_\Omega\nabla u\cdot\nabla v\,\mathrm{d}x
+-
+\int_\Omega fv\,\mathrm{d}x.
+\]
+由 Cauchy--Schwarz 与 Poincaré，
+\[
+|L_u(v)|
+\leqslant
+\|u\|_X\|v\|_X
++
+C_P\|f\|_{L^2}\|v\|_X
+=
+(\|u\|_X+C_P\|f\|_{L^2})\|v\|_X,
+\]
+故 \(\displaystyle L_u\in X^*\). 对 \(\displaystyle h\in X\)，直接展开得
+\(\displaystyle \mathcal E(u+h)-\mathcal E(u)-L_u(h) = \frac{1}{2}\|h\|_X^2.\)
+于是对 \(\displaystyle h\neq0\)，
+\[
+\frac{|\mathcal E(u+h)-\mathcal E(u)-L_u(h)|}{\|h\|_X}
+=
+\frac{1}{2}\|h\|_X
+\longrightarrow0.
+\]
+由 III-01 的 Fréchet 定义\autoref{fa:DIFF-A01}，
+\[
+\mathcal E'(u)[v]
+=
+\int_\Omega\nabla u\cdot\nabla v\,\mathrm{d}x
+-
+\int_\Omega fv\,\mathrm{d}x.
+\]
+此外对 \(\displaystyle u,w\in X\)，
+\[
+\|\mathcal E'(u)-\mathcal E'(w)\|_{X^*}
+=
+\sup_{\|v\|_X\leqslant1}
+\left|
+\int_\Omega\nabla(u-w)\cdot\nabla v\,\mathrm{d}x
+\right|
+\leqslant
+\|u-w\|_X,
+\]
+所以导数映射 \(\displaystyle u\mapsto\mathcal E'(u)\in X^*\) 范数连续. 这同时完成余项与导数类型的核验.
+
+对任意 \(\displaystyle u,v\in X\)，令 \(\displaystyle h=v-u\)，前述展开还给出纯代数恒等式
+\(\displaystyle \mathcal E(v)-\mathcal E(u) = \mathcal E'(u)[v-u] + \frac{1}{2}\|v-u\|_X^2.\)
+因此，若某个 \(\displaystyle u\in X\) 已知满足 \(\displaystyle\mathcal E'(u)=0\)，则对全部 \(\displaystyle v\in X\)，
+\(\displaystyle \mathcal E(v)-\mathcal E(u) = \frac{1}{2}\|v-u\|_X^2 \geqslant0,\)
+且等号只在 \(\displaystyle v=u\) 时成立. 所以这样的临界点一旦存在，就是唯一全局极小元. 本章不证明满足 \(\displaystyle\mathcal E'(u)=0\) 的 \(\displaystyle u\) 存在，也不借用 Lax--Milgram 或既有 Poisson 存在性绕过这一边界.
+
+\begin{FARemark}[延后结果：直接法]
+椭圆能量泛函模型已验证良定义性、严格凸性、范数/弱下半连续、强制性与 Fréchet 导数. 由这些性质再结合弱紧性去证明极小元存在性，是下一章 III-07 的直接法内容. 本章不调用变分法直接法、弱闭约束上的直接法、严格凸性给出唯一性或极小化网与紧空间上的下半连续极小化，也不把任何极小化序列的弱聚点宣称为极小元.
+\end{FARemark}
+
+\begin{FARemark}[D 级：Fenchel--Moreau 延后]
+凸共轭、双共轭与 Fenchel--Moreau 表示在本章仅作为面向读者的延后方向. 本章不定义或建立其正式理论，也不在任何证明步骤中调用它们.
+\end{FARemark}
+
+\newpage
+\subsection{习题}
+
+\begin{FAExercise}[有效定义域与凸性]{ex:iii06-01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi:X\to(-\infty,+\infty]\) 真凸. 证明 \(\displaystyle\operatorname{dom}\Phi\) 凸，并说明为什么当某个端点的泛函值为 \(\displaystyle+\infty\) 时凸不等式自动成立.
+\end{FAExercise}
+
+\begin{FAExercise}[上图判据]{ex:iii06-02}
+完整证明 \(\displaystyle\Phi\) 凸当且仅当 \(\displaystyle\operatorname{epi}\Phi\subseteq X\times\mathbb R\) 凸. 在反向证明中分别处理 \(\displaystyle x,y\in\operatorname{dom}\Phi\) 与至少一个端点不在有效定义域的情形.
+\end{FAExercise}
+
+\begin{FAExercise}[子水平集凸性]{ex:iii06-03}
+设 \(\displaystyle\Phi\) 凸. 对任意 \(\displaystyle a\in\mathbb R\) 证明 \(\displaystyle[\Phi\leqslant a]\) 凸. 给出一个非凸泛函，其某些子水平集仍凸，从而说明单个子水平集凸不足以推出泛函凸.
+\end{FAExercise}
+
+\begin{FAExercise}[正倍数缩放与仿射扰动]{ex:iii06-04}
+设 \(\displaystyle c>0\)、\(\displaystyle\ell\in X^*\)、\(\displaystyle b\in\mathbb R\). 逐项证明 \(\displaystyle c\Phi\) 与 \(\displaystyle\Phi+\ell+b\) 的凸性保持性. 若 \(\displaystyle\Phi\) 严格凸，再证明严格凸性也保持.
+\end{FAExercise}
+
+\begin{FAExercise}[严格凸性的存在时唯一性]{ex:iii06-05}
+假设 \(\displaystyle\Phi\) 严格凸且有两个极小元 \(\displaystyle u\neq v\). 用中点严格不等式导出矛盾. 再结合非强制性导致极小元逃逸反例解释为什么该论证不能证明极小元存在性.
+\end{FAExercise}
+
+\begin{FAExercise}[范数下半连续的子水平集定义]{ex:iii06-06}
+对真 \(\displaystyle\Phi:X\to(-\infty,+\infty]\)，从子水平集闭性出发证明 \(\displaystyle\{x:\Phi(x)>a\}\) 对每个 \(\displaystyle a\in\mathbb R\) 范数开，并反向证明. 不得预设可微性或凸性.
+\end{FAExercise}
+
+\begin{FAExercise}[弱下半连续与拓扑命名]{ex:iii06-07}
+把弱下半连续的定义完整写在 \(\displaystyle\sigma(X,X^*)\) 中. 证明弱闭子水平集自动范数闭，从而得到弱下半连续蕴含范数下半连续；指出该方向为什么不需要凸性.
+\end{FAExercise}
+
+\begin{FAExercise}[网下极限判据]{ex:iii06-08}
+对任意拓扑 \(\displaystyle\tau\) 与扩展实值泛函，重建本章网判据的两个方向. 反向证明必须显式从 \(\displaystyle x\in\overline C\setminus C\) 构造邻域有向网，而不能只写序列判据.
+\end{FAExercise}
+
+\begin{FAExercise}[凸的范数下半连续蕴含弱下半连续：分离证明]{ex:iii06-09}
+设 \(\displaystyle\Phi\) 真、凸且范数下半连续. 固定 \(\displaystyle a\in\mathbb R\)，把 \(\displaystyle C=[\Phi\leqslant a]\) 的空集、全空间与非空真子集三种情形分开处理. 在最后一种情形中对任意 \(\displaystyle x_0\notin C\) 用\autoref{fa:HB-A02}构造不相交的弱开邻域，完整重建\autoref{fa:VAR-B01}.
+\end{FAExercise}
+
+\begin{FAExercise}[范数连续但非弱下半连续的反例]{ex:iii06-10}
+在实 \(\displaystyle\ell^2\) 中证明标准基 \(\displaystyle e_n\rightharpoonup0\)，并验证 \(\displaystyle\Phi(x)=-\|x\|_2\) 范数连续但不弱下半连续再说明它为什么不与凸范数下半连续蕴含弱下半连续冲突.
+\end{FAExercise}
+
+\begin{FAExercise}[强制性的量词形式]{ex:iii06-11}
+从 \(\displaystyle\|x\|\to\infty\Rightarrow\Phi(x)\to+\infty\) 推出：对每个 \(\displaystyle M\in\mathbb R\) 存在 \(\displaystyle R>0\) 使 \(\displaystyle\|x\|\geqslant R\Rightarrow\Phi(x)>M\). 再用该量词陈述证明反向蕴含.
+\end{FAExercise}
+
+\begin{FAExercise}[强制性与有限子水平集有界性的两个方向]{ex:iii06-12}
+完整证明强制性当且仅当每个有限子水平集有界. 反向中必须从非强制性的量词否定构造 \(\displaystyle\|x_n\|\to\infty\) 且 \(\displaystyle\Phi(x_n)\leqslant M\) 的序列，并指出证明没有使用自反性、凸性或下半连续性.
+\end{FAExercise}
+
+\begin{FAExercise}[非强制性导致极小元逃逸的反例]{ex:iii06-13}
+对 \(\displaystyle\Phi(x)=\mathrm{e}^{-x}\) 逐项验证连续性、严格凸性、有下界与非强制性. 计算所有 \(\displaystyle a>0\) 的子水平集，并说明极小化序列 \(\displaystyle x_n=n\) 如何逃向无穷.
+\end{FAExercise}
+
+\begin{FAExercise}[强制性增长估计]{ex:iii06-14}
+设 \(\displaystyle\Phi(x)\geqslant c\|x\|^p-C\|x\|-D\)，其中 \(\displaystyle c>0\)、\(\displaystyle p>1\)、\(\displaystyle C,D\geqslant0\). 证明 \(\displaystyle\Phi\) 强制，并从估计直接给出固定子水平集的显式半径界.
+\end{FAExercise}
+
+\begin{FAExercise}[范数幂例]{ex:iii06-15}
+设 \(\displaystyle p>1\)、\(\displaystyle\ell\in X^*\). 证明 \(\displaystyle\Phi(x)=\|x\|^p+\ell(x)\) 凸、范数连续且强制. 若 \(\displaystyle X\) 的范数严格凸，进一步讨论 \(\displaystyle\|x\|^p\) 的严格凸性；不得由这些性质直接宣称极小元存在.
+\end{FAExercise}
+
+\begin{FAExercise}[椭圆能量泛函的良定义性]{ex:iii06-16}
+在本节 \(\displaystyle H_0^1(\Omega)\) 情形中，仅用 Hölder 与 Poincaré 证明 \(\displaystyle u\mapsto\int_\Omega fu\,\mathrm{d}x\) 属于 \(\displaystyle X^*\)，并得到算子范数界. 不得调用 Lax--Milgram.
+\end{FAExercise}
+
+\begin{FAExercise}[椭圆能量泛函的严格凸性]{ex:iii06-17}
+推导
+\[
+\mathcal E((1-t)u+tv)
+=
+(1-t)\mathcal E(u)+t\mathcal E(v)-\frac{1}{2}t(1-t)\|u-v\|_X^2.
+\]
+解释当 \(\displaystyle u\neq v\) 时为什么最后一项严格负，并把 Poincaré 在等号情形中的作用写清楚.
+\end{FAExercise}
+
+\begin{FAExercise}[椭圆能量泛函的 Fréchet 导数]{ex:iii06-18}
+从 \(\displaystyle\mathcal E(u+h)\) 的完全展开出发，识别候选导数 \(\displaystyle L_u\in X^*\)，证明余项恰为 \(\displaystyle\frac{1}{2}\|h\|_X^2\)，再证明 \(\displaystyle u\mapsto\mathcal E'(u)\) 是 \(\displaystyle X\to X^*\) 的范数连续映射.
+\end{FAExercise}
+
+\begin{FAExercise}[椭圆能量泛函的范数/弱下半连续性]{ex:iii06-19}
+先用差值估计证明 \(\displaystyle\mathcal E\) 范数连续，再说明它为何范数下半连续最后逐项核对真与凸假设，并只通过\autoref{fa:VAR-B01}推出弱下半连续；不得假设弱收敛蕴含范数收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[椭圆能量泛函的强制性]{ex:iii06-20}
+从
+\(\displaystyle \mathcal E(u) \geqslant \frac{1}{2}\|u\|_X^2-C_P\|f\|_{L^2}\|u\|_X\)
+证明强制性，并用\autoref{fa:VAR-B02}推出每个有限能量子水平集有界. 说明这一步为何仍不足以得到极小元存在性.
+\end{FAExercise}
+
+\begin{FAExercise}[临界点与唯一极小元的条件关系]{ex:iii06-21}
+证明
+\(\displaystyle \mathcal E(v)-\mathcal E(u) = \mathcal E'(u)[v-u] + \frac{1}{2}\|v-u\|_X^2.\)
+在额外假设 \(\displaystyle\mathcal E'(u)=0\) 下推出 \(\displaystyle u\) 是唯一全局极小元. 必须把结论写成条件陈述，不得证明或引用这样的 \(\displaystyle u\) 存在.
+\end{FAExercise}
+
+\begin{FAExercise}[后续直接法准备]{ex:iii06-22}
+把本章已经建立的三个机制分成三栏：弱下半连续对泛函值的控制、强制性对逃向无穷的控制、弱紧性对聚点子网的提供. 只指出 III-07 将组合这些机制；不得调用变分法直接法或任何 III-07 定理去推出极小元存在性.
+\end{FAExercise}

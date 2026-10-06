@@ -1,0 +1,554 @@
+\chapter{Lax--Milgram、椭圆弱问题与演化偏微分方程}\label{chap:II-15}
+\FAChapterOpening
+{把 Hilbert 空间中的强制型与 Sobolev 能量空间连接到典型椭圆弱问题，再把已冻结的 Dirichlet 热半群专门化为演化偏微分方程，并以能量恒等式收束第二卷的线性偏微分方程主线.}
+{I-04 的 Hilbert 空间 Riesz 表示\autoref{fa:HIL-A02}；I-05 的有界线性算子接口\autoref{fa:OP-A01}；II-11 的抽象 Cauchy 问题与常数变易\autoref{fa:ACP-A02}、\autoref{fa:ACP-B01}、\autoref{fa:ACP-C01}；II-13 的 Sobolev/Hilbert 结构、Poincaré 与 \(\displaystyle H_0^1\) 能量空间模型 \autoref{fa:SOB-A01}、\autoref{fa:SOB-B01}；II-14 的嵌入、迹与紧性只作正则性/边界接口\autoref{fa:SOB-A02}、\autoref{fa:SOB-A03}、\autoref{fa:TRACE-B01}.}
+{\begin{center}
+\begin{tikzpicture}[x=0.72cm,y=1.05cm]
+\node[fa/node] (hil) at (0,1.3) {Riesz表示定理};
+\node[fa/node] (op) at (0,-0.3) {连续/有界等价};
+\node[fa/node] (lm) at (3.6,0.5) {Lax--Milgram};
+\node[fa/node] (sob) at (3.6,-1.4) {Sobolev结构/Poincaré不等式};
+\node[fa/node] (pde) at (7.2,-1.4) {弱方程建模};
+\node[fa/node] (ell) at (10.8,-0.4) {Poisson弱解};
+\node[fa/node] (acp) at (7.2,1.8) {温和解/常数变易};
+\node[fa/node] (evol) at (10.8,1.8) {热方程半群解};
+\node[fa/node] (energy) at (14.2,1.0) {热方程能量估计};
+\draw[fa/arrow] (hil) -- (lm);
+\draw[fa/arrow] (op) -- (lm);
+\draw[fa/arrow] (lm) -- (ell);
+\draw[fa/arrow] (sob) -- (pde);
+\draw[fa/arrow] (pde) -- (ell);
+\draw[fa/arrow] (acp) -- (evol);
+\draw[fa/arrow] (evol) -- (energy);
+\end{tikzpicture}
+\end{center}}
+
+本章固定标量域 \(\displaystyle\mathbb K\in\{\mathbb R,\mathbb C\}\). 复 Hilbert 空间的内积继续采用第一变量线性、第二变量共轭线性的冻结约定；本章所有半双线性的型也对第一变量线性、第二变量共轭线性. 在实数域上复共轭记号自动退化为恒等. 椭圆部分以 Brezis 为标准参考，以下陈述、证明、例与习题均依已建立的依赖关系独立重构，并作交叉参照\cite{brezis2011}. 演化部分只复用 II-08--II-11 已建立的热半群与 ACP 结果，不重新建立半群理论.
+
+\section{有界型与强制型}\label{sec:ii15-bounded-coercive}
+\index{bounded form@有界半双线性型}\index{coercive form@强制型}\index{sesquilinear form@半双线性型}
+
+\begin{FADefinition}[C][有界型与强制型]{ii15:bounded-coercive-definition}
+设 \(\displaystyle V\) 为 \(\displaystyle\mathbb K\)-Hilbert 空间，\(\displaystyle a:V\times V\to\mathbb K\) 对第一变量线性、第二变量共轭线性. 若存在 \(\displaystyle M<\infty\) 使 \(\displaystyle |a(u,v)| \leqslant M\|u\|_V\|v\|_V \; \forall\,u,v\in V,\)
+则称 \(\displaystyle a\) 为有界型. 若存在 \(\displaystyle\alpha>0\) 使 \(\displaystyle \operatorname{Re}a(u,u) \geqslant \alpha\|u\|_V^2 \; \forall\,u\in V,\)
+则称 \(\displaystyle a\) 为强制型，并称任何这样的 \(\displaystyle\alpha\) 为强制性常数. 在 \(\displaystyle\mathbb K=\mathbb R\) 时，上式就是 \(\displaystyle a(u,u)\geqslant\alpha\|u\|_V^2\).
+\end{FADefinition}
+
+有界性控制型的双变量连续性；强制性则给出沿对角线的统一正下界. 二者不要求 \(\displaystyle a\) 具有共轭对称性. 为把型转化为 Hilbert 空间算子，关键是不能忽略第二变量的共轭线性.
+
+\begin{FAProposition}[B][有界型的 Hilbert 算子表示]{ii15:form-operator-representation}
+设 \(\displaystyle a\) 为\autoref{ii15:bounded-coercive-definition}中的有界型，界为 \(\displaystyle M\). 则存在唯一 \(\displaystyle\mathcal A\in\mathcal B(V)\) 使 \(\displaystyle a(u,v) = \langle\mathcal Au,v\rangle_V \; \forall\,u,v\in V.\)
+并且 \(\displaystyle\|\mathcal A\|\leqslant M\). 若进一步 \(\displaystyle a\) 具有强制性常数 \(\displaystyle\alpha>0\)，则 \(\displaystyle \alpha\|u\|_V \leqslant \|\mathcal Au\|_V \; \forall\,u\in V.\)
+\end{FAProposition}
+
+\begin{FAProof}
+固定 \(\displaystyle u\in V\). 因 \(\displaystyle a(u,\cdot)\) 对第二变量共轭线性，映射 \(\displaystyle \ell_u(v) := \overline{a(u,v)}\)
+对 \(\displaystyle v\) 线性. 有界性给 \(\displaystyle |\ell_u(v)| = |a(u,v)| \leqslant M\|u\|_V\|v\|_V,\)
+故 \(\displaystyle\ell_u\) 为连续线性泛函，且 \(\displaystyle\|\ell_u\|\leqslant M\|u\|_V\). 由\autoref{fa:HIL-A02}，存在唯一 \(\displaystyle y_u\in V\) 使 \(\displaystyle\ell_u(v)=\langle v,y_u\rangle_V\) 对全部 \(\displaystyle v\in V\) 成立. 取共轭并用内积共轭对称性，得到 \(\displaystyle a(u,v) = \langle y_u,v\rangle_V.\)
+定义 \(\displaystyle\mathcal Au=y_u\).
+
+若 \(\displaystyle u_1,u_2\in V\)、\(\displaystyle c_1,c_2\in\mathbb K\)，则对全部 \(\displaystyle v\in V\)，
+\[
+\langle\mathcal A(c_1u_1+c_2u_2),v\rangle_V=a(c_1u_1+c_2u_2,v)=c_1a(u_1,v)+c_2a(u_2,v)=\langle c_1\mathcal Au_1+c_2\mathcal Au_2,v\rangle_V.
+\]
+取两侧表示向量之差作为 \(\displaystyle v\)，得到该差为零，所以 \(\displaystyle\mathcal A\) 线性. Riesz 表示中的范数恒等式与上面的泛函界给 \(\displaystyle \|\mathcal Au\|_V = \|\ell_u\| \leqslant M\|u\|_V,\)
+由\autoref{fa:OP-A01}的线性算子有界/连续等价，\(\displaystyle\mathcal A\) 为连续线性算子；因此 \(\displaystyle\mathcal A\in\mathcal B(V)\) 且 \(\displaystyle\|\mathcal A\|\leqslant M\). 若另有 \(\displaystyle\mathcal B\in\mathcal B(V)\) 给出相同型，则 \(\displaystyle\langle(\mathcal A-\mathcal B)u,v\rangle_V=0\) 对全部 \(\displaystyle v\) 成立；取 \(\displaystyle v=(\mathcal A-\mathcal B)u\) 得 \(\displaystyle\mathcal Au=\mathcal Bu\)，故表示唯一.
+
+若 \(\displaystyle a\) 具有强制性，则对 \(\displaystyle u\neq0\)，
+\[
+\alpha\|u\|_V^2
+\leqslant
+\operatorname{Re}a(u,u)
+\leqslant
+|\langle\mathcal Au,u\rangle_V|
+\leqslant
+\|\mathcal Au\|_V\|u\|_V.
+\]
+约去 \(\displaystyle\|u\|_V\) 得所需下界；\(\displaystyle u=0\) 时同样成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[删除强制性后存在性可以失败]\label{ii15:noncoercive-lm-failure}
+令 \(\displaystyle H=\ell^2(\mathbb K)\)，并定义有界线性算子
+\[
+\mathcal T(x_1,x_2,x_3,\dots)
+=
+\left(x_1,\frac{x_2}{2},\frac{x_3}{3},\dots\right),
+\]
+以及 \(\displaystyle a(u,v)=\langle\mathcal Tu,v\rangle\). 则 \(\displaystyle\|\mathcal T\|=1\)，所以 \(\displaystyle a\) 为有界型；且
+\[
+a(u,u)
+=
+\sum_{n=1}^{\infty}\frac{|u_n|^2}{n}
+\geqslant0.
+\]
+但对标准单位向量 \(\displaystyle e_n\)，有 \(\displaystyle a(e_n,e_n)=\frac{1}{n}\)，故不存在统一 \(\displaystyle\alpha>0\) 使 \(\displaystyle a(u,u)\geqslant\alpha\|u\|^2\).
+
+再取 \(\displaystyle y=(1,\frac{1}{2},\frac{1}{3},\dots)\in\ell^2\)，并令连续线性泛函 \(\displaystyle F(v)=\langle v,y\rangle\). 若存在 \(\displaystyle u\in\ell^2\) 使 \(\displaystyle a(u,v)=\overline{F(v)}\) 对全部 \(\displaystyle v\in\ell^2\) 成立，则 \(\displaystyle \langle\mathcal Tu,v\rangle = \langle y,v\rangle \; \forall\,v\in\ell^2,\)
+从而 \(\displaystyle\mathcal Tu=y\). 逐坐标得到 \(\displaystyle u=(1,1,1,\dots)\notin\ell^2\)，矛盾. 因而有界性与非负性本身不足以保证每个右端数据都有解.
+\end{FACounterexample}
+
+这个例子显示强制性的作用不是装饰性的正性，而是给关联算子提供统一下有界估计；后者正是闭值域与可逆性机制的入口.
+
+\section{Lax--Milgram 定理}\label{sec:ii15-lax-milgram}
+\index{Lax-Milgram theorem@Lax--Milgram 定理}\index{coercivity@强制性!Lax--Milgram}
+
+\begin{FATheorem}[A][Lax--Milgram 定理]{fa:LM-A01}
+设 \(\displaystyle V\) 为实或复 Hilbert 空间，\(\displaystyle a:V\times V\to\mathbb K\) 对第一变量线性、第二变量共轭线性. 假设存在 \(\displaystyle M<\infty\)、\(\displaystyle\alpha>0\) 使 \(\displaystyle |a(u,v)| \leqslant M\|u\|_V\|v\|_V \; \forall\,u,v\in V,\)
+以及 \(\displaystyle \operatorname{Re}a(u,u) \geqslant \alpha\|u\|_V^2 \; \forall\,u\in V.\)
+则对每个连续线性泛函 \(\displaystyle F\in V^*\)，存在唯一 \(\displaystyle u\in V\) 使 \(\displaystyle a(u,v) = \overline{F(v)} \; \forall\,v\in V,\)
+并且 \(\displaystyle \|u\|_V \leqslant \alpha^{-1}\|F\|_{V^*}.\)
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{ii15:form-operator-representation}，存在唯一 \(\displaystyle\mathcal A\in\mathcal B(V)\) 使 \(\displaystyle a(u,v) = \langle\mathcal Au,v\rangle_V,\)
+且强制性给 \(\displaystyle \alpha\|u\|_V \leqslant \|\mathcal Au\|_V \; \forall\,u\in V.\)
+特别地，若 \(\displaystyle\mathcal Au=0\)，则 \(\displaystyle u=0\)，所以 \(\displaystyle\mathcal A\) 单射.
+
+先证 \(\displaystyle\operatorname{Ran}\mathcal A\) 闭. 设 \(\displaystyle\mathcal Au_n\to y\) 于 \(\displaystyle V\). 对任意 \(\displaystyle m,n\)，下有界估计给 \(\displaystyle \alpha\|u_n-u_m\|_V \leqslant \|\mathcal Au_n-\mathcal Au_m\|_V.\)
+右侧因 \(\displaystyle(\mathcal Au_n)\) 收敛而趋于零，故 \(\displaystyle(u_n)\) 为 Cauchy 列. Hilbert 完备性给某个 \(\displaystyle u\in V\) 使 \(\displaystyle u_n\to u\). 因 \(\displaystyle\mathcal A\) 有界，\(\displaystyle\mathcal Au_n\to\mathcal Au\). 与极限 \(\displaystyle y\) 比较得到 \(\displaystyle y=\mathcal Au\in\operatorname{Ran}\mathcal A\). 因而值域闭.
+
+再证值域稠密. 设 \(\displaystyle y\in(\operatorname{Ran}\mathcal A)^\perp\). 按 I-04 的正交补约定，\(\displaystyle\langle y,\mathcal Au\rangle_V=0\) 对全部 \(\displaystyle u\in V\) 成立. 由共轭对称性，\(\displaystyle\langle\mathcal Au,y\rangle_V=0\)，因此 \(\displaystyle a(u,y)=0 \; \forall\,u\in V.\)
+取 \(\displaystyle u=y\)，得到 \(\displaystyle a(y,y)=0\). 强制性给 \(\displaystyle\alpha\|y\|_V^2\leqslant0\)，所以 \(\displaystyle y=0\). 故 \(\displaystyle(\operatorname{Ran}\mathcal A)^\perp=\{0\}\)，于是 \(\displaystyle\operatorname{Ran}\mathcal A\) 稠密. 它又已闭，因此 \(\displaystyle \operatorname{Ran}\mathcal A = V.\)
+即 \(\displaystyle\mathcal A\) 满射.
+
+固定 \(\displaystyle F\in V^*\). 由\autoref{fa:HIL-A02}，存在唯一 \(\displaystyle y_F\in V\) 使 \(\displaystyle F(v) = \langle v,y_F\rangle_V \; \forall\,v\in V,\)
+且 \(\displaystyle\|y_F\|_V=\|F\|_{V^*}\). 由满射性，存在 \(\displaystyle u\in V\) 使 \(\displaystyle\mathcal Au=y_F\). 于是 \(\displaystyle a(u,v)=\langle y_F,v\rangle_V=\overline{\langle v,y_F\rangle_V}=\overline{F(v)}.\)
+对全部 \(\displaystyle v\in V\) 成立. 这里的共轭正是第一变量线性约定的必要结果.
+
+若 \(\displaystyle u_1,u_2\) 都满足方程，则 \(\displaystyle a(u_1-u_2,v)=0\) 对全部 \(\displaystyle v\) 成立. 取 \(\displaystyle v=u_1-u_2\)，强制性给 \(\displaystyle u_1=u_2\)，故解唯一. 最后，若 \(\displaystyle u\neq0\)，则
+\[
+\alpha\|u\|_V^2
+\leqslant
+\operatorname{Re}a(u,u)
+=
+\operatorname{Re}\overline{F(u)}
+\leqslant
+|F(u)|
+\leqslant
+\|F\|_{V^*}\|u\|_V.
+\]
+约去 \(\displaystyle\|u\|_V\) 得 \(\displaystyle\|u\|_V\leqslant\alpha^{-1}\|F\|_{V^*}\)；\(\displaystyle u=0\) 时两边分别为零与非负数，故同一估计成立.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][Lax--Milgram 数据稳定性]{ii15:lm-stability}
+在\autoref{fa:LM-A01}的同一型下，若 \(\displaystyle F_1,F_2\in V^*\) 对应解 \(\displaystyle u_1,u_2\)，则 \(\displaystyle \|u_1-u_2\|_V \leqslant \alpha^{-1}\|F_1-F_2\|_{V^*}.\)
+\end{FACorollary}
+
+\begin{FAProof}
+由线性性，\(\displaystyle u_1-u_2\) 满足 \(\displaystyle a(u_1-u_2,v)=\overline{(F_1-F_2)(v)}\) 对全部 \(\displaystyle v\in V\) 成立. 对该方程直接应用\autoref{fa:LM-A01}的范数估计即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+Lax--Milgram 的证明机制可以压缩为一条精确链：有界型先经 Hilbert 空间的 Riesz 表示对应为有界算子，强制性再给下有界估计；该估计给闭值域，而对角线强制性又消灭值域的正交补，最终得到满射性. 这里没有使用紧性、Fredholm 理论、变分直接法或任何非线性工具.
+
+\section{椭圆弱形式}\label{sec:ii15-elliptic-weak-form}
+\index{weak formulation@弱形式}\index{Poisson equation@Poisson 方程}\index{Dirichlet problem@Dirichlet 问题}
+
+\begin{FAProposition}[C][弱偏微分方程建模检查工具]{fa:PDE-C01}
+把形式微分方程写成弱问题时，依次检查以下十项：
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item 明确开集、维数及标量域.
+\item 明确试验空间与测试空间.
+\item 明确边界条件由何种函数空间结构编码.
+\item 从微分方程与测试函数出发推导弱恒等式，不从预期结论反向猜测公式.
+\item 验证型在所选空间上有界.
+\item 验证型具有强制性；若失败，明确指出失败机制.
+\item 验证右端是所选测试空间上的连续线性泛函.
+\item 明确弱解的精确所属空间.
+\item 分开说明分布意义的、Sobolev 与经典解释中哪些已经证明.
+\item 没有足够正则性时，不把迹或逐点边界值强加到弱解上.
+\end{enumerate}
+该核对表是建模工具，不替代具体存在唯一性证明.
+\end{FAProposition}
+
+\begin{FACounterexample}[试验空间选择会决定强制性]\label{ii15:h1-gradient-noncoercive}
+设 \(\displaystyle\Omega\subseteq\mathbb R^d\) 为有界非空开集，并在完整 \(\displaystyle H^1(\Omega)\) 上考虑
+\[
+a(u,v)
+=
+\int_\Omega
+\nabla u\mathbin{\cdot}\overline{\nabla v}
+\,\mathrm{d}x.
+\]
+任取非零常数函数 \(\displaystyle u=c\). 则 \(\displaystyle u\in H^1(\Omega)\)、\(\displaystyle\nabla u=0\)，所以 \(\displaystyle a(u,u)=0\)，但 \(\displaystyle\|u\|_{H^1}>0\). 因而该型在 \(\displaystyle H^1(\Omega)\) 上不具强制性. 对齐次 Dirichlet 问题改取 \(\displaystyle H_0^1(\Omega)\) 后，Poincaré 才把梯度半范数提升为等价范数. 因此边界条件与试验空间选择本身就是弱建模的数学组成部分.
+\end{FACounterexample}
+
+现在按\autoref{fa:PDE-C01}建立选定 Poisson 模型. 固定 \(\displaystyle d\in\mathbb N\)，令 \(\displaystyle\Omega\subseteq\mathbb R^d\) 为有界非空开集，并取 \(\displaystyle f\in L^2(\Omega)\). 令 \(\displaystyle V=H_0^1(\Omega).\)
+由 II-13 的 \(\displaystyle H_0^1\)能量空间与\autoref{fa:SOB-B01}，\(\displaystyle V\) 关于能量内积
+\[
+\langle u,v\rangle_V
+=
+\int_\Omega
+\nabla u\mathbin{\cdot}\overline{\nabla v}
+\,\mathrm{d}x
+\]
+为 Hilbert 空间，诱导范数为 \(\displaystyle\|u\|_V=\|\nabla u\|_2\)，且存在 \(\displaystyle C_\Omega>0\) 使 \(\displaystyle\|u\|_2\leqslant C_\Omega\|\nabla u\|_2\).
+
+\begin{FATheorem}[A][Poisson的 Dirichlet 弱解存在唯一性]{fa:ELL-A01}
+设 \(\displaystyle d\in\mathbb N\)、\(\displaystyle\Omega\subseteq\mathbb R^d\) 为有界非空开集，并令 \(\displaystyle f\in L^2(\Omega)\). 则存在唯一 \(\displaystyle u\in H_0^1(\Omega)\) 使
+\[
+\int_\Omega
+\nabla u\mathbin{\cdot}\overline{\nabla v}
+\,\mathrm{d}x
+=
+\int_\Omega
+f\overline v
+\,\mathrm{d}x
+\;
+\forall\,v\in H_0^1(\Omega).
+\]
+并且 \(\displaystyle \|\nabla u\|_{L^2(\Omega)} \leqslant C_\Omega\|f\|_{L^2(\Omega)},\)
+从而 \(\displaystyle \|u\|_{L^2(\Omega)} \leqslant C_\Omega^2\|f\|_{L^2(\Omega)}.\)
+此外，\(\displaystyle u\) 在分布意义的意义下满足 \(\displaystyle-\Delta u=f\). 齐次 Dirichlet 边界条件在一般有界开集上由 \(\displaystyle u\in H_0^1(\Omega)\) 编码；本定理不要求边界为 \(\displaystyle C^1\)，也不声称 \(\displaystyle u\in H^2\) 或为经典解.
+\end{FATheorem}
+
+\begin{FAProof}
+在 \(\displaystyle V=H_0^1(\Omega)\) 上定义
+\[
+a(u,v)
+=
+\int_\Omega
+\nabla u\mathbin{\cdot}\overline{\nabla v}
+\,\mathrm{d}x.
+\]
+Cauchy--Schwarz 给 \(\displaystyle |a(u,v)| \leqslant \|\nabla u\|_2\|\nabla v\|_2 = \|u\|_V\|v\|_V,\)
+所以 \(\displaystyle a\) 有界，且相对于能量范数可取 \(\displaystyle M=1\). 同时 \(\displaystyle \operatorname{Re}a(u,u) = \|\nabla u\|_2^2 = \|u\|_V^2,\)
+故强制性常数可取 \(\displaystyle\alpha=1\).
+
+定义
+\[
+F_f(v)
+=
+\int_\Omega
+v\overline f
+\,\mathrm{d}x.
+\]
+它对 \(\displaystyle v\) 线性. 由 Cauchy--Schwarz 与 Poincaré， \(\displaystyle |F_f(v)| \leqslant \|v\|_2\|f\|_2 \leqslant C_\Omega\|v\|_V\|f\|_2.\)
+因此 \(\displaystyle F_f\in V^*\)，且 \(\displaystyle\|F_f\|_{V^*}\leqslant C_\Omega\|f\|_2\). 由\autoref{fa:LM-A01}，存在唯一 \(\displaystyle u\in V\) 使
+\[
+a(u,v)
+=
+\overline{F_f(v)}
+=
+\int_\Omega
+f\overline v
+\,\mathrm{d}x
+\;
+\forall\,v\in V.
+\]
+Lax--Milgram 估计直接给 \(\displaystyle \|\nabla u\|_2 = \|u\|_V \leqslant C_\Omega\|f\|_2.\)
+再用 Poincaré 得 \(\displaystyle\|u\|_2\leqslant C_\Omega\|\nabla u\|_2\leqslant C_\Omega^2\|f\|_2\).
+
+只剩分布意义的识别. 任取 \(\displaystyle\varphi\in C_c^\infty(\Omega)\). 因 \(\displaystyle\overline\varphi\in C_c^\infty(\Omega)\subseteq H_0^1(\Omega)\)，在弱恒等式中取 \(\displaystyle v=\overline\varphi\)，得到
+\[
+\sum_{j=1}^d
+\int_\Omega
+\partial_ju\,\partial_j\varphi
+\,\mathrm{d}x
+=
+\int_\Omega
+f\varphi
+\,\mathrm{d}x.
+\]
+II-12 的分布配对对测试函数复线性，且分布导数定义给
+\[
+\left\langle-\Delta T_u,\varphi\right\rangle
+=
+\sum_{j=1}^d
+\int_\Omega
+\partial_ju\,\partial_j\varphi
+\,\mathrm{d}x.
+\]
+故 \(\displaystyle\langle-\Delta T_u,\varphi\rangle=\langle T_f,\varphi\rangle\) 对全部测试函数成立，即 \(\displaystyle-\Delta u=f\) 于 \(\displaystyle\mathcal D'(\Omega)\). 最后，\(\displaystyle H_0^1(\Omega)\) 按 II-13 定义为 \(\displaystyle C_c^\infty(\Omega)\) 在 \(\displaystyle H^1\) 中的闭包，所以齐次 Dirichlet 条件在本一般性下首先由试验空间编码；证明没有使用迹定理或边界正则性.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[选定 Poisson 弱问题]\label{ii15:ex-poisson}
+对有界非空开集 \(\displaystyle\Omega\subseteq\mathbb R^d\) 与 \(\displaystyle f\in L^2(\Omega)\)，Poisson 弱问题模型的弱形式是寻找 \(\displaystyle u\in H_0^1(\Omega)\) 使
+\[
+\int_\Omega
+\nabla u\mathbin{\cdot}\overline{\nabla v}
+\,\mathrm{d}x
+=
+\int_\Omega
+f\overline v
+\,\mathrm{d}x
+\;
+\forall\,v\in H_0^1(\Omega).
+\]
+\autoref{fa:ELL-A01}已给存在唯一性、\(\displaystyle\|\nabla u\|_2\leqslant C_\Omega\|f\|_2\) 与 \(\displaystyle-\Delta u=f\) 的分布意义下的解释. 该结论只要求有界开集；若边界不够正则，不把 \(\displaystyle u=0\) 改写成未经建立的逐点边界陈述.
+\end{FAExample}
+
+\begin{FAProposition}[C][Poisson 弱问题模型的代数能量极小性质]{ii15:poisson-energy-identity}
+在 Poisson 弱问题模型的条件下定义
+\[
+J(v)
+=
+\frac12\|\nabla v\|_2^2
+-
+\operatorname{Re}
+\int_\Omega
+f\overline v
+\,\mathrm{d}x,
+\;
+v\in H_0^1(\Omega).
+\]
+若 \(\displaystyle u\) 是 Poisson 弱问题模型的唯一弱解，则对全部 \(\displaystyle w\in H_0^1(\Omega)\)， \(\displaystyle J(u+w)-J(u) = \frac12\|\nabla w\|_2^2.\)
+因此 \(\displaystyle u\) 是 \(\displaystyle J\) 的唯一极小元.
+\end{FAProposition}
+
+\begin{FAProof}
+展开 Hilbert 范数得
+\[
+\|\nabla(u+w)\|_2^2
+=
+\|\nabla u\|_2^2
++2\operatorname{Re}\int_\Omega\nabla u\mathbin{\cdot}\overline{\nabla w}\,\mathrm{d}x
++\|\nabla w\|_2^2.
+\]
+弱恒等式取 \(\displaystyle v=w\) 给
+\[
+\int_\Omega
+\nabla u\mathbin{\cdot}\overline{\nabla w}
+\,\mathrm{d}x
+=
+\int_\Omega
+f\overline w
+\,\mathrm{d}x.
+\]
+代入 \(\displaystyle J(u+w)-J(u)\)，两个实部线性项抵消，恰得 \(\displaystyle\frac12\|\nabla w\|_2^2\). 若 \(\displaystyle w\neq0\)，Poincaré 保证 \(\displaystyle\|\nabla w\|_2>0\)，故 \(\displaystyle J(u+w)>J(u)\)；因此极小元唯一. 这里的存在性完全来自\autoref{fa:LM-A01}，没有使用极小化列、弱紧性或下半连续性.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{正则性接口}\label{sec:ii15-regularity-interface}
+\index{regularity@正则性!弱解接口}\index{trace@迹!Dirichlet 解释}
+
+\subsection{一般有界开集的存在范围}
+\autoref{fa:ELL-A01}的存在唯一性只使用 II-13 已冻结的三件事：\(\displaystyle H_0^1(\Omega)\) 是 Hilbert 空间、Poincaré 不等式以及梯度范数与完整 \(\displaystyle H^1\) 范数等价. 这些在有界非空开集上已经成立. 因而 Poisson 弱解存在性不需要 II-14 的延拓、迹或 Rellich，也不需要 \(\displaystyle C^1\) 边界.
+
+\subsection{额外 \(\displaystyle C^1\) 边界的零迹解释}
+若进一步 \(\displaystyle\Omega\) 为有界非空 \(\displaystyle C^1\) 区域，则 II-14 的\autoref{ii14:zero-trace-characterization}给
+\[
+H_0^1(\Omega)
+=
+\ker\left(\operatorname{Tr}:H^1(\Omega)\to L^2(\partial\Omega,\mathrm{d}S)\right).
+\]
+因此 Poisson 弱问题模型的 \(\displaystyle u\in H_0^1(\Omega)\) 可附加解释为 \(\displaystyle\operatorname{Tr}u=0\). 这是边界语义的强化，不是\autoref{fa:ELL-A01}的存在性前置；一般 Sobolev 元素的迹仍是等价类算子，而不是任意代表元的逐点边界值.
+
+\subsection{Sobolev 可积性与紧性接口}
+若 \(\displaystyle\Omega\) 为有界 \(\displaystyle C^1\) 区域，则 \(\displaystyle u\in H_0^1(\Omega)\subseteq H^1(\Omega)\) 可以调用\autoref{fa:SOB-A02}. 当 \(\displaystyle d\geqslant3\) 时，\(\displaystyle2<d\) 且 \(\displaystyle 2^* = \frac{2d}{d-2},\)
+故 \(\displaystyle u\in L^{2^*}(\Omega)\) 并有相应连续嵌入估计. 当 \(\displaystyle d=1,2\) 时，\(\displaystyle2\geqslant d\)，所以对每个有限的 \(\displaystyle1\leqslant q<\infty\)，都有 \(\displaystyle u\in L^q(\Omega)\). 这些是已冻结 Sobolev 嵌入的合法后果，但它们不提升到 \(\displaystyle H^2\)、\(\displaystyle C^1\) 或经典椭圆型正则性.
+
+同一 \(\displaystyle C^1\) 假设下，\autoref{fa:SOB-A03}还给出紧嵌入 \(\displaystyle H_0^1(\Omega)\hookrightarrow L^2(\Omega)\). 本章不需要这条紧性来证明 Poisson 弱问题模型；它只作为后续变分紧性的接口. I-10 的弱紧性同样不进入\autoref{fa:ELL-A01}的规范证明.
+
+\begin{FAWarning}[高阶正则性的边界]
+从 \(\displaystyle f\in L^2(\Omega)\) 与 \(\displaystyle u\in H_0^1(\Omega)\) 的弱方程，不能在本章已建立的依赖下自动推出 \(\displaystyle u\in H^2(\Omega)\)、连续的可微性、Schauder 估计或逐点偏微分方程. 这些结论需要额外区域/系数正则性与新的理论，均保留为 D 级后续内容. 非线性椭圆方程、\(\displaystyle p\)-Laplace 算子、单调算子与变分存在性方法也不在本章形式上的理论中.
+\end{FAWarning}
+
+\section{演化问题应用}\label{sec:ii15-evolution-application}
+\index{heat equation@热方程}\index{energy identity@能量恒等式}\index{mild solution@温和解!热方程}
+
+\begin{FAApplication}[Dirichlet 热半群模型的冻结复用]
+令 \(\displaystyle H=L^2(0,1)\). II-06 已建立 Dirichlet 型 Laplace 算子 \(\displaystyle\mathcal L_D\) 的精确定义域与 \(\displaystyle\mathcal L_Du=-u''\)；II-08 已建立 \(\displaystyle \mathcal H(t) = \mathrm{e}^{-t\mathcal L_D}\)
+为收缩 \(\displaystyle C_0\) 半群且生成元精确为 \(\displaystyle-\mathcal L_D\)；II-11 已建立温和解与常数变易公式、经典解与温和解的比较及压缩估计. 本章只把这些冻结结果专门化为热方程，不重新证明 \(\displaystyle C_0\) 性、生成元识别、Bochner 积分合法性或常数变易.
+\end{FAApplication}
+
+\begin{FATheorem}[B][Dirichlet 热方程的半群解]{fa:EVOL-B01}
+给定 \(\displaystyle T>0\)、\(\displaystyle x\in L^2(0,1)\) 与 \(\displaystyle g\in L^1(0,T;L^2(0,1))\). 则存在唯一温和解
+\[
+u(t)
+=
+\mathcal H(t)x
++
+\int_0^t
+\mathcal H(t-s)g(s)
+\,\mathrm{d}s,
+\;
+0\leqslant t\leqslant T,
+\]
+并且 \(\displaystyle u\in C([0,T];L^2(0,1))\).
+
+若进一步 \(\displaystyle x\in D(\mathcal L_D)\) 且 \(\displaystyle g\in C([0,T];D(\mathcal L_D)_{\mathrm{graph}})\)，则该温和解是经典解， \(\displaystyle u\in C([0,T];D(\mathcal L_D)_{\mathrm{graph}}) \cap C^1([0,T];L^2(0,1)),\)
+并满足 \(\displaystyle u'(t) = -\mathcal L_Du(t)+g(t) \; \forall\,t\in[0,T].\)
+结合 II-06 的定义域刻画，对每个 \(\displaystyle t\)，\(\displaystyle u(t)\) 有零端点值且 \(\displaystyle\mathcal L_Du(t)=-u_{xx}(t)\)，所以在 \(\displaystyle L^2(0,1)\) 中 \(\displaystyle \partial_tu(t)-\partial_{xx}u(t) = g(t),\)
+并且 \(\displaystyle u(t,0)=u(t,1)=0\). 一般温和数据下不作该经典偏微分方程断言.
+\end{FATheorem}
+
+\begin{FAProof}
+II-08 的\autoref{ii08:heat-semigroup}与\autoref{ii08:heat-generator}已给 \(\displaystyle\mathcal H\) 为 \(\displaystyle L^2(0,1)\) 上的收缩 \(\displaystyle C_0\) 半群，生成元为 \(\displaystyle-\mathcal L_D\). 因而对 \(\displaystyle x\in L^2(0,1)\)、\(\displaystyle g\in L^1(0,T;L^2(0,1))\)，直接把\autoref{fa:ACP-A02}应用于 \(\displaystyle\mathcal A=-\mathcal L_D\)，得到所述唯一温和解与 \(\displaystyle C([0,T];L^2)\) 正则性. 这一步只做偏微分方程专门化，没有重建 ACP 证明.
+
+若 \(\displaystyle x\in D(\mathcal L_D)\) 且 \(\displaystyle g\in C([0,T];D(\mathcal L_D)_{\mathrm{graph}})\)，则 \(\displaystyle D(-\mathcal L_D)=D(\mathcal L_D)\)，且二者图范数相同. 因此\autoref{fa:ACP-B01}的充分条件成立，温和解提升为经典解，并满足 \(\displaystyle u'=-\mathcal L_Du+g\).
+
+由 II-06 的\autoref{ii06:dirichlet-laplacian-domain}，每个 \(\displaystyle u(t)\in D(\mathcal L_D)\) 属于零端点绝对连续域，\(\displaystyle u_x(t)\) 有绝对连续代表元、\(\displaystyle u_{xx}(t)\in L^2(0,1)\)，且 \(\displaystyle\mathcal L_Du(t)=-u_{xx}(t)\). 代入抽象演化方程得 \(\displaystyle u_t-u_{xx}=g\) 于 \(\displaystyle L^2(0,1)\)，而端点条件由定义域直接给出. 对一般 \(\displaystyle L^2\) 初值数据与 \(\displaystyle L^1\) 外力项，\autoref{fa:ACP-A02}只保证连续的温和解，所以不把第一层结论改写成经典偏微分方程.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][Dirichlet 热方程的线性能量估计]{fa:ENERGY-B01}
+在\autoref{fa:EVOL-B01}的经典数据条件下，对全部 \(\displaystyle t\in[0,T]\)， \(\displaystyle \frac12\frac{\mathrm{d}}{\mathrm{d}t}\|u(t)\|_2^2 + \|u_x(t)\|_2^2 = \operatorname{Re}\langle g(t),u(t)\rangle_{L^2}.\)
+因此
+\[
+\|u(t)\|_2^2
++
+2\int_0^t\|u_x(s)\|_2^2\,\mathrm{d}s
+=
+\|x\|_2^2
++
+2\operatorname{Re}
+\int_0^t
+\langle g(s),u(s)\rangle_{L^2}
+\,\mathrm{d}s.
+\]
+特别地，若 \(\displaystyle g=0\)，则
+\[
+\|u(t)\|_2^2
++
+2\int_0^t\|u_x(s)\|_2^2\,\mathrm{d}s
+=
+\|x\|_2^2.
+\]
+另一方面，对仅满足 \(\displaystyle x\in L^2(0,1)\)、\(\displaystyle g\in L^1(0,T;L^2(0,1))\) 的一般温和解，冻结的压缩估计估计给
+\[
+\|u(t)\|_2
+\leqslant
+\|x\|_2
++
+\int_0^t\|g(s)\|_2\,\mathrm{d}s.
+\]
+最后一式是 II-11 已有估计的复用，不把经典能量恒等式扩张到全部温和数据.
+\end{FATheorem}
+
+\begin{FAProof}
+经典正则性给 \(\displaystyle u\in C^1([0,T];L^2(0,1))\). 因内积第一变量线性，
+\[
+\begin{aligned}
+\displaystyle \frac{\mathrm{d}}{\mathrm{d}t}\|u(t)\|_2^2
+&=
+\displaystyle \frac{\mathrm{d}}{\mathrm{d}t}\langle u(t),u(t)\rangle
+=
+\langle u'(t),u(t)\rangle+\langle u(t),u'(t)\rangle\\[6pt]
+&=
+2\operatorname{Re}\langle u'(t),u(t)\rangle.
+\end{aligned}
+\]
+代入 \(\displaystyle u'=-\mathcal L_Du+g\)，得到
+\[
+\frac12\frac{\mathrm{d}}{\mathrm{d}t}\|u(t)\|_2^2
++
+\operatorname{Re}\langle\mathcal L_Du(t),u(t)\rangle
+=
+\operatorname{Re}\langle g(t),u(t)\rangle.
+\]
+II-06 的 Dirichlet 型/算子恒等式给
+\[
+\langle\mathcal L_Du(t),u(t)\rangle
+=
+\int_0^1|u_x(t,r)|^2\,\mathrm{d}r
+=
+\|u_x(t)\|_2^2,
+\]
+且该量为非负实数. 于是得到逐时刻能量恒等式.
+
+还需核对积分合法性. 由\autoref{fa:EVOL-B01}，\(\displaystyle t\mapsto u(t)\) 与 \(\displaystyle t\mapsto\mathcal L_Du(t)\) 在 \(\displaystyle L^2\) 中连续，因此 \(\displaystyle t\mapsto \|u_x(t)\|_2^2 = \langle\mathcal L_Du(t),u(t)\rangle\)
+连续. 同时 \(\displaystyle g\) 与 \(\displaystyle u\) 都连续为 \(\displaystyle L^2\)-值函数，所以 \(\displaystyle t\mapsto\langle g(t),u(t)\rangle\) 连续. 因而可在 \(\displaystyle[0,t]\) 上积分，得到受迫恒等式；令 \(\displaystyle g=0\) 即得齐次耗散恒等式.
+
+最后，对一般温和数据，Dirichlet 热半群模型的收缩性与 II-11 的\autoref{fa:ACP-C01}已给 \(\displaystyle M=1\)、\(\displaystyle\omega=0\) 的估计，恰为定理最后一式. 这里不借未建立的解析半群平滑性把逐时刻导数或 \(\displaystyle u_x\) 能量恒等式推广到全部温和解.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{椭圆型与演化的证明机制分离}
+Poisson 弱问题的核心链是 \(\displaystyle H_0^1\) 能量空间 \(\displaystyle\to\) 强制型 \(\displaystyle\to\) Lax--Milgram \(\displaystyle\to\) 稳态弱解. Dirichlet 热方程的核心链则是冻结的自伴算子 \(\displaystyle\to\) \(\displaystyle C_0\) 半群 \(\displaystyle\to\) ACP/常数变易 \(\displaystyle\to\) 温和或经典演化. 二者都出现能量结构，但存在机制不同：本章没有用 Lax--Milgram 生成热半群，也没有用半群定理证明 Poisson 弱解存在.
+
+\subsection{第二卷收束与后续边界}
+至此，第二卷的当前规划范围从高级线性算子、Bochner 积分、无界自伴算子、\(\displaystyle C_0\) 半群与 ACP，推进到分布、Sobolev、嵌入/迹，再闭合到 Lax--Milgram、典型椭圆弱解与热演化应用. 更高阶椭圆正则性、最大 \(\displaystyle L^p\) 正则性、非线性偏微分方程、单调算子、变分直接法与极小极大理论均需要新的形式上的工具体系，不在本章建立.
+
+\subsection*{本章习题}\label{sec:ii15-exercises}
+
+\begin{FAExercise}[半双线性的约定]{ex:ii15-01}
+设 \(\displaystyle a\) 对第一变量线性、第二变量共轭线性. 证明固定 \(\displaystyle u\) 时 \(\displaystyle v\mapsto\overline{a(u,v)}\) 是线性泛函，并说明为什么直接对 \(\displaystyle v\mapsto a(u,v)\) 使用\autoref{fa:HIL-A02}会与本书约定冲突.
+\end{FAExercise}
+
+\begin{FAExercise}[型有界性]{ex:ii15-02}
+设 \(\displaystyle\mathcal B\in\mathcal B(V)\)，定义 \(\displaystyle a(u,v)=\langle\mathcal Bu,v\rangle\). 证明 \(\displaystyle a\) 有界且最佳有界性常数等于 \(\displaystyle\|\mathcal B\|\).
+\end{FAExercise}
+
+\begin{FAExercise}[算子表示]{ex:ii15-03}
+完整重建\autoref{ii15:form-operator-representation}：从 \(\displaystyle v\mapsto\overline{a(u,v)}\) 出发构造 \(\displaystyle\mathcal A\)，逐项证明线性、有界性、唯一性与 \(\displaystyle\|\mathcal A\|\leqslant M\).
+\end{FAExercise}
+
+\begin{FAExercise}[强制性推出下有界]{ex:ii15-04}
+只使用 Cauchy--Schwarz 与 \(\displaystyle\operatorname{Re}a(u,u)\geqslant\alpha\|u\|^2\)，证明 \(\displaystyle\alpha\|u\|\leqslant\|\mathcal Au\|\)，并推出 \(\displaystyle\mathcal A\) 单射.
+\end{FAExercise}
+
+\begin{FAExercise}[闭值域]{ex:ii15-05}
+设有界算子 \(\displaystyle\mathcal A:V\to V\) 满足 \(\displaystyle\|\mathcal Au\|\geqslant\alpha\|u\|\). 不调用闭图像定理，直接从 Cauchy 列证明 \(\displaystyle\operatorname{Ran}\mathcal A\) 闭.
+\end{FAExercise}
+
+\begin{FAExercise}[稠密值域]{ex:ii15-06}
+在\autoref{fa:LM-A01}的条件下，从 \(\displaystyle y\in(\operatorname{Ran}\mathcal A)^\perp\) 出发，完整证明 \(\displaystyle y=0\). 明确写出由 \(\displaystyle\langle y,\mathcal Au\rangle=0\) 到 \(\displaystyle a(u,y)=0\) 的共轭对称步骤.
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建 Lax--Milgram]{ex:ii15-07}
+依次使用算子表示、下有界、闭值域、稠密值域、Riesz 表示与右端共轭处理，完整重建\autoref{fa:LM-A01}，并证明范数估计.
+\end{FAExercise}
+
+\begin{FAExercise}[强制性失败的对角例]{ex:ii15-08}
+对第一节局部非强制性失效例中的对角的算子，证明 \(\displaystyle\|\mathcal T\|=1\)、\(\displaystyle a\) 非负但不强制，并验证 \(\displaystyle y=(\frac{1}{n})_{n\geqslant1}\in\ell^2\) 不属于 \(\displaystyle\operatorname{Ran}\mathcal T\).
+\end{FAExercise}
+
+\begin{FAExercise}[弱偏微分方程建模核对表]{ex:ii15-09}
+对形式上的方程 \(\displaystyle-\Delta u=f\) 与齐次 Dirichlet 条件，逐项执行\autoref{fa:PDE-C01}的十项检查，不得先引用\autoref{fa:ELL-A01}的结论代替建模步骤.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle H_0^1\) 上右端有界性]{ex:ii15-10}
+设 \(\displaystyle f\in L^2(\Omega)\). 从 Cauchy--Schwarz 与\autoref{fa:SOB-B01}证明 \(\displaystyle F_f(v)=\int_\Omega v\overline f\,\mathrm{d}x\) 属于 \(\displaystyle(H_0^1(\Omega),\|\nabla\cdot\|_2)^*\)，并给出 \(\displaystyle\|F_f\|\) 的上界.
+\end{FAExercise}
+
+\begin{FAExercise}[Poisson 弱存在性]{ex:ii15-11}
+在有界非空开集上只使用 \(\displaystyle H_0^1\) 能量空间模型、Poincaré 与\autoref{fa:LM-A01}证明 Poisson 弱问题模型的弱解存在. 明确说明证明中没有使用迹、延拓或 Rellich.
+\end{FAExercise}
+
+\begin{FAExercise}[Poisson 唯一性]{ex:ii15-12}
+若 \(\displaystyle u_1,u_2\in H_0^1(\Omega)\) 满足同一弱恒等式，取适当测试函数证明 \(\displaystyle u_1=u_2\). 指出 Poincaré 在最后一步的作用.
+\end{FAExercise}
+
+\begin{FAExercise}[Poisson 能量估计]{ex:ii15-13}
+从弱恒等式取 \(\displaystyle v=u\)，结合实部、Cauchy--Schwarz 与 Poincaré，独立推导 \(\displaystyle\|\nabla u\|_2\leqslant C_\Omega\|f\|_2\) 与 \(\displaystyle\|u\|_2\leqslant C_\Omega^2\|f\|_2\).
+\end{FAExercise}
+
+\begin{FAExercise}[分布意义的识别]{ex:ii15-14}
+对任意 \(\displaystyle\varphi\in C_c^\infty(\Omega)\)，解释为什么弱恒等式中应取 \(\displaystyle v=\overline\varphi\)，再严格使用 II-12 的复线性分布配对推出 \(\displaystyle-\Delta T_u=T_f\).
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle C^1\) 区域的零迹解释]{ex:ii15-15}
+若 \(\displaystyle\Omega\) 为有界 \(\displaystyle C^1\) 区域，使用\autoref{ii14:zero-trace-characterization}把 \(\displaystyle u\in H_0^1(\Omega)\) 改写为零迹条件，并说明该解释为什么不是\autoref{fa:ELL-A01}的存在性前置.
+\end{FAExercise}
+
+\begin{FAExercise}[Sobolev 嵌入推论]{ex:ii15-16}
+对 Poisson 弱问题模型的弱解，在有界 \(\displaystyle C^1\) 区域上分别处理 \(\displaystyle d\geqslant3\) 与 \(\displaystyle d=1,2\)，从\autoref{fa:SOB-A02}写出所有本章合法声称的 \(\displaystyle L^q\) 可积性；不得声称 \(\displaystyle H^2\) 或 Hölder 正则性.
+\end{FAExercise}
+
+\begin{FAExercise}[Poisson 弱问题模型的代数极小元恒等式]{ex:ii15-17}
+不使用弱紧性或下半连续性，从弱方程直接证明 \(\displaystyle J(u+w)-J(u)=\frac12\|\nabla w\|_2^2\)，并推出唯一的极小元.
+\end{FAExercise}
+
+\begin{FAExercise}[Dirichlet 热半群模型的温和公式]{ex:ii15-18}
+对 \(\displaystyle x\in L^2(0,1)\)、\(\displaystyle g\in L^1(0,T;L^2(0,1))\)，由冻结\autoref{fa:ACP-A02}写出温和解，并用收缩性重建 \(\displaystyle\|u(t)\|_2\leqslant\|x\|_2+\int_0^t\|g(s)\|_2\,\mathrm{d}s\).
+\end{FAExercise}
+
+\begin{FAExercise}[温和与经典的区分]{ex:ii15-19}
+逐项比较 \(\displaystyle x\in L^2\)、\(\displaystyle g\in L^1\) 与 \(\displaystyle x\in D(\mathcal L_D)\)、\(\displaystyle g\in C([0,T];D(\mathcal L_D)_{\mathrm{graph}})\) 两组数据能得到的结论. 说明为什么第一组数据不能仅凭本书已建立结果推出 \(\displaystyle u'\) 或 \(\displaystyle u_{xx}\) 存在.
+\end{FAExercise}
+
+\begin{FAExercise}[经典热偏微分方程识别]{ex:ii15-20}
+在经典数据下，使用\autoref{ii06:dirichlet-laplacian-domain}把 \(\displaystyle u'=-\mathcal L_Du+g\) 改写为 \(\displaystyle u_t-u_{xx}=g\)，并解释端点边界条件如何由 \(\displaystyle D(\mathcal L_D)\) 保证.
+\end{FAExercise}
+
+\begin{FAExercise}[热能量恒等式]{ex:ii15-21}
+从第一变量线性的内积约定出发证明 \(\displaystyle\frac12\frac{\mathrm{d}}{\mathrm{d}t}\|u\|_2^2=\operatorname{Re}\langle u',u\rangle\)，再利用 Dirichlet 型恒等式推出受迫能量恒等式，并逐项核对时间积分的连续性.
+\end{FAExercise}
+
+\begin{FAExercise}[齐次耗散与后续边界]{ex:ii15-22}
+令 \(\displaystyle g=0\)，证明 \(\displaystyle\|u(t)\|_2^2+2\int_0^t\|u_x(s)\|_2^2\,\mathrm{d}s=\|x\|_2^2\). 再分别说明高阶椭圆型正则性、一般温和数据能量恒等式、非线性偏微分方程与后续变分存在性为什么都需要超出本章的新结果，而不能由本章结论直接推出.
+\end{FAExercise}

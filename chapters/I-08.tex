@@ -1,0 +1,402 @@
+\chapter{Baire纲定理与一致有界性}\label{chap:I-08}
+\FAChapterOpening
+{建立Baire纲定理及其闭集覆盖形式；由完备性推出一致有界性原理；处理逐点收敛算子列；证明弱收敛序列范数有界，并严格区分序列与任意网；给出Banach预对偶上的弱*收敛序列有界性及不完备预对偶反例.}
+{I-02的度量空间与完备性；I-05的有界线性算子与连续对偶；I-07的自然嵌入、弱拓扑与弱*拓扑.}
+{\begin{center}
+\begin{tikzpicture}[x=1.45cm,y=1.05cm]
+\node[fa/node] (f1) at (0,0.55) {度量/完备/紧性};
+\node[fa/node] (f2) at (0,-0.55) {完备化定理};
+\node[fa/node] (bai) at (1.4,0) {Baire纲定理};
+\node[fa/node] (c01) at (2.8,0) {闭集覆盖原则};
+\node[fa/node] (op) at (2.8,-1.15) {I-05算子框架};
+\node[fa/node] (ubp) at (4.4,-0.55) {一致有界原理};
+\node[fa/node] (b02) at (5.9,0.35) {逐点收敛算子列};
+\node[fa/node] (dual) at (5.9,-1.35) {自然嵌入/自反性};
+\node[fa/node] (b01) at (7.3,-0.55) {弱收敛有界性};
+\draw[fa/arrow] (f1) -- (bai);
+\draw[fa/arrow] (f2) -- (bai);
+\draw[fa/arrow] (bai) -- (c01);
+\draw[fa/arrow] (c01) -- (ubp);
+\draw[fa/arrow] (op) -- (ubp);
+\draw[fa/arrow] (ubp) -- (b02);
+\draw[fa/arrow] (ubp) -- (b01);
+\draw[fa/arrow] (dual) -- (b01);
+\end{tikzpicture}
+\end{center}}
+
+本章固定 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). Baire纲定理只使用完备度量空间结构；一致有界性原理要求定义域为Banach空间，但值域只需为赋范空间. 第四节的弱收敛有界性严格限定于序列，并不扩张为任意弱收敛网的整个取值范围有界. 弱*收敛序列的对应推论只在预对偶为Banach空间时使用一致有界性原理.
+
+\section{Baire纲定理}\label{sec:i08-baire}
+\index{Baire space@Baire空间}\index{nowhere dense@无处稠密}\index{meagre@第一纲集}
+
+\begin{FADefinition}[C][Baire纲的最低接口]{i08:baire-definitions}
+设 \(\displaystyle (X,d)\) 为度量空间，\(\displaystyle A\subseteq X\). 若 \(\displaystyle \operatorname{int}\overline A=\varnothing\)，则称 \(\displaystyle A\) 为无处稠密集. 若一个集合可写成可数个无处稠密集之并，则称其为第一纲集或稀疏集. 若任意可数族开稠密集 \(\displaystyle G_1,G_2,\dots\subseteq X\) 的交 \(\displaystyle \bigcap_{n=1}^{\infty}G_n\) 仍在 \(\displaystyle X\) 中稠密，则称 \(\displaystyle X\) 为Baire空间.
+\end{FADefinition}
+
+\begin{FATheorem}[A][Baire纲定理]{fa:BAI-A01}
+每个完备度量空间都是Baire空间. 更具体地，若 \(\displaystyle (X,d)\) 完备，且 \(\displaystyle G_1,G_2,\dots\) 是 \(\displaystyle X\) 中的开稠密集，则 \(\displaystyle \bigcap_{n=1}^{\infty}G_n\) 在 \(\displaystyle X\) 中稠密.
+\end{FATheorem}
+
+\begin{FAProof}
+固定任意非空开集 \(\displaystyle U\subseteq X\). 只需证明 \(\displaystyle U\cap\bigcap_{n=1}^{\infty}G_n\neq\varnothing\).
+
+因 \(\displaystyle G_1\) 稠密，\(\displaystyle U\cap G_1\) 是非空开集. 取 \(\displaystyle x_1\in U\cap G_1\). 由开性，存在 \(\displaystyle \varepsilon_1>0\) 使 \(\displaystyle B(x_1,\varepsilon_1)\subseteq U\cap G_1\). 取
+\[
+0<r_1<\min\{\frac{\varepsilon_1}{2},2^{-1}\},
+\]
+并令 \(\displaystyle V_1=B(x_1,r_1)\). 若 \(\displaystyle y\in\overline{V_1}\)，则 \(\displaystyle d(y,x_1)\leqslant r_1<\varepsilon_1\)，故
+\(\displaystyle \overline{V_1}\subseteq U\cap G_1\).
+
+递归地，设非空开球 \(\displaystyle V_{n-1}=B(x_{n-1},r_{n-1})\) 已构造. 因 \(\displaystyle G_n\) 稠密，\(\displaystyle V_{n-1}\cap G_n\) 是非空开集. 取 \(\displaystyle x_n\in V_{n-1}\cap G_n\)，并选 \(\displaystyle \varepsilon_n>0\) 使
+\(\displaystyle B(x_n,\varepsilon_n)\subseteq V_{n-1}\cap G_n\).
+再取
+\[
+0<r_n<\min\{\frac{\varepsilon_n}{2},2^{-n}\},
+\]
+令 \(\displaystyle V_n=B(x_n,r_n)\). 若 \(\displaystyle y\in\overline{V_n}\)，则 \(\displaystyle d(y,x_n)\leqslant r_n<\varepsilon_n\)，故 \(\displaystyle y\in B(x_n,\varepsilon_n)\subseteq V_{n-1}\cap G_n\). 因而 \(\displaystyle \overline{V_n}\subseteq V_{n-1}\cap G_n\)，且按选取有 \(\displaystyle 0<r_n<2^{-n}\).
+这里没有使用闭球紧性，只使用了度量空间中非空开集包含一个闭包仍落在该开集内的小开球这一事实.
+
+若 \(\displaystyle m>n\)，由嵌套关系有 \(\displaystyle x_m\in V_n\)，从而
+\(\displaystyle d(x_m,x_n)<r_n<2^{-n}\).
+因此 \(\displaystyle (x_n)\) 是Cauchy序列. 由 \(\displaystyle X\) 完备，存在 \(\displaystyle x\in X\) 使 \(\displaystyle x_n\to x\).
+
+固定 \(\displaystyle n\). 对所有 \(\displaystyle m>n\)，有 \(\displaystyle x_m\in V_n\). 因 \(\displaystyle \overline{V_n}\) 为闭集，取极限得到 \(\displaystyle x\in\overline{V_n}\). 对 \(\displaystyle n=1\)，有 \(\displaystyle \overline{V_1}\subseteq U\cap G_1\)，故 \(\displaystyle x\in U\cap G_1\). 对 \(\displaystyle n\geqslant2\)，有 \(\displaystyle \overline{V_n}\subseteq V_{n-1}\cap G_n\subseteq G_n\)，故 \(\displaystyle x\in G_n\). 因而
+\[
+x\in U\cap\bigcap_{n=1}^{\infty}G_n.
+\]
+由于 \(\displaystyle U\) 是任意非空开集，\(\displaystyle \bigcap_{n=1}^{\infty}G_n\) 与每个非空开集相交，故其在 \(\displaystyle X\) 中稠密.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[C][闭集覆盖的内部原则]{fa:BAI-C01}
+设 \(\displaystyle X\) 为非空完备度量空间，且
+\[
+X=\bigcup_{n=1}^{\infty}F_n,
+\]
+其中每个 \(\displaystyle F_n\) 都是闭集. 则至少存在一个 \(\displaystyle N\in\mathbb N\) 使 \(\displaystyle \operatorname{int}F_N\neq\varnothing\). 因而，对递增闭集覆盖 \(\displaystyle F_1\subseteq F_2\subseteq\cdots\) 也有同一结论.
+\end{FAProposition}
+
+\begin{FAProof}
+若所有 \(\displaystyle F_n\) 都满足 \(\displaystyle \operatorname{int}F_n=\varnothing\)，则因 \(\displaystyle F_n\) 闭，集合 \(\displaystyle G_n=X\setminus F_n\) 为开集，且 \(\displaystyle \overline{G_n}=X\)，所以 \(\displaystyle G_n\) 稠密. 由\autoref{fa:BAI-A01}，\(\displaystyle \bigcap_{n=1}^{\infty}G_n\) 稠密，特别非空. 另一方面，
+\[
+\bigcap_{n=1}^{\infty}G_n
+=X\setminus\bigcup_{n=1}^{\infty}F_n
+=\varnothing,
+\]
+矛盾. 因此某个 \(\displaystyle F_N\) 具有非空内部. 递增情形只是上述结论的特例.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[不完备空间可失去Baire结论]\label{i08:ce-incomplete-baire}
+取 \(\displaystyle X=\mathbb Q\) 并赋通常距离. 例如取无理数 \(\displaystyle \alpha\in\mathbb R\setminus\mathbb Q\) 及有理数序列 \(\displaystyle q_n\to\alpha\)，则 \(\displaystyle (q_n)\) 在 \(\displaystyle \mathbb Q\) 中是Cauchy序列却没有极限，故 \(\displaystyle \mathbb Q\) 不完备. 又因 \(\displaystyle \mathbb Q\) 可数，
+\[
+\mathbb Q=\bigcup_{q\in\mathbb Q}\{q\}.
+\]
+每个单点 \(\displaystyle \{q\}\) 在 \(\displaystyle \mathbb Q\) 中闭，且内部为空，因此无处稠密. 于是 \(\displaystyle \mathbb Q\setminus\{q\}\) 对每个 \(\displaystyle q\in\mathbb Q\) 都是开稠密集，而这些开稠密集的可数交为空. 所以 \(\displaystyle \mathbb Q\) 不是Baire空间. 此处删除的假设是完备性，失败的是Baire结论；后文还会用另一个不完备空间说明一致有界性原理的失效，二者不能混为同一个命题.
+\end{FACounterexample}
+
+\begin{FARemark}[历史术语]
+Baire纲方法把“完备性”转化为“可数个闭集不能全都没有内部”的全局结论. 本章只保留开稠密交形式与闭集覆盖形式，不提前引入开映射定理的证明机制.
+\end{FARemark}
+
+\section{一致有界性}\label{sec:i08-ubp}
+\index{uniform boundedness principle@一致有界性原理}\index{Banach--Steinhaus theorem@Banach--Steinhaus定理}
+
+\begin{FATheorem}[A][一致有界性原理（Banach--Steinhaus）]{fa:UBP-A01}
+设 \(\displaystyle X\) 为Banach空间，\(\displaystyle Y\) 为赋范空间，且 \(\displaystyle \mathcal F\subseteq\mathcal B(X,Y)\). 若对每个 \(\displaystyle x\in X\) 都有
+\[
+\sup_{\mathcal T\in\mathcal F}\|\mathcal T x\|<\infty,
+\]
+则
+\[
+\sup_{\mathcal T\in\mathcal F}\|\mathcal T\|<\infty.
+\]
+当 \(\displaystyle \mathcal F=\varnothing\) 时结论平凡；以下设 \(\displaystyle \mathcal F\neq\varnothing\).
+\end{FATheorem}
+
+\begin{FAProof}
+对 \(\displaystyle m\in\mathbb N\) 定义
+\[
+E_m:=\left\{x\in X:\sup_{\mathcal T\in\mathcal F}\|\mathcal T x\|\leqslant m\right\}.
+\]
+对每个 \(\displaystyle \mathcal T\in\mathcal F\)，映射 \(\displaystyle x\mapsto\|\mathcal T x\|\) 连续，因此
+\(\displaystyle \{x\in X:\|\mathcal T x\|\leqslant m\}\)
+是闭集. 并且
+\[
+E_m
+=\bigcap_{\mathcal T\in\mathcal F}
+\{x\in X:\|\mathcal T x\|\leqslant m\},
+\]
+故 \(\displaystyle E_m\) 闭.
+
+逐点有界性说明：给定 \(\displaystyle x\in X\)，数 \(\displaystyle M_x:=\sup_{\mathcal T\in\mathcal F}\|\mathcal T x\|\) 有限. 取整数 \(\displaystyle m\geqslant M_x\)，则 \(\displaystyle x\in E_m\). 因而
+\[
+X=\bigcup_{m=1}^{\infty}E_m.
+\]
+由\autoref{fa:BAI-C01}，存在 \(\displaystyle N\in\mathbb N\) 使 \(\displaystyle E_N\) 有非空内部. 因此存在 \(\displaystyle x_0\in X\) 与 \(\displaystyle r>0\) 使
+\(\displaystyle B(x_0,r)\subseteq E_N\).
+特别地，\(\displaystyle x_0\in E_N\).
+
+若 \(\displaystyle \|h\|<r\)，则 \(\displaystyle x_0+h\in E_N\). 对任意 \(\displaystyle \mathcal T\in\mathcal F\)，由线性与三角不等式，
+\(\displaystyle \|\mathcal T h\| \leqslant\|\mathcal T(x_0+h)\|+\|\mathcal T x_0\| \leqslant2N\).
+现在固定 \(\displaystyle x\in X\) 且 \(\displaystyle \|x\|\leqslant1\)，取 \(\displaystyle h=(\frac{r}{2})x\). 则 \(\displaystyle \|h\|\leqslant \frac{r}{2}<r\)，故
+\[
+\frac{r}{2}\|\mathcal T x\|
+=\|\mathcal T h\|
+\leqslant2N.
+\]
+所以 \(\displaystyle \|\mathcal T x\|\leqslant\frac{4N}{r}\). 对单位闭球取上确界得到 \(\displaystyle \|\mathcal T\|\leqslant\frac{4N}{r}\)，再对 \(\displaystyle \mathcal T\in\mathcal F\) 取上确界，得到
+\[
+\sup_{\mathcal T\in\mathcal F}\|\mathcal T\|
+\leqslant\frac{4N}{r}
+<\infty.
+\]
+证明只使用定义域 \(\displaystyle X\) 的完备性、Baire纲定理及 I-05 的算子范数框架；没有要求 \(\displaystyle Y\) 完备.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[定义域与值域的完备性]
+一致有界性原理的完备性假设落在定义域 \(\displaystyle X\)，因为Baire纲定理作用于 \(\displaystyle X\). 值域 \(\displaystyle Y\) 只需是赋范空间. I-05 中“当 \(\displaystyle Y\) 为Banach空间时 \(\displaystyle \mathcal B(X,Y)\) 完备”的结论不是上述证明的逻辑输入.
+\end{FARemark}
+
+\begin{FACounterexample}[不完备定义域上的一致有界性失效]\label{i08:ce-incomplete-ubp}
+令 \(\displaystyle X=c_{00}\) 配范数 \(\displaystyle \|x\|_\infty=\sup_k|x_k|\)，并对 \(\displaystyle n\in\mathbb N\) 定义 \(\displaystyle \mathcal T_n:X\to\mathbb K\) 为 \(\displaystyle \mathcal T_n(x)=n x_n\). 每个 \(\displaystyle \mathcal T_n\) 线性，且
+\(\displaystyle |\mathcal T_nx|=n|x_n|\leqslant n\|x\|_\infty\)，
+所以 \(\displaystyle \mathcal T_n\in X^*\) 且 \(\displaystyle \|\mathcal T_n\|\leqslant n\). 对标准基向量 \(\displaystyle e_n\) 有 \(\displaystyle \|e_n\|_\infty=1\) 与 \(\displaystyle |\mathcal T_ne_n|=n\)，故 \(\displaystyle \|\mathcal T_n\|=n\).
+
+另一方面，固定 \(\displaystyle x\in c_{00}\). 因 \(\displaystyle x\) 只有有限多个非零坐标，存在 \(\displaystyle N_x\) 使 \(\displaystyle x_n=0\) 对所有 \(\displaystyle n>N_x\) 成立. 因此序列 \(\displaystyle (|\mathcal T_nx|)\) 只有有限多个可能非零项，从而
+\[
+\sup_n|\mathcal T_nx|<\infty.
+\]
+于是 \(\displaystyle \{\mathcal T_n:n\in\mathbb N\}\) 逐点有界，但
+\[
+\sup_n\|\mathcal T_n\|=\sup_n n=\infty.
+\]
+这里 \(\displaystyle c_{00}\) 在 \(\displaystyle \|\cdot\|_\infty\) 下不完备. 删除的是定义域完备性，失败的是一致有界性结论. 这与\autoref{i08:ce-incomplete-baire}的Baire型失败分开表述.
+\end{FACounterexample}
+
+\begin{FAApplication}[逐点有界算子族]
+实际应用中常先对每个固定向量 \(\displaystyle x\) 得到与算子参数有关的一族估计，并证明 \(\displaystyle \sup_{\mathcal T\in\mathcal F}\|\mathcal T x\|<\infty\). 当定义域是Banach空间时，\autoref{fa:UBP-A01}把这种逐点控制一次性升级为统一算子范数控制.
+\end{FAApplication}
+
+\section{逐点收敛算子列}\label{sec:i08-pointwise-operators}
+
+\begin{FATheorem}[B][逐点收敛算子列的一致有界推论]{fa:UBP-B02}
+设 \(\displaystyle X\) 为Banach空间，\(\displaystyle Y\) 为赋范空间，且 \(\displaystyle \mathcal T_n\in\mathcal B(X,Y)\). 假设对每个 \(\displaystyle x\in X\)，序列 \(\displaystyle \mathcal T_nx\) 在 \(\displaystyle Y\) 中收敛. 定义
+\[
+\mathcal T x:=\lim_{n\to\infty}\mathcal T_nx.
+\]
+则
+\[
+\sup_n\|\mathcal T_n\|<\infty,
+\]
+并且 \(\displaystyle \mathcal T:X\to Y\) 线性有界，满足
+\[
+\|\mathcal T\|\leqslant\sup_n\|\mathcal T_n\|.
+\]
+这里不要求 \(\displaystyle Y\) 完备.
+\end{FATheorem}
+
+\begin{FAProof}
+固定 \(\displaystyle x\in X\). 因 \(\displaystyle \mathcal T_nx\) 在 \(\displaystyle Y\) 中收敛，所以它是有界序列，故 \(\displaystyle \sup_n\|\mathcal T_nx\|<\infty\). 因而算子族 \(\displaystyle \{\mathcal T_n:n\in\mathbb N\}\subseteq\mathcal B(X,Y)\) 逐点有界. 由\autoref{fa:UBP-A01}，
+\[
+M:=\sup_n\|\mathcal T_n\|<\infty.
+\]
+
+对任意 \(\displaystyle x,y\in X\) 与 \(\displaystyle \alpha,\beta\in\mathbb K\)，由每个 \(\displaystyle \mathcal T_n\) 线性以及 \(\displaystyle Y\) 中加法、标量乘法的连续性，
+\[
+\begin{aligned}
+\displaystyle \mathcal T(\alpha x+\beta y)
+&\displaystyle =\lim_{n\to\infty}\mathcal T_n(\alpha x+\beta y)\\
+&\displaystyle =\alpha\lim_{n\to\infty}\mathcal T_nx+\beta\lim_{n\to\infty}\mathcal T_ny\\
+&\displaystyle =\alpha\mathcal T x+\beta\mathcal T y.
+\end{aligned}
+\]
+故 \(\displaystyle \mathcal T\) 线性. 又对每个 \(\displaystyle x\in X\)，
+\(\displaystyle \|\mathcal T_nx\|\leqslant M\|x\|\).
+令 \(\displaystyle n\to\infty\)，由范数连续性得到 \(\displaystyle \|\mathcal T x\|\leqslant M\|x\|\). 因此 \(\displaystyle \mathcal T\) 有界，且 \(\displaystyle \|\mathcal T\|\leqslant M\). 值域完备性并未用于证明；逐点极限存在性已经包含在假设中.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[逐点收敛不能自动升级为算子范数收敛]
+\autoref{fa:UBP-B02}只推出 \(\displaystyle \sup_n\|\mathcal T_n\|<\infty\) 以及逐点极限算子 \(\displaystyle \mathcal T\) 有界. 一般不能推出 \(\displaystyle \|\mathcal T_n-\mathcal T\|\to0\).
+\end{FAWarning}
+
+\begin{FAExample}[坐标泛函]\label{i08:ellp-coordinate}
+设 \(\displaystyle 1\leqslant p<\infty\)，对 \(\displaystyle x=(x_k)\in\ell^p\) 定义 \(\displaystyle \pi_n(x)=x_n\). 由 \(\displaystyle |x_n|\leqslant\|x\|_p\)，有 \(\displaystyle \pi_n\in(\ell^p)^*\) 且 \(\displaystyle \|\pi_n\|\leqslant1\). 对 \(\displaystyle e_n\) 有 \(\displaystyle \|e_n\|_p=1\) 与 \(\displaystyle |\pi_n(e_n)|=1\)，故 \(\displaystyle \|\pi_n\|=1\). 又因每个 \(\displaystyle x\in\ell^p\) 都满足 \(\displaystyle x_n\to0\)，所以 \(\displaystyle \pi_n(x)\to0\) 对每个 \(\displaystyle x\) 成立. 因而 \(\displaystyle \pi_n\) 逐点收敛到零泛函，但 \(\displaystyle \|\pi_n\|=1\) 对所有 \(\displaystyle n\) 成立，故不在算子范数中收敛到零.
+\end{FAExample}
+
+\begin{FAExample}[部分坐标投影]\label{i08:ellp-projection}
+仍设 \(\displaystyle 1\leqslant p<\infty\)，定义
+\(\displaystyle P_nx=(x_1,\dots,x_n,0,0,\dots)\).
+直接有 \(\displaystyle \|P_nx\|_p\leqslant\|x\|_p\)，故 \(\displaystyle \|P_n\|\leqslant1\). 取 \(\displaystyle e_1\) 得 \(\displaystyle \|P_n\|=1\). 对固定 \(\displaystyle x\in\ell^p\)，
+\[
+\|x-P_nx\|_p^p=\sum_{k=n+1}^{\infty}|x_k|^p\longrightarrow0,
+\]
+所以 \(\displaystyle P_nx\to x\) 于 \(\displaystyle \ell^p\) 范数. 另一方面，取 \(\displaystyle e_{n+1}\) 得 \(\displaystyle \|(I-P_n)e_{n+1}\|_p=1\)，而 \(\displaystyle \|I-P_n\|\leqslant1\)，故 \(\displaystyle \|I-P_n\|=1\) 对所有 \(\displaystyle n\) 成立. 因此强逐点收敛仍不等于算子范数收敛.
+\end{FAExample}
+
+\section{弱收敛序列与范数有界}\label{sec:i08-weak-sequences}
+\index{weak convergence@弱收敛}\index{weak-star convergence@弱*收敛}
+
+\begin{FATheorem}[B][弱收敛序列蕴含范数有界]{fa:UBP-B01}
+设 \(\displaystyle X\) 为任意赋范空间，不要求 \(\displaystyle X\) 完备. 若
+\(\displaystyle x_n\rightharpoonup x\)，
+则
+\[
+\sup_n\|x_n\|<\infty.
+\]
+此结论严格限定于序列.
+\end{FATheorem}
+
+\begin{FAProof}
+I-05 已证明：对任意赋范空间 \(\displaystyle X\)，其连续对偶 \(\displaystyle X^*\) 都是Banach空间. I-07 已建立自然嵌入 \(\displaystyle J_X:X\to X^{**}=\mathcal B(X^*,\mathbb K)\)，并证明其为等距映射.
+
+考虑算子序列 \(\displaystyle J_Xx_n\in\mathcal B(X^*,\mathbb K)\). 固定任意 \(\displaystyle x^*\in X^*\). 由弱收敛定义，
+\(\displaystyle (J_Xx_n)(x^*)=x^*(x_n)\longrightarrow x^*(x)\).
+标量收敛序列必有界，因此
+\[
+\sup_n|(J_Xx_n)(x^*)|<\infty.
+\]
+于是 \(\displaystyle \{J_Xx_n:n\in\mathbb N\}\) 是定义在Banach空间 \(\displaystyle X^*\) 上的逐点有界算子族. 对它应用\autoref{fa:UBP-A01}，得到
+\[
+\sup_n\|J_Xx_n\|<\infty.
+\]
+由 \(\displaystyle J_X\) 等距，\(\displaystyle \|J_Xx_n\|=\|x_n\|\)，故
+\[
+\sup_n\|x_n\|<\infty.
+\]
+这里需要完备的是 \(\displaystyle X^*\)，而不是 \(\displaystyle X\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[复用I-07的弱收敛序列]
+在 \(\displaystyle \ell^2\) 中，I-07 已证明标准基序列 \(\displaystyle e_n\rightharpoonup0\). 同时 \(\displaystyle \|e_n\|_2=1\) 对所有 \(\displaystyle n\) 成立，这与\autoref{fa:UBP-B01}一致. 该反例已经在 I-07 中建立，本章只复用其弱收敛与范数计算.
+\end{FAExample}
+
+\begin{FACounterexample}[任意收敛网的整个取值范围可以无界]\label{i08:arbitrary-net-unbounded-range}
+令 \(\displaystyle D\) 为 \(\displaystyle \mathbb N\) 的所有有限子集，并按包含关系排序. 对任意 \(\displaystyle F,G\in D\)，有限集 \(\displaystyle F\cup G\in D\) 同时满足 \(\displaystyle F\subseteq F\cup G\) 与 \(\displaystyle G\subseteq F\cup G\)，故 \(\displaystyle D\) 是有向集. 定义实数网
+\[
+x_F=
+\begin{cases}
+0,&1\in F,\\
+\max F,&1\notin F\text{ 且 }F\neq\varnothing,\\
+0,&F=\varnothing.
+\end{cases}
+\]
+若 \(\displaystyle F\geqslant\{1\}\)，即 \(\displaystyle F\supseteq\{1\}\)，则 \(\displaystyle 1\in F\)，所以 \(\displaystyle x_F=0\). 因此该网最终恒为零，从而 \(\displaystyle x_F\to0\) 甚至在 \(\displaystyle \mathbb R\) 的范数拓扑中成立. 但是对每个 \(\displaystyle n\geqslant2\)，有 \(\displaystyle x_{\{n\}}=n\)，故整个取值范围无界. 因而“任意弱收敛网的整个取值范围范数有界”不是\autoref{fa:UBP-B01}的结论. 这个例子只用于说明序列结论不能扩张到任意网.
+\end{FACounterexample}
+
+\begin{FARemark}[为什么序列与任意网不同]
+标量收敛序列只有有限多个初始项落在任意给定最终邻域之外，因此其整个值域自动有界. 任意网在某个最终指标之前可以包含无限多个彼此不可比较的指标，因而其“非最终部分”可以产生无界取值. 上一反例正是利用这一差别.
+\end{FARemark}
+
+\begin{FACorollary}[B][Banach预对偶上的弱*收敛序列范数有界]{i08:weak-star-sequence-bounded}
+设 \(\displaystyle X\) 为Banach空间，且 \(\displaystyle x_n^*,x^*\in X^*\). 若
+\(\displaystyle x_n^*\overset{w^*}{\longrightarrow}x^*\)，
+则
+\[
+\sup_n\|x_n^*\|<\infty.
+\]
+\end{FACorollary}
+
+\begin{FAProof}
+对每个固定 \(\displaystyle x\in X\)，弱*收敛给出 \(\displaystyle x_n^*(x)\to x^*(x)\)，所以标量序列 \(\displaystyle (x_n^*(x))\) 有界，即
+\[
+\sup_n|x_n^*(x)|<\infty.
+\]
+因此 \(\displaystyle \{x_n^*:n\in\mathbb N\}\subseteq\mathcal B(X,\mathbb K)\) 在Banach定义域 \(\displaystyle X\) 上逐点有界. 应用\autoref{fa:UBP-A01}即得 \(\displaystyle \sup_n\|x_n^*\|<\infty\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACounterexample}[不完备预对偶上的弱*收敛序列可以范数无界]\label{i08:weak-star-incomplete-predual}
+仍取 \(\displaystyle X=c_{00}\) 配 \(\displaystyle \|\cdot\|_\infty\)，并定义 \(\displaystyle f_n(x)=n x_n\). 由\autoref{i08:ce-incomplete-ubp}已知 \(\displaystyle f_n\in X^*\) 且 \(\displaystyle \|f_n\|=n\). 对每个固定 \(\displaystyle x\in c_{00}\)，存在 \(\displaystyle N_x\) 使 \(\displaystyle x_n=0\) 对所有 \(\displaystyle n>N_x\) 成立，所以 \(\displaystyle f_n(x)=0\) 最终成立. 因而
+\(\displaystyle f_n\overset{w^*}{\longrightarrow}0\)
+相对于预对偶 \(\displaystyle c_{00}\) 成立，但 \(\displaystyle \|f_n\|=n\to\infty\). 因此在预对偶不完备时，不能无条件断言弱*收敛序列范数有界.
+\end{FACounterexample}
+
+\begin{FAWarning}[后续定理边界]
+本章没有证明或使用开映射定理、有界逆定理、闭图像定理；它们留到 I-09. 本章也没有使用Banach--Alaoglu定理或自反空间闭单位球的弱紧性；它们留到 I-10. Banach对偶算子与Hilbert伴随留到 I-11，本章不定义 \(\displaystyle \mathcal T'\) 或 \(\displaystyle \mathcal T^*\) 作为算子理论对象.
+\end{FAWarning}
+
+\subsection{本章习题}\label{sec:i08-exercises}
+
+\begin{FAExercise}[无处稠密的闭包判据]{ex:i08-01}
+证明对任意 \(\displaystyle A\subseteq X\)，\(\displaystyle A\) 无处稠密当且仅当每个非空开集 \(\displaystyle U\) 都包含非空开集 \(\displaystyle V\subseteq U\) 使 \(\displaystyle V\cap\overline A=\varnothing\).
+\end{FAExercise}
+
+\begin{FAExercise}[第一纲集的可数并稳定性]{ex:i08-02}
+证明可数个第一纲集之并仍为第一纲集. 只允许使用定义，不调用Baire纲定理.
+\end{FAExercise}
+
+\begin{FAExercise}[开稠密形式]{ex:i08-03}
+设 \(\displaystyle X\) 为Baire空间，\(\displaystyle G_n\) 为开稠密集. 证明对任意非空开集 \(\displaystyle U\)，都有 \(\displaystyle U\cap\bigcap_nG_n\neq\varnothing\).
+\end{FAExercise}
+
+\begin{FAExercise}[闭集覆盖形式]{ex:i08-04}
+从\autoref{fa:BAI-A01}重新推导\autoref{fa:BAI-C01}，并明确指出闭性在哪里用于把“内部为空”转化为补集稠密.
+\end{FAExercise}
+
+\begin{FAExercise}[嵌套球中的闭包包含]{ex:i08-05}
+设 \(\displaystyle W\) 是度量空间中的非空开集，\(\displaystyle x\in W\). 构造 \(\displaystyle r>0\) 使 \(\displaystyle \overline{B(x,r)}\subseteq W\)，并说明为什么不需要闭球紧.
+\end{FAExercise}
+
+\begin{FAExercise}[Baire证明中的Cauchy步骤]{ex:i08-06}
+在\autoref{fa:BAI-A01}的构造中，从 \(\displaystyle \overline{V_{n+1}}\subseteq V_n\) 与 \(\displaystyle r_n<2^{-n}\) 出发，完整证明中心序列 \(\displaystyle (x_n)\) 为Cauchy序列.
+\end{FAExercise}
+
+\begin{FAExercise}[有理数的Baire失败]{ex:i08-07}
+证明 \(\displaystyle \mathbb Q\) 在通常距离下不完备，并验证每个单点在 \(\displaystyle \mathbb Q\) 的相对拓扑中闭且内部为空，从而重建\autoref{i08:ce-incomplete-baire}.
+\end{FAExercise}
+
+\begin{FAExercise}[一致有界性中的闭集]{ex:i08-08}
+对\autoref{fa:UBP-A01}中的 \(\displaystyle E_m\)，逐个写出连续映射的闭集原像并证明 \(\displaystyle E_m\) 为任意交闭集.
+\end{FAExercise}
+
+\begin{FAExercise}[逐点有界给出可数覆盖]{ex:i08-09}
+证明逐点有界性确实推出 \(\displaystyle X=\bigcup_{m=1}^{\infty}E_m\). 解释为什么使用正整数 \(\displaystyle m\) 已经足够覆盖任意有限逐点上界.
+\end{FAExercise}
+
+\begin{FAExercise}[局部界到算子范数界]{ex:i08-10}
+假设 \(\displaystyle B(x_0,r)\subseteq E_N\). 完整推导 \(\displaystyle \|\mathcal T h\|\leqslant2N\) 对 \(\displaystyle \|h\|<r\) 成立，并利用缩放得到统一算子范数界. 比较取 \(\displaystyle h=(\frac{r}{2})x\) 与任意 \(\displaystyle h=\theta r x\)，其中 \(\displaystyle0<\theta<1\).
+\end{FAExercise}
+
+\begin{FAExercise}[值域完备性并非必要]{ex:i08-11}
+检查\autoref{fa:UBP-A01}的每一步，列出真正使用的完备空间，并说明为什么不需要 \(\displaystyle Y\) 为Banach空间，也不需要 \(\displaystyle \mathcal B(X,Y)\) 完备.
+\end{FAExercise}
+
+\begin{FAExercise}[不完备定义域上的失败]{ex:i08-12}
+对 \(\displaystyle X=c_{00}\) 与 \(\displaystyle \mathcal T_n(x)=nx_n\)，逐步证明 \(\displaystyle \|\mathcal T_n\|=n\) 以及逐点有界性. 指出该例删掉的假设和失败的结论分别是什么.
+\end{FAExercise}
+
+\begin{FAExercise}[逐点极限算子的线性]{ex:i08-13}
+在\autoref{fa:UBP-B02}中，不引用任何后续定理，只用向量空间运算连续性证明 \(\displaystyle \mathcal T(\alpha x+\beta y)=\alpha\mathcal T x+\beta\mathcal T y\).
+\end{FAExercise}
+
+\begin{FAExercise}[坐标泛函不按算子范数收敛]{ex:i08-14}
+对 \(\displaystyle 1\leqslant p<\infty\)，证明 \(\displaystyle \pi_n(x)=x_n\) 逐点趋于零且 \(\displaystyle \|\pi_n\|=1\). 由此说明逐点收敛与算子范数收敛的差别.
+\end{FAExercise}
+
+\begin{FAExercise}[部分坐标投影]{ex:i08-15}
+证明 \(\displaystyle P_nx\to x\) 于 \(\displaystyle \ell^p\) 范数、\(\displaystyle \|P_n\|=1\) 且 \(\displaystyle \|I-P_n\|=1\). 说明这一例与\autoref{fa:UBP-B02}完全相容.
+\end{FAExercise}
+
+\begin{FAExercise}[弱收敛序列的自然嵌入路线]{ex:i08-16}
+设 \(\displaystyle X\) 仅为赋范空间，\(\displaystyle x_n\rightharpoonup x\). 逐项验证 \(\displaystyle \{J_Xx_n\}\) 在 \(\displaystyle X^*\) 上逐点有界，并说明为什么 \(\displaystyle X^*\) 的完备性足够应用一致有界性原理.
+\end{FAExercise}
+
+\begin{FAExercise}[为什么原空间不必完备]{ex:i08-17}
+在\autoref{fa:UBP-B01}的证明中标记每一次使用完备性的具体对象，并据此证明命题不要求 \(\displaystyle X\) 本身为Banach空间.
+\end{FAExercise}
+
+\begin{FAExercise}[任意网的错误扩张]{ex:i08-18}
+完整验证\autoref{i08:arbitrary-net-unbounded-range}中 \(\displaystyle D\) 是有向集、该网最终恒为零且整个值域无界. 解释为什么这不构成任何收敛序列的反例.
+\end{FAExercise}
+
+\begin{FAExercise}[Banach预对偶上的弱*序列]{ex:i08-19}
+设 \(\displaystyle X\) 为Banach空间且 \(\displaystyle x_n^*\overset{w^*}{\longrightarrow}x^*\). 从逐点标量收敛出发，不借助Banach--Alaoglu，证明 \(\displaystyle \sup_n\|x_n^*\|<\infty\).
+\end{FAExercise}
+
+\begin{FAExercise}[不完备预对偶与未来定理边界]{ex:i08-20}
+对 \(\displaystyle c_{00}\) 上的 \(\displaystyle f_n(x)=nx_n\)，证明 \(\displaystyle f_n\overset{w^*}{\longrightarrow}0\) 但 \(\displaystyle \|f_n\|\to\infty\). 然后判断下列两种论证是否允许在本章使用，并说明原因：用开映射定理证明一致有界性；用Banach--Alaoglu证明弱*序列范数有界.
+\end{FAExercise}

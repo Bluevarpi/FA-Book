@@ -1,0 +1,477 @@
+\chapter{度量空间、完备性与压缩原理}\label{chap:I-02}
+\FAChapterOpening
+{建立度量空间完备化的存在唯一性；闭合紧、列紧、完备且总有界三者在度量空间中的等价链；证明 Arzelà--Ascoli 选定版本；建立 Banach 压缩映射原理并应用于迭代与积分方程.}
+{I-01，特别是\autoref{fa:FND-A01}的度量、Cauchy、完备与紧性定义，\autoref{fa:FND-C01}的紧性工具，以及\autoref{fa:FND-B02}的一般网刻画.}
+{\centering
+\begin{tikzpicture}
+\node[fa/node] (a01) at (0,0) {度量/完备/紧性};
+\node[fa/node] (a02) at (3,0) {完备化定理};
+\node[fa/node] (fp) at (3,-1.6) {Banach压缩原理};
+\node[fa/node] (c02) at (0,-3.2) {完备/总有界工具};
+\node[fa/node] (b03) at (3,-3.2) {紧性等价刻画};
+\node[fa/node] (b04) at (6,-3.2) {Arzelà--Ascoli定理};
+\draw[fa/arrow] (a01) -- (a02);
+\draw[fa/arrow] (a01.south) |- (fp.west);
+\draw[fa/arrow] (c02) -- (b03);
+\draw[fa/arrow] (b03) -- (b04);
+\end{tikzpicture}}
+
+本章只在度量空间层面工作.\autoref{fa:FND-A01}已冻结度量、Cauchy 列、完备性与开覆盖紧性的定义，本章不重复建立这些定义，而是研究它们之间的结构关系.
+
+\section{度量与拓扑}\label{sec:i02-metric}
+\index{metric topology@度量拓扑}\index{Lipschitz mapping@Lipschitz映射}\index{isometry@等距映射}\index{dense subset@稠密子集}
+
+\subsection{度量拓扑中的连续性}
+
+对度量空间 \(\displaystyle (X,d)\)、\(\displaystyle (Y,\rho)\)，连续性沿用 I-01 的拓扑定义. 下述形式把该定义转化为后文直接使用的估计语言.
+
+\begin{FAProposition}[C][度量连续性的 \(\displaystyle \varepsilon\)-\(\displaystyle \delta\) 形式]{i02:metric-continuity}
+映射 \(\displaystyle f:X\to Y\) 连续，当且仅当
+\[
+\forall\,x\in X\ \forall\,\varepsilon>0\ \exists\,\delta>0\ \forall\,y\in X,
+\quad d(x,y)<\delta\Longrightarrow \rho(f(x),f(y))<\varepsilon.
+\]
+\end{FAProposition}
+
+\begin{FAProof}
+设 \(\displaystyle f\) 连续. 任取 \(\displaystyle x\in X\) 与 \(\displaystyle \varepsilon>0\). 因 \(\displaystyle B_Y(f(x),\varepsilon)\) 开，\(\displaystyle f^{-1}(B_Y(f(x),\varepsilon))\) 是含 \(\displaystyle x\) 的开集，故存在 \(\displaystyle \delta>0\) 使 \(\displaystyle B_X(x,\delta)\subseteq f^{-1}(B_Y(f(x),\varepsilon))\)，得到所需估计.
+
+反之，设上述全称估计成立. 任取开集 \(\displaystyle V\subseteq Y\). 对每个 \(\displaystyle x\in f^{-1}(V)\)，由 \(\displaystyle V\) 开，取 \(\displaystyle \varepsilon_x>0\) 使 \(\displaystyle B_Y(f(x),\varepsilon_x)\subseteq V\)；再由假设取 \(\displaystyle \delta_x>0\)，使 \(\displaystyle d(x,y)<\delta_x\Rightarrow \rho(f(x),f(y))<\varepsilon_x\). 因而 \(\displaystyle B_X(x,\delta_x)\subseteq f^{-1}(V)\). 所以 \(\displaystyle f^{-1}(V)\) 开，\(\displaystyle f\) 连续.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FADefinition}[C][Lipschitz、压缩与等距映射]{i02:metric-maps}
+设 \(\displaystyle f:(X,d)\to(Y,\rho)\).
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 若 \(\displaystyle \exists\,L\geqslant0\ \forall\,x,y\in X,\ \rho(f(x),f(y))\leqslant Ld(x,y)\)，则称 \(\displaystyle f\) 为 Lipschitz 映射.
+\item 若 \(\displaystyle \exists\,q\in[0,1)\ \forall\,x,y\in X,\ \rho(f(x),f(y))\leqslant qd(x,y)\)，则称 \(\displaystyle f\) 为压缩映射.
+\item 若 \(\displaystyle \forall\,x,y\in X,\ \rho(f(x),f(y))=d(x,y)\)，则称 \(\displaystyle f\) 为等距映射.
+\end{enumerate}
+\end{FADefinition}
+
+若 \(\displaystyle f\) 为 Lipschitz 映射且常数为 \(\displaystyle L\)，则 \(\displaystyle L=0\) 时 \(\displaystyle \rho(f(x),f(y))=0\)；\(\displaystyle L>0\) 时，对任意 \(\displaystyle \varepsilon>0\) 取 \(\displaystyle \delta=\frac{\varepsilon}{L}\)，由 \(\displaystyle d(x,y)<\delta\) 得 \(\displaystyle \rho(f(x),f(y))<\varepsilon\). 因而由命题\ref{i02:metric-continuity}，Lipschitz 映射连续. 若 \(\displaystyle f\) 等距且 \(\displaystyle f(x)=f(y)\)，则 \(\displaystyle d(x,y)=\rho(f(x),f(y))=0\)，故 \(\displaystyle x=y\)，所以等距映射为单射. 若 \(\displaystyle A\subseteq X\) 满足 \(\displaystyle \overline A=X\)，则称 \(\displaystyle A\) 在 \(\displaystyle X\) 中稠密. 这些概念只使用 I-01 已建立的度量拓扑与闭包语言.
+
+\begin{FAExample}[连续函数的度量接口]
+对非空紧度量空间 \(\displaystyle K\)，记 \(\displaystyle C(K;\mathbb K)\) 为所有连续映射 \(\displaystyle K\to\mathbb K\) 的集合，其中 \(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). 第\ref{sec:i02-compactness}节将在不引入赋范空间结构的前提下定义其上确界度量，并证明所需完备性.
+\end{FAExample}
+
+\begin{FAExample}[仅作对象预告]
+记 \(\displaystyle c_0=\{(x_n)_{n\in\mathbb N}:x_n\in\mathbb K,\ x_n\to0\}\). 本章只保留这一集合记号作为后续对象预告，不定义其范数，不证明其 Banach 性；这些内容的正式建立位置为 I-03.
+\end{FAExample}
+
+\section{Cauchy列与完备化}\label{sec:i02-completion}
+\index{completion@完备化}\index{Cauchy sequence@Cauchy列}
+
+\subsection{Cauchy 基本工具}
+
+\begin{FALemma}[C][Cauchy 列的三个基本事实]{i02:cauchy-basic}
+设 \(\displaystyle (X,d)\) 为度量空间.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 每个收敛序列都是 Cauchy 列.
+\item 若 Cauchy 列 \(\displaystyle (x_n)\) 有子序列 \(\displaystyle x_{n_k}\to x\)，则 \(\displaystyle x_n\to x\).
+\item 若 \(\displaystyle (x_n)\)、\(\displaystyle (y_n)\) 均为 Cauchy 列，则实数列 \(\displaystyle (d(x_n,y_n))\) 为 Cauchy 列.
+\end{enumerate}
+\end{FALemma}
+
+\begin{FAProof}
+对（i），若 \(\displaystyle x_n\to x\)，给定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle N\) 使 \(\displaystyle n\geqslant N\Rightarrow d(x_n,x)<\frac{\varepsilon}{2}\). 则 \(\displaystyle m,n\geqslant N\) 时
+\(\displaystyle d(x_m,x_n)\leqslant d(x_m,x)+d(x,x_n)<\varepsilon\).
+对（ii），给定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle N_1\) 使 \(\displaystyle m,n\geqslant N_1\Rightarrow d(x_m,x_n)<\frac{\varepsilon}{2}\)，因 \(\displaystyle n_k\to\infty\)，再取 \(\displaystyle k\) 使 \(\displaystyle n_k\geqslant N_1\) 且 \(\displaystyle d(x_{n_k},x)<\frac{\varepsilon}{2}\). 对 \(\displaystyle n\geqslant N_1\)，有 \(\displaystyle d(x_n,x)<\varepsilon\). 对（iii），反三角不等式给出
+\(\displaystyle |d(x_m,y_m)-d(x_n,y_n)|\leqslant d(x_m,x_n)+d(y_m,y_n)\)，
+右端随 \(\displaystyle m,n\to\infty\) 趋于 \(\displaystyle0\)，故结论成立.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{完备性与总有界局部工具}
+
+\begin{FAProposition}[C][完备性与紧性局部工具]{fa:FND-C02}
+设 \(\displaystyle (X,d)\) 为度量空间.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 若 \(\displaystyle X\) 完备且 \(\displaystyle F\subseteq X\) 闭，则 \(\displaystyle F\) 取子空间度量后完备.
+\item 若 \(\displaystyle A\subseteq X\) 取子空间度量后完备，则 \(\displaystyle A\) 在 \(\displaystyle X\) 中闭.
+\item 若 \(\displaystyle X\) 总有界，则 \(\displaystyle X\) 中每个序列都有 Cauchy 子序列.
+\item 若 \(\displaystyle A\subseteq X\) 总有界，则 \(\displaystyle \overline A\) 总有界.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+对（i），设 \(\displaystyle (x_n)\subseteq F\) 为 Cauchy 列. 由 \(\displaystyle X\) 完备，存在 \(\displaystyle x\in X\) 使 \(\displaystyle x_n\to x\)；由 \(\displaystyle F\) 闭，\(\displaystyle x\in F\).
+
+对（ii），取 \(\displaystyle x\in\overline A\). 若 \(\displaystyle A=\varnothing\)，则 \(\displaystyle \overline A=\varnothing\)，无事可证；否则对每个 \(\displaystyle n\in\mathbb N\)，由 \(\displaystyle x\in\overline A\) 取 \(\displaystyle a_n\in A\cap B_X(x,\frac{1}{n})\). 由 \(\displaystyle a_n\to x\) 与引理\ref{i02:cauchy-basic}（i），\(\displaystyle (a_n)\) 为 Cauchy 列. \(\displaystyle A\) 完备给出 \(\displaystyle a_n\to a\in A\). 度量空间极限唯一，故 \(\displaystyle a=x\in A\)，于是 \(\displaystyle A\) 闭.
+
+对（iii），给定序列 \(\displaystyle (x_n)\). 由总有界性，用有限个半径 \(\displaystyle 2^{-1}\) 的球覆盖 \(\displaystyle X\)，其中至少一个球含有无穷多个 \(\displaystyle x_n\)；记这些指标组成无穷集 \(\displaystyle N_1\subseteq\mathbb N\). 递归地，若无穷集 \(\displaystyle N_k\) 已取定，则用有限个半径 \(\displaystyle 2^{-(k+1)}\) 的球覆盖 \(\displaystyle X\)，至少一个球含有指标属于 \(\displaystyle N_k\) 的无穷多个项，记这些指标组成 \(\displaystyle N_{k+1}\subseteq N_k\). 取 \(\displaystyle n_1\in N_1\)，并递归取 \(\displaystyle n_{k+1}\in N_{k+1}\) 使 \(\displaystyle n_{k+1}>n_k\). 若 \(\displaystyle p,q\geqslant k\)，则 \(\displaystyle n_p,n_q\in N_k\)，对应两项落在同一半径 \(\displaystyle 2^{-k}\) 的球内，故
+\(\displaystyle d(x_{n_p},x_{n_q})<2^{1-k}\to0\).
+所以 \(\displaystyle (x_{n_k})\) 为 Cauchy 子序列.
+
+对（iv），给定 \(\displaystyle \varepsilon>0\)，取有限集 \(\displaystyle F\subseteq A\) 使 \(\displaystyle A\subseteq\bigcup_{z\in F}B_X(z,\frac{\varepsilon}{2})\). 对任意 \(\displaystyle x\in\overline A\)，存在 \(\displaystyle a\in A\) 使 \(\displaystyle d(x,a)<\frac{\varepsilon}{2}\)，再取 \(\displaystyle z\in F\) 使 \(\displaystyle d(a,z)<\frac{\varepsilon}{2}\)，于是 \(\displaystyle d(x,z)<\varepsilon\). 因而 \(\displaystyle \overline A\subseteq\bigcup_{z\in F}B_X(z,\varepsilon)\). 四项均得证.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Cauchy 等价类与完备化度量}
+
+令 \(\displaystyle \mathcal C(X)\) 表示 \(\displaystyle X\) 中全部 Cauchy 列的集合. 对 \(\displaystyle (x_n),(y_n)\in\mathcal C(X)\)，定义 \(\displaystyle (x_n)\sim(y_n)\iff d(x_n,y_n)\to0\).
+
+\begin{FALemma}[C][Cauchy 商集上的距离]{i02:completion-metric}
+关系 \(\displaystyle \sim\) 是 \(\displaystyle \mathcal C(X)\) 上的等价关系. 在商集 \(\displaystyle \widehat X=\mathcal C(X)/{\sim}\) 上定义 \(\displaystyle \widehat d([(x_n)],[(y_n)])=\lim_{n\to\infty}d(x_n,y_n)\).
+则右端极限存在、与代表元无关，且 \(\displaystyle \widehat d\) 是 \(\displaystyle \widehat X\) 上的度量.
+\end{FALemma}
+
+\begin{FAProof}
+自反性与对称性直接由度量性质得到. 若 \(\displaystyle (x_n)\sim(y_n)\) 且 \(\displaystyle (y_n)\sim(z_n)\)，则 \(\displaystyle d(x_n,z_n)\leqslant d(x_n,y_n)+d(y_n,z_n)\longrightarrow0\)，
+故传递性成立.
+
+由引理\ref{i02:cauchy-basic}（iii），\(\displaystyle (d(x_n,y_n))\) 是实 Cauchy 列；实数完备性给出其极限. 若 \(\displaystyle (x_n)\sim(x_n')\)、\(\displaystyle (y_n)\sim(y_n')\)，则 \(\displaystyle |d(x_n,y_n)-d(x_n',y_n')| \leqslant d(x_n,x_n')+d(y_n,y_n')\longrightarrow0\)，
+故极限与代表元无关.
+
+非负性与对称性由 \(\displaystyle d\) 逐项传递到极限. 若 \(\displaystyle \widehat d([(x_n)],[(y_n)])=0\)，则 \(\displaystyle d(x_n,y_n)\to0\)，即 \(\displaystyle (x_n)\sim(y_n)\)，故两等价类相同；反向结论由定义成立. 对三类 \(\displaystyle [(x_n)],[(y_n)],[(z_n)]\)，逐项三角不等式取极限得到
+\[
+\widehat d([(x_n)],[(z_n)])
+\leqslant \widehat d([(x_n)],[(y_n)])+\widehat d([(y_n)],[(z_n)]).
+\]
+因此 \(\displaystyle \widehat d\) 为度量.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{完备化定理}
+
+\begin{FATheorem}[A][完备化定理]{fa:FND-A02}
+对任意度量空间 \(\displaystyle (X,d)\)，存在完备度量空间 \(\displaystyle (\widehat X,\widehat d)\) 与等距映射 \(\displaystyle \iota:X\to\widehat X\)，使 \(\displaystyle \iota(X)\) 在 \(\displaystyle \widehat X\) 中稠密. 若完备度量空间 \(\displaystyle (Y,\rho)\) 与等距映射 \(\displaystyle j:X\to Y\) 也满足 \(\displaystyle \overline{j(X)}=Y\)，则存在唯一满等距映射 \(\displaystyle U:\widehat X\to Y\) 满足 \(\displaystyle U\circ\iota=j\).
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle X=\varnothing\)，取 \(\displaystyle \widehat X=\varnothing\) 与唯一映射 \(\displaystyle \iota\). 此时任何满足 \(\displaystyle \overline{j(X)}=Y\) 的完备化必有 \(\displaystyle Y=\varnothing\)，唯一性结论成立. 以下设 \(\displaystyle X\neq\varnothing\)，并采用引理\ref{i02:completion-metric}的 \(\displaystyle (\widehat X,\widehat d)\).
+
+对 \(\displaystyle x\in X\)，令 \(\displaystyle \iota(x)=[(x,x,\dots)]\). 则
+\(\displaystyle \widehat d(\iota(x),\iota(y))=\lim_{n\to\infty}d(x,y)=d(x,y)\)，
+故 \(\displaystyle \iota\) 等距.
+
+证明稠密性. 任取 \(\displaystyle \xi=[(x_n)]\in\widehat X\) 与 \(\displaystyle \varepsilon>0\). 由 \(\displaystyle (x_n)\) 为 Cauchy 列，取 \(\displaystyle N\) 使 \(\displaystyle m,n\geqslant N\Rightarrow d(x_m,x_n)<\frac{\varepsilon}{2}\). 因而
+\[
+\widehat d(\iota(x_N),\xi)=\lim_{m\to\infty}d(x_N,x_m)\leqslant\frac{\varepsilon}{2}<\varepsilon.
+\]
+所以 \(\displaystyle \overline{\iota(X)}=\widehat X\).
+
+证明 \(\displaystyle \widehat X\) 完备. 设 \(\displaystyle (\xi_k)_{k\in\mathbb N}\) 是 \(\displaystyle \widehat d\)-Cauchy 列. 由 \(\displaystyle \iota(X)\) 稠密，对每个 \(\displaystyle k\in\mathbb N\) 取 \(\displaystyle x_k\in X\) 使
+\(\displaystyle \widehat d(\xi_k,\iota(x_k))<\frac{1}{k}\).
+给定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle K\) 使 \(\displaystyle k,\ell\geqslant K\Rightarrow\widehat d(\xi_k,\xi_\ell)<\frac{\varepsilon}{3}\) 且 \(\displaystyle \frac{1}{K}<\frac{\varepsilon}{3}\). 则 \(\displaystyle k,\ell\geqslant K\) 时
+\[
+d(x_k,x_\ell)=\widehat d(\iota(x_k),\iota(x_\ell))
+<\frac1k+\frac\varepsilon3+\frac1\ell<\varepsilon.
+\]
+故 \(\displaystyle (x_k)\in\mathcal C(X)\). 令 \(\displaystyle \xi=[(x_k)]\). 再给定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle K\) 使 \(\displaystyle k,\ell\geqslant K\Rightarrow d(x_k,x_\ell)<\frac{\varepsilon}{3}\) 且 \(\displaystyle \frac{1}{K}<\frac{\varepsilon}{3}\). 对 \(\displaystyle k\geqslant K\)，有
+\[
+\widehat d(\iota(x_k),\xi)=\lim_{\ell\to\infty}d(x_k,x_\ell)\leqslant\frac{\varepsilon}{3},
+\]
+从而
+\[
+\widehat d(\xi_k,\xi)
+\leqslant\widehat d(\xi_k,\iota(x_k))+\widehat d(\iota(x_k),\xi)
+<\frac1k+\frac\varepsilon3<\varepsilon.
+\]
+所以 \(\displaystyle \xi_k\to\xi\)，\(\displaystyle \widehat X\) 完备.
+
+现证明唯一性. 设 \(\displaystyle (Y,\rho),j\) 满足定理条件. 对 \(\displaystyle \xi=[(x_n)]\in\widehat X\)，序列 \(\displaystyle (j(x_n))\) 在 \(\displaystyle Y\) 中为 Cauchy 列，因为
+\(\displaystyle \rho(j(x_m),j(x_n))=d(x_m,x_n)\).
+由 \(\displaystyle Y\) 完备，定义 \(\displaystyle U(\xi)=\lim_{n\to\infty}j(x_n)\).
+若 \(\displaystyle [(x_n)]=[(y_n)]\)，则 \(\displaystyle \rho(j(x_n),j(y_n))=d(x_n,y_n)\to0\)，故两极限相同，\(\displaystyle U\) 良定义. 对 \(\displaystyle \xi=[(x_n)]\)、\(\displaystyle \eta=[(y_n)]\)，由三角不等式
+\[
+\left|\rho(U\xi,U\eta)-\rho(j(x_n),j(y_n))\right|
+\leqslant \rho(U\xi,j(x_n))+\rho(U\eta,j(y_n))\longrightarrow0,
+\]
+所以 \(\displaystyle \rho(U\xi,U\eta)=\lim_{n\to\infty}d(x_n,y_n)=\widehat d(\xi,\eta)\).
+因此 \(\displaystyle U\) 等距，且对 \(\displaystyle x\in X\)，常值列给出 \(\displaystyle U(\iota(x))=j(x)\).
+
+证明满射. 任取 \(\displaystyle y\in Y\). 由 \(\displaystyle j(X)\) 稠密，对每个 \(\displaystyle n\in\mathbb N\) 取 \(\displaystyle x_n\in X\) 使 \(\displaystyle \rho(j(x_n),y)<\frac{1}{n}\). 则 \(\displaystyle j(x_n)\to y\)，故 \(\displaystyle (j(x_n))\) 为 Cauchy 列，等距性推出 \(\displaystyle (x_n)\) 为 Cauchy 列. 对 \(\displaystyle \xi=[(x_n)]\)，定义给出 \(\displaystyle U\xi=y\). 因而 \(\displaystyle U\) 满射.
+
+最后设 \(\displaystyle V:\widehat X\to Y\) 也是等距映射且 \(\displaystyle V\circ\iota=j\). 对 \(\displaystyle \xi=[(x_n)]\)，Cauchy 性给出 \(\displaystyle \widehat d(\iota(x_n),\xi)\to0\). 由 \(\displaystyle V\) 等距，
+\(\displaystyle \rho(V(\iota(x_n)),V\xi)=\widehat d(\iota(x_n),\xi)\to0\)，
+故 \(\displaystyle V(\iota(x_n))\to V\xi\). 又 \(\displaystyle V\circ\iota=j\)，所以
+\(\displaystyle V\xi=\lim_{n\to\infty}j(x_n)=U\xi\).
+故 \(\displaystyle V=U\)，唯一性成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[唯一性语义]
+完备化并非要求底层集合唯一，而是要求带有原空间稠密等距嵌入的完备度量空间在唯一满等距映射意义下唯一. 因而以后可把任何具体完备化与 \(\displaystyle \widehat X\) 通过该唯一等距同一化.
+\end{FARemark}
+
+\begin{FAExample}[\(\displaystyle \mathbb Q\hookrightarrow\mathbb R\)]
+在通常距离下，\(\displaystyle \mathbb R\) 完备，且 \(\displaystyle \mathbb Q\) 在 \(\displaystyle \mathbb R\) 中稠密. 故包含映射 \(\displaystyle j:\mathbb Q\hookrightarrow\mathbb R\) 给出 \(\displaystyle \mathbb Q\) 的一个完备化. 由\autoref{fa:FND-A02}，Cauchy 等价类构造所得 \(\displaystyle \widehat{\mathbb Q}\) 与 \(\displaystyle \mathbb R\) 存在唯一满等距映射 \(\displaystyle U\)，且 \(\displaystyle U\circ\iota=j\).
+\end{FAExample}
+
+\section{紧性、列紧性与总有界}\label{sec:i02-compactness}
+\index{sequential compactness@列紧性}\index{totally bounded@总有界}\index{Arzela-Ascoli@Arzelà--Ascoli定理}
+
+I-01 已定义列紧与总有界，但未建立它们与紧性的度量等价. 本节只在度量空间中闭合该关系.
+
+\subsection{三种紧性刻画的等价}
+
+\begin{FALemma}[C][列紧推出 Lebesgue 数性质]{i02:lebesgue-number}
+设 \(\displaystyle (X,d)\) 列紧，\(\displaystyle \mathcal U\) 为 \(\displaystyle X\) 的开覆盖. 则存在 \(\displaystyle \delta>0\)，使对每个 \(\displaystyle x\in X\)，存在 \(\displaystyle U\in\mathcal U\) 满足 \(\displaystyle B_X(x,\delta)\subseteq U\).
+\end{FALemma}
+
+\begin{FAProof}
+若结论失败，则对每个 \(\displaystyle n\in\mathbb N\) 可取 \(\displaystyle x_n\in X\)，使 \(\displaystyle B_X(x_n,\frac{1}{n})\) 不包含于 \(\displaystyle \mathcal U\) 的任何成员. 由列紧性，存在子序列 \(\displaystyle x_{n_k}\to x\in X\). 取 \(\displaystyle U\in\mathcal U\) 使 \(\displaystyle x\in U\)，再取 \(\displaystyle r>0\) 使 \(\displaystyle B_X(x,r)\subseteq U\). 对充分大的 \(\displaystyle k\)，有 \(\displaystyle d(x_{n_k},x)<\frac{r}{2}\) 且 \(\displaystyle \frac{1}{n_k}<\frac{r}{2}\). 若 \(\displaystyle y\in B_X(x_{n_k},\frac{1}{n_k})\)，则 \(\displaystyle d(y,x)<r\)，故 \(\displaystyle y\in U\). 于是 \(\displaystyle B_X(x_{n_k},\frac{1}{n_k})\subseteq U\)，矛盾.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][紧、列紧、完备且总有界的等价]{fa:FND-B03}
+对度量空间 \(\displaystyle (X,d)\)，以下三条等价：
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(\displaystyle X\) 紧.
+\item \(\displaystyle X\) 列紧.
+\item \(\displaystyle X\) 完备且总有界.
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+先证（i）\(\displaystyle \Rightarrow\)（iii）. 给定 \(\displaystyle \varepsilon>0\)，开球族 \(\displaystyle \{B_X(x,\varepsilon):x\in X\}\) 覆盖 \(\displaystyle X\). 紧性给出有限子覆盖，故 \(\displaystyle X\) 总有界.
+
+再证完备性. 设 \(\displaystyle (x_n)\) 为 Cauchy 列，并令 \(\displaystyle F_N=\overline{\{x_n:n\geqslant N\}},\; N\in\mathbb N\).
+每个 \(\displaystyle F_N\) 非空且闭，且 \(\displaystyle F_{N+1}\subseteq F_N\)，故 \(\displaystyle \{F_N\}\) 具有有限交性质. 由紧性与\autoref{fa:FND-C01}（i），存在 \(\displaystyle x\in\bigcap_{N\in\mathbb N}F_N\). 给定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle N\) 使 \(\displaystyle m,n\geqslant N\Rightarrow d(x_m,x_n)<\frac{\varepsilon}{2}\). 因 \(\displaystyle x\in F_N\)，存在 \(\displaystyle m\geqslant N\) 使 \(\displaystyle d(x,x_m)<\frac{\varepsilon}{2}\). 因而对 \(\displaystyle n\geqslant N\)，\(\displaystyle d(x_n,x)<\varepsilon\). 所以 \(\displaystyle x_n\to x\)，\(\displaystyle X\) 完备.
+
+证（iii）\(\displaystyle \Rightarrow\)（ii）. 任取 \(\displaystyle X\) 中序列. 由\autoref{fa:FND-C02}（iii），它有 Cauchy 子序列；由 \(\displaystyle X\) 完备，该子序列收敛. 故 \(\displaystyle X\) 列紧.
+
+证（ii）\(\displaystyle \Rightarrow\)（i）. 先证 \(\displaystyle X\) 总有界. 若不总有界，则存在 \(\displaystyle \varepsilon>0\)，使任意有限个半径 \(\displaystyle \varepsilon\) 的球都不能覆盖 \(\displaystyle X\). 取 \(\displaystyle x_1\in X\)，递归地，在 \(\displaystyle X\setminus\bigcup_{j=1}^{n}B_X(x_j,\varepsilon)\) 中取 \(\displaystyle x_{n+1}\). 则 \(\displaystyle m\neq n\Rightarrow d(x_m,x_n)\geqslant\varepsilon\)，所以该序列没有 Cauchy 子序列，从而没有收敛子序列，与列紧矛盾. 因此 \(\displaystyle X\) 总有界.
+
+现任取开覆盖 \(\displaystyle \mathcal U\). 由引理\ref{i02:lebesgue-number}，存在 \(\displaystyle \delta>0\)，使每个 \(\displaystyle B_X(x,\delta)\) 都包含于某个 \(\displaystyle U\in\mathcal U\). 总有界性给出有限集 \(\displaystyle \{x_1,\dots,x_N\}\subseteq X\)，使 \(\displaystyle X\subseteq\bigcup_{j=1}^{N}B_X(x_j,\frac{\delta}{2})\).
+对每个 \(\displaystyle j\)，取 \(\displaystyle U_j\in\mathcal U\) 使 \(\displaystyle B_X(x_j,\delta)\subseteq U_j\). 则 \(\displaystyle \{U_1,\dots,U_N\}\) 覆盖 \(\displaystyle X\)，故 \(\displaystyle X\) 紧. 三者等价.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[闭区间]
+由本科实分析的 Heine--Borel 定理，\(\displaystyle [0,1]\) 在通常度量下紧. 因而由\autoref{fa:FND-B03}，\(\displaystyle [0,1]\) 同时列紧，并且完备且总有界.
+\end{FAExample}
+
+\begin{FACounterexample}[删除完备性后的失败]
+令 \(\displaystyle X=(0,1)\) 取通常距离. 对任意 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle N\geqslant2\) 使 \(\displaystyle \frac{1}{N}<\varepsilon\)，有限点集 \(\displaystyle \{\frac{k}{N}:1\leqslant k\leqslant N-1\}\) 的 \(\displaystyle \varepsilon\)-球覆盖 \(\displaystyle X\)，故 \(\displaystyle X\) 总有界. 但 \(\displaystyle x_n=\frac{1}{n+1}\) 是 \(\displaystyle X\) 中的 Cauchy 列而在 \(\displaystyle X\) 中无极限，因此 \(\displaystyle X\) 不完备. 由\autoref{fa:FND-B03}，\(\displaystyle X\) 不紧. 所以删除“完备”假设后，“总有界 \(\displaystyle \Rightarrow\) 紧”失败.
+\end{FACounterexample}
+
+\subsection{连续函数空间的上确界度量接口}
+
+\begin{FALemma}[C][紧度量空间上的 Heine--Cantor 性质]{i02:heine-cantor}
+设 \(\displaystyle K\) 为紧度量空间，\(\displaystyle f:K\to\mathbb K\) 连续. 则 \(\displaystyle f\) 一致连续.
+\end{FALemma}
+
+\begin{FAProof}
+由\autoref{fa:FND-B03}，\(\displaystyle K\) 列紧. 若 \(\displaystyle f\) 不一致连续，则存在 \(\displaystyle \varepsilon_0>0\) 以及序列 \(\displaystyle (x_n),(y_n)\subseteq K\)，使 \(\displaystyle d(x_n,y_n)<\frac{1}{n}\) 且 \(\displaystyle |f(x_n)-f(y_n)|\geqslant\varepsilon_0\). 由列紧性，存在子序列 \(\displaystyle x_{n_k}\to x\in K\). 因 \(\displaystyle d(y_{n_k},x)\leqslant d(y_{n_k},x_{n_k})+d(x_{n_k},x)\longrightarrow0\)，
+有 \(\displaystyle y_{n_k}\to x\). 连续性给出 \(\displaystyle f(x_{n_k})\to f(x)\) 与 \(\displaystyle f(y_{n_k})\to f(x)\)，从而 \(\displaystyle |f(x_{n_k})-f(y_{n_k})|\to0\)，矛盾.\hfill\(\square\)
+\end{FAProof}
+
+设 \(\displaystyle K\) 为非空紧度量空间. 对 \(\displaystyle f,g\in C(K;\mathbb K)\)，定义 \(\displaystyle d_\infty(f,g)=\sup_{x\in K}|f(x)-g(x)|\).
+连续函数 \(\displaystyle |f-g|\) 的像是 \(\displaystyle \mathbb R\) 中的紧集，故有界，因此该上确界有限. 点态度量不等式取上确界说明 \(\displaystyle d_\infty\) 是度量.
+
+\begin{FALemma}[C][\(\displaystyle C(K;\mathbb K)\)的上确界度量完备性]{i02:CK-complete}
+若 \(\displaystyle K\) 为非空紧度量空间，则 \(\displaystyle (C(K;\mathbb K),d_\infty)\) 是完备度量空间.
+\end{FALemma}
+
+\begin{FAProof}
+设 \(\displaystyle (f_n)\) 为 \(\displaystyle d_\infty\)-Cauchy 列. 对每个 \(\displaystyle x\in K\)，标量列 \(\displaystyle (f_n(x))\) 为 Cauchy 列，故存在 \(\displaystyle f(x)=\lim_{n\to\infty}f_n(x)\in\mathbb K\). 给定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle N\) 使 \(\displaystyle m,n\geqslant N\Rightarrow d_\infty(f_m,f_n)<\frac{\varepsilon}{2}\). 固定 \(\displaystyle n\geqslant N\) 并令 \(\displaystyle m\to\infty\)，对每个 \(\displaystyle x\in K\) 得
+\(\displaystyle |f_n(x)-f(x)|\leqslant\frac{\varepsilon}{2}\)，
+故 \(\displaystyle d_\infty(f_n,f)\leqslant\frac{\varepsilon}{2}<\varepsilon\). 因而 \(\displaystyle f_n\) 一致收敛到 \(\displaystyle f\).
+
+只需验证 \(\displaystyle f\) 连续. 固定 \(\displaystyle x\in K\) 与 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle n\) 使 \(\displaystyle d_\infty(f_n,f)<\frac{\varepsilon}{3}\). 由 \(\displaystyle f_n\) 在 \(\displaystyle x\) 连续，存在 \(\displaystyle \delta>0\) 使 \(\displaystyle d(x,y)<\delta\Rightarrow |f_n(x)-f_n(y)|<\frac{\varepsilon}{3}\). 于是 \(\displaystyle |f(x)-f(y)| \leqslant |f(x)-f_n(x)|+|f_n(x)-f_n(y)|+|f_n(y)-f(y)|<\varepsilon\).
+故 \(\displaystyle f\in C(K;\mathbb K)\)，并且 \(\displaystyle f_n\to f\) 于 \(\displaystyle d_\infty\). 所以该度量空间完备.\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Arzelà--Ascoli 定理}
+
+\begin{FADefinition}[C][相对紧、等度连续与逐点有界]{i02:aa-language}
+设 \(\displaystyle K\) 为非空紧度量空间，\(\displaystyle \mathcal F\subseteq C(K;\mathbb K)\).
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item 若 \(\displaystyle \overline{\mathcal F}\) 在 \(\displaystyle d_\infty\) 下紧，则称 \(\displaystyle \mathcal F\) 相对紧.
+\item 若 \(\displaystyle \forall\,x\in K\ \forall\,\varepsilon>0\ \exists\,\delta>0\ \forall\,f\in\mathcal F\ \forall\,y\in K,\ d(x,y)<\delta\Rightarrow |f(x)-f(y)|<\varepsilon\)，则称 \(\displaystyle \mathcal F\) 等度连续.
+\item 若 \(\displaystyle \forall\,x\in K\ \exists\,M_x\geqslant0\ \forall\,f\in\mathcal F,\ |f(x)|\leqslant M_x\)，则称 \(\displaystyle \mathcal F\) 逐点有界.
+\end{enumerate}
+\end{FADefinition}
+
+\begin{FATheorem}[B][Arzelà--Ascoli 选定版本]{fa:FND-B04}
+设 \(\displaystyle K\) 为非空紧度量空间，\(\displaystyle \mathbb K\in\{\mathbb R,\mathbb C\}\). 族 \(\displaystyle \mathcal F\subseteq C(K;\mathbb K)\) 在 \(\displaystyle d_\infty\) 下相对紧，当且仅当 \(\displaystyle \mathcal F\) 等度连续且逐点有界.
+\end{FATheorem}
+
+\begin{FAProof}
+若 \(\displaystyle \mathcal F=\varnothing\)，则 \(\displaystyle \overline{\mathcal F}=\varnothing\) 由开覆盖定义紧，而等度连续与逐点有界均真空成立，故结论成立. 以下设 \(\displaystyle \mathcal F\neq\varnothing\).
+
+先证必要性. 设 \(\displaystyle \overline{\mathcal F}\) 紧. 由\autoref{fa:FND-B03}，\(\displaystyle \overline{\mathcal F}\) 总有界. 固定 \(\displaystyle x\in K\)，取 \(\displaystyle N\geqslant1\) 与 \(\displaystyle h_1,\dots,h_N\in\overline{\mathcal F}\)，使每个 \(\displaystyle f\in\mathcal F\) 都满足某个 \(\displaystyle d_\infty(f,h_j)<1\). 因而
+\(\displaystyle |f(x)|\leqslant 1+\max_{1\leqslant j\leqslant N}|h_j(x)|\)，
+所以 \(\displaystyle \mathcal F\) 逐点有界.
+
+再证等度连续. 给定 \(\displaystyle \varepsilon>0\)，由总有界性取有限个 \(\displaystyle h_1,\dots,h_N\in\overline{\mathcal F}\)，使对每个 \(\displaystyle f\in\mathcal F\)，存在 \(\displaystyle j\) 满足 \(\displaystyle d_\infty(f,h_j)<\frac{\varepsilon}{3}\). 由引理\ref{i02:heine-cantor}，每个 \(\displaystyle h_j\) 一致连续，故存在 \(\displaystyle \delta_j>0\)，使 \(\displaystyle d(x,y)<\delta_j\Rightarrow |h_j(x)-h_j(y)|<\frac{\varepsilon}{3}\). 令 \(\displaystyle \delta=\min_{1\leqslant j\leqslant N}\delta_j>0\). 对任意 \(\displaystyle f\in\mathcal F\) 与 \(\displaystyle d(x,y)<\delta\)，选取相应 \(\displaystyle h_j\)，则 \(\displaystyle |f(x)-f(y)| \leqslant |f(x)-h_j(x)|+|h_j(x)-h_j(y)|+|h_j(y)-f(y)|<\varepsilon\).
+故 \(\displaystyle \mathcal F\) 等度连续.
+
+现证充分性. 设 \(\displaystyle \mathcal F\) 等度连续且逐点有界. 给定 \(\displaystyle \varepsilon>0\). 对每个 \(\displaystyle x\in K\)，由等度连续性取 \(\displaystyle \delta_x>0\)，使
+\[
+\forall\,f\in\mathcal F,\quad d(x,y)<\delta_x\Longrightarrow |f(x)-f(y)|<\frac{\varepsilon}{3}.
+\]
+开球 \(\displaystyle \{B_K(x,\frac{\delta_x}{2}):x\in K\}\) 覆盖 \(\displaystyle K\). 由紧性，取有限子覆盖 \(\displaystyle K=\bigcup_{j=1}^{m}B_K(x_j,\frac{\delta_{x_j}}{2})\).
+定义取值向量集 \(\displaystyle A=\{(f(x_1),\dots,f(x_m)):f\in\mathcal F\}\subseteq\mathbb K^m\).
+由逐点有界性，存在 \(\displaystyle M_j\geqslant0\) 使 \(\displaystyle |f(x_j)|\leqslant M_j\) 对所有 \(\displaystyle f\in\mathcal F\) 成立. 因而 \(\displaystyle A\) 包含于有限个闭实区间或闭复圆盘的积 \(\displaystyle P\). 每个因子在通常度量下紧，故由\autoref{fa:FND-B01}，\(\displaystyle P\) 在有限积拓扑下紧. 在 \(\displaystyle P\) 上定义最大值度量 \(\displaystyle \rho_\infty(u,v)=\max_{1\leqslant j\leqslant m}|u_j-v_j|\).
+对 \(\displaystyle u\in P\) 与 \(\displaystyle r>0\)，有 \(\displaystyle B_{\rho_\infty}(u,r)=\prod_{j=1}^{m}B_j(u_j,r)\)，其中 \(\displaystyle B_j(u_j,r)\) 是第 \(\displaystyle j\) 个因子中的相对开球；反之，任一含 \(\displaystyle u\) 的基本积邻域 \(\displaystyle \prod_{j=1}^{m}U_j\) 中可对每个 \(\displaystyle j\) 取 \(\displaystyle r_j>0\) 使 \(\displaystyle B_j(u_j,r_j)\subseteq U_j\)，令 \(\displaystyle r=\min_j r_j>0\)，则 \(\displaystyle B_{\rho_\infty}(u,r)\subseteq\prod_jU_j\). 因此有限积拓扑恰为 \(\displaystyle \rho_\infty\) 诱导拓扑. 于是由\autoref{fa:FND-B03}，\(\displaystyle (P,\rho_\infty)\) 总有界. 先用有限个半径 \(\displaystyle \frac{\varepsilon}{6}\) 的球覆盖该积；删去与 \(\displaystyle A\) 不相交的球，并在每个剩余球与 \(\displaystyle A\) 的交中取一点. 由三角不等式得到有限集 \(\displaystyle V=\{v^{(1)},\dots,v^{(r)}\}\subseteq A\)
+使每个 \(\displaystyle v\in A\) 满足某个 \(\displaystyle \rho_\infty(v,v^{(\ell)})<\frac{\varepsilon}{3}\). 对每个 \(\displaystyle \ell\)，选取 \(\displaystyle g_\ell\in\mathcal F\) 使 \(\displaystyle v^{(\ell)}=(g_\ell(x_1),\dots,g_\ell(x_m))\).
+
+任取 \(\displaystyle f\in\mathcal F\)，取 \(\displaystyle \ell\) 使
+\[
+\max_{1\leqslant j\leqslant m}|f(x_j)-g_\ell(x_j)|<\frac{\varepsilon}{3}.
+\]
+对任意 \(\displaystyle y\in K\)，取 \(\displaystyle j\) 使 \(\displaystyle y\in B_K(x_j,\frac{\delta_{x_j}}{2})\). 于是
+\[
+|f(y)-g_\ell(y)|
+\leqslant |f(y)-f(x_j)|+|f(x_j)-g_\ell(x_j)|+|g_\ell(x_j)-g_\ell(y)|<\varepsilon.
+\]
+故 \(\displaystyle d_\infty(f,g_\ell)<\varepsilon\). 因此 \(\displaystyle \mathcal F\) 在 \(\displaystyle d_\infty\) 下总有界. 由\autoref{fa:FND-C02}（iv），\(\displaystyle \overline{\mathcal F}\) 总有界. 由引理\ref{i02:CK-complete}，\(\displaystyle C(K;\mathbb K)\) 完备；\(\displaystyle \overline{\mathcal F}\) 闭，故由\autoref{fa:FND-C02}（i）完备. 最后由\autoref{fa:FND-B03}，\(\displaystyle \overline{\mathcal F}\) 紧，即 \(\displaystyle \mathcal F\) 相对紧.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAExample}[一致有界的 Lipschitz 族]
+设 \(\displaystyle a<b\)，\(\displaystyle M,L\geqslant0\)，并令
+\[
+\mathcal F_{M,L}
+=\{f\in C([a,b];\mathbb K): |f(t)|\leqslant M,\ |f(t)-f(s)|\leqslant L|t-s|\text{ 对所有 }s,t\in[a,b]\}.
+\]
+该族逐点有界. 若 \(\displaystyle L=0\)，每个成员为常值函数；若 \(\displaystyle L>0\)，给定 \(\displaystyle \varepsilon>0\)，取 \(\displaystyle \delta=\frac{\varepsilon}{L}\)，则 \(\displaystyle |t-s|<\delta\Rightarrow |f(t)-f(s)|<\varepsilon\) 对全部 \(\displaystyle f\in\mathcal F_{M,L}\) 同时成立. 因而 \(\displaystyle \mathcal F_{M,L}\) 等度连续，由\autoref{fa:FND-B04}在上确界度量下相对紧.
+\end{FAExample}
+
+\section{Banach压缩映射原理}\label{sec:i02-contraction}
+\index{Banach contraction principle@Banach压缩映射原理}\index{Picard iteration@Picard迭代}\index{fixed point@不动点}
+
+\subsection{存在、唯一与 Picard 收敛}
+
+本节的“Banach”只出现在定理人名中；不建立 Banach 空间定义. 压缩映射定义见\autoref{i02:metric-maps}（ii）.
+
+\begin{FATheorem}[A][Banach 压缩映射原理]{fa:FP-A01}
+设 \(\displaystyle (X,d)\) 为非空完备度量空间，\(\displaystyle \mathcal T:X\to X\) 满足存在 \(\displaystyle q\in[0,1)\) 使 \(\displaystyle \forall\,x,y\in X,\; d(\mathcal T x,\mathcal T y)\leqslant qd(x,y)\).
+则存在唯一 \(\displaystyle x^*\in X\) 满足 \(\displaystyle \mathcal T x^*=x^*\). 对任意 \(\displaystyle x_0\in X\)，Picard 迭代 \(\displaystyle x_{n+1}=\mathcal T x_n\) 收敛到 \(\displaystyle x^*\).
+\end{FATheorem}
+
+\begin{FAProof}
+固定 \(\displaystyle x_0\in X\)，递归定义 \(\displaystyle x_{n+1}=\mathcal T x_n\). 对 \(\displaystyle n\in\mathbb N_0\)，反复使用压缩估计得到 \(\displaystyle d(x_{n+1},x_n) \leqslant q^n d(x_1,x_0)\).
+若 \(\displaystyle m>n\)，则
+\[
+d(x_m,x_n) \leqslant\sum_{k=n}^{m-1}d(x_{k+1},x_k) \leqslant d(x_1,x_0)\sum_{k=n}^{m-1}q^k \leqslant \frac{q^n}{1-q}d(x_1,x_0)\longrightarrow0.
+\]
+故 \(\displaystyle (x_n)\) 为 Cauchy 列. 由 \(\displaystyle X\) 完备，存在 \(\displaystyle x^*\in X\) 使 \(\displaystyle x_n\to x^*\). 压缩估计给出
+\[
+d(\mathcal T x^*,x^*)
+\leqslant d(\mathcal T x^*,\mathcal T x_n)+d(x_{n+1},x^*)
+\leqslant qd(x^*,x_n)+d(x_{n+1},x^*)\longrightarrow0,
+\]
+所以 \(\displaystyle \mathcal T x^*=x^*\).
+
+若 \(\displaystyle y^*\) 也是不动点，则
+\(\displaystyle d(x^*,y^*)=d(\mathcal T x^*,\mathcal T y^*)\leqslant qd(x^*,y^*)\).
+由于 \(\displaystyle 1-q>0\)，必有 \(\displaystyle d(x^*,y^*)=0\)，故 \(\displaystyle x^*=y^*\). 任意初值的 Picard 迭代均由上述同一论证收敛到唯一不动点.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[关于迭代估计的依赖边界]
+证明中只保留建立 Cauchy 性所需的几何级数估计. 更系统的后验、先验误差估计属于 III-03 的 Picard 迭代误差估计定理正式建立位置，本章不把它提前建立为独立内部结果.
+\end{FARemark}
+
+\begin{FACounterexample}[完备性不可删除]
+令 \(\displaystyle X=(0,1)\) 取通常距离，\(\displaystyle \mathcal T(x)=\frac{x}{2}\). 则 \(\displaystyle \mathcal T:X\to X\) 且 \(\displaystyle |\mathcal T(x)-\mathcal T(y)|=\frac12|x-y|\)，
+所以 \(\displaystyle \mathcal T\) 是压缩映射. 但不动点方程 \(\displaystyle x=\frac{x}{2}\) 的唯一实解为 \(\displaystyle x=0\notin X\). 被删除的假设正是 \(\displaystyle X\) 的完备性.
+\end{FACounterexample}
+
+\subsection{应用一：余弦迭代}
+
+\begin{FAApplication}[\(\displaystyle x_{n+1}=\cos x_n\)]
+令 \(\displaystyle X=[0,1]\) 取通常距离，定义 \(\displaystyle \mathcal T(x)=\cos x\). 本科微积分给出 \(\displaystyle \mathcal T([0,1])\subseteq[0,1]\)，并由中值定理 \(\displaystyle |\cos x-\cos y|\leqslant (\sin1)|x-y|, \; x,y\in[0,1]\)，
+其中 \(\displaystyle 0<\sin1<1\). 由本科实分析的 Heine--Borel 定理，\(\displaystyle [0,1]\) 紧；再由\autoref{fa:FND-B03}，\(\displaystyle [0,1]\) 完备. 因此\autoref{fa:FP-A01}给出唯一 \(\displaystyle x^*\in[0,1]\) 满足 \(\displaystyle x^*=\cos x^*\)，且任意 \(\displaystyle x_0\in[0,1]\) 产生的迭代 \(\displaystyle x_{n+1}=\cos x_n\) 均收敛到 \(\displaystyle x^*\).
+\end{FAApplication}
+
+\clearpage
+\subsection{应用二：简单积分方程}
+
+\begin{FAApplication}[连续核积分方程]
+设 \(\displaystyle a<b\)，\(\displaystyle g\in C([a,b];\mathbb K)\)，\(\displaystyle K\in C([a,b]^2;\mathbb K)\)，并令 \(\displaystyle M_K=\sup_{(t,s)\in[a,b]^2}|K(t,s)|<\infty\)，
+其中有限性由 \(\displaystyle [a,b]^2\subseteq\mathbb R^2\) 的紧性与 \(\displaystyle K\) 的连续性得到.
+若 \(\displaystyle \lambda\in\mathbb K\) 满足 \(\displaystyle q:=|\lambda|(b-a)M_K<1\)，
+则积分方程 \(\displaystyle f(t)=g(t)+\lambda\int_a^b K(t,s)f(s)\,\mathrm{d}s\)
+在 \(\displaystyle C([a,b];\mathbb K)\) 中存在唯一连续解.
+
+定义 \(\displaystyle \mathcal T:C([a,b];\mathbb K)\to C([a,b];\mathbb K)\) 为 \(\displaystyle (\mathcal T f)(t)=g(t)+\lambda\int_a^b K(t,s)f(s)\,\mathrm{d}s\).
+先验证值域. 固定 \(\displaystyle f\in C([a,b];\mathbb K)\)，令 \(\displaystyle M_f=\sup_{s\in[a,b]}|f(s)|<\infty\). 由引理\ref{i02:heine-cantor}应用于紧度量矩形 \(\displaystyle [a,b]^2\)，\(\displaystyle K\) 一致连续. 因而当 \(\displaystyle t\to t_0\) 时，
+\[
+\begin{aligned}
+|\mathcal T f(t)-\mathcal T f(t_0)|
+&\leqslant |g(t)-g(t_0)|\\
+&{}+|\lambda|(b-a)M_f\sup_{s\in[a,b]}|K(t,s)-K(t_0,s)|\longrightarrow0.
+\end{aligned}
+\]
+所以 \(\displaystyle \mathcal T f\) 连续. 对 \(\displaystyle f,h\in C([a,b];\mathbb K)\)，有
+\[
+\begin{aligned}
+d_\infty(\mathcal T f,\mathcal T h)
+&=\sup_{t\in[a,b]}\left|\lambda\int_a^b K(t,s)(f(s)-h(s))\,\mathrm{d}s\right|\\
+&\leqslant |\lambda|(b-a)M_Kd_\infty(f,h)=q\,d_\infty(f,h).
+\end{aligned}
+\]
+由引理\ref{i02:CK-complete}，\(\displaystyle C([a,b];\mathbb K)\) 在 \(\displaystyle d_\infty\) 下完备. 因 \(\displaystyle q<1\)，\autoref{fa:FP-A01}给出唯一不动点 \(\displaystyle f\)，它恰为该积分方程的唯一连续解.
+\end{FAApplication}
+
+\subsection{本章习题}\label{sec:i02-exercises}
+
+\begin{FAExercise}[完备化中的等价关系]{ex:i02-01}
+设 \(\displaystyle (X,d)\) 为度量空间. 不引用引理\ref{i02:completion-metric}，直接证明 \(\displaystyle (x_n)\sim(y_n)\iff d(x_n,y_n)\to0\) 是 \(\displaystyle \mathcal C(X)\) 上的等价关系，并指出传递性中唯一使用的度量公理.
+\end{FAExercise}
+
+\begin{FAExercise}[完备化距离的代表元独立性]{ex:i02-02}
+设 \(\displaystyle (x_n)\sim(x_n')\)、\(\displaystyle (y_n)\sim(y_n')\). 从反三角不等式出发，给出 \(\displaystyle \lim d(x_n,y_n)=\lim d(x_n',y_n')\) 的完整估计.
+\end{FAExercise}
+
+\begin{FAExercise}[常值列嵌入]{ex:i02-03}
+对\autoref{fa:FND-A02}的构造，证明 \(\displaystyle \iota:X\to\widehat X\) 为单射，并证明 \(\displaystyle \iota(X)\) 稠密时所用的点 \(\displaystyle \iota(x_N)\) 可以从任意充分大的 \(\displaystyle N\) 中选取.
+\end{FAExercise}
+
+\begin{FAExercise}[完备化的满等距唯一性]{ex:i02-04}
+设 \(\displaystyle U,V:\widehat X\to Y\) 均为等距映射且在 \(\displaystyle \iota(X)\) 上相同. 只使用 \(\displaystyle \iota(X)\) 稠密，证明 \(\displaystyle U=V\). 再说明若删去稠密性，该结论可失败.
+\end{FAExercise}
+
+\begin{FAExercise}[完备子空间与闭性]{ex:i02-05}
+设 \(\displaystyle A\subseteq X\). 证明：若 \(\displaystyle A\) 取子空间度量后完备，则 \(\displaystyle A\) 闭. 再给出一个闭但不完备的子空间例子，说明环境空间完备性在“闭 \(\displaystyle \Rightarrow\) 完备”方向不可删除.
+\end{FAExercise}
+
+\begin{FAExercise}[总有界性的遗传性]{ex:i02-06}
+证明总有界度量空间的任意子集在子空间度量下总有界. 与\autoref{fa:FND-C02}（iv）合并，写出“\(\displaystyle A\) 总有界当且仅当 \(\displaystyle \overline A\) 总有界”的完整证明.
+\end{FAExercise}
+
+\begin{FAExercise}[从有限网抽取 Cauchy 子序列]{ex:i02-07}
+重做\autoref{fa:FND-C02}（iii）的嵌套无限指标集构造，要求显式验证 \(\displaystyle N_{k+1}\subseteq N_k\)、\(\displaystyle n_{k+1}>n_k\)，以及 \(\displaystyle p,q\geqslant k\Rightarrow n_p,n_q\in N_k\).
+\end{FAExercise}
+
+\begin{FAExercise}[紧性推出完备性的尾闭包证明]{ex:i02-08}
+设 \(\displaystyle (x_n)\) 是紧度量空间中的 Cauchy 列. 使用闭集族 \(\displaystyle F_N=\overline{\{x_n:n\geqslant N\}}\) 与\autoref{fa:FND-C01}（i），独立重建\autoref{fa:FND-B03}中的完备性证明.
+\end{FAExercise}
+
+\begin{FAExercise}[列紧推出总有界]{ex:i02-09}
+假设度量空间不总有界. 构造 \(\displaystyle \varepsilon\)-分离序列 \(\displaystyle (x_n)\)，即 \(\displaystyle m\neq n\Rightarrow d(x_m,x_n)\geqslant\varepsilon\)，并由此直接否定列紧性.
+\end{FAExercise}
+
+\begin{FAExercise}[Lebesgue 数性质]{ex:i02-10}
+在列紧度量空间中，对任意开覆盖 \(\displaystyle \mathcal U\)，证明存在 \(\displaystyle \delta>0\) 使每个半径 \(\displaystyle \delta\) 的球包含于某个 \(\displaystyle U\in\mathcal U\). 不得调用紧性结论本身.
+\end{FAExercise}
+
+\begin{FAExercise}[不完备性反例的直接开覆盖]{ex:i02-11}
+对 \(\displaystyle (0,1)\)，构造一个无有限子覆盖的开覆盖，直接证明其不紧；再与“总有界但不完备”结合解释\autoref{fa:FND-B03}中两个条件为何缺一不可.
+\end{FAExercise}
+
+\begin{FAExercise}[上确界度量完备性]{ex:i02-12}
+设 \(\displaystyle K\) 为非空紧度量空间. 对 \(\displaystyle d_\infty\)-Cauchy 列 \(\displaystyle (f_n)\)，逐步证明点态极限存在、一致收敛成立、极限连续，并由此重新证明引理\ref{i02:CK-complete}.
+\end{FAExercise}
+
+\begin{FAExercise}[Arzelà--Ascoli 必要性核验]{ex:i02-13}
+设 \(\displaystyle \mathcal F\subseteq C(K;\mathbb K)\) 相对紧. 只使用\autoref{fa:FND-B03}与引理\ref{i02:heine-cantor}，分别推出逐点有界与等度连续，并明确有限 \(\displaystyle d_\infty\)-网在两个方向中的作用.
+\end{FAExercise}
+
+\begin{FAExercise}[Arzelà--Ascoli 充分性核验]{ex:i02-14}
+设 \(\displaystyle \mathcal F\subseteq C(K;\mathbb K)\) 等度连续且逐点有界. 对给定 \(\displaystyle \varepsilon>0\)，从有限点集 \(\displaystyle x_1,\dots,x_m\) 出发构造有限个函数 \(\displaystyle g_1,\dots,g_r\in\mathcal F\)，使 \(\displaystyle \mathcal F\subseteq\bigcup_{\ell=1}^{r}B_{d_\infty}(g_\ell,\varepsilon)\).
+\end{FAExercise}
+
+\begin{FAExercise}[Lipschitz 族]{ex:i02-15}
+设 \(\displaystyle K\) 为紧度量空间，\(\displaystyle x_0\in K\)，\(\displaystyle L,M\geqslant0\). 研究函数族 \(\displaystyle \mathcal G=\{f\in C(K;\mathbb R):|f(x_0)|\leqslant M,\ |f(x)-f(y)|\leqslant Ld(x,y)\}\).
+证明 \(\displaystyle \mathcal G\) 逐点有界且等度连续，并由\autoref{fa:FND-B04}得到其相对紧性.
+\end{FAExercise}
+
+\begin{FAExercise}[压缩映射的完备性边界]{ex:i02-16}
+对 \(\displaystyle X=(0,1)\)、\(\displaystyle \mathcal T(x)=\frac{x}{2}\)，验证 \(\displaystyle \mathcal T\) 的压缩常数可取 \(\displaystyle q=\frac{1}{2}\)，并写出从任意 \(\displaystyle x_0\in X\) 开始的 Picard 迭代极限，说明极限为何逃出 \(\displaystyle X\).
+\end{FAExercise}
+
+\begin{FAExercise}[仿射压缩迭代]{ex:i02-17}
+设 \(\displaystyle \mathcal T(x)=ax+b\) 把闭区间 \(\displaystyle I\subseteq\mathbb R\) 映入自身，且 \(\displaystyle |a|<1\). 用\autoref{fa:FP-A01}证明存在唯一不动点，并直接解方程核验该不动点. 比较直接公式与 Picard 迭代的角色.
+\end{FAExercise}
+
+\begin{FAExercise}[积分方程的压缩条件]{ex:i02-18}
+设 \(\displaystyle K\in C([a,b]^2;\mathbb K)\)、\(\displaystyle g\in C([a,b];\mathbb K)\). 对 \(\displaystyle (\mathcal T f)(t)=g(t)+\lambda\int_a^b K(t,s)f(s)\,\mathrm{d}s\)
+完整推导 \(\displaystyle d_\infty(\mathcal T f,\mathcal T h)\leqslant |\lambda|(b-a)M_Kd_\infty(f,h)\)，并说明严格条件 \(\displaystyle |\lambda|(b-a)M_K<1\) 在本章方法中承担什么作用.
+\end{FAExercise}

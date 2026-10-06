@@ -1,0 +1,823 @@
+\chapter{Sobolev 空间}\label{chap:II-13}
+\FAChapterOpening
+{建立弱导数代表元唯一性、\(\displaystyle W^{k,p}(\Omega)\) 的 Banach/自反/Hilbert 结构、\(\displaystyle C_c^\infty(\mathbb R^d)\) 的选定密度定理、\(\displaystyle W_0^{1,p}(\Omega)\) 与零延拓、有界开集上的 Poincaré 不等式及 \(\displaystyle H_0^1\) 能量空间；严格把嵌入、迹、Rellich--Kondrachov 与 Lax--Milgram 留到后章.}
+{I-03 的 \(\displaystyle L^p\) 完备性\autoref{i03:Lp-banach}；I-07 的 \(\displaystyle L^p\) 对偶与自反性\autoref{fa:LPSPACE-B01}；I-10 的自反弱紧接口\autoref{fa:REF-A01}、\autoref{i10:reflexive-ball-characterization}、\autoref{i10:norm-closed-convex-weak-closed}；II-12 的分布、局部性、卷积与磨光核接口\autoref{fa:DIST-A01}、\autoref{fa:DIST-B01}、\autoref{fa:DIST-B02}、\autoref{fa:DIST-C01}.}
+{\begin{center}
+\begin{tikzpicture}[x=0.82cm,y=1.02cm]
+\node[fa/node] (dist) at (0,1.3) {分布/弱导数};
+\node[fa/node] (lp) at (0,0) {I-03 \(\displaystyle L^p\)};
+\node[fa/node] (ref) at (0,-1.3) {\(\displaystyle L^p\)对偶/自反 + 自反球弱紧};
+\node[fa/node] (c01) at (4.6,1.3) {弱导数工具};
+\node[fa/node] (a01) at (8.4,0) {Sobolev结构};
+\node[fa/node] (distb) at (8.4,2.6) {磨光核逼近};
+\node[fa/node] (b02) at (12.6,1.3) {光滑紧支撑密度};
+\node[fa/node] (b01) at (12.6,-1.3) {Poincaré不等式};
+\draw[fa/arrow] (dist) -- (c01);
+\draw[fa/arrow] (lp) -- (c01);
+\draw[fa/arrow] (c01) -- (a01);
+\draw[fa/arrow] (ref) -- (a01);
+\draw[fa/arrow] (a01) -- (b02);
+\draw[fa/arrow] (distb) -- (b02);
+\draw[fa/arrow] (a01) -- (b01);
+\end{tikzpicture}
+\end{center}}
+
+全章固定 \(\displaystyle \Omega\subseteq\mathbb R^d\) 为非空开集，\(\displaystyle d\in\mathbb N\)，测度为 Lebesgue 测度. Sobolev 对象始终是几乎处处等价类. 标量域可为 \(\displaystyle\mathbb R\) 或 \(\displaystyle\mathbb C\)；复数情形沿用 II-12 的复线性的分布配对，并保持 Hilbert 内积第一变量线性. 除局部另行声明外，\(\displaystyle k\in\mathbb N_0\)、\(\displaystyle 1\leqslant p\leqslant\infty\). 本章的 Sobolev/偏微分方程部分以 Brezis 为标准参考；以下定义、证明与习题均依本书的依赖关系独立重构，并作交叉参照\cite{brezis2011}.
+
+\section{\texorpdfstring{\(\displaystyle W^{1,p}\)}{W^(1,p)}与弱梯度}\label{sec:ii13-w1p}
+\index{Sobolev space@Sobolev 空间}\index{weak derivative@弱导数}\index{mollifier@磨光核!Lp 逼近}
+
+\subsection{局部截断函数与 \texorpdfstring{\(\displaystyle L^p\)}{Lp} 逼近基础}
+
+\begin{FALemma}[B][局部光滑截断函数]{ii13:local-smooth-cutoff}
+对任意 \(\displaystyle K\Subset\Omega\)，存在 \(\displaystyle\chi\in C_c^\infty(\Omega)\)，使 \(\displaystyle0\leqslant\chi\leqslant1\)，并且 \(\displaystyle\chi=1\) 于 \(\displaystyle K\) 的某个开邻域.
+\end{FALemma}
+
+\begin{FAProof}
+若 \(\displaystyle\Omega\neq\mathbb R^d\)，令 \(\displaystyle\delta=\operatorname{dist}(K,\mathbb R^d\setminus\Omega)>0\)；若 \(\displaystyle\Omega=\mathbb R^d\)，约定该距离为 \(\displaystyle+\infty\). 取 \(\displaystyle r>0\) 使 \(\displaystyle4r<\delta\)，其中 \(\displaystyle\delta=+\infty\) 时任取有限正 \(\displaystyle r\). 令 \(\displaystyle K_{2r}=\{x\in\mathbb R^d:\operatorname{dist}(x,K)\leqslant2r\}.\)
+则 \(\displaystyle K_{2r}\) 紧且 \(\displaystyle K_{2r}\Subset\Omega\). 取 II-12 的标准的磨光核 \(\displaystyle\rho_r\)，定义 \(\displaystyle \chi=\mathbf1_{K_{2r}}*\rho_r.\)
+由 \(\displaystyle\rho_r\geqslant0\) 与 \(\displaystyle\int\rho_r=1\)，有 \(\displaystyle0\leqslant\chi\leqslant1\). 卷积光滑性给 \(\displaystyle\chi\in C^\infty(\mathbb R^d)\)，而 \(\displaystyle \operatorname{supp}\chi \subseteq K_{3r} = \{x:\operatorname{dist}(x,K)\leqslant3r\} \Subset\Omega,\)
+故 \(\displaystyle\chi\in C_c^\infty(\Omega)\). 若 \(\displaystyle\operatorname{dist}(x,K)<r\) 且 \(\displaystyle y\in\operatorname{supp}\rho_r\)，则 \(\displaystyle\operatorname{dist}(x-y,K)<2r\)，从而 \(\displaystyle\mathbf1_{K_{2r}}(x-y)=1\). 因此 \(\displaystyle\chi(x)=\int\rho_r(y)\,\mathrm{d}y=1\)，即 \(\displaystyle\chi\) 在 \(\displaystyle K\) 的 \(\displaystyle r\)-邻域上恒为一.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][\(\displaystyle C_c(\mathbb R^d)\) 在 \(\displaystyle L^p\) 中稠密]{ii13:cc-dense-lp}
+设 \(\displaystyle1\leqslant p<\infty\). 则 \(\displaystyle C_c(\mathbb R^d)\) 在 \(\displaystyle L^p(\mathbb R^d)\) 中稠密.
+\end{FALemma}
+
+\begin{FAProof}
+先把任意 \(\displaystyle f\in L^p(\mathbb R^d)\) 逼近为有限测度支撑的有界函数. 定义
+\[
+f_n=f\,\mathbf1_{B(0,n)}\mathbf1_{\{|f|\leqslant n\}}.
+\]
+则 \(\displaystyle |f-f_n|^p\leqslant|f|^p\)，且 \(\displaystyle f_n(x)\to f(x)\) 几乎处处，故由 Lebesgue 控制收敛定理，\(\displaystyle\|f-f_n\|_p\to0\). 固定 \(\displaystyle n\). 在 \(\displaystyle B(0,n)\) 上按网格宽度 \(\displaystyle\frac{1}{m}\) 量化 \(\displaystyle f_n\) 的实部与虚部；实标量情形只量化实部. 得到有限值简单函数 \(\displaystyle s_m\)，其支撑包含于 \(\displaystyle B(0,n)\)，并有 \(\displaystyle |s_m-f_n|\leqslant \frac{c}{m}\)，其中 \(\displaystyle c=1\) 或 \(\displaystyle c=\sqrt2\). 因而
+\[
+\|s_m-f_n\|_p \leqslant \frac{c}{m}|B(0,n)|^{\frac{1}{p}} \longrightarrow0.
+\]
+所以只需逼近有限线性组合 \(\displaystyle s=\sum_{j=1}^Nc_j\mathbf1_{E_j}\)，其中每个 \(\displaystyle E_j\) 可测且 Lebesgue 测度有限.
+
+固定一个有限测度可测集 \(\displaystyle E\) 与 \(\displaystyle\eta>0\). 使用 I-01 冻结的 Lebesgue 正则性，取紧集 \(\displaystyle K\subseteq E\) 使 \(\displaystyle|E\setminus K|<\eta\). 再由外正则性取开集 \(\displaystyle U\supseteq K\) 使 \(\displaystyle|U\setminus K|<\eta\). 取足够大的球包含 \(\displaystyle K\)，并把 \(\displaystyle U\) 与稍大的该球相交，仍可设 \(\displaystyle U\) 有界且 \(\displaystyle K\Subset U\). 定义
+\[
+h(x)
+=
+\frac{\operatorname{dist}(x,\mathbb R^d\setminus U)}
+{\operatorname{dist}(x,K)+\operatorname{dist}(x,\mathbb R^d\setminus U)}.
+\]
+因 \(\displaystyle K\Subset U\)，分母处处为正. 故 \(\displaystyle h\in C_c(\mathbb R^d)\)、\(\displaystyle0\leqslant h\leqslant1\)、\(\displaystyle h=1\) 于 \(\displaystyle K\)，且 \(\displaystyle\operatorname{supp}h\subseteq\overline U\). 于是 \(\displaystyle \|\mathbf1_E-h\|_p^p \leqslant |E\setminus K|+|U\setminus E| \leqslant |E\setminus K|+|U\setminus K| <2\eta.\)
+对每个 \(\displaystyle E_j\) 分别作此构造，并令误差足够小，即得 \(\displaystyle\sum_jc_jh_j\in C_c(\mathbb R^d)\) 在 \(\displaystyle L^p\) 中逼近 \(\displaystyle s\). 三段逼近合并即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][磨光核的 \(\displaystyle L^p\) 压缩估计]{ii13:lp-mollifier-contraction}
+设 \(\displaystyle1\leqslant p<\infty\)、\(\displaystyle f\in L^p(\mathbb R^d)\). 对 II-12 的标准的磨光核， \(\displaystyle \|\rho_\varepsilon*f\|_p \leqslant \|f\|_p.\)
+\end{FALemma}
+
+\begin{FAProof}
+对几乎处处 \(\displaystyle x\)，Jensen 不等式给
+\[
+|\rho_\varepsilon*f(x)|^p
+=
+\left|\int\rho_\varepsilon(y)f(x-y)\,\mathrm{d}y\right|^p
+\leqslant
+\int\rho_\varepsilon(y)|f(x-y)|^p\,\mathrm{d}y.
+\]
+这里的两个测度空间因子都是带 Lebesgue 测度的 \(\displaystyle\mathbb R_x^d\) 与 \(\displaystyle\mathbb R_y^d\)，均为 \(\displaystyle\sigma\)-有限. 被积函数 \(\displaystyle (x,y)\longmapsto\rho_\varepsilon(y)|f(x-y)|^p\)
+非负可测. 因而可由 I-01 已建立的乘积积分接口中的 Tonelli 部分交换积分；再用 Lebesgue 测度的平移不变性，得到
+\[
+\|\rho_\varepsilon*f\|_p^p
+\leqslant
+\int\rho_\varepsilon(y)
+\left(\int|f(x-y)|^p\,\mathrm{d}x\right)\,\mathrm{d}y
+=
+\|f\|_p^p.
+\]
+取 \(\displaystyle p\) 次方根即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][磨光核的全空间 \(\displaystyle L^p\) 逼近]{ii13:lp-mollifier-approximation}
+设 \(\displaystyle1\leqslant p<\infty\)、\(\displaystyle f\in L^p(\mathbb R^d)\). 则 \(\displaystyle \rho_\varepsilon*f \longrightarrow f \;\text{于 }L^p(\mathbb R^d)\)
+当 \(\displaystyle\varepsilon\downarrow0\).
+\end{FALemma}
+
+\begin{FAProof}
+先设 \(\displaystyle g\in C_c(\mathbb R^d)\). 取紧集 \(\displaystyle Q\) 包含 \(\displaystyle\operatorname{supp}g+B(0,1)\). 当 \(\displaystyle0<\varepsilon<1\) 时，\(\displaystyle\rho_\varepsilon*g-g\) 支撑于 \(\displaystyle Q\). 由 \(\displaystyle g\) 一致连续，
+\[
+\sup_x|\rho_\varepsilon*g(x)-g(x)|
+\leqslant
+\sup_{|y|\leqslant\varepsilon}\sup_x|g(x-y)-g(x)|
+\longrightarrow0.
+\]
+故
+\[
+\|\rho_\varepsilon*g-g\|_p
+\leqslant
+|Q|^{\frac{1}{p}}
+\sup_x|\rho_\varepsilon*g(x)-g(x)|
+\longrightarrow0.
+\]
+现取一般 \(\displaystyle f\in L^p\) 与 \(\displaystyle\eta>0\). 由\autoref{ii13:cc-dense-lp}取 \(\displaystyle g\in C_c\) 使 \(\displaystyle\|f-g\|_p<\eta\). 再由\autoref{ii13:lp-mollifier-contraction}，
+\[
+\|\rho_\varepsilon*f-f\|_p
+\leqslant
+\|\rho_\varepsilon*(f-g)\|_p
++
+\|\rho_\varepsilon*g-g\|_p
++
+\|g-f\|_p
+<
+2\eta+\|\rho_\varepsilon*g-g\|_p.
+\]
+令 \(\displaystyle\varepsilon\downarrow0\)，再令 \(\displaystyle\eta\downarrow0\)，得到结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[\(\displaystyle p=\infty\) 不在上述范数逼近结论中]
+本章不声称 \(\displaystyle\rho_\varepsilon*f\to f\) 于一般 \(\displaystyle L^\infty\) 范数. 例如具有跳跃的本质有界函数通常不能被连续磨光在 \(\displaystyle L^\infty\) 范数中逼近. 后续密度定理\autoref{fa:SOB-B02}因而显式限制为 \(\displaystyle p<\infty\).
+\end{FAWarning}
+
+\subsection{局部 \texorpdfstring{\(\displaystyle L^1\)}{L1} 收敛与正则分布嵌入的单射性}
+
+\begin{FALemma}[B][局部 \(\displaystyle L^1\) 磨光核收敛]{ii13:l1loc-mollifier}
+设 \(\displaystyle f\in L^1_{\mathrm{loc}}(\Omega)\)、\(\displaystyle K\Subset\Omega\). 则对充分小的 \(\displaystyle\varepsilon>0\)，局部卷积 \(\displaystyle f*\rho_\varepsilon\) 在 \(\displaystyle K\) 上定义，并且 \(\displaystyle \|f*\rho_\varepsilon-f\|_{L^1(K)} \longrightarrow0.\)
+\end{FALemma}
+
+\begin{FAProof}
+由\autoref{ii13:local-smooth-cutoff}取 \(\displaystyle\chi\in C_c^\infty(\Omega)\)，使 \(\displaystyle\chi=1\) 于 \(\displaystyle K\) 的某个开邻域 \(\displaystyle V\). 因 \(\displaystyle K\Subset V\)，有 \(\displaystyle\delta=\operatorname{dist}(K,\mathbb R^d\setminus V)>0\). 将 \(\displaystyle\chi f\) 以零延拓到 \(\displaystyle\mathbb R^d\)，则 \(\displaystyle\chi f\in L^1(\mathbb R^d)\). 当 \(\displaystyle0<\varepsilon<\delta\) 时，对 \(\displaystyle x\in K\) 与 \(\displaystyle y\in\operatorname{supp}\rho_\varepsilon\)，有 \(\displaystyle x-y\in V\)，故 \(\displaystyle (f*\rho_\varepsilon)(x) =((\chi f)*\rho_\varepsilon)(x).\)
+又 \(\displaystyle\chi f=f\) 几乎处处于 \(\displaystyle K\). 因此\autoref{ii13:lp-mollifier-approximation}在 \(\displaystyle p=1\) 时给
+\[
+\|f*\rho_\varepsilon-f\|_{L^1(K)}
+\leqslant
+\|(\chi f)*\rho_\varepsilon-\chi f\|_{L^1(\mathbb R^d)}
+\longrightarrow0.\]
+\hfill\(\square\)
+
+
+\end{FAProof}
+
+\begin{FATheorem}[B][正则分布的单射性]{ii13:regular-distribution-injectivity}
+若 \(\displaystyle f\in L^1_{\mathrm{loc}}(\Omega)\) 且 \(\displaystyle T_f=0\) 于 \(\displaystyle\mathcal D'(\Omega)\)，则 \(\displaystyle f=0\) 几乎处处于 \(\displaystyle\Omega\).
+\end{FATheorem}
+
+\begin{FAProof}
+固定 \(\displaystyle K\Subset\Omega\). 由 II-12 的局部分布卷积与正则分布与卷积的相容性，对充分小的 \(\displaystyle\varepsilon\)， \(\displaystyle f*\rho_\varepsilon = T_f*\rho_\varepsilon = 0 \;\text{于 }K.\)
+由\autoref{ii13:l1loc-mollifier}，\(\displaystyle f*\rho_\varepsilon\to f\) 于 \(\displaystyle L^1(K)\)，故 \(\displaystyle f=0\) 几乎处处于 \(\displaystyle K\).
+
+为覆盖整个 \(\displaystyle\Omega\)，若 \(\displaystyle\Omega\neq\mathbb R^d\)，定义
+\[
+K_n
+=
+\left\{x\in\Omega:
+|x|\leqslant n,\ 
+\operatorname{dist}(x,\mathbb R^d\setminus\Omega)\geqslant\frac1n
+\right\}.
+\]
+距离函数连续，所以 \(\displaystyle K_n\) 在 \(\displaystyle\mathbb R^d\) 中闭且有界，故紧；距离下界又给 \(\displaystyle K_n\Subset\Omega\). 对每个 \(\displaystyle x\in\Omega\)，开性给 \(\displaystyle\operatorname{dist}(x,\mathbb R^d\setminus\Omega)>0\)，故 \(\displaystyle x\in K_n\) 对某个足够大 \(\displaystyle n\) 成立. 因而 \(\displaystyle\Omega=\bigcup_nK_n\). 若 \(\displaystyle\Omega=\mathbb R^d\)，直接取 \(\displaystyle K_n=\overline{B(0,n)}\). 每个 \(\displaystyle K_n\) 上均有 \(\displaystyle f=0\) 几乎处处，可数并给 \(\displaystyle f=0\) 几乎处处于 \(\displaystyle\Omega\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][弱导数代表元唯一性]{ii13:weak-derivative-uniqueness}
+设 \(\displaystyle u\in L^1_{\mathrm{loc}}(\Omega)\)、\(\displaystyle g,h\in L^1_{\mathrm{loc}}(\Omega)\)，且 \(\displaystyle T_g=\partial^\alpha T_u=T_h\). 则 \(\displaystyle g=h\) 几乎处处于 \(\displaystyle\Omega\).
+\end{FACorollary}
+
+\begin{FAProof}
+线性性给 \(\displaystyle T_{g-h}=0\). 由\autoref{ii13:regular-distribution-injectivity}，\(\displaystyle g-h=0\) 几乎处处，即 \(\displaystyle g=h\) 几乎处处
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{\texorpdfstring{\(\displaystyle W^{1,p}\)}{W1p} 与弱梯度}
+
+对 \(\displaystyle1\leqslant p\leqslant\infty\)，每个 \(\displaystyle u\in L^p(\Omega)\) 都属于 \(\displaystyle L^1_{\mathrm{loc}}(\Omega)\)：对紧集 \(\displaystyle K\Subset\Omega\)，\(\displaystyle p=1\) 平凡，\(\displaystyle1<p<\infty\) 用 Hölder，\(\displaystyle p=\infty\) 用 \(\displaystyle\int_K|u|\leqslant|K|\|u\|_\infty\). 因而 \(\displaystyle T_u\) 总是良定义.
+
+\begin{FADefinition}[A][\(\displaystyle W^{1,p}\) 与弱梯度]{ii13:w1p-definition}
+定义
+\[
+W^{1,p}(\Omega)
+=
+\left\{u\in L^p(\Omega):
+\partial_jT_u=T_{g_j}\text{，其中 }g_j\in L^p(\Omega),\ 1\leqslant j\leqslant d
+\right\}.
+\]
+由\autoref{ii13:weak-derivative-uniqueness}，每个 \(\displaystyle g_j\) 在几乎处处意义下唯一，记为 \(\displaystyle\partial_ju\). 定义 \(\displaystyle \nabla u = (\partial_1u,\dots,\partial_du).\)
+若 \(\displaystyle1\leqslant p<\infty\)，定义
+\[
+\|u\|_{W^{1,p}(\Omega)}
+=
+\left(
+\|u\|_p^p+
+\sum_{j=1}^d\|\partial_ju\|_p^p
+\right)^{\frac{1}{p}}.
+\]
+若 \(\displaystyle p=\infty\)，定义
+\[
+\|u\|_{W^{1,\infty}(\Omega)}
+=
+\max\{\|u\|_\infty,\|\partial_1u\|_\infty,\dots,\|\partial_du\|_\infty\}.
+\]
+\end{FADefinition}
+
+\begin{FACounterexample}[点值不是 Sobolev 等价类的内禀数据]
+取 \(\displaystyle x_0\in\Omega\). 定义代表元 \(\displaystyle u(x)=0\) 对全部 \(\displaystyle x\)，以及
+\[
+v(x)
+=
+\begin{cases}
+1,&x=x_0,\\
+0,&x\neq x_0.
+\end{cases}
+\]
+二者几乎处处相同，故在 \(\displaystyle L^p\) 及 \(\displaystyle W^{1,p}(\Omega)\) 中表示同一元素，弱导数也相同，但 \(\displaystyle u(x_0)\neq v(x_0)\). 第\ref{sec:ii13-higher-order}节定义 \(\displaystyle W^{k,p}\) 后，同一一对对任意 \(\displaystyle k\) 仍表示同一 Sobolev 元素. 因而直接读取任意代表元的一点取值不是 Sobolev 等价类上的良定义操作. II-14 在特定维数/区域/指数条件下可通过嵌入得到典范连续代表元；本章不提前使用该结果.
+\end{FACounterexample}
+
+\subsection{弱导数计算工具}
+
+\begin{FAProposition}[C][Sobolev 弱导数计算工具]{fa:SOB-C01}
+设 \(\displaystyle1\leqslant p\leqslant\infty\). 下列工具成立.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item 弱导数的 \(\displaystyle L^p\) 代表元几乎处处唯一.
+\item 若 \(\displaystyle u_n\to u\) 于 \(\displaystyle L^p(\Omega)\)，且 \(\displaystyle\partial^\alpha u_n\to g\) 于 \(\displaystyle L^p(\Omega)\)，则 \(\displaystyle\partial^\alpha u=g\) 弱地.
+\item 若 \(\displaystyle U\subseteq\Omega\) 开，且 \(\displaystyle u\) 的 \(\displaystyle\partial^\alpha u\in L^p(\Omega)\) 已存在，则 \(\displaystyle u|_U\) 的同阶弱导数为 \(\displaystyle(\partial^\alpha u)|_U\).
+\item 设 \(\displaystyle k\in\mathbb N_0\)，\(\displaystyle a\in C^\infty(\Omega)\)，且 \(\displaystyle\partial^\beta a\in L^\infty(\Omega)\) 对全部 \(\displaystyle|\beta|\leqslant k\) 成立. 若 \(\displaystyle u\in L^p(\Omega)\) 且 \(\displaystyle\partial^\gamma u\in L^p(\Omega)\) 对全部 \(\displaystyle|\gamma|\leqslant k\) 成立，则
+\[
+\partial^\alpha(au)
+=
+\sum_{\beta\leqslant\alpha}
+\binom{\alpha}{\beta}
+(\partial^\beta a)(\partial^{\alpha-\beta}u)
+\]
+对全部 \(\displaystyle|\alpha|\leqslant k\) 成立. 特别地，\(\displaystyle a\in C_c^\infty(\Omega)\) 总满足所需有界性.
+\end{enumerate}
+\end{FAProposition}
+
+\begin{FAProof}
+（a） 即\autoref{ii13:weak-derivative-uniqueness}.
+
+（b） 对任意 \(\displaystyle\varphi\in\mathcal D(\Omega)\)，每个 \(\displaystyle n\) 满足
+\[
+\int_\Omega u_n\partial^\alpha\varphi\,\mathrm{d}x
+=
+(-1)^{|\alpha|}
+\int_\Omega(\partial^\alpha u_n)\varphi\,\mathrm{d}x.
+\]
+若 \(\displaystyle p=1\)，则
+\[
+\left|\int(u_n-u)\partial^\alpha\varphi\right|
+\leqslant
+\|u_n-u\|_1\|\partial^\alpha\varphi\|_\infty,
+\]
+而右侧之差满足
+\[
+\left|\int_\Omega(\partial^\alpha u_n-g)\varphi\,\mathrm{d}x\right|
+\leqslant
+\|\partial^\alpha u_n-g\|_1\|\varphi\|_\infty.
+\]
+若 \(\displaystyle1<p<\infty\)，令 \(\displaystyle\frac{1}{p}+\frac{1}{q}=1\)，Hölder 给对应 \(\displaystyle L^p\)-\(\displaystyle L^q\) 控制. 若 \(\displaystyle p=\infty\)，则
+\[
+\left|\int(u_n-u)\partial^\alpha\varphi\right|
+\leqslant
+\|u_n-u\|_\infty\|\partial^\alpha\varphi\|_1,
+\]
+而右侧之差满足
+\[
+\left|\int_\Omega(\partial^\alpha u_n-g)\varphi\,\mathrm{d}x\right|
+\leqslant
+\|\partial^\alpha u_n-g\|_\infty\|\varphi\|_1.
+\]
+因而可令 \(\displaystyle n\to\infty\)，得到
+\[
+\int_\Omega u\partial^\alpha\varphi\,\mathrm{d}x
+=
+(-1)^{|\alpha|}
+\int_\Omega g\varphi\,\mathrm{d}x,
+\]
+即 \(\displaystyle\partial^\alpha u=g\) 弱地.
+
+（c） 若 \(\displaystyle\psi\in\mathcal D(U)\)，则把同一函数视为 \(\displaystyle\mathcal D(\Omega)\) 元素即可在 \(\displaystyle\Omega\) 的弱导数恒等式中代入 \(\displaystyle\psi\). 所有积分支撑都在 \(\displaystyle U\)，故导数限制成立.
+
+（d） II-12 已证明一阶分布乘积法则 \(\displaystyle \partial_j(aT) =(\partial_ja)T+a\partial_jT.\)
+对 \(\displaystyle|\alpha|\) 归纳并按多重指标 Leibniz 系数组合，得到分布恒等式
+\[
+\partial^\alpha(aT_u)
+=
+\sum_{\beta\leqslant\alpha}
+\binom{\alpha}{\beta}
+T_{(\partial^\beta a)(\partial^{\alpha-\beta}u)}.
+\]
+每个乘积属于 \(\displaystyle L^p\)，因为 \(\displaystyle\partial^\beta a\in L^\infty\). 由代表元唯一性得到所述几乎处处公式.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{高阶情形}\label{sec:ii13-higher-order}
+\index{Sobolev space@Sobolev 空间!高阶}\index{reflexive space@自反空间!Sobolev}
+
+\subsection{\texorpdfstring{\(\displaystyle W^{k,p}\)}{Wkp} 定义与完备性}
+
+\begin{FADefinition}[A][高阶 Sobolev 空间]{ii13:wkp-definition}
+对 \(\displaystyle k\in\mathbb N_0\)、\(\displaystyle1\leqslant p\leqslant\infty\)，定义
+\[
+W^{k,p}(\Omega)
+=
+\left\{u\in L^p(\Omega):
+\partial^\alpha u\in L^p(\Omega)\ \forall\,|\alpha|\leqslant k
+\right\},
+\]
+其中 \(\displaystyle\partial^\alpha u\) 表示由\autoref{ii13:weak-derivative-uniqueness}保证唯一的 \(\displaystyle L^p\) 代表元，并约定 \(\displaystyle W^{0,p}(\Omega)=L^p(\Omega).\)
+若 \(\displaystyle1\leqslant p<\infty\)，定义
+\[
+\|u\|_{W^{k,p}(\Omega)}
+=
+\left(
+\sum_{|\alpha|\leqslant k}
+\|\partial^\alpha u\|_p^p
+\right)^{\frac{1}{p}}.
+\]
+若 \(\displaystyle p=\infty\)，定义
+\[
+\|u\|_{W^{k,\infty}(\Omega)}
+=
+\max_{|\alpha|\leqslant k}
+\|\partial^\alpha u\|_\infty.
+\]
+\end{FADefinition}
+
+\begin{FAProposition}[A][\(\displaystyle W^{k,p}\)的完备性]{ii13:wkp-banach}
+对全部 \(\displaystyle k\in\mathbb N_0\) 与 \(\displaystyle1\leqslant p\leqslant\infty\)，\(\displaystyle W^{k,p}(\Omega)\) 是 Banach 空间.
+\end{FAProposition}
+
+\begin{FAProof}
+设 \(\displaystyle(u_n)\) 在 \(\displaystyle W^{k,p}(\Omega)\) 中 Cauchy. 对每个 \(\displaystyle|\alpha|\leqslant k\)，序列 \(\displaystyle(\partial^\alpha u_n)\) 在 \(\displaystyle L^p(\Omega)\) 中 Cauchy. 由\autoref{i03:Lp-banach}，存在 \(\displaystyle v_\alpha\in L^p(\Omega)\) 使 \(\displaystyle \partial^\alpha u_n \longrightarrow v_\alpha \;\text{于 }L^p(\Omega).\)
+令 \(\displaystyle u=v_0\). 对每个 \(\displaystyle\alpha\)，有 \(\displaystyle u_n\to u\) 于 \(\displaystyle L^p\) 且 \(\displaystyle\partial^\alpha u_n\to v_\alpha\) 于 \(\displaystyle L^p\)，故由\autoref{fa:SOB-C01}（b），\(\displaystyle\partial^\alpha u=v_\alpha\). 因而 \(\displaystyle u\in W^{k,p}(\Omega)\). 有限多个多重指标上的各项收敛立即给 \(\displaystyle\|u_n-u\|_{W^{k,p}}\to0\). 这同时覆盖 \(\displaystyle p=\infty\) 的最大范数.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{有限 \texorpdfstring{\(\displaystyle\ell^p\)}{lp} 直和与闭子空间自反性}
+
+\begin{FALemma}[B][有限 \(\displaystyle\ell^p\) 直和保持自反性]{ii13:finite-lp-sum-reflexive}
+设 \(\displaystyle1<p<\infty\)、\(\displaystyle\frac{1}{p}+\frac{1}{q}=1\)，且 \(\displaystyle X_1,\dots,X_N\) 均为自反 Banach 空间. 则
+\[
+X=X_1\oplus_p\cdots\oplus_pX_N,
+\;
+\|(x_j)\|_X
+=
+\left(\sum_{j=1}^N\|x_j\|^p\right)^{\frac{1}{p}}
+\]
+为自反空间.
+\end{FALemma}
+
+\begin{FAProof}
+先识别对偶. 对 \(\displaystyle(f_1,\dots,f_N)\in X_1^*\oplus_q\cdots\oplus_qX_N^*\)，定义 \(\displaystyle \Phi_f(x_1,\dots,x_N)=\sum_{j=1}^Nf_j(x_j)\). Hölder 给
+\[
+|\Phi_f(x)|
+\leqslant
+\left(\sum_{j=1}^N\|f_j\|^q\right)^{\frac{1}{q}}
+\left(\sum_{j=1}^N\|x_j\|^p\right)^{\frac{1}{p}},
+\]
+故 \(\displaystyle\|\Phi_f\|\leqslant(\sum_j\|f_j\|^q)^{\frac{1}{q}}\).
+
+反之，给定 \(\displaystyle\Phi\in X^*\)，令 \(\displaystyle\iota_j:X_j\to X\) 为第 \(\displaystyle j\) 个坐标嵌入，并置 \(\displaystyle f_j=\Phi\circ\iota_j\). 则 \(\displaystyle\Phi(x)=\sum_jf_j(x_j)\). 令 \(\displaystyle a_j=\|f_j\|\). 若全部 \(\displaystyle a_j=0\)，结论平凡. 否则对任意 \(\displaystyle\eta>0\)，可取 \(\displaystyle y_j\in X_j\)、\(\displaystyle\|y_j\|\leqslant1\)，并在复情形乘适当单位模标量，使 \(\displaystyle \operatorname{Re}f_j(y_j) \geqslant a_j-\eta.\)
+令
+\[
+c_j
+=
+\frac{a_j^{q-1}}
+{(\sum_{i=1}^Na_i^q)^{\frac{1}{p}}},
+\;
+x_j=c_jy_j.
+\]
+因为 \(\displaystyle(q-1)p=q\)，有 \(\displaystyle\sum_jc_j^p=1\)，故 \(\displaystyle\|x\|_X\leqslant1\). 于是
+\[
+\|\Phi\|
+\geqslant
+\operatorname{Re}\Phi(x)
+\geqslant
+\frac{\sum_ja_j^q-\eta\sum_ja_j^{q-1}}
+{(\sum_ia_i^q)^{\frac{1}{p}}}.
+\]
+令 \(\displaystyle\eta\downarrow0\)，得到 \(\displaystyle(\sum_ja_j^q)^{\frac{1}{q}}\leqslant\|\Phi\|\). 因而 \(\displaystyle X^* \cong X_1^*\oplus_q\cdots\oplus_qX_N^*\)
+等距. 再取对偶得到 \(\displaystyle X^{**} \cong X_1^{**}\oplus_p\cdots\oplus_pX_N^{**}.\)
+在这些识别下，典范的嵌入 \(\displaystyle J_X\) 正是 \(\displaystyle(J_{X_1},\dots,J_{X_N})\). 每个 \(\displaystyle X_j\) 自反使 \(\displaystyle J_{X_j}\) 满射，故 \(\displaystyle J_X\) 满射，即 \(\displaystyle X\) 自反.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][自反空间的闭线性子空间自反]{ii13:closed-subspace-reflexive}
+若 \(\displaystyle Y\) 为自反 Banach 空间，\(\displaystyle M\subseteq Y\) 为范数闭线性子空间，则 \(\displaystyle M\) 为自反空间.
+\end{FALemma}
+
+\begin{FAProof}
+由\autoref{fa:REF-A01}，\(\displaystyle\overline B_Y\) 在 \(\displaystyle\sigma(Y,Y^*)\) 下紧. 由\autoref{i10:norm-closed-convex-weak-closed}，线性子空间 \(\displaystyle M\) 因范数闭且凸而弱闭. 因而 \(\displaystyle \overline B_M = M\cap\overline B_Y\)
+在 \(\displaystyle Y\) 的弱拓扑下为紧集.
+
+还需核对 \(\displaystyle M\) 的内禀弱拓扑等于 \(\displaystyle Y\) 的弱拓扑在 \(\displaystyle M\) 上的限制. 每个 \(\displaystyle y^*\in Y^*\) 的限制属于 \(\displaystyle M^*\)，故限制拓扑不强于 \(\displaystyle\sigma(M,M^*)\). 反之，任意 \(\displaystyle m^*\in M^*\) 由 Hahn--Banach 延拓为某个 \(\displaystyle y^*\in Y^*\)，故每个内禀的弱坐标都来自环境弱坐标；两拓扑相同. 所以 \(\displaystyle\overline B_M\) 在 \(\displaystyle\sigma(M,M^*)\) 下为紧集. 由\autoref{i10:reflexive-ball-characterization}，\(\displaystyle M\) 自反.
+\hfill\(\square\)
+\end{FAProof}
+
+\subsection{Banach、自反与 Hilbert 结构}
+
+\begin{FATheorem}[A][Sobolev 空间的完备、自反与 Hilbert 结构]{fa:SOB-A01}
+设 \(\displaystyle k\in\mathbb N_0\)、\(\displaystyle1\leqslant p\leqslant\infty\). 则 \(\displaystyle W^{k,p}(\Omega)\) 是 Banach 空间. 若 \(\displaystyle1<p<\infty\)，则 \(\displaystyle W^{k,p}(\Omega)\) 为自反空间. 定义 \(\displaystyle H^k(\Omega)=W^{k,2}(\Omega).\)
+则 \(\displaystyle H^k(\Omega)\) 关于内积
+\[
+\langle u,v\rangle_{H^k}
+=
+\sum_{|\alpha|\leqslant k}
+\int_\Omega
+\partial^\alpha u(x)
+\overline{\partial^\alpha v(x)}
+\,\mathrm{d}x
+\]
+为 Hilbert 空间，且诱导范数正是 \(\displaystyle\|\cdot\|_{W^{k,2}}\).
+\end{FATheorem}
+
+\begin{FAProof}
+Banach 性已由\autoref{ii13:wkp-banach}证明.
+
+现设 \(\displaystyle1<p<\infty\). 开集 \(\displaystyle\Omega\) 关于 Lebesgue 测度为 \(\displaystyle\sigma\)-有限，因为 \(\displaystyle \Omega=\bigcup_{n=1}^\infty(\Omega\cap B(0,n))\)，且每个 \(\displaystyle\Omega\cap B(0,n)\) 测度有限. 因而\autoref{fa:LPSPACE-B01}给出 \(\displaystyle L^p(\Omega)\) 为自反空间. 令 \(\displaystyle N=N(d,k) = \#\{\alpha\in\mathbb N_0^d:|\alpha|\leqslant k\} = \binom{d+k}{k}.\)
+定义
+\[
+J:W^{k,p}(\Omega)
+\longrightarrow
+\bigoplus_{|\alpha|\leqslant k}^{\ell^p}L^p(\Omega),
+\;
+Ju=(\partial^\alpha u)_{|\alpha|\leqslant k}.
+\]
+由范数定义，\(\displaystyle J\) 为线性等距映射. 其值域闭：若 \(\displaystyle Ju_n\to y\) 于目标空间，则 \(\displaystyle(u_n)\) 在 \(\displaystyle W^{k,p}\) 中 Cauchy；由完备性存在 \(\displaystyle u\in W^{k,p}\) 使 \(\displaystyle u_n\to u\)，故连续性给 \(\displaystyle Ju_n\to Ju\)，于是 \(\displaystyle y=Ju\). 目标空间由\autoref{ii13:finite-lp-sum-reflexive}自反，闭值域再由\autoref{ii13:closed-subspace-reflexive}自反. 因 \(\displaystyle J\) 是满射到其值域的等距同构，\(\displaystyle W^{k,p}(\Omega)\) 自反.
+
+最后令 \(\displaystyle p=2\). 所给配对第一变量线性、第二变量共轭线性，正定性来自 \(\displaystyle\alpha=0\) 项. 其平方范数为
+\[
+\langle u,u\rangle_{H^k}
+=
+\sum_{|\alpha|\leqslant k}\|\partial^\alpha u\|_2^2
+=
+\|u\|_{W^{k,2}}^2.
+\]
+由已证明的完备性，\(\displaystyle H^k(\Omega)\) 对该内积完备，故为 Hilbert 空间.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[自反性的端点边界]
+\autoref{fa:SOB-A01}的自反性只对 \(\displaystyle1<p<\infty\) 断言. 本章不声称一般的 \(\displaystyle W^{k,1}\) 或 \(\displaystyle W^{k,\infty}\) 自反.
+\end{FAWarning}
+
+\subsection{全空间磨光与截断函数}
+
+\begin{FAProposition}[B][Sobolev 磨光核的导数换序与逼近]{ii13:wkp-mollifier}
+设 \(\displaystyle u\in W^{k,p}(\mathbb R^d)\)、\(\displaystyle1\leqslant p<\infty\). 则对每个 \(\displaystyle|\alpha|\leqslant k\)， \(\displaystyle \partial^\alpha(u*\rho_\varepsilon) = (\partial^\alpha u)*\rho_\varepsilon,\)
+并且 \(\displaystyle u*\rho_\varepsilon \longrightarrow u \;\text{于 }W^{k,p}(\mathbb R^d).\)
+若 \(\displaystyle u\) 几乎处处支撑于某紧集，且 \(\displaystyle\varepsilon\) 足够小，则 \(\displaystyle u*\rho_\varepsilon\in C_c^\infty(\mathbb R^d)\).
+\end{FAProposition}
+
+\begin{FAProof}
+把 \(\displaystyle u\) 与 \(\displaystyle\partial^\alpha u\) 视为正则分布. 由\autoref{fa:DIST-B02}的导数换序与 II-12 的正则分布与卷积的相容性，得到 \(\displaystyle \partial^\alpha(u*\rho_\varepsilon) = (\partial^\alpha u)*\rho_\varepsilon.\)
+对每个 \(\displaystyle\alpha\)，\autoref{ii13:lp-mollifier-approximation}给 \(\displaystyle \|(\partial^\alpha u)*\rho_\varepsilon-\partial^\alpha u\|_p \longrightarrow0.\)
+有限求和即得 \(\displaystyle W^{k,p}\) 收敛. 若 \(\displaystyle u=0\) 几乎处处于紧集 \(\displaystyle K\) 外，则卷积支撑包含于 \(\displaystyle K+\overline{B(0,\varepsilon)}\)，并由分布卷积光滑性得到 \(\displaystyle C_c^\infty\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FALemma}[B][缩放的全局截断函数]{ii13:scaled-cutoff}
+存在固定 \(\displaystyle\chi\in C_c^\infty(\mathbb R^d)\)，使 \(\displaystyle0\leqslant\chi\leqslant1\)、\(\displaystyle\chi=1\) 于 \(\displaystyle B(0,1)\)，并且 \(\displaystyle\operatorname{supp}\chi\subseteq B(0,2)\). 定义 \(\displaystyle\chi_R(x)=\chi(\frac{x}{R})\). 则对每个多重指标 \(\displaystyle\beta\)，
+\[
+\|\partial^\beta\chi_R\|_\infty
+\leqslant
+C_\beta R^{-|\beta|},
+\;
+C_\beta=\|\partial^\beta\chi\|_\infty.
+\]
+\end{FALemma}
+
+\begin{FAProof}
+在\autoref{ii13:local-smooth-cutoff}中取开集 \(\displaystyle B(0,2)\) 与紧集 \(\displaystyle\overline{B(0,1)}\)，把所得函数视为 \(\displaystyle\mathbb R^d\) 上的光滑紧支撑函数，即得所需 \(\displaystyle\chi\). 链式法则给 \(\displaystyle \partial^\beta\chi_R(x) = R^{-|\beta|}(\partial^\beta\chi)(\frac{x}{R}),\)
+取本质上确界即得估计.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAProposition}[B][\(\displaystyle W^{k,p}(\mathbb R^d)\)的截断函数逼近]{ii13:wkp-cutoff}
+设 \(\displaystyle u\in W^{k,p}(\mathbb R^d)\)、\(\displaystyle1\leqslant p<\infty\). 则 \(\displaystyle \chi_Ru \longrightarrow u \;\text{于 }W^{k,p}(\mathbb R^d)\)
+当 \(\displaystyle R\to\infty\).
+\end{FAProposition}
+
+\begin{FAProof}
+由\autoref{fa:SOB-C01}（d），对每个 \(\displaystyle|\alpha|\leqslant k\)，
+\[
+\partial^\alpha(\chi_Ru)
+=
+\sum_{\beta\leqslant\alpha}
+\binom{\alpha}{\beta}
+(\partial^\beta\chi_R)
+(\partial^{\alpha-\beta}u).
+\]
+因此
+\[
+\partial^\alpha(\chi_Ru-u)
+=
+(\chi_R-1)\partial^\alpha u
++
+\sum_{0<\beta\leqslant\alpha}
+\binom{\alpha}{\beta}
+(\partial^\beta\chi_R)
+(\partial^{\alpha-\beta}u).
+\]
+第一项满足 \(\displaystyle\chi_R(x)\to1\) 对每个固定 \(\displaystyle x\)，且 \(\displaystyle|\chi_R-1|\leqslant1\)，故控制收敛定理给 \(\displaystyle \|(\chi_R-1)\partial^\alpha u\|_p \longrightarrow0.\)
+对 \(\displaystyle\beta\neq0\)，\autoref{ii13:scaled-cutoff}给
+\[
+\|(\partial^\beta\chi_R)(\partial^{\alpha-\beta}u)\|_p
+\leqslant
+C_\beta R^{-|\beta|}
+\|\partial^{\alpha-\beta}u\|_p
+\longrightarrow0.
+\]
+有限求和后对全部 \(\displaystyle\alpha\) 再有限求和，即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FATheorem}[B][全空间光滑紧支撑密度]{fa:SOB-B02}
+设 \(\displaystyle k\in\mathbb N_0\)、\(\displaystyle1\leqslant p<\infty\). 则 \(\displaystyle C_c^\infty(\mathbb R^d)\) 在 \(\displaystyle W^{k,p}(\mathbb R^d)\) 中稠密.
+\end{FATheorem}
+
+\begin{FAProof}
+给定 \(\displaystyle u\in W^{k,p}(\mathbb R^d)\) 与 \(\displaystyle\eta>0\). 由\autoref{ii13:wkp-cutoff}取 \(\displaystyle R\) 使 \(\displaystyle \|\chi_Ru-u\|_{W^{k,p}}<\frac\eta2.\)
+令 \(\displaystyle v=\chi_Ru\). 则 \(\displaystyle v\in W^{k,p}(\mathbb R^d)\) 且几乎处处支撑于 \(\displaystyle\overline{B(0,2R)}\). 由\autoref{ii13:wkp-mollifier}，可取充分小的 \(\displaystyle\varepsilon>0\) 使 \(\displaystyle \|v*\rho_\varepsilon-v\|_{W^{k,p}}<\frac\eta2,\)
+且 \(\displaystyle v*\rho_\varepsilon\in C_c^\infty(\mathbb R^d)\). 三角不等式给 \(\displaystyle\|v*\rho_\varepsilon-u\|_{W^{k,p}}<\eta\).
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[全空间光滑紧支撑密度的指数与区域边界]
+\autoref{fa:SOB-B02}不包括 \(\displaystyle p=\infty\). 本章也不声称 \(\displaystyle C_c^\infty(\Omega)\) 在任意开集的 \(\displaystyle W^{k,p}(\Omega)\) 中稠密；边界附近的全局逼近需要额外结构，II-14 才讨论延拓/迹相关条件.
+\end{FAWarning}
+
+\begin{FALemma}[B][紧支撑 Sobolev 函数的零延拓]{ii13:compact-support-zero-extension}
+设 \(\displaystyle v\in W^{k,p}(\Omega)\)，且存在 \(\displaystyle K\Subset\Omega\) 使 \(\displaystyle v=0\) 几乎处处于 \(\displaystyle\Omega\setminus K\)，并且每个 \(\displaystyle\partial^\alpha v\) 也几乎处处支撑于 \(\displaystyle K\). 将 \(\displaystyle v\) 及其弱导数以零延拓到 \(\displaystyle\mathbb R^d\). 则零延拓属于 \(\displaystyle W^{k,p}(\mathbb R^d)\)，且其弱导数正是相应零延拓.
+\end{FALemma}
+
+\begin{FAProof}
+固定 \(\displaystyle|\alpha|\leqslant k\) 与 \(\displaystyle\varphi\in C_c^\infty(\mathbb R^d)\). 由\autoref{ii13:local-smooth-cutoff}取 \(\displaystyle\eta\in C_c^\infty(\Omega)\) 在 \(\displaystyle K\) 的邻域上恒为一. 因 \(\displaystyle v\) 与 \(\displaystyle\partial^\alpha v\) 均支撑于 \(\displaystyle K\)，有
+\[
+\int_{\mathbb R^d}E_0v\,\partial^\alpha\varphi\,\mathrm{d}x
+=
+\int_\Omega v\,\partial^\alpha(\eta\varphi)\,\mathrm{d}x
+=
+(-1)^{|\alpha|}
+\int_\Omega(\partial^\alpha v)\eta\varphi\,\mathrm{d}x
+=
+(-1)^{|\alpha|}
+\int_{\mathbb R^d}E_0(\partial^\alpha v)\varphi\,\mathrm{d}x.
+\]
+故所述零延拓具有相应弱导数.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][任意开集的内部平滑性]{ii13:interior-smoothing}
+设 \(\displaystyle u\in W^{k,p}(\Omega)\)、\(\displaystyle1\leqslant p<\infty\)、\(\displaystyle K\Subset\Omega\). 取 \(\displaystyle\chi\in C_c^\infty(\Omega)\) 且 \(\displaystyle\chi=1\) 于 \(\displaystyle K\) 的邻域，并把 \(\displaystyle\chi u\) 零延拓到 \(\displaystyle\mathbb R^d\). 定义 \(\displaystyle u_{\varepsilon,K} = (\chi u)*\rho_\varepsilon.\)
+则 \(\displaystyle u_{\varepsilon,K}\in C^\infty(\mathbb R^d)\)，并且
+\[
+\sum_{|\alpha|\leqslant k}
+\|\partial^\alpha u_{\varepsilon,K}-\partial^\alpha u\|_{L^p(K)}^p
+\longrightarrow0.
+\]
+这里最后一式只记各已知弱导数在 \(\displaystyle K\) 上的 \(\displaystyle L^p\) 误差，不把非开集 \(\displaystyle K\) 定义为新的 Sobolev 区域.
+\end{FACorollary}
+
+\begin{FAProof}
+由\autoref{fa:SOB-C01}（d），\(\displaystyle\chi u\in W^{k,p}(\Omega)\)，且其全部 \(\displaystyle|\alpha|\leqslant k\) 导数支撑于 \(\displaystyle\operatorname{supp}\chi\Subset\Omega\). 因而\autoref{ii13:compact-support-zero-extension}给 \(\displaystyle\chi u\in W^{k,p}(\mathbb R^d)\). 再由\autoref{ii13:wkp-mollifier}，\(\displaystyle(\chi u)*\rho_\varepsilon\to\chi u\) 于 \(\displaystyle W^{k,p}(\mathbb R^d)\). 由 \(\displaystyle\chi=1\) 于 \(\displaystyle K\) 邻域及\autoref{fa:SOB-C01}（c），\(\displaystyle\partial^\alpha(\chi u)=\partial^\alpha u\) 几乎处处于 \(\displaystyle K\). 限制全空间收敛到 \(\displaystyle K\) 即得结论.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{零边界空间}\label{sec:ii13-zero-boundary}
+\index{Sobolev space@Sobolev 空间!零边界}\index{zero extension@零延拓}
+
+\begin{FADefinition}[A][\(\displaystyle W_0^{1,p}(\Omega)\)]{ii13:w01p-definition}
+设 \(\displaystyle1\leqslant p<\infty\). 定义 \(\displaystyle W_0^{1,p}(\Omega)=\overline{C_c^\infty(\Omega)}^{\,W^{1,p}(\Omega)}\). 本章中“零边界”仅表示上述闭包定义，不把它识别为“迹等于零”.
+\end{FADefinition}
+
+因 \(\displaystyle W_0^{1,p}(\Omega)\) 是 Banach 空间 \(\displaystyle W^{1,p}(\Omega)\) 的闭线性子空间，故它本身 Banach. 若 \(\displaystyle1<p<\infty\)，由\autoref{fa:SOB-A01}与\autoref{ii13:closed-subspace-reflexive}，\(\displaystyle W_0^{1,p}(\Omega)\) 为自反空间.
+
+\begin{FAProposition}[B][\(\displaystyle W_0^{1,p}\)的零延拓]{ii13:w01p-zero-extension}
+设 \(\displaystyle1\leqslant p<\infty\). 对 \(\displaystyle\varphi\in C_c^\infty(\Omega)\)，令 \(\displaystyle E_0\varphi\) 为其到 \(\displaystyle\mathbb R^d\) 的零延拓. 则 \(\displaystyle E_0\varphi\in C_c^\infty(\mathbb R^d)\)，并且 \(\displaystyle \|E_0\varphi\|_{W^{1,p}(\mathbb R^d)} = \|\varphi\|_{W^{1,p}(\Omega)}.\)
+因此 \(\displaystyle E_0\) 唯一延拓为线性等距映射 \(\displaystyle E_0:W_0^{1,p}(\Omega) \longrightarrow W^{1,p}(\mathbb R^d).\)
+对每个 \(\displaystyle u\in W_0^{1,p}(\Omega)\)，\(\displaystyle E_0u=0\) 几乎处处于 \(\displaystyle\mathbb R^d\setminus\Omega\)，且 \(\displaystyle\partial_j(E_0u)\) 是 \(\displaystyle\partial_ju\) 的零延拓几乎处处
+\end{FAProposition}
+
+\begin{FAProof}
+若 \(\displaystyle\varphi\in C_c^\infty(\Omega)\)，其支撑紧包含于 \(\displaystyle\Omega\)，故在边界附近已经恒为零，零延拓仍为 \(\displaystyle C_c^\infty(\mathbb R^d)\). 函数与每个一阶导数在 \(\displaystyle\Omega\) 外均为零，因此范数等式成立.
+
+现取 \(\displaystyle u\in W_0^{1,p}(\Omega)\). 存在 \(\displaystyle\varphi_n\in C_c^\infty(\Omega)\) 使 \(\displaystyle\varphi_n\to u\) 于 \(\displaystyle W^{1,p}(\Omega)\). 范数等式使 \(\displaystyle(E_0\varphi_n)\) 在 \(\displaystyle W^{1,p}(\mathbb R^d)\) 中 Cauchy. 由\autoref{fa:SOB-A01}的完备性，它收敛到某个 \(\displaystyle v\in W^{1,p}(\mathbb R^d)\)，并且该极限与逼近列无关；定义 \(\displaystyle E_0u=v\). 极限保持范数，故 \(\displaystyle E_0\) 为等距映射.
+
+在 \(\displaystyle L^p(\Omega)\) 上，\(\displaystyle E_0\varphi_n|_\Omega=\varphi_n\to u\)，故 \(\displaystyle v|_\Omega=u\) 几乎处处；在 \(\displaystyle\mathbb R^d\setminus\Omega\) 上每个 \(\displaystyle E_0\varphi_n\) 都为零，故 \(\displaystyle v=0\) 几乎处处于该集合. 另一方面，\(\displaystyle\partial_j(E_0\varphi_n)=E_0(\partial_j\varphi_n)\) 在 \(\displaystyle L^p(\mathbb R^d)\) 中收敛到 \(\displaystyle\partial_jv\). 由于 \(\displaystyle\partial_j\varphi_n\to\partial_ju\) 于 \(\displaystyle L^p(\Omega)\)，其零延拓在 \(\displaystyle\Omega\) 内收敛到 \(\displaystyle\partial_ju\)，在外部恒为零. 因此 \(\displaystyle\partial_j(E_0u)=E_0(\partial_ju)\) 几乎处处. 该论证只使用闭包与完备性，不使用迹定理.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FAWarning}[零边界不等于已证明的零迹]
+本章没有迹算子，也没有证明 \(\displaystyle W_0^{1,p}(\Omega)\) 等于任何“迹为零”的集合. 这种刻画属于 II-14 的理论边界.
+\end{FAWarning}
+
+\section{Poincaré 不等式}\label{sec:ii13-poincare}
+\index{Poincare inequality@Poincaré 不等式}
+
+\begin{FATheorem}[B][有界开集上的 Poincaré 不等式]{fa:SOB-B01}
+设 \(\displaystyle\Omega\subseteq\mathbb R^d\) 为有界的非空开集，\(\displaystyle1\leqslant p<\infty\). 取 \(\displaystyle a<b\) 使 \(\displaystyle \Omega \subseteq (a,b)\times\mathbb R^{d-1}, \; L=b-a.\)
+则对全部 \(\displaystyle u\in W_0^{1,p}(\Omega)\)，
+\[
+\|u\|_{L^p(\Omega)}
+\leqslant
+L\|\partial_1u\|_{L^p(\Omega)}
+\leqslant
+L
+\left(
+\sum_{j=1}^d\|\partial_ju\|_p^p
+\right)^{\frac{1}{p}}.
+\]
+特别地，存在 \(\displaystyle C_{\Omega,p}>0\) 使 \(\displaystyle \|u\|_p \leqslant C_{\Omega,p} \|\nabla u\|_{L^p(\Omega;\ell^p)}.\)
+这里可取上式条带常数，且不声称任何常数最优.
+\end{FATheorem}
+
+\begin{FAProof}
+先设 \(\displaystyle\varphi\in C_c^\infty(\Omega)\)，并把它零延拓到 \(\displaystyle\mathbb R^d\). 固定 \(\displaystyle x'=(x_2,\dots,x_d)\). 因 \(\displaystyle\Omega\subseteq(a,b)\times\mathbb R^{d-1}\)，零延拓在 \(\displaystyle x_1\leqslant a\) 时为零. 对 \(\displaystyle a<x_1<b\)，一维微积分基本定理给
+\[
+\varphi(x_1,x')
+=
+\int_a^{x_1}\partial_1\varphi(s,x')\,\mathrm{d}s.
+\]
+若 \(\displaystyle p>1\)，Hölder 给
+\[
+|\varphi(x_1,x')|^p
+\leqslant
+L^{p-1}
+\int_a^b|\partial_1\varphi(s,x')|^p\,\mathrm{d}s.
+\]
+对 \(\displaystyle x_1\in(a,b)\) 再积分，得到
+\[
+\int_a^b|\varphi(x_1,x')|^p\,\mathrm{d}x_1
+\leqslant
+L^p
+\int_a^b|\partial_1\varphi(s,x')|^p\,\mathrm{d}s.
+\]
+若 \(\displaystyle p=1\)，由
+\[
+|\varphi(x_1,x')|
+\leqslant
+\int_a^b|\partial_1\varphi(s,x')|\,\mathrm{d}s
+\]
+对 \(\displaystyle x_1\) 积分得到同一形式，其中右侧系数为 \(\displaystyle L\). 此时乘积测度空间因子为带 Lebesgue 测度的 \(\displaystyle\mathbb R\) 与 \(\displaystyle\mathbb R^{d-1}\)，二者均 \(\displaystyle\sigma\)-有限；出现的 \(\displaystyle|\varphi|^p\) 与 \(\displaystyle|\partial_1\varphi|^p\) 都是非负可测被积函数. 因而由 I-01 已建立的乘积积分接口中的 Tonelli 部分对 \(\displaystyle x'\) 积分，得
+\[
+\|\varphi\|_{L^p(\mathbb R^d)}^p \leqslant L^p\|\partial_1\varphi\|_{L^p(\mathbb R^d)}^p
+\]
+对 \(\displaystyle p>1\)，而 \(\displaystyle p=1\) 时对应未取幂式同样成立. 因零延拓范数等于 \(\displaystyle\Omega\) 内范数，故
+\(\displaystyle \|\varphi\|_{L^p(\Omega)} \leqslant L\|\partial_1\varphi\|_{L^p(\Omega)}.\)
+现取 \(\displaystyle u\in W_0^{1,p}(\Omega)\). 按定义存在 \(\displaystyle\varphi_n\in C_c^\infty(\Omega)\) 使 \(\displaystyle\varphi_n\to u\) 于 \(\displaystyle W^{1,p}(\Omega)\). 对每个 \(\displaystyle n\) 应用上式并令 \(\displaystyle n\to\infty\)，得到 \(\displaystyle \|u\|_p \leqslant L\|\partial_1u\|_p.\)
+最后 \(\displaystyle\|\partial_1u\|_p\leqslant(\sum_j\|\partial_ju\|_p^p)^{\frac{1}{p}}\)，即得全部结论. 证明不使用边界正则性、迹或嵌入.
+\hfill\(\square\)
+\end{FAProof}
+
+\begin{FACorollary}[B][\(\displaystyle W_0^{1,p}\) 上梯度范数等价]{ii13:gradient-norm-equivalence}
+在\autoref{fa:SOB-B01}的有界区域假设下，定义
+\[
+\|u\|_\nabla
+=
+\|\nabla u\|_{L^p(\Omega;\ell^p)}
+=
+\left(\sum_{j=1}^d\|\partial_ju\|_p^p\right)^{\frac{1}{p}}.
+\]
+则 \(\displaystyle\|\cdot\|_\nabla\) 是 \(\displaystyle W_0^{1,p}(\Omega)\) 上与 \(\displaystyle\|\cdot\|_{W^{1,p}}\) 等价的范数.
+\end{FACorollary}
+
+\begin{FAProof}
+由范数定义，\(\displaystyle\|u\|_\nabla\leqslant\|u\|_{W^{1,p}}\). 反向由\autoref{fa:SOB-B01}， \(\displaystyle \|u\|_{W^{1,p}}^p = \|u\|_p^p+\|u\|_\nabla^p \leqslant (L^p+1)\|u\|_\nabla^p.\)
+故 \(\displaystyle\|u\|_{W^{1,p}}\leqslant(L^p+1)^{\frac{1}{p}}\|u\|_\nabla\). 若 \(\displaystyle\|u\|_\nabla=0\)，Poincaré 进一步给 \(\displaystyle\|u\|_p=0\)，故它确为范数.
+\hfill\(\square\)
+\end{FAProof}
+
+\section{Hilbert 情形}\label{sec:ii13-hilbert-case}
+\index{Hilbert Sobolev space@Hilbert Sobolev 空间}\index{energy space@能量空间}
+
+\subsection{\texorpdfstring{\(\displaystyle H^k\)}{Hk} 与 \texorpdfstring{\(\displaystyle H_0^1\)}{H01}}
+
+按\autoref{fa:SOB-A01}， \(\displaystyle H^k(\Omega)=W^{k,2}(\Omega), \; H^0(\Omega)=L^2(\Omega),\)
+并取第一变量线性的内积
+\[
+\langle u,v\rangle_{H^k}
+=
+\sum_{|\alpha|\leqslant k}
+\int_\Omega
+\partial^\alpha u(x)
+\overline{\partial^\alpha v(x)}
+\,\mathrm{d}x.
+\]
+这里不重复完备性证明.
+
+\begin{FAExample}[\(\displaystyle H_0^1\) 能量空间]
+定义 \(\displaystyle H_0^1(\Omega) = W_0^{1,2}(\Omega).\)
+对一般开的 \(\displaystyle\Omega\)，它是 Hilbert 空间 \(\displaystyle H^1(\Omega)\) 的闭子空间，故自身 Hilbert. 若进一步假设 \(\displaystyle\Omega\) 有界，则\autoref{fa:SOB-B01}给 \(\displaystyle \|u\|_2 \leqslant C_\Omega\|\nabla u\|_2.\)
+因此 \(\displaystyle \|u\|_\nabla = \|\nabla u\|_2\)
+与 \(\displaystyle\|u\|_{H^1}\) 在 \(\displaystyle H_0^1(\Omega)\) 上等价. 定义能量内积
+\[
+\langle u,v\rangle_{H_0^1,\nabla}
+=
+\sum_{j=1}^d
+\int_\Omega
+\partial_ju(x)
+\overline{\partial_jv(x)}
+\,\mathrm{d}x.
+\]
+它第一变量线性. 若 \(\displaystyle\langle u,u\rangle_{H_0^1,\nabla}=0\)，则 \(\displaystyle\|\nabla u\|_2=0\)，Poincaré 给 \(\displaystyle\|u\|_2=0\)，故正定. 其诱导范数正是 \(\displaystyle\|u\|_\nabla\). 由于该范数与完整 \(\displaystyle H^1\) 范数等价，而 \(\displaystyle H_0^1\) 对后者完备，所以它对能量范数也完备. 因而有界 \(\displaystyle\Omega\) 上 \(\displaystyle H_0^1(\Omega)\) 关于该能量内积为 Hilbert 空间. 这只是 II-15 的能量空间接口；本章不使用 Lax--Milgram.
+\end{FAExample}
+
+\subsection{弱紧性接口}
+
+若 \(\displaystyle1<p<\infty\)，\autoref{fa:SOB-A01}给 \(\displaystyle W^{k,p}(\Omega)\) 自反，故由\autoref{fa:REF-A01}其闭单位球弱紧. 另一方面，\(\displaystyle W_0^{1,p}(\Omega)\) 已由本章闭子空间论证证明为自反空间，再由\autoref{fa:REF-A01}可知其闭单位球同样弱紧. 这里只得到弱拓扑下的紧性；本章不调用 Eberlein--Šmulian，因此不把该结论改写成未经证明的弱序列紧性.
+
+\begin{FARemark}[分数阶 Sobolev的 D 级预告]
+非整数阶 Sobolev 空间可借助 Gagliardo 型差商或 Fourier 型结构定义. 本章不冻结 \(\displaystyle W^{s,p}\) 的定义、不证明分数阶半范数估计，也不建立任何分数阶嵌入；该方向仅作为 D 级后续入口.
+\end{FARemark}
+
+\begin{FAWarning}[II-14 与 II-15的理论边界]
+II-14 才正式建立选定 Sobolev 连续嵌入、临界指数、Rellich--Kondrachov 紧嵌入、迹定理、一般延拓定理、Fréchet--Kolmogorov 紧性与零迹刻画. II-15 才建立 Lax--Milgram、Poisson/椭圆型弱解存在性、能量估计与最终演化偏微分方程应用. 本章只冻结 \(\displaystyle W^{k,p}\)、\(\displaystyle W_0^{1,p}\)、Poincaré 与 \(\displaystyle H_0^1\) 能量空间，不使用任何上述未来定理.
+\end{FAWarning}
+
+\subsection*{本章习题}\label{sec:ii13-exercises}
+
+\begin{FAExercise}[弱导数代表元唯一性]{ex:ii13-01}
+设 \(\displaystyle g,h\in L^1_{\mathrm{loc}}(\Omega)\) 且 \(\displaystyle T_g=T_h\). 只使用本章局部 \(\displaystyle L^1\) 磨光核收敛与 II-12 的卷积接口，完整证明 \(\displaystyle g=h\) 几乎处处，并指出紧集穷竭的作用.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle W^{1,p}\) 定义与几乎处处语义]{ex:ii13-02}
+从\autoref{ii13:w1p-definition}出发，验证 \(\displaystyle W^{1,p}(\Omega)\) 对代表元选择不变，并证明弱梯度作为 \(\displaystyle L^p(\Omega;\mathbb K^d)\) 的几乎处处类良定义.
+\end{FAExercise}
+
+\begin{FAExercise}[端点配对估计]{ex:ii13-03}
+重做\autoref{fa:SOB-C01}（b） 的极限步骤，分别在 \(\displaystyle p=1\) 用 \(\displaystyle L^\infty\) 测试函数估计、在 \(\displaystyle p=\infty\) 用 \(\displaystyle L^1\) 测试函数估计，并与 \(\displaystyle1<p<\infty\) 的 Hölder 情形比较.
+\end{FAExercise}
+
+\begin{FAExercise}[点值不是内禀的]{ex:ii13-04}
+对任意 \(\displaystyle x_0\in\Omega\) 构造本章规范点值反例，并证明修改有限个点仍不改变任何 \(\displaystyle W^{k,p}\) 元素及其弱导数. 说明该结论为什么不否定 II-14 可能出现的连续代表元.
+\end{FAExercise}
+
+\begin{FAExercise}[弱导数闭性]{ex:ii13-05}
+设 \(\displaystyle u_n\to u\) 与 \(\displaystyle\partial^\alpha u_n\to g\) 均于 \(\displaystyle L^p\). 不引用闭算子定理，直接对测试函数取极限证明 \(\displaystyle\partial^\alpha u=g\).
+\end{FAExercise}
+
+\begin{FAExercise}[限制/局部性]{ex:ii13-06}
+若 \(\displaystyle U\subseteq\Omega\) 开，证明 \(\displaystyle u\in W^{k,p}(\Omega)\) 蕴含 \(\displaystyle u|_U\in W^{k,p}(U)\)，并逐个多重指标验证导数限制.
+\end{FAExercise}
+
+\begin{FAExercise}[光滑乘子 Leibniz]{ex:ii13-07}
+对 \(\displaystyle|\alpha|\leqslant k\)，从 II-12 的分布乘积法则归纳推出多重指标 Leibniz 公式，并证明 \(\displaystyle a\in C_c^\infty(\Omega)\) 时乘法 \(\displaystyle u\mapsto au\) 连续作用于 \(\displaystyle W^{k,p}(\Omega)\).
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle W^{k,p}\) 范数]{ex:ii13-08}
+验证\autoref{ii13:wkp-definition}中两种范数的正定性、齐次性与三角不等式，并说明有限多重指标集合为什么使各分量范数的组合合法.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle W^{k,p}\) 完备性]{ex:ii13-09}
+从 \(\displaystyle W^{k,p}\)-Cauchy 列出发，逐分量使用\autoref{i03:Lp-banach}，再用弱导数闭性完整重建\autoref{ii13:wkp-banach}，包括 \(\displaystyle p=\infty\) 情形.
+\end{FAExercise}
+
+\begin{FAExercise}[有限直和自反性]{ex:ii13-10}
+证明 \(\displaystyle(X_1\oplus_p\cdots\oplus_pX_N)^*\cong X_1^*\oplus_q\cdots\oplus_qX_N^*\) 等距，并由典范嵌入证明有限 \(\displaystyle\ell^p\) 直和保持自反性.
+\end{FAExercise}
+
+\begin{FAExercise}[Sobolev 自反性]{ex:ii13-11}
+对 \(\displaystyle1<p<\infty\)，证明 Lebesgue 测度在 \(\displaystyle\Omega\) 上为 \(\displaystyle\sigma\)-有限，验证 \(\displaystyle J:u\mapsto(\partial^\alpha u)\) 的值域闭，再推出 \(\displaystyle W^{k,p}(\Omega)\) 自反. 不得把结论扩张到 \(\displaystyle p=1\) 或 \(\displaystyle p=\infty\).
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle H^k\) 内积]{ex:ii13-12}
+在实、复两种标量情形验证 \(\displaystyle\langle\cdot,\cdot\rangle_{H^k}\) 的内积公理，复情形明确第一变量线性，并证明诱导范数等于 \(\displaystyle W^{k,2}\) 范数.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle L^p\) 磨光核逼近]{ex:ii13-13}
+不调用 Young 定理，完整重建 \(\displaystyle C_c(\mathbb R^d)\) 稠密性、Jensen 压缩估计、\(\displaystyle C_c\) 一致连续步骤与三角逼近链. 最后说明为什么本证明不给一般 \(\displaystyle L^\infty\) 范数收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle W^{k,p}\) 磨光核逼近]{ex:ii13-14}
+对 \(\displaystyle u\in W^{k,p}(\mathbb R^d)\)、\(\displaystyle p<\infty\)，从分布卷积导数换序推出每个弱导数的磨光核公式，并证明 \(\displaystyle W^{k,p}\) 范数收敛.
+\end{FAExercise}
+
+\begin{FAExercise}[截断函数逼近]{ex:ii13-15}
+对 \(\displaystyle\chi_R(x)=\chi(\frac{x}{R})\) 证明全部导数缩放估计，并在 \(\displaystyle\partial^\alpha(\chi_Ru-u)\) 中分别处理 \(\displaystyle\beta=0\) 与 \(\displaystyle\beta\neq0\) 项.
+\end{FAExercise}
+
+\begin{FAExercise}[全空间光滑紧支撑密度]{ex:ii13-16}
+只使用截断函数逼近与磨光核逼近证明\autoref{fa:SOB-B02}. 明确标出紧支撑在第二步为何保持，并说明 \(\displaystyle p=\infty\) 被排除的位置.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle W_0^{1,p}\) 闭包定义]{ex:ii13-17}
+从闭包定义证明 \(\displaystyle W_0^{1,p}(\Omega)\) Banach；当 \(\displaystyle1<p<\infty\) 时证明其自反. 禁止使用迹定理或零迹刻画.
+\end{FAExercise}
+
+\begin{FAExercise}[零延拓]{ex:ii13-18}
+先对 \(\displaystyle C_c^\infty(\Omega)\) 证明零延拓的 \(\displaystyle W^{1,p}\) 等距映射，再通过完备化延拓到 \(\displaystyle W_0^{1,p}(\Omega)\)，并识别函数与一阶弱导数在 \(\displaystyle\Omega\) 外的几乎处处值.
+\end{FAExercise}
+
+\begin{FAExercise}[光滑核心 Poincaré]{ex:ii13-19}
+设 \(\displaystyle\Omega\subseteq(a,b)\times\mathbb R^{d-1}\). 对 \(\displaystyle\varphi\in C_c^\infty(\Omega)\) 分别处理 \(\displaystyle p=1\) 与 \(\displaystyle p>1\)，经一维积分与 Tonelli 证明 \(\displaystyle\|\varphi\|_p\leqslant(b-a)\|\partial_1\varphi\|_p\).
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle W_0^{1,p}\) 上的 Poincaré 不等式]{ex:ii13-20}
+用 \(\displaystyle C_c^\infty(\Omega)\) 在 \(\displaystyle W_0^{1,p}\) 中的定义性稠密，把上一题不等式延拓到全部 \(\displaystyle u\in W_0^{1,p}(\Omega)\). 说明证明为何不要求边界正则性.
+\end{FAExercise}
+
+\begin{FAExercise}[梯度范数等价]{ex:ii13-21}
+在有界 \(\displaystyle\Omega\) 上求一个由条带宽度 \(\displaystyle L\) 给出的显式范数等价常数，并证明 \(\displaystyle\|\nabla u\|_{L^p(\ell^p)}\) 在 \(\displaystyle W_0^{1,p}\) 上正定.
+\end{FAExercise}
+
+\begin{FAExercise}[\(\displaystyle H_0^1\)能量空间的能量范数与未来边界]{ex:ii13-22}
+对有界 \(\displaystyle\Omega\) 证明 \(\displaystyle H_0^1\) 的能量内积正定且完备. 再逐项说明 Sobolev 嵌入、Rellich--Kondrachov、迹/零迹刻画、一般延拓定理、Lax--Milgram 与椭圆型弱解存在性为什么均不能在本题中使用，并解释一般 \(\displaystyle p=\infty\) 光滑稠密性断言的失败风险.
+\end{FAExercise}

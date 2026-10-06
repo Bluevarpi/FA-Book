@@ -1,0 +1,485 @@
+\chapter{山路定理与极小极大}\label{chap:III-10}
+\FAChapterOpening
+{在 III-09 已建立的 Palais--Smale 紧性与变形引理上构造非极小型临界点：先冻结一般紧参数极小极大族与边界保持变形阻碍，再建立山路几何、极小极大下界与临界水平定理，随后把同一机制应用于次临界半线性 Dirichlet 能量，并用一个真实山路几何但 \(\displaystyle(PS)_c\) 失败的 \(\displaystyle\ell^2\) 模型说明“几何不等于实现”.}
+{本章前置为 III-09 与 III-06. 本章实际调用 III-09 的 Palais--Smale 条件\autoref{fa:PS-A01}与定量变形引理\autoref{fa:DEF-A01}，并继承 III-06 的变分能量/子水平集接口\autoref{fa:VAR-A01}. 偏微分方程应用复用 III-09 已冻结的次临界半线性 Dirichlet 能量模型 \(\displaystyle C^1\) 与全局 \(\displaystyle(PS)\) 证明，以及 II-13/II-14 的 Sobolev 连续嵌入接口.}
+{\begin{center}
+\begin{tikzpicture}[x=0.92cm,y=0.84cm]
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (ps) at (0.8,3.0) {Palais--Smale条件};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (def) at (3.1,3.0) {定量变形引理};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (var) at (5.4,3.0) {凸/下半连续/强制性};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (minimax) at (1.8,1.4) {极小极大框架};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (mpb) at (4.3,1.4) {山路几何};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (mpc) at (6.6,1.4) {山路下界};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (mpa) at (4.4,-0.1) {山路定理};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (exmp) at (8.5,1.4) {半线性Dirichlet能量};
+\node[fa/node,font=\scriptsize,inner xsep=3pt] (future) at (8.5,-0.1) {III-11};
+\draw[fa/arrow] (ps.west) -- (0,3.0) -- (0,0.4) -- (mpa.west);
+\draw[fa/arrow] (def.south) -- (3.3,2.3) -- (3.3,0.4) -- (mpa.north west);
+\draw[fa/arrow] (var.south) -- (5.4,0.4) -- (mpa.north east);
+\draw[fa/arrow] (minimax) -- (mpa);
+\draw[fa/arrow] (mpb) -- (mpa);
+\draw[fa/arrow] (mpc) -- (mpa);
+\draw[fa/arrow] (exmp) -- (mpa);
+\draw[fa/arrow,dashed] (mpa) -- (future);
+\end{tikzpicture}
+\end{center}}
+
+本章固定标量域为 \(\displaystyle\mathbb R\). 一般主线中 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi\in C^1(X;\mathbb R)\). 导数始终是 \(\displaystyle\Phi'(u)\in X^*\)，不在一般 Banach 空间中引入 Hilbert 梯度或 Riesz 同构. III-09 已冻结子水平集记号 \(\displaystyle\Phi^a=\{u\in X:\Phi(u)\leqslant a\}\)，本章沿用该变分接口.
+
+\section{极小极大框架}\label{sec:iii10-minimax-framework}
+\index{minimax@极小极大}\index{admissible family@可容许族}\index{boundary-preserving deformation@边界保持形变}
+
+先把单一路径从理论中抽离. 设 \(\displaystyle K\) 为非空紧度量空间，\(\displaystyle K_0\subseteq K\) 非空闭，\(\displaystyle g_0\in C(K_0,X)\). 定义可容许族
+\(\displaystyle \Gamma := \{\gamma\in C(K,X):\gamma|_{K_0}=g_0\}\).
+以下只在 \(\displaystyle\Gamma\neq\varnothing\) 时讨论. 若 \(\displaystyle\Phi:X\to\mathbb R\) 连续，则对每个 \(\displaystyle\gamma\in\Gamma\)，由于 \(\displaystyle K\) 紧，连续函数 \(\displaystyle\Phi\circ\gamma\) 在 \(\displaystyle K\) 上取得有限最大值. 因而定义
+\[
+c
+:=
+\inf_{\gamma\in\Gamma}\max_{\xi\in K}\Phi(\gamma(\xi)),
+\;
+b
+:=
+\max_{\xi\in K_0}\Phi(g_0(\xi)).
+\]
+这里 \(\displaystyle b\) 由 \(\displaystyle K_0\) 紧与 \(\displaystyle\Phi\circ g_0\) 连续得到；当下面假设 \(\displaystyle c>b\) 时，\(\displaystyle c\) 自动是有限实数.
+
+\begin{FATheorem}[B][一般极小极大变形框架]{fa:MINIMAX-B01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle K\) 为非空紧度量空间，\(\displaystyle K_0\subseteq K\) 非空闭，\(\displaystyle g_0\in C(K_0,X)\)，并设 \(\displaystyle\Gamma\neq\varnothing\). 对连续 \(\displaystyle\Phi:X\to\mathbb R\)，令
+\[
+\Gamma=\{\gamma\in C(K,X):\gamma|_{K_0}=g_0\},
+\quad
+c=\inf_{\gamma\in\Gamma}\max_{\xi\in K}\Phi(\gamma(\xi)),
+\quad
+b=\max_{\xi\in K_0}\Phi(g_0(\xi)),
+\]
+并假设 \(\displaystyle c>b\). 则：
+\begin{enumerate}
+\item 对每个 \(\displaystyle\varepsilon>0\)，存在 \(\displaystyle\gamma_\varepsilon\in\Gamma\) 使
+\(\displaystyle \max_{\xi\in K}\Phi(\gamma_\varepsilon(\xi)) \leqslant c+\varepsilon\).
+\item 若连续映射 \(\displaystyle\eta:X\to X\) 满足 \(\displaystyle\eta(y)=y\) 对全部 \(\displaystyle y\in g_0(K_0)\) 成立，则 \(\displaystyle\eta\circ\gamma\in\Gamma\) 对每个 \(\displaystyle\gamma\in\Gamma\) 成立.
+\item 若存在 \(\displaystyle0<\varepsilon<\frac{c-b}{2}\) 与连续 \(\displaystyle\eta:X\to X\)，使 \(\displaystyle\eta\) 固定 \(\displaystyle g_0(K_0)\) 且
+\(\displaystyle \eta(\Phi^{c+\varepsilon}) \subseteq \Phi^{c-\varepsilon}\),
+则产生矛盾. 因而任何保持指定边界的可容许变形都不能把整个近极小极大子水平集穿过水平 \(\displaystyle c\).
+\end{enumerate}
+\end{FATheorem}
+
+\begin{FAProof}
+由 \(\displaystyle c\) 是集合
+\[
+\left\{
+\max_{\xi\in K}\Phi(\gamma(\xi)):\gamma\in\Gamma
+\right\}
+\subset\mathbb R
+\]
+的下确界，对任意 \(\displaystyle\varepsilon>0\)，必存在 \(\displaystyle\gamma_\varepsilon\in\Gamma\) 满足第一项；否则所有可容许映射的最大值都严格大于 \(\displaystyle c+\varepsilon\)，与 \(\displaystyle c\) 为下确界矛盾.
+
+若 \(\displaystyle\eta\) 固定 \(\displaystyle g_0(K_0)\)，则 \(\displaystyle\eta\circ\gamma\in C(K,X)\)，并且对每个 \(\displaystyle\xi\in K_0\)，
+\(\displaystyle (\eta\circ\gamma)(\xi) = \eta(g_0(\xi)) = g_0(\xi)\).
+故 \(\displaystyle\eta\circ\gamma\in\Gamma\)，第二项成立.
+
+最后假设第三项中的 \(\displaystyle\varepsilon\) 与 \(\displaystyle\eta\) 存在. 由第一项取 \(\displaystyle\gamma_\varepsilon\in\Gamma\) 使 \(\displaystyle\max_K\Phi(\gamma_\varepsilon)\leqslant c+\varepsilon\). 因而 \(\displaystyle\gamma_\varepsilon(K)\subseteq\Phi^{c+\varepsilon}\). 第二项给 \(\displaystyle\widetilde\gamma:=\eta\circ\gamma_\varepsilon\in\Gamma\)，而子水平集下降给
+\(\displaystyle \widetilde\gamma(K) \subseteq \Phi^{c-\varepsilon}\).
+于是
+\[
+\max_{\xi\in K}\Phi(\widetilde\gamma(\xi))
+\leqslant
+c-\varepsilon
+<
+c,
+\]
+这与 \(\displaystyle c=\inf_{\gamma\in\Gamma}\max_K\Phi(\gamma)\) 矛盾. 因而第三项所述变形不存在，三项结论全部成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[极小极大框架的逻辑边界]
+\autoref{fa:MINIMAX-B01}只记录近极小极大映射、指定边界保持与变形阻碍. 它不假设 \(\displaystyle\Phi\in C^1\)，不产生 Palais--Smale 序列，也不单独推出临界点. 临界水平实现需要额外的可微性、紧性与变形输入.
+\end{FARemark}
+
+\section{山路几何}\label{sec:iii10-mountain-pass-geometry}
+\index{Mountain Pass geometry@山路几何}\index{mountain-pass level@山路水平}
+
+\begin{FADefinition}[B][山路几何]{fa:MP-B01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi\in C^1(X;\mathbb R)\). 称 \(\displaystyle\Phi\) 满足下述山路几何，若
+\(\displaystyle \Phi(0)=0\),
+并存在 \(\displaystyle\rho>0\)、\(\displaystyle\alpha>0\) 与 \(\displaystyle e\in X\) 使
+\(\displaystyle \|e\|_X>\rho, \; \Phi(e)\leqslant0\),
+且对全部满足 \(\displaystyle\|u\|_X=\rho\) 的 \(\displaystyle u\in X\)，有 \(\displaystyle\Phi(u)\geqslant\alpha\). 对这样的 \(\displaystyle e\)，定义
+\(\displaystyle \Gamma_e := \{\gamma\in C([0,1],X):\gamma(0)=0,\ \gamma(1)=e\}\),
+以及山路极小极大水平
+\[
+c
+:=
+\inf_{\gamma\in\Gamma_e}
+\max_{t\in[0,1]}\Phi(\gamma(t)).
+\]
+\end{FADefinition}
+
+\begin{FAProposition}[C][山路极小极大基本估计]{fa:MP-C01}
+在\autoref{fa:MP-B01}的假设下，\(\displaystyle\Gamma_e\neq\varnothing\)，\(\displaystyle c\in\mathbb R\)，并且
+\(\displaystyle c\geqslant\alpha>0\).
+此外，
+\(\displaystyle \max\{\Phi(0),\Phi(e)\} \leqslant0 < c\).
+因此指定端点严格位于极小极大水平下方.
+\end{FAProposition}
+
+\begin{FAProof}
+线性路径 \(\displaystyle\gamma_0(t):=te\) 连续，满足 \(\displaystyle\gamma_0(0)=0\) 与 \(\displaystyle\gamma_0(1)=e\)，故 \(\displaystyle\gamma_0\in\Gamma_e\). 因此 \(\displaystyle\Gamma_e\neq\varnothing\)，且连续函数 \(\displaystyle t\mapsto\Phi(te)\) 在紧区间 \(\displaystyle[0,1]\) 上有有限最大值，所以 \(\displaystyle c<\infty\).
+
+固定任意 \(\displaystyle\gamma\in\Gamma_e\). 映射 \(\displaystyle t\mapsto\|\gamma(t)\|_X\) 连续，且
+\(\displaystyle \|\gamma(0)\|_X=0<\rho<\|e\|_X=\|\gamma(1)\|_X\).
+由介值定理，存在 \(\displaystyle t_\rho\in(0,1)\) 使 \(\displaystyle\|\gamma(t_\rho)\|_X=\rho\). 山路球面障碍给 \(\displaystyle\Phi(\gamma(t_\rho))\geqslant\alpha\)，故
+\(\displaystyle \max_{t\in[0,1]}\Phi(\gamma(t)) \geqslant \alpha\).
+对全部 \(\displaystyle\gamma\in\Gamma_e\) 取下确界得 \(\displaystyle c\geqslant\alpha>0\). 再由 \(\displaystyle\Phi(0)=0\) 与 \(\displaystyle\Phi(e)\leqslant0\)，有
+\(\displaystyle \max\{\Phi(0),\Phi(e)\} \leqslant0 < c\).
+故端点水平间隙成立.\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[几何只建立障碍]
+\autoref{fa:MP-B01}与\autoref{fa:MP-C01}只说明每条从 \(\displaystyle0\) 到 \(\displaystyle e\) 的可容许路径必须跨越正能量球面，并由此得到 \(\displaystyle c\geqslant\alpha\). 这一步没有紧性结论，也没有证明 \(\displaystyle c\) 被某个临界点实现.
+\end{FARemark}
+
+\section{山路定理}\label{sec:iii10-mountain-pass-theorem}
+\index{Mountain Pass theorem@山路定理}\index{critical level@临界水平}
+
+\begin{FATheorem}[A][山路定理]{fa:MP-A01}
+设 \(\displaystyle X\) 为实 Banach 空间，\(\displaystyle\Phi\in C^1(X;\mathbb R)\). 假设 \(\displaystyle\Phi\) 满足\autoref{fa:MP-B01}的山路几何，并满足全局 Palais--Smale 条件\autoref{fa:PS-A01}. 令 \(\displaystyle\Gamma_e\) 与 \(\displaystyle c\) 如\autoref{fa:MP-B01}所定义. 则
+\(\displaystyle c\geqslant\alpha\),
+且 \(\displaystyle c\) 是临界值：存在 \(\displaystyle u\in X\) 使
+\(\displaystyle \Phi(u)=c, \; \Phi'(u)=0\).
+特别地，\(\displaystyle u\neq0\). 该临界点的存在来自极小极大障碍与紧性/变形，而不是来自局部或全局极小假设.
+\end{FATheorem}
+
+\begin{FAProof}
+由\autoref{fa:MP-C01}，\(\displaystyle c\geqslant\alpha>0\). 全局 \(\displaystyle(PS)\) 由\autoref{fa:PS-A01}推出水平条件 \(\displaystyle(PS)_c\). 反设 \(\displaystyle K_c=\varnothing\).
+
+III-09 的\autoref{fa:PS-B01}与\autoref{fa:DEF-A01}的证明给出如下可缩小窗口的定量变形接口：先由 \(\displaystyle(PS)_c\) 与 \(\displaystyle K_c=\varnothing\) 取得 \(\displaystyle\varepsilon_0>0\) 及梯度下界；对任意 \(\displaystyle0<\varepsilon\leqslant\varepsilon_0\)，在较小能量带上使用同一构造即得到连续变形 \(\displaystyle\eta:[0,1]\times X\to X\)，使
+\(\displaystyle \eta(1,\Phi^{c+\varepsilon}) \subseteq \Phi^{c-\varepsilon}\),
+并且当 \(\displaystyle|\Phi(v)-c|\geqslant2\varepsilon\) 时 \(\displaystyle\eta(t,v)=v\) 对全部 \(\displaystyle t\in[0,1]\) 成立. 这不是修改\autoref{fa:DEF-A01}的陈述，而是直接使用其已证明的“任意更小 \(\displaystyle\varepsilon\)” 构造.
+
+记
+\(\displaystyle b:=\max\{\Phi(0),\Phi(e)\}\).
+由\autoref{fa:MP-C01}，\(\displaystyle b\leqslant0<c\). 因而可选择上面的 \(\displaystyle\varepsilon\) 进一步满足
+\(\displaystyle 0<\varepsilon<\frac{c-b}{2}\).
+于是
+\(\displaystyle |\Phi(0)-c| \geqslant c-b > 2\varepsilon, \; |\Phi(e)-c| \geqslant c-b > 2\varepsilon\).
+因此变形固定两个端点.
+
+由极小极大定义，或等价地由\autoref{fa:MINIMAX-B01}的近极小极大结论，存在 \(\displaystyle\gamma\in\Gamma_e\) 使
+\[
+\max_{t\in[0,1]}\Phi(\gamma(t))
+\leqslant
+c+\varepsilon.
+\]
+定义变形后的路径
+\(\displaystyle \widetilde\gamma(t) := \eta(1,\gamma(t))\).
+由于变形固定 \(\displaystyle0\) 与 \(\displaystyle e\)，有 \(\displaystyle\widetilde\gamma(0)=0\)、\(\displaystyle\widetilde\gamma(1)=e\)，故 \(\displaystyle\widetilde\gamma\in\Gamma_e\). 又因 \(\displaystyle\gamma([0,1])\subseteq\Phi^{c+\varepsilon}\)，子水平集变形给
+\(\displaystyle \widetilde\gamma([0,1]) \subseteq \Phi^{c-\varepsilon}\),
+从而
+\[
+\max_{t\in[0,1]}\Phi(\widetilde\gamma(t))
+\leqslant
+c-\varepsilon
+<
+c.
+\]
+这与 \(\displaystyle c=\inf_{\gamma\in\Gamma_e}\max_{t\in[0,1]}\Phi(\gamma(t))\) 矛盾. 因而 \(\displaystyle K_c\neq\varnothing\). 取 \(\displaystyle u\in K_c\)，即 \(\displaystyle\Phi(u)=c\) 且 \(\displaystyle\Phi'(u)=0\). 因 \(\displaystyle\Phi(0)=0<c\)，必有 \(\displaystyle u\neq0\).\hfill\(\square\)
+\end{FAProof}
+
+\begin{FARemark}[几何与紧性/变形的角色分离]
+山路定理有两套不可互换的条件.\autoref{fa:MP-B01}的几何产生非平凡障碍与正极小极大水平；全局 \(\displaystyle(PS)\) 加\autoref{fa:DEF-A01}则阻止近极小极大路径在无临界点时被整体压到水平 \(\displaystyle c\) 以下，从而迫使 \(\displaystyle c\) 被临界点实现. 删除后一套条件时，第一套几何仍可能完整成立，但临界水平实现可以失败.
+\end{FARemark}
+
+\section{偏微分方程应用}\label{sec:iii10-pde-application}
+\index{semilinear elliptic equation@半线性椭圆方程}\index{Dirichlet problem@Dirichlet 问题}\index{weak solution@弱解}
+
+\begin{FAApplication}[次临界半线性 Dirichlet 问题的非零弱解]
+固定 \(\displaystyle d\in\mathbb N\)，令 \(\displaystyle\Omega\subset\mathbb R^d\) 为非空有界 Lipschitz 域，并取
+\(\displaystyle X:=H_0^1(\Omega;\mathbb R), \; \|u\|_X:=\|\nabla u\|_{L^2(\Omega)}\).
+若 \(\displaystyle d\geqslant3\)，取
+\(\displaystyle 2<q<2^*:=\frac{2d}{d-2}\);
+若 \(\displaystyle d=1,2\)，取 \(\displaystyle2<q<\infty\). 定义
+\[
+\mathcal J(u)
+:=
+\frac{1}{2}\int_\Omega|\nabla u|^2\,\mathrm{d}x
+-
+\frac{1}{q}\int_\Omega|u|^q\,\mathrm{d}x.
+\]
+III-09 的次临界半线性 Dirichlet 能量模型已经证明 \(\displaystyle\mathcal J\in C^1(X;\mathbb R)\)、
+\[
+\mathcal J'(u)[v]
+=
+\int_\Omega\nabla u\mathbin{\cdot}\nabla v\,\mathrm{d}x
+-
+\int_\Omega|u|^{q-2}uv\,\mathrm{d}x,
+\]
+并且 \(\displaystyle\mathcal J\) 满足全局 \(\displaystyle(PS)\). 本节只补山路几何与存在性结论，不重复 Nemytskii/Rellich 紧性证明.
+\end{FAApplication}
+
+由 III-09 已核验的 Sobolev 连续嵌入接口，存在 \(\displaystyle C_q>0\) 使
+\(\displaystyle \|u\|_{L^q(\Omega)} \leqslant C_q\|u\|_X\)
+对全部 \(\displaystyle u\in X\) 成立. 因而
+\(\displaystyle \mathcal J(u) \geqslant \frac{1}{2}\|u\|_X^2 - \frac{C_q^q}{q}\|u\|_X^q\).
+因为 \(\displaystyle q>2\)，可取充分小的 \(\displaystyle\rho>0\) 使
+\(\displaystyle \frac{C_q^q}{q}\rho^{q-2} \leqslant \frac{1}{4}\).
+令 \(\displaystyle\alpha:=\frac{\rho^2}{4}\). 若 \(\displaystyle\|u\|_X=\rho\)，则
+\[
+\mathcal J(u)
+\geqslant
+\frac{1}{2}\rho^2
+-
+\frac{C_q^q}{q}\rho^q
+\geqslant
+\frac{1}{4}\rho^2
+=
+\alpha.
+\]
+由定义直接有 \(\displaystyle\mathcal J(0)=0\).
+
+取任意非零 \(\displaystyle w\in C_c^\infty(\Omega)\subset X\)，并记
+\(\displaystyle A:=\|w\|_X^2>0, \; B:=\|w\|_{L^q(\Omega)}^q>0\).
+则对 \(\displaystyle t\geqslant0\)，
+\(\displaystyle \mathcal J(tw) = \frac{1}{2}At^2 - \frac{1}{q}Bt^q\).
+由于 \(\displaystyle q>2\)，有 \(\displaystyle\mathcal J(tw)\to-\infty\) 当 \(\displaystyle t\to\infty\). 因而可取充分大的 \(\displaystyle t_e>0\)，使 \(\displaystyle e:=t_ew\) 满足
+\(\displaystyle \|e\|_X>\rho, \; \mathcal J(e)<0\).
+所以 \(\displaystyle\mathcal J\) 满足\autoref{fa:MP-B01}的山路几何.
+
+现在 III-09 已给全局 \(\displaystyle(PS)\)，故\autoref{fa:MP-A01}适用. 存在 \(\displaystyle u\in X\) 使
+\(\displaystyle \mathcal J(u)=c\geqslant\alpha>0, \; \mathcal J'(u)=0\).
+因为 \(\displaystyle\mathcal J(0)=0\)，所以 \(\displaystyle u\neq0\). 使用 III-09 已冻结的导数公式，\(\displaystyle\mathcal J'(u)=0\) 等价于
+\[
+\int_\Omega\nabla u\mathbin{\cdot}\nabla v\,\mathrm{d}x
+=
+\int_\Omega|u|^{q-2}uv\,\mathrm{d}x,
+\;
+\forall\,v\in H_0^1(\Omega).
+\]
+因此 \(\displaystyle u\) 是 Dirichlet 问题
+\[
+-\Delta u=|u|^{q-2}u
+\quad\text{于 }\Omega,
+\;
+u|_{\partial\Omega}=0
+\]
+的非零弱解，其中最后一个边界条件按 \(\displaystyle H_0^1\) 迹意义解释. 本章不声称经典正则性、正性、基态性质、唯一性或节点结构.
+
+\section{高级极小极大}\label{sec:iii10-advanced-minimax}
+\index{compactness failure@紧性失效}\index{diagonal operator@对角算子}\index{symmetric minimax@对称极小极大}
+
+先给一个与\autoref{fa:MP-A01}精确互补的反例：山路几何与极小极大障碍全部成立，但水平紧性失败，最终极小极大水平不是临界值.
+
+\begin{FACounterexample}[山路几何但不满足 Palais--Smale 条件]
+取实 Hilbert 空间 \(\displaystyle X=\ell^2\)，规范正交基记为 \(\displaystyle(e_n)_{n\in\mathbb N}\). 令
+\(\displaystyle a_n:=\frac{n}{n+1}\),
+并定义有界对角算子 \(\displaystyle A:\ell^2\to\ell^2\)，满足 \(\displaystyle Ae_n=a_ne_n\). 则 \(\displaystyle\|A\|=1\)，但 \(\displaystyle1\) 不是特征值. 定义
+\(\displaystyle Q(x):=\langle Ax,x\rangle, \; \Psi(x):=\frac{1}{2}\|x\|_2^2-\frac{1}{4}Q(x)^2\).
+则 \(\displaystyle\Psi\in C^1(\ell^2;\mathbb R)\)，满足山路几何；若 \(\displaystyle e=3e_1\)，并令 \(\displaystyle\Gamma\) 为从 \(\displaystyle0\) 到 \(\displaystyle e\) 的连续路径，则对应极小极大水平为 \(\displaystyle c=\frac{1}{4}\)，但 \(\displaystyle\frac{1}{4}\) 不是临界值，而且 \(\displaystyle(PS)_{\frac{1}{4}}\) 失败.
+\end{FACounterexample}
+
+因为 \(\displaystyle0<a_n<1\) 且 \(\displaystyle a_n\uparrow1\)，对 \(\displaystyle x=(x_n)\in\ell^2\)，
+\[
+\|Ax\|_2^2
+=
+\sum_{n=1}^\infty a_n^2|x_n|^2
+\leqslant
+\|x\|_2^2,
+\]
+故 \(\displaystyle\|A\|\leqslant1\). 而 \(\displaystyle\|Ae_n\|_2=a_n\to1\)，所以 \(\displaystyle\|A\|=1\). 若 \(\displaystyle Ax=x\)，则 \(\displaystyle(a_n-1)x_n=0\) 对每个 \(\displaystyle n\) 成立；因 \(\displaystyle a_n\neq1\)，只能有 \(\displaystyle x=0\). 因而 \(\displaystyle1\) 不是特征值.
+
+算子 \(\displaystyle A\) 自伴，故
+\(\displaystyle Q'(x)[h] = 2\langle Ax,h\rangle\).
+由链式法则，
+\(\displaystyle \Psi'(x)[h] = \langle x,h\rangle - Q(x)\langle Ax,h\rangle\).
+所以 \(\displaystyle\Psi\in C^1\). 对 \(\displaystyle x\neq0\)，
+\(\displaystyle 0<Q(x) = \sum_{n=1}^\infty a_n|x_n|^2 \leqslant \|x\|_2^2\).
+若 \(\displaystyle\|x\|_2=1\)，则
+\(\displaystyle \Psi(x) = \frac{1}{2}-\frac{1}{4}Q(x)^2 \geqslant \frac{1}{4}\).
+因此可取 \(\displaystyle\rho=1\)、\(\displaystyle\alpha=\frac{1}{4}\). 又 \(\displaystyle a_1=\frac{1}{2}\). 对 \(\displaystyle e:=3e_1\)，有
+\[
+\Psi(e)
+=
+\frac{9}{2}
+-
+\frac{1}{4}\left(\frac{9}{2}\right)^2
+=
+-\frac{9}{16}
+<0,
+\]
+且 \(\displaystyle\|e\|_2=3>1\). 所以山路几何成立. 由\autoref{fa:MP-C01}，对应极小极大水平满足 \(\displaystyle c\geqslant\frac{1}{4}\).
+
+现证反向估计. 固定 \(\displaystyle n\geqslant2\). 构造路径先沿径向线段从 \(\displaystyle0\) 到 \(\displaystyle3e_n\)，再沿半径 \(\displaystyle3\) 的二维圆弧从 \(\displaystyle3e_n\) 转到 \(\displaystyle3e_1=e\). 在径向线段上，
+\(\displaystyle \Psi(te_n) = \frac{1}{2}t^2 - \frac{1}{4}a_n^2t^4, \; 0\leqslant t\leqslant3\).
+其导数为 \(\displaystyle t-a_n^2t^3\)，非零内部极大点为 \(\displaystyle t=\frac{1}{a_n}\). 因 \(\displaystyle\frac{1}{a_n}\leqslant2<3\)，该最大值位于线段内，并且
+\[
+\max_{0\leqslant t\leqslant3}\Psi(te_n)
+=
+\frac{1}{4a_n^2}.
+\]
+对旋转圆弧，令
+\(\displaystyle z_\theta := \cos\theta\,e_n+ \sin\theta\,e_1, \; 0\leqslant\theta\leqslant\frac{\pi}{2}\).
+则 \(\displaystyle\|z_\theta\|_2=1\)，并且
+\[
+\langle Az_\theta,z_\theta\rangle
+=
+a_n\cos^2\theta+a_1\sin^2\theta
+\geqslant
+a_1
+=
+\frac{1}{2}.
+\]
+故
+\[
+\Psi(3z_\theta)
+=
+\frac{9}{2}
+-
+\frac{81}{4}
+\langle Az_\theta,z_\theta\rangle^2
+\leqslant
+\frac{9}{2}-
+\frac{81}{16}
+=
+-\frac{9}{16}
+<0.
+\]
+把两段按任意线性重参数化拼成 \(\displaystyle\gamma_n\in\Gamma\)，得到
+\[
+\max_{t\in[0,1]}\Psi(\gamma_n(t))
+\leqslant
+\frac{1}{4a_n^2}.
+\]
+所以 \(\displaystyle c\leqslant\frac{1}{4a_n^2}\) 对每个 \(\displaystyle n\geqslant2\) 成立. 令 \(\displaystyle n\to\infty\)，得到 \(\displaystyle c\leqslant\frac{1}{4}\). 与前面的下界合并，
+\(\displaystyle c=\frac{1}{4}\).
+
+下面分类全部临界点. 条件 \(\displaystyle\Psi'(x)=0\) 等价于
+\(\displaystyle x=Q(x)Ax\).
+坐标形式为
+\(\displaystyle (1-Q(x)a_n)x_n=0, \; n\in\mathbb N\).
+若 \(\displaystyle x\neq0\) 且两个不同坐标 \(\displaystyle x_n,x_m\) 同时非零，则 \(\displaystyle Q(x)=\frac{1}{a_n}=\frac{1}{a_m}\)，与 \(\displaystyle a_n\neq a_m\) 矛盾. 因而每个非零临界点只支持在一个坐标上. 写 \(\displaystyle x=te_n\)，则
+\(\displaystyle Q(x)=a_nt^2\),
+而临界点方程给
+\(\displaystyle 1=a_n^2t^2\).
+所以 \(\displaystyle t=\pm\frac{1}{a_n}\). 对这两个点，
+\[
+\Psi\left(\pm\frac{1}{a_n}e_n\right)
+=
+\frac{1}{4a_n^2}
+>
+\frac{1}{4}.
+\]
+此外 \(\displaystyle0\) 是临界点，临界值为 \(\displaystyle0\). 因而没有临界点位于水平 \(\displaystyle c=\frac{1}{4}\)，即极小极大水平不被实现.
+
+最后取
+\(\displaystyle u_n:=\frac{1}{a_n}e_n\).
+刚才已经证明 \(\displaystyle\Psi'(u_n)=0\)，且
+\(\displaystyle \Psi(u_n) = \frac{1}{4a_n^2} \longrightarrow \frac{1}{4}\).
+所以 \(\displaystyle(u_n)\) 是水平 \(\displaystyle\frac{1}{4}\) 的 Palais--Smale 序列. 对 \(\displaystyle n\neq m\)，正交性给
+\(\displaystyle \|u_n-u_m\|_2^2 = \frac{1}{a_n^2} + \frac{1}{a_m^2} > 2\).
+因此 \(\displaystyle(u_n)\) 没有范数 Cauchy 子列，故没有范数收敛子列. 所以 \(\displaystyle(PS)_{\frac{1}{4}}\) 失败. 这个反例把 III-09 的紧性失效现象嵌入真实山路几何：几何障碍与极小极大值都存在，但缺少水平紧性时极小极大水平可以不是临界值.
+
+\begin{FARemark}[紧参数对]
+\autoref{fa:MINIMAX-B01}已经允许紧度量参数对 \(\displaystyle(K,K_0)\)，所以路径族 \(\displaystyle([0,1],\{0,1\})\) 只是最基本的特殊情形. 在更复杂的变分构造中，可以通过不同紧参数对与指定边界映射编码连接型可容许类；只要边界保持变形保持类，极小极大阻碍的形式仍然相同. 本章不再为这些几何变体另立定理.
+\end{FARemark}
+
+\begin{FARemark}[延后结果：对称极小极大与喷泉]
+利用偶泛函、对称集合与更高维拓扑指标可以建立对称极小极大与喷泉型临界点族. 这些内容属于 D 级. 本章不定义亏格，不陈述喷泉定理，不建立对称山路定理的形式理论，也不在任何证明中调用这些未来结果.
+\end{FARemark}
+
+\begin{FARemark}[III-11 边界]
+\autoref{fa:MP-A01}只产生一个由极小极大机制强制存在的临界点，不给 Morse 指标、临界群、流不变量或 Conley 型信息. 这些属于 III-11 的后续/延后边界；当前章不使用任何 III-11 正式内容.
+\end{FARemark}
+
+\subsection*{本章习题}\label{sec:iii10-exercises}
+
+\begin{FAExercise}[紧参数对极小极大族]{ex:iii10-01}
+设 \(\displaystyle K\) 为紧度量空间，\(\displaystyle K_0\subseteq K\) 非空闭，\(\displaystyle g_0\in C(K_0,X)\)，并假设 \(\displaystyle\Gamma\neq\varnothing\). 证明每个 \(\displaystyle\gamma\in\Gamma\) 的 \(\displaystyle\max_K\Phi(\gamma)\) 存在且有限，并说明 \(\displaystyle c\) 的定义为何不依赖参数化的额外可微性.
+\end{FAExercise}
+
+\begin{FAExercise}[近极小极大映射]{ex:iii10-02}
+从下确界的定义完整证明\autoref{fa:MINIMAX-B01}的近极小极大结论，并说明为何 \(\displaystyle c>b\) 使 \(\displaystyle c\in\mathbb R\).
+\end{FAExercise}
+
+\begin{FAExercise}[边界保持变形]{ex:iii10-03}
+证明若 \(\displaystyle\eta:X\to X\) 连续且逐点固定 \(\displaystyle g_0(K_0)\)，则 \(\displaystyle\eta\circ\gamma\in\Gamma\) 对全部 \(\displaystyle\gamma\in\Gamma\) 成立.
+\end{FAExercise}
+
+\begin{FAExercise}[一般极小极大变形框架的阻碍]{ex:iii10-04}
+完整重建\autoref{fa:MINIMAX-B01}第三项的矛盾，并指出其中哪一步使用了近极小极大映射，哪一步使用了边界保持.
+\end{FAExercise}
+
+\begin{FAExercise}[山路几何]{ex:iii10-05}
+把\autoref{fa:MP-B01}的四个条件分别解释为基点值、球面障碍、外侧端点与端点负能量，并说明其中没有紧性假设.
+\end{FAExercise}
+
+\begin{FAExercise}[路径穿过球面]{ex:iii10-06}
+对任意 \(\displaystyle\gamma\in\Gamma_e\)，只使用映射 \(\displaystyle t\mapsto\|\gamma(t)\|_X\) 的连续性证明存在 \(\displaystyle t_\rho\) 使 \(\displaystyle\|\gamma(t_\rho)\|_X=\rho\).
+\end{FAExercise}
+
+\begin{FAExercise}[山路极小极大基本估计的下界]{ex:iii10-07}
+由上一题与球面障碍独立重证 \(\displaystyle c\geqslant\alpha\)，并解释为什么线性路径足以保证 \(\displaystyle c<\infty\).
+\end{FAExercise}
+
+\begin{FAExercise}[端点能量间隙]{ex:iii10-08}
+证明 \(\displaystyle\max\{\Phi(0),\Phi(e)\}<c\)，并给出可用于变形证明的显式条件 \(\displaystyle2\varepsilon<c-\max\{\Phi(0),\Phi(e)\}\).
+\end{FAExercise}
+
+\begin{FAExercise}[完整重建山路定理的变形矛盾]{ex:iii10-09}
+从全局 \(\displaystyle(PS)\) 开始，逐步写出 \(\displaystyle(PS)_c\)、\(\displaystyle K_c=\varnothing\) 反设、小窗口变形、端点固定、近极小极大路径与最终矛盾，不得引用“标准山路定理”.
+\end{FAExercise}
+
+\begin{FAExercise}[基点/路径变体]{ex:iii10-10}
+设 \(\displaystyle x_0,x_1\in X\) 为两个指定端点. 把\autoref{fa:MP-C01}的路径穿越论证改写为以 \(\displaystyle x_0\) 为中心的球面障碍，并明确需要的范数距离条件.
+\end{FAExercise}
+
+\begin{FAExercise}[次临界半线性 Dirichlet 能量的小球估计]{ex:iii10-11}
+从 \(\displaystyle\|u\|_q\leqslant C_q\|u\|_X\) 出发，重建 \(\displaystyle\mathcal J(u)\geqslant\frac{1}{2}\|u\|_X^2-\frac{C_q^q}{q}\|u\|_X^q\)，并验证给定 \(\displaystyle\rho\) 与 \(\displaystyle\alpha=\frac{\rho^2}{4}\) 的选择.
+\end{FAExercise}
+
+\begin{FAExercise}[次临界半线性 Dirichlet 能量的负方向]{ex:iii10-12}
+固定非零 \(\displaystyle w\in C_c^\infty(\Omega)\)，证明 \(\displaystyle\mathcal J(tw)\to-\infty\) 当 \(\displaystyle t\to\infty\)，并选出满足 \(\displaystyle\|e\|_X>\rho\)、\(\displaystyle\mathcal J(e)<0\) 的 \(\displaystyle e\).
+\end{FAExercise}
+
+\begin{FAExercise}[次临界半线性 Dirichlet 能量的定理应用]{ex:iii10-13}
+只引用 III-09 已证明的 \(\displaystyle C^1\) 与全局 \(\displaystyle(PS)\)，结合本章几何验证\autoref{fa:MP-A01}的全部假设，并得到正水平上的临界点.
+\end{FAExercise}
+
+\begin{FAExercise}[弱 Euler--Lagrange 方程]{ex:iii10-14}
+从 III-09 的导数公式推出临界点满足
+\[
+\int_\Omega\nabla u\mathbin{\cdot}\nabla v\,\mathrm{d}x
+=
+\int_\Omega|u|^{q-2}uv\,\mathrm{d}x
+\]
+对全部 \(\displaystyle v\in H_0^1(\Omega)\) 成立，并解释这一定义对应的 Dirichlet 弱解.
+\end{FAExercise}
+
+\begin{FAExercise}[正水平推出非平凡性]{ex:iii10-15}
+证明若 \(\displaystyle\mathcal J(u)=c\geqslant\alpha>0\)，则 \(\displaystyle u\neq0\)，并说明该结论不需要极大值原理.
+\end{FAExercise}
+
+\begin{FAExercise}[不满足 Palais--Smale 条件的山路几何反例：导数]{ex:iii10-16}
+对 \(\displaystyle Q(x)=\langle Ax,x\rangle\) 与 \(\displaystyle\Psi(x)=\frac{1}{2}\|x\|^2-\frac{1}{4}Q(x)^2\)，完整计算 \(\displaystyle Q'(x)\) 与 \(\displaystyle\Psi'(x)\).
+\end{FAExercise}
+
+\begin{FAExercise}[反例中的几何]{ex:iii10-17}
+证明对 \(\displaystyle x\neq0\) 有 \(\displaystyle0<Q(x)\leqslant\|x\|^2\)，并验证单位球面上 \(\displaystyle\Psi\geqslant\frac{1}{4}\)，再直接计算 \(\displaystyle\Psi(3e_1)<0\).
+\end{FAExercise}
+
+\begin{FAExercise}[反例中的上界路径]{ex:iii10-18}
+严格写出由径向线段与旋转圆弧拼成的 \(\displaystyle\gamma_n\in\Gamma\)，证明其最大值不超过 \(\displaystyle\frac{1}{4a_n^2}\)，再推出 \(\displaystyle c=\frac{1}{4}\).
+\end{FAExercise}
+
+\begin{FAExercise}[反例中的临界点集]{ex:iii10-19}
+解方程 \(\displaystyle x=Q(x)Ax\)，证明全部非零临界点恰为 \(\displaystyle\pm a_n^{-1}e_n\)，并计算对应临界值.
+\end{FAExercise}
+
+\begin{FAExercise}[反例中的 Palais--Smale 条件失效]{ex:iii10-20}
+验证 \(\displaystyle u_n=\frac{1}{a_n}e_n\) 是水平 \(\displaystyle\frac{1}{4}\) 的 Palais--Smale 序列，并用两两范数分离证明它没有范数收敛子列.
+\end{FAExercise}
+
+\begin{FAExercise}[几何与紧性的比较]{ex:iii10-21}
+比较次临界半线性 Dirichlet 能量模型与不满足 Palais--Smale 条件的山路几何反例：分别列出几何、极小极大水平、\(\displaystyle(PS)_c\) 与临界水平实现的状态，并说明哪一项差异阻止了反例中的山路定理结论.
+\end{FAExercise}
+
+\begin{FAExercise}[后续边界：对称极小极大与喷泉]{ex:iii10-22}
+只基于本章\autoref{fa:MINIMAX-B01}的紧参数对视角，说明若未来要构造多个对称临界水平还需要新的对称性/拓扑指标输入. 不得调用 III-11 定理，也不得自行建立亏格或喷泉定理.
+\end{FAExercise}
